@@ -1,0 +1,113 @@
+name: BreathOfNow - Run Generator
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Generate a single day or a whole month"
+        type: choice
+        required: true
+        default: day
+        options: [day, month]
+      date:
+        description: "For day: YYYY-MM-DD  •  For month: YYYY-MM"
+        type: string
+        required: true
+        default: "2025-09-05"
+      dry_run:
+        description: "Print results without writing to Sheets"
+        type: boolean
+        required: true
+        default: true
+      skip_images:
+        description: "Skip image generation"
+        type: boolean
+        required: true
+        default: false
+      force:
+        description: "Overwrite existing files if present"
+        type: boolean
+        required: false
+        default: false
+
+jobs:
+  run-generator:
+    runs-on: ubuntu-latest
+
+    env:
+      # Pull from repository secrets (Settings → Secrets and variables → Actions)
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+      SHEET_ID: ${{ secrets.SHEET_ID }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # OPTIONAL: if your code expects a file path instead of reading JSON from env,
+      # we write the secret to a temporary file and point GOOGLE_SERVICE_ACCOUNT_JSON_PATH at it.
+      - name: Write GCP credentials to file (optional)
+        if: ${{ env.GOOGLE_SERVICE_ACCOUNT_JSON != '' }}
+        run: |
+          echo "$GOOGLE_SERVICE_ACCOUNT_JSON" > gsa.json
+          echo "GOOGLE_SERVICE_ACCOUNT_JSON_PATH=$GITHUB_WORKSPACE/gsa.json" >> $GITHUB_ENV
+
+      - name: Build run command
+        id: build_cmd
+        run: |
+          MODE="${{ github.event.inputs.mode }}"
+          DATE="${{ github.event.inputs.date }}"
+          DRY="${{ github.event.inputs.dry_run }}"
+          SKIP="${{ github.event.inputs.skip_images }}"
+          FORCE="${{ github.event.inputs.force }}"
+
+          CMD="python -m src.runner"
+          if [ "$MODE" = "day" ]; then
+            CMD="$CMD --day $DATE"
+          else
+            CMD="$CMD --month $DATE"
+          fi
+
+          if [ "$DRY" = "true" ]; then CMD="$CMD --dry-run"; fi
+          if [ "$SKIP" = "true" ]; then CMD="$CMD --skip-images"; fi
+          if [ "$FORCE" = "true" ]; then CMD="$CMD --force"; fi
+
+          echo "cmd=$CMD" >> $GITHUB_OUTPUT
+          echo "Will run: $CMD"
+
+      - name: Run generator
+        env:
+          # If your code supports reading JSON directly from env, nothing else is needed.
+          # If it needs a file path, make sure your code checks GOOGLE_SERVICE_ACCOUNT_JSON_PATH.
+          GOOGLE_SERVICE_ACCOUNT_JSON_PATH: ${{ env.GOOGLE_SERVICE_ACCOUNT_JSON_PATH }}
+        run: ${{ steps.build_cmd.outputs.cmd }}
+
+      # Upload artifacts (outputs, images, logs) to the workflow run for download
+      - name: Upload outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: breathofnow-artifacts
+          path: |
+            data/outputs/**
+            data/images/**
+            data/logs/**
+          if-no-files-found: warn
