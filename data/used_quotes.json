@@ -1,0 +1,143 @@
+{
+  "meta": {
+    "window_days": 400,
+    "last_updated": "2025-09-04T12:00:00Z"
+  },
+  "items": [
+    {
+      "date": "2025-09-01",
+      "quote_text": "Each step is the journey. There is no need to rush.",
+      "quote_author": "Thích Nhất Hạnh",
+      "norm": "each step is the journey there is no need to rush | thich nhat hanh",
+      "hash": "sha1:6a5e2f01",
+      "tokens": ["each","step","journey","need","rush"],
+      "author_id": "thich_nhat_hanh"
+    },
+    {
+      "date": "2025-09-02",
+      "quote_text": "You have power over your mind — not outside events. Realize this, and you will find strength.",
+      "quote_author": "Marcus Aurelius",
+      "norm": "you have power over your mind not outside events realize this and you will find strength | marcus aurelius",
+      "hash": "sha1:9b8c6f12",
+      "tokens": ["power","mind","outside","events","realize","strength"],
+      "author_id": "marcus_aurelius"
+    },
+    {
+      "date": "2025-09-03",
+      "quote_text": "A journey of a thousand miles begins with a single step.",
+      "quote_author": "Lao Tzu",
+      "norm": "a journey of a thousand miles begins with a single step | lao tzu",
+      "hash": "sha1:12d3c457",
+      "tokens": ["journey","thousand","miles","begins","single","step"],
+      "author_id": "lao_tzu"
+    },
+    {
+      "date": "2025-09-04",
+      "quote_text": "When you realize nothing is lacking, the whole world belongs to you.",
+      "quote_author": "Zen Proverb",
+      "norm": "when you realize nothing is lacking the whole world belongs to you | zen proverb",
+      "hash": "sha1:4f92ab88",
+      "tokens": ["realize","nothing","lacking","world","belongs"],
+      "author_id": "source_uncertain"
+    },
+    {
+      "date": "2025-09-05",
+      "quote_text": "He who has conquered himself is free.",
+      "quote_author": "Seneca",
+      "norm": "he who has conquered himself is free | seneca",
+      "hash": "sha1:8d7c2b34",
+      "tokens": ["conquered","himself","free"],
+      "author_id": "seneca"
+    },
+    {
+      "date": "2025-09-06",
+      "quote_text": "Be content with what you have; rejoice in the way things are.",
+      "quote_author": "Lao Tzu",
+      "norm": "be content with what you have rejoice in the way things are | lao tzu",
+      "hash": "sha1:7c88e123",
+      "tokens": ["content","have","rejoice","way","things"],
+      "author_id": "lao_tzu"
+    },
+    {
+      "date": "2025-09-07",
+      "quote_text": "To seek is to suffer. To seek nothing is bliss.",
+      "quote_author": "Bodhidharma",
+      "norm": "to seek is to suffer to seek nothing is bliss | bodhidharma",
+      "hash": "sha1:3a51d92b",
+      "tokens": ["seek","suffer","nothing","bliss"],
+      "author_id": "bodhidharma"
+    },
+    {
+      "date": "2025-09-08",
+      "quote_text": "Do not follow the idea of others, but learn to listen to the voice within yourself.",
+      "quote_author": "Dōgen",
+      "norm": "do not follow the idea of others but learn to listen to the voice within yourself | dogen",
+      "hash": "sha1:cc82a94f",
+      "tokens": ["follow","idea","others","listen","voice","yourself"],
+      "author_id": "dogen"
+    },
+    {
+      "date": "2025-09-09",
+      "quote_text": "We suffer more often in imagination than in reality.",
+      "quote_author": "Seneca",
+      "norm": "we suffer more often in imagination than in reality | seneca",
+      "hash": "sha1:45b2f9de",
+      "tokens": ["suffer","imagination","reality"],
+      "author_id": "seneca"
+    },
+    {
+      "date": "2025-09-10",
+      "quote_text": "When nothing is done, nothing is left undone.",
+      "quote_author": "Tao Te Ching",
+      "norm": "when nothing is done nothing is left undone | tao te ching",
+      "hash": "sha1:2ab48c91",
+      "tokens": ["nothing","done","left","undone"],
+      "author_id": "tao_te_ching"
+    },
+    {
+      "date": "2025-09-11",
+      "quote_text": "The most important point is to accept yourself and stand on your two feet.",
+      "quote_author": "Shunryu Suzuki",
+      "norm": "the most important point is to accept yourself and stand on your two feet | shunryu suzuki",
+      "hash": "sha1:f92b4e55",
+      "tokens": ["accept","yourself","stand","feet"],
+      "author_id": "shunryu_suzuki"
+    },
+    {
+      "date": "2025-09-12",
+      "quote_text": "Don’t explain your philosophy. Embody it.",
+      "quote_author": "Epictetus",
+      "norm": "dont explain your philosophy embody it | epictetus",
+      "hash": "sha1:b712a6d2",
+      "tokens": ["explain","philosophy","embody"],
+      "author_id": "epictetus"
+    },
+    {
+      "date": "2025-09-13",
+      "quote_text": "The softest things in the world overcome the hardest things in the world.",
+      "quote_author": "Tao Te Ching",
+      "norm": "the softest things in the world overcome the hardest things in the world | tao te ching",
+      "hash": "sha1:21f1b9ab",
+      "tokens": ["softest","world","overcome","hardest"],
+      "author_id": "tao_te_ching"
+    },
+    {
+      "date": "2025-09-14",
+      "quote_text": "Sitting quietly, doing nothing, spring comes, and the grass grows by itself.",
+      "quote_author": "Zen Saying",
+      "norm": "sitting quietly doing nothing spring comes and the grass grows by itself | zen saying",
+      "hash": "sha1:8bc19e77",
+      "tokens": ["sitting","quietly","nothing","spring","grass","grows"],
+      "author_id": "source_uncertain"
+    },
+    {
+      "date": "2025-09-15",
+      "quote_text": "Wealth consists not in having great possessions, but in having few wants.",
+      "quote_author": "Epictetus",
+      "norm": "wealth consists not in having great possessions but in having few wants | epictetus",
+      "hash": "sha1:ab3e1d65",
+      "tokens": ["wealth","possessions","few","wants"],
+      "author_id": "epictetus"
+    }
+  ]
+}
