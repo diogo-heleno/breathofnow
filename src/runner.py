@@ -142,4 +142,99 @@ def _map_to_sheet(day_ctx: dict, payload: dict) -> Dict:
 
         "Time_Carousel": day_ctx.get("time_carousel", ""),
         "Time_Poem": day_ctx.get("time_reel", ""),
-        "Time_Image": day_ctx.get("t
+        "Time_Image": day_ctx.get("time_image", ""),
+        "Timezone": day_ctx.get("timezone", ""),
+
+        "Quote": f"{payload['quote_text']} — {payload['quote_author']}",
+        "Meditation 1": payload.get("med1", ""),
+        "Meditation 2": payload.get("med2", ""),
+        "Journal Prompt 1": payload.get("jp1", ""),
+        "Journal Prompt 2": payload.get("jp2", ""),
+        "CTA": payload.get("cta_line", ""),
+        "Caption": (payload.get("carousel_caption", "") + "\n" + " ".join(payload.get("carousel_hashtags", []))).strip(),
+        "First Comment": payload.get("carousel_first_comment", ""),
+        "Story Action": payload.get("story_action", ""),
+
+        "Poem": payload.get("poem_text", ""),
+        "Poem Caption": payload.get("poem_caption", ""),
+        "Poem 1st Comment": payload.get("poem_first_comment", ""),
+        "Poem Story Action": payload.get("poem_story_action", ""),
+
+        "Image creation prompt": payload.get("image_prompt", ""),
+        "Image Caption": payload.get("image_caption", ""),
+        "Image 1st Comment": payload.get("image_first_comment", ""),
+        "Image Story Action": payload.get("image_story_action", ""),
+    }
+
+def run_month(year: int, month: int, *, language: str = "EN", dry_run: bool = False, skip_images: bool = False, force: bool = False) -> List[Dict]:
+    plan = build_month_plan(year, month, str(CONFIG_DIR))
+
+    guard = QuotesGuard(
+        store_path=str(DATA_DIR / "used_quotes.json"),
+        aliases_path=str(CONFIG_DIR / "author_aliases.yml"),
+    ).load()
+
+    system_prompt = build_system_prompt(str(CONFIG_DIR))
+    schema = _load_json_schema()
+
+    rows: List[Dict] = []
+
+    for day_ctx in plan:
+        print(f"[{day_ctx['date']}] {day_ctx['tradition']} • {day_ctx.get('week_theme','')}")
+        banned = guard.banned_norms()
+        user_msg = build_user_message(day_ctx, str(CONFIG_DIR), banned, language=language)
+
+        if _env_flag("USE_OPENAI"):
+            payload = _call_openai(system_prompt, user_msg, schema) or _make_stub_payload(day_ctx)
+        else:
+            payload = _make_stub_payload(day_ctx)  # always produce artifacts
+
+        ok, msg = validate_payload(payload, day_ctx["tradition"], str(CONFIG_DIR), str(SCHEMAS_DIR))
+        if not ok:
+            print(f"  - Validation failed: {msg}")
+            continue
+
+        accepted, info = guard.check_and_register(payload["quote_text"], payload["quote_author"], day_ctx["date"])
+        if not accepted:
+            print(f"  - Quote rejected: {info}")
+            continue
+
+        _write_day_payload(day_ctx["date"], payload, force=force)
+        rows.append(_map_to_sheet(day_ctx, payload))
+
+    guard.save()
+
+    if rows and _env_flag("WRITE_TO_SHEETS"):
+        try:
+            from sheets_writer import write_rows
+            write_rows(rows, os.environ)
+            print(f"[Sheets] Wrote {len(rows)} rows.")
+        except Exception as e:
+            print(f"[Sheets] Failed to write rows: {e}")
+
+    return rows
+
+def run_day(date_str: str, **kwargs) -> List[Dict]:
+    d = dt.datetime.strptime(date_str, "%Y-%m-%d")
+    return run_month(d.year, d.month, **kwargs)
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    g = ap.add_mutually_exclusive_group(required=True)
+    g.add_argument("--day", type=str, help="YYYY-MM-DD")
+    g.add_argument("--month", type=str, help="YYYY-MM")
+    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--skip-images", action="store_true")
+    ap.add_argument("--force", action="store_true")
+    ap.add_argument("--language", type=str, default=os.getenv("LANGUAGE", "EN"))
+    args = ap.parse_args()
+
+    if args.day:
+        run_day(args.day, language=args.language, dry_run=args.dry_run, skip_images=args.skip_images, force=args.force)
+    else:
+        y, m = map(int, args.month.split("-"))
+        run_month(y, m, language=args.language, dry_run=args.dry_run, skip_images=args.skip_images, force=args.force)
+    return 0
+
+if __name__ == "__main__":
+    raise SystemExit(main())
