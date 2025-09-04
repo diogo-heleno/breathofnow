@@ -1,0 +1,10 @@
+openai>=1.40.0
+pydantic>=2.7
+jsonschema>=4.22
+python-dateutil>=2.9
+pyyaml>=6.0
+gspread>=6.1.4
+google-auth>=2.33
+google-auth-oauthlib>=1.2
+pandas>=2.2
+faiss-cpu>=1.8.0.post1    # optional (semantic dup guard)

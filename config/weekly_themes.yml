@@ -1,0 +1,12 @@
+cycle:
+  - name: "Detachment"
+    focus: "Zen"
+  - name: "Stillness"
+    focus: "Zen+Stoic"
+  - name: "Flow"
+    focus: "Tao"
+  - name: "Strength & Presence"
+    focus: "Stoic"
+
+notes:
+  apply_by_iso_week: true   # week index computed from first week touching the month

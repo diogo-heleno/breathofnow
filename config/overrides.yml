@@ -1,0 +1,8 @@
+dates:
+  "2025-12-25":
+    tradition: "Zen"
+    week_theme_name: "Gratitude"
+    pinned: true
+  "2026-01-01":
+    tradition: "Stoic"
+    force_quote_author: "Marcus Aurelius"

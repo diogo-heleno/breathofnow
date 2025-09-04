@@ -1,0 +1,31 @@
+timezone: Europe/Lisbon
+week_start: Monday      # ISO weeks
+determinism:
+  mode: fixed_pattern   # or "seeded_shuffle"
+  seed_format: "BON-{YYYY}{WW}"  # used if seeded_shuffle
+
+seasons:
+  Autumn:
+    months: [9,10,11]
+    weekly_targets: { Zen: 3, Stoic: 2, Tao: 2 }
+    weekly_pattern: [Zen, Stoic, Tao, Zen, Stoic, Tao, Zen]  # Mon..Sun
+  Winter:
+    months: [12,1,2]
+    weekly_targets: { Stoic: 3, Zen: 2, Tao: 2 }
+    weekly_pattern: [Stoic, Zen, Tao, Stoic, Zen, Tao, Stoic]
+  Spring:
+    months: [3,4,5]
+    weekly_targets: { Tao: 3, Zen: 2, Stoic: 2 }
+    weekly_pattern: [Tao, Zen, Stoic, Tao, Zen, Stoic, Tao]
+  Summer:
+    months: [6,7,8]
+    weekly_targets: { Zen: 2, Stoic: 2, Tao: 2 } # 1 blended reserved
+    weekly_pattern: [Zen, Stoic, Tao, Zen, Stoic, Tao, Zen]
+    blended:
+      enabled: false   # set true later if you add a 4th post type that day
+      weekday: Sunday  # where to place the blended slot
+
+posting_times:
+  carousel: "09:00"
+  reel: "12:00"
+  image: "18:00"

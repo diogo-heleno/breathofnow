@@ -1,0 +1,23 @@
+# venv
+venv/
+.env
+*.pyc
+__pycache__/
+# local creds
+*.json
+credentials/
+# runtime
+logs/
+data/embeddings.index
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Jupyter
+*.ipynb_checkpoints/
+

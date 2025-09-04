@@ -1,0 +1,6 @@
+Zen:
+  default_tracks: ["Japanese Zen Garden", "Peaceful Flute"]
+Tao:
+  default_tracks: ["Flowing River", "Bamboo Forest"]
+Stoic:
+  default_tracks: ["Deep Piano Meditation", "Ancient Echoes"]
