@@ -1,64 +1,41 @@
+from __future__ import annotations
 """
-runner.py
-Orchestrates month/day generation:
-- Build calendar plan (allocator)
-- For each day:
-    - Query quote guard for banned norms (recent)
-    - Build system + user prompts
-    - Call model (OpenAI Structured Outputs when enabled)
-    - Validate payload
-    - Register quote in guard
-    - Map to Sheet columns
-- Batch write to Google Sheet
+BreathOfNow runner
+- Builds a monthly plan
+- For each day: builds prompts, (optionally) calls OpenAI, validates, dedupes quotes, writes per-day JSON
+- Optionally appends rows to Google Sheets
 
 Env toggles:
-    USE_OPENAI=1               # enable real model calls
-    WRITE_TO_SHEETS=1          # write appended rows to Google Sheets
+  USE_OPENAI=1          -> call OpenAI
+  WRITE_TO_SHEETS=1     -> append rows to Google Sheet
 
-Required env for Sheets (either style works):
-    # Preferred (ID-based):
-    SHEET_ID=...                      # spreadsheet ID
-    SHEET_NAME=Posts                  # defaults to 'Posts'
+Sheets env (either style works):
+  SHEET_ID=... (preferred)   and  SHEET_NAME=Posts
+  or
+  SPREADSHEET_NAME=BreathOfNow_Content_Master and SHEET_NAME=Posts
 
-    # Legacy (name-based):
-    SPREADSHEET_NAME=BreathOfNow_Content_Master
-    SHEET_NAME=Posts
-
-    # Credentials (either one):
-    GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json      # file path
-    or GOOGLE_SERVICE_ACCOUNT_JSON='{...}'                 # JSON string
-
-Required files:
-    config/prompt_system.txt
-    schemas/BreathOfNowDailyPost.schema.json
-    config/author_aliases.yml
-    config/rotation.yml
-    config/weekly_themes.yml
-    config/visual_identity.yml
-    config/hashtag_sets.yml
-    data/used_quotes.json
+Credentials (either):
+  GOOGLE_SERVICE_ACCOUNT_JSON='{...}'  # JSON string (Actions secret)
+  or GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json
 """
-
-from __future__ import annotations
-
 import argparse
 import datetime as dt
 import json
 import os
 import time
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 
 from allocator import build_month_plan
 from quotes_guard import QuotesGuard
 from prompt_builder import build_system_prompt, build_user_message
 from validator import validate_payload
 
-# Optional OpenAI (only if USE_OPENAI=1)
+# --- optional OpenAI import (only if USE_OPENAI=1) ---
 OPENAI_AVAILABLE = False
 try:
     if os.environ.get("USE_OPENAI") == "1":
-        from openai import OpenAI  # requires openai>=1.40.0
+        from openai import OpenAI  # openai>=1.40.0
         OPENAI_AVAILABLE = True
 except Exception:
     OPENAI_AVAILABLE = False
@@ -76,82 +53,31 @@ def _ensure_dirs():
         p.mkdir(parents=True, exist_ok=True)
 
 def _load_json_schema() -> dict:
-    path = SCHEMAS_DIR / "BreathOfNowDailyPost.schema.json"
-    return json.loads(path.read_text(encoding="utf-8"))
-
-def _banned_norms(guard: QuotesGuard) -> List[str]:
-    # Prefer a method on QuotesGuard; fallback to raw store
-    if hasattr(guard, "banned_norms"):
-        return list(guard.banned_norms())
-    store = getattr(guard, "store", {})
-    items = store.get("items", []) if isinstance(store, dict) else []
-    return [str(it.get("norm", "")).strip() for it in items if it.get("norm")]
+    p = SCHEMAS_DIR / "BreathOfNowDailyPost.schema.json"
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
 def _env_flag(name: str) -> bool:
     return os.environ.get(name, "").strip() == "1"
 
-def _map_to_sheet(day_ctx: dict, payload: dict) -> Dict:
-    """Map model JSON → Google Sheet columns (Phase 1)."""
-    return {
-        "Date": day_ctx["date"],
-        "Weekday": day_ctx["weekday"],
-        "Tradition": day_ctx["tradition"],
-        "Was it posted?": "",
-
-        "Time_Carousel": day_ctx.get("time_carousel", ""),
-        "Time_Poem": day_ctx.get("time_reel", ""),
-        "Time_Image": day_ctx.get("time_image", ""),
-        "Timezone": day_ctx.get("timezone", ""),
-
-        "Quote": f"{payload['quote_text']} — {payload['quote_author']}",
-        "Meditation 1": payload.get("med1", ""),
-        "Meditation 2": payload.get("med2", ""),
-        "Journal Prompt 1": payload.get("jp1", ""),
-        "Journal Prompt 2": payload.get("jp2", ""),
-        "CTA": payload.get("cta_line", ""),
-        "Caption": (payload.get("carousel_caption", "") + "\n" + " ".join(payload.get("carousel_hashtags", []))).strip(),
-        "First Comment": payload.get("carousel_first_comment", ""),
-        "Story Action": payload.get("story_action", ""),
-
-        "Poem": payload.get("poem_text", ""),
-        "Poem Caption": payload.get("poem_caption", ""),
-        "Poem 1st Comment": payload.get("poem_first_comment", ""),
-        "Poem Story Action": payload.get("poem_story_action", ""),
-
-        "Image creation prompt": payload.get("image_prompt", ""),
-        "Image Caption": payload.get("image_caption", ""),
-        "Image 1st Comment": payload.get("image_first_comment", ""),
-        "Image Story Action": payload.get("image_story_action", ""),
-    }
-
 def _call_openai(system_prompt: str, user_message: str, schema: dict, max_retries: int = 2, sleep_seconds: float = 1.5) -> Optional[dict]:
-    """Call OpenAI with a JSON schema response format and parse the result."""
+    """Call OpenAI with JSON-schema responses; return parsed dict or None."""
     if not OPENAI_AVAILABLE:
         return None
-    api_key = os.environ.get("OPENAI_API_KEY", "").strip()
+    api_key = os.getenv("OPENAI_API_KEY", "").strip()
     if not api_key:
-        print("[OpenAI] OPENAI_API_KEY not set; skipping.")
+        print("[OpenAI] OPENAI_API_KEY not set.")
         return None
 
     client = OpenAI(api_key=api_key)
-    response_format = {
-        "type": "json_schema",
-        "json_schema": {
-            "name": "BreathOfNowDailyPost",
-            "schema": schema,
-            "strict": True,
-        },
-    }
+    response_format = {"type": "json_schema", "json_schema": {"name": "BreathOfNowDailyPost", "schema": schema, "strict": True}}
+    model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
-    model = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
     for attempt in range(1, max_retries + 1):
         try:
             resp = client.chat.completions.create(
                 model=model,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_message},
-                ],
+                messages=[{"role": "system", "content": system_prompt},
+                          {"role": "user", "content": user_message}],
                 response_format=response_format,
                 temperature=0.7,
             )
@@ -164,16 +90,41 @@ def _call_openai(system_prompt: str, user_message: str, schema: dict, max_retrie
             parsed = getattr(msg, "parsed", None)
             if parsed:
                 return parsed
-            print("[OpenAI] Could not parse JSON from response.")
+            print("[OpenAI] Could not parse JSON.")
             return None
         except Exception as e:
-            print(f"[OpenAI] Attempt {attempt} failed: {e}")
+            print(f"[OpenAI] attempt {attempt} failed: {e}")
             if attempt < max_retries:
                 time.sleep(sleep_seconds)
     return None
 
+def _make_stub_payload(day_ctx: dict) -> dict:
+    """A schema-like stub so Actions can produce artifacts without OpenAI."""
+    quote = f"{day_ctx['tradition']} practice for {day_ctx['date']}"
+    author = f"Stub Author {day_ctx['date']}"
+    return {
+        "quote_text": quote,
+        "quote_author": author,
+        "med1": "Breathe in for 4, out for 6. Notice the pause.",
+        "med2": "Observe one thought without judgment for 60 seconds.",
+        "jp1": "Where am I gripping today?",
+        "jp2": "What can I release right now?",
+        "cta_line": "Follow @breathofnow for daily calm.",
+        "carousel_caption": f"{quote} — {author}",
+        "carousel_hashtags": ["#mindfulness", "#presence", "#breathofnow"],
+        "carousel_first_comment": "Journal: What tiny action reconnects me to now?",
+        "story_action": "Add a poll: 'Can you pause 1 min right now?'",
+        "poem_text": "A quiet step / the world exhales / and I arrive.",
+        "poem_caption": "One line, one breath.",
+        "poem_first_comment": "How did this land for you?",
+        "poem_story_action": "Share the first line as a teaser.",
+        "image_prompt": f"{day_ctx['tradition']} visual, see config styles; minimal, textured.",
+        "image_caption": "Stillness speaks.",
+        "image_first_comment": "Try the 4–6 breath for 1 minute.",
+        "image_story_action": "Add a countdown sticker for tonight’s practice.",
+    }
+
 def _write_day_payload(date_str: str, payload: dict, force: bool = False) -> Path:
-    """Persist per-day JSON for artifacts/idempotency."""
     _ensure_dirs()
     out_path = OUT_DIR / f"{date_str}.json"
     if out_path.exists() and not force:
@@ -181,88 +132,14 @@ def _write_day_payload(date_str: str, payload: dict, force: bool = False) -> Pat
     out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     return out_path
 
-def run_month(year: int, month: int, *, language: str = "EN", dry_run: bool = False, skip_images: bool = False, force: bool = False) -> List[Dict]:
-    """Generate a month and (optionally) append rows to Google Sheets."""
-    plan = build_month_plan(year, month, str(CONFIG_DIR))
+def _map_to_sheet(day_ctx: dict, payload: dict) -> Dict:
+    """Map model JSON → Google Sheet columns (Phase 1)."""
+    return {
+        "Date": day_ctx["date"],
+        "Weekday": day_ctx["weekday"],
+        "Tradition": day_ctx["tradition"],
+        "Was it posted?": "",
 
-    guard = QuotesGuard(
-        store_path=str(DATA_DIR / "used_quotes.json"),
-        aliases_path=str(CONFIG_DIR / "author_aliases.yml"),
-    ).load()
-
-    system_prompt = build_system_prompt(str(CONFIG_DIR))
-    json_schema = _load_json_schema()
-
-    rows_for_sheet: List[Dict] = []
-
-    for day_ctx in plan:
-        print(f"[{day_ctx['date']}] {day_ctx['tradition']} • {day_ctx.get('week_theme','')}")
-        banned = _banned_norms(guard)
-        user_msg = build_user_message(day_ctx, str(CONFIG_DIR), banned, language=language)
-
-        payload: Optional[dict] = None
-        for attempt in range(1, 3):
-            payload = _call_openai(system_prompt, user_msg, json_schema) if _env_flag("USE_OPENAI") else None
-            if not payload:
-                print(f"  - No payload (attempt {attempt}).")
-                continue
-
-            ok, errs = validate_payload(payload, day_ctx["tradition"], str(CONFIG_DIR), str(SCHEMAS_DIR))
-            if not ok:
-                print(f"  - Validation failed (attempt {attempt}): {errs}")
-                continue
-
-            accepted, info = guard.check_and_register(payload["quote_text"], payload["quote_author"], day_ctx["date"])
-            if not accepted:
-                print(f"  - Quote rejected (attempt {attempt}): {info}")
-                continue
-
-            break  # good payload
-
-        if not payload:
-            print(f"  ! Skipping {day_ctx['date']} (no valid payload).")
-            continue
-
-        # Persist per-day payload (for artifacts / audit)
-        _write_day_payload(day_ctx["date"], payload, force=force)
-
-        # Map to row
-        row = _map_to_sheet(day_ctx, payload)
-        rows_for_sheet.append(row)
-
-    guard.save()
-
-    if rows_for_sheet and _env_flag("WRITE_TO_SHEETS"):
-        try:
-            from sheets_writer import write_rows  # lazy import
-            write_rows(rows_for_sheet, os.environ)
-            print(f"[Sheets] Wrote {len(rows_for_sheet)} rows.")
-        except Exception as e:
-            print(f"[Sheets] Failed to write rows: {e}")
-
-    return rows_for_sheet
-
-def run_day(date_str: str, **kwargs) -> List[Dict]:
-    d = dt.datetime.strptime(date_str, "%Y-%m-%d")
-    return run_month(d.year, d.month, **kwargs)
-
-def main() -> int:
-    ap = argparse.ArgumentParser()
-    g = ap.add_mutually_exclusive_group(required=True)
-    g.add_argument("--day", type=str, help="YYYY-MM-DD")
-    g.add_argument("--month", type=str, help="YYYY-MM")
-    ap.add_argument("--dry-run", action="store_true")
-    ap.add_argument("--skip-images", action="store_true")
-    ap.add_argument("--force", action="store_true")
-    ap.add_argument("--language", type=str, default=os.environ.get("LANGUAGE", "EN"))
-    args = ap.parse_args()
-
-    if args.day:
-        run_day(args.day, language=args.language, dry_run=args.dry_run, skip_images=args.skip_images, force=args.force)
-    else:
-        y, m = map(int, args.month.split("-"))
-        run_month(y, m, language=args.language, dry_run=args.dry_run, skip_images=args.skip_images, force=args.force)
-    return 0
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+        "Time_Carousel": day_ctx.get("time_carousel", ""),
+        "Time_Poem": day_ctx.get("time_reel", ""),
+        "Time_Image": day_ctx.get("t
