@@ -71,12 +71,13 @@ jobs:
           pip install -r requirements.txt
 
       # OPTIONAL: if your code expects a file path instead of reading JSON from env,
-      # we write the secret to a temporary file and point GOOGLE_SERVICE_ACCOUNT_JSON_PATH at it.
+      # we write the secret to a temporary file and point GOOGLE_* vars at it.
       - name: Write GCP credentials to file (optional)
         if: ${{ env.GOOGLE_SERVICE_ACCOUNT_JSON != '' }}
         run: |
           echo "$GOOGLE_SERVICE_ACCOUNT_JSON" > gsa.json
           echo "GOOGLE_SERVICE_ACCOUNT_JSON_PATH=$GITHUB_WORKSPACE/gsa.json" >> $GITHUB_ENV
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$GITHUB_WORKSPACE/gsa.json" >> $GITHUB_ENV
 
       - name: Build run command
         id: build_cmd
