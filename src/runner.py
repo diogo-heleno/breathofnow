@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 runner.py
 Orchestrates day/month generation for BreathOfNow.
@@ -19,7 +20,7 @@ or:
 """
 from .sheets_writer import append_rows, map_payload_to_row, heartbeat_write
 import datetime as dt
-from __future__ import annotations
+
 import argparse
 import os
 from pathlib import Path
@@ -268,6 +269,7 @@ def main() -> None:
                 raise
         else:
             print("[runner] WRITE_TO_SHEETS disabled or dry-run; skipping sheets write.")
+
 
 
 
