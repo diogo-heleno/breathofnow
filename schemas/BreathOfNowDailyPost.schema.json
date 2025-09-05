@@ -3,13 +3,7 @@
   "title": "BreathOfNowDailyPost",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "date", "weekday", "tradition", "timezone",
-    "quote_text", "quote_author", "med1", "med2", "jp1", "jp2", "cta_line",
-    "carousel_caption", "carousel_hashtags", "carousel_first_comment", "story_action",
-    "poem_text", "poem_caption", "poem_first_comment", "poem_story_action",
-    "image_prompt", "image_caption", "image_first_comment", "image_story_action"
-  ],
+
   "properties": {
     "date": {
       "type": "string",
@@ -30,6 +24,10 @@
       "pattern": "^[A-Za-z_]+\\/[A-Za-z_]+(?:\\/[A-Za-z_]+)?$",
       "description": "IANA TZ, e.g., Europe/Lisbon"
     },
+
+    "language": { "type": "string", "minLength": 2, "maxLength": 8 },
+    "season": { "type": "string", "minLength": 2, "maxLength": 40 },
+    "monthly_theme": { "type": "string", "minLength": 2, "maxLength": 120 },
 
     "quote_text": { "type": "string", "minLength": 3, "maxLength": 260 },
     "quote_author": { "type": "string", "minLength": 2, "maxLength": 80 },
@@ -61,6 +59,90 @@
     "image_prompt": { "type": "string", "minLength": 10, "maxLength": 180 },
     "image_caption": { "type": "string", "minLength": 10, "maxLength": 600 },
     "image_first_comment": { "type": "string", "minLength": 5, "maxLength": 500 },
-    "image_story_action": { "type": "string", "minLength": 5, "maxLength": 140 }
-  }
+    "image_story_action": { "type": "string", "minLength": 5, "maxLength": 140 },
+
+    "carousel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "caption": { "type": "string", "minLength": 10, "maxLength": 600 },
+        "hashtags": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 15,
+          "items": { "type": "string", "minLength": 2, "maxLength": 40 },
+          "uniqueItems": true
+        },
+        "first_comment": { "type": "string", "minLength": 5, "maxLength": 500 },
+        "story_action": { "type": "string", "minLength": 5, "maxLength": 140 }
+      },
+      "required": ["caption", "hashtags", "first_comment", "story_action"]
+    },
+
+    "poem_post": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "text": { "type": "string", "minLength": 20, "maxLength": 900 },
+        "caption": { "type": "string", "minLength": 10, "maxLength": 600 },
+        "first_comment": { "type": "string", "minLength": 5, "maxLength": 500 },
+        "story_action": { "type": "string", "minLength": 5, "maxLength": 140 }
+      },
+      "required": ["text", "caption", "first_comment", "story_action"]
+    },
+
+    "single_image_post": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "prompt": { "type": "string", "minLength": 10, "maxLength": 180 },
+        "caption": { "type": "string", "minLength": 10, "maxLength": 600 },
+        "first_comment": { "type": "string", "minLength": 5, "maxLength": 500 },
+        "story_action": { "type": "string", "minLength": 5, "maxLength": 140 }
+      },
+      "required": ["prompt", "caption", "first_comment", "story_action"]
+    }
+  },
+
+  "oneOf": [
+    {
+      "title": "Legacy flat payload",
+      "required": [
+        "date", "weekday", "tradition", "timezone",
+        "quote_text", "quote_author", "med1", "med2", "jp1", "jp2", "cta_line",
+        "carousel_caption", "carousel_hashtags", "carousel_first_comment", "story_action",
+        "poem_text", "poem_caption", "poem_first_comment", "poem_story_action",
+        "image_prompt", "image_caption", "image_first_comment", "image_story_action"
+      ],
+      "not": {
+        "anyOf": [
+          { "required": ["carousel"] },
+          { "required": ["poem_post"] },
+          { "required": ["single_image_post"] }
+        ]
+      }
+    },
+    {
+      "title": "Modern nested payload",
+      "required": [
+        "date", "weekday", "tradition", "timezone",
+        "quote_text", "quote_author", "med1", "med2", "jp1", "jp2", "cta_line",
+        "carousel", "poem_post", "single_image_post"
+      ],
+      "allOf": [
+        { "not": { "required": ["carousel_caption"] } },
+        { "not": { "required": ["carousel_hashtags"] } },
+        { "not": { "required": ["carousel_first_comment"] } },
+        { "not": { "required": ["story_action"] } },
+        { "not": { "required": ["poem_text"] } },
+        { "not": { "required": ["poem_caption"] } },
+        { "not": { "required": ["poem_first_comment"] } },
+        { "not": { "required": ["poem_story_action"] } },
+        { "not": { "required": ["image_prompt"] } },
+        { "not": { "required": ["image_caption"] } },
+        { "not": { "required": ["image_first_comment"] } },
+        { "not": { "required": ["image_story_action"] } }
+      ]
+    }
+  ]
 }
