@@ -54,7 +54,7 @@ jobs:
 
       LANGUAGE: "EN"
 
-
+      TIMEZONE: Europe/Lisbon
 
     steps:
       - name: Checkout
