@@ -94,12 +94,13 @@ text = (resp.output_text or "").strip()
     # Strip ```json fences if present
     if text.startswith("```"):
         chunks = text.split("```")
-        if len(chunks) >= 2:
-            body = chunks[1]
-            if body.lower().startswith("json"):
-                text = body.split("\n", 1)[1]
-            else:
-                text = body
+    if len(chunks) >= 2:
+        body = chunks[1]
+    if body.lower().startswith("json"):
+        text = body.split("\n", 1)[1]
+    else:
+        
+        0.text = body
 
     try:
         return json.loads(text)
@@ -278,4 +279,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 
