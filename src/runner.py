@@ -17,7 +17,8 @@ This file is safe to run as:
 or:
     python -m src.runner --month 2025-10-01
 """
-
+from .sheets_writer import append_rows, map_payload_to_row, heartbeat_write
+import datetime as dt
 from __future__ import annotations
 import argparse
 import os
@@ -49,6 +50,8 @@ except ImportError:
 CONFIG_DIR = Path(__file__).resolve().parents[1] / "config"
 SCHEMAS_DIR = Path(__file__).resolve().parents[1] / "schemas"
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+WRITE_TO_SHEETS = os.getenv("WRITE_TO_SHEETS", "0") == "1"
+TIMEZONE = os.getenv("TIMEZONE", "Europe/Lisbon")
 
 # Optional: only import OpenAI if USE_OPENAI=1
 USE_OPENAI = os.getenv("USE_OPENAI", "0") == "1"
@@ -69,6 +72,25 @@ SCHEMA_PATH = SCHEMAS_DIR / "BreathOfNowDailyPost.schema.json"
 
 for p in (OUTPUTS_DIR, IMAGES_DIR, LOGS_DIR):
     p.mkdir(parents=True, exist_ok=True)
+
+def run_for_day(day_iso: str) -> Dict[str, Any]:
+    date_obj = dt.date.fromisoformat(day_iso)
+    weekday = date_obj.strftime("%A")
+    return {
+        "date": day_iso,
+        "weekday": weekday,
+        "tradition": "Zen",
+        "was_posted": "No",
+        "time_carousel": "",
+        "time_poem": "",
+        "time_image": "",
+        "timezone": TIMEZONE,
+        "quote": "Pipeline heartbeat — write test.",
+        "meditation_1": "",
+        "meditation_2": "",
+        "journal_prompt_1": "",
+        "journal_prompt_2": "",
+    }
 
 def call_model(system_prompt: str, user_message: str) -> Dict[str, Any]:
     """Call the model (or return a stub if USE_OPENAI=0)."""
@@ -176,6 +198,27 @@ def run_for_month(date_str: str) -> None:
     for day in plan["days"]:
         run_for_day(day)
 
+def _to_rows(payload_or_list, fallback_date_iso: str) -> list[list]:
+    """
+    Accepts a dict or a list[dict] and maps to sheet rows.
+    Ensures 'date' and 'timezone' exist for mapping.
+    """
+    if payload_or_list is None:
+        return []
+    items = payload_or_list if isinstance(payload_or_list, list) else [payload_or_list]
+    rows = []
+    for p in items:
+        if not isinstance(p, dict):
+            continue
+        # Ensure date/timezone keys exist for the mapper
+        if "date" not in p:
+            p = {**p, "date": fallback_date_iso}
+        if "timezone" not in p:
+            p = {**p, "timezone": TIMEZONE}
+        rows.append(map_payload_to_row(p, timezone=TIMEZONE))
+    return rows
+
+
 def main() -> None:
     import argparse
 
@@ -183,16 +226,50 @@ def main() -> None:
     grp = ap.add_mutually_exclusive_group(required=True)
     grp.add_argument("--day", help="Generate a single day: YYYY-MM-DD")
     grp.add_argument("--month", help="Generate an entire month anchored at YYYY-MM-01")
+    ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
     if args.day:
         # Convert 'YYYY-MM-DD' string to a datetime.date
         day = datetime.strptime(args.day, "%Y-%m-%d").date()
-        run_for_day(day)
+        result = run_for_day(day)
+
+        if WRITE_TO_SHEETS and not args.dry_run:
+            try:
+                print("[runner] Writing day result to Google Sheets...")
+                rows = _to_rows(result, fallback_date_iso=day.isoformat())
+                if rows:
+                    append_rows(rows)
+                else:
+                    # Nothing mapped — write a heartbeat so we can verify wiring
+                    heartbeat_write(day.isoformat(), "Heartbeat — no payload mapped from run_for_day()")
+            except Exception as e:
+                print(f"[runner] Sheets write failed: {e}")
+                raise
+        else:
+            print("[runner] WRITE_TO_SHEETS disabled or dry-run; skipping sheets write.")
+
     else:
         # Normalize month anchor to the first of the month as a datetime.date
         month_anchor = datetime.strptime(args.month, "%Y-%m-%d").date().replace(day=1)
-        run_for_month(month_anchor)
+        results = run_for_month(month_anchor)
+
+        if WRITE_TO_SHEETS and not args.dry_run:
+            try:
+                print("[runner] Writing month results to Google Sheets...")
+                # Use the anchor day for any items missing a date
+                rows = _to_rows(results, fallback_date_iso=month_anchor.isoformat())
+                if rows:
+                    append_rows(rows)
+                else:
+                    heartbeat_write(month_anchor.isoformat(), "Heartbeat — no rows mapped from run_for_month()")
+            except Exception as e:
+                print(f"[runner] Sheets write failed: {e}")
+                raise
+        else:
+            print("[runner] WRITE_TO_SHEETS disabled or dry-run; skipping sheets write.")
+
+
 
 
 
