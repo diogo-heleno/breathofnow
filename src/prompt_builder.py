@@ -36,13 +36,21 @@ def build_user_message(day: date, guard_recent: List[str]) -> str:
         lines.append("- (none)")
     return "\n".join(lines)
 
-def load_schema(schemas_dir: Path) -> Path:
+
+
+def load_schema(schema_path: Path) -> Path:
     """
     Return the path to the JSON Schema used by validator.validate_payload.
     Keeping it as a Path avoids duplicate JSON loading logic across modules.
+
+    Parameters
+    ----------
+    schema_path : Path
+        Full path to the schema file (e.g., SCHEMAS_DIR / "BreathOfNowDailyPost.schema.json").
     """
-    schemas_dir = Path(schemas_dir)
-    schema_path = schemas_dir / "BreathOfNowDailyPost.schema.json"
+    schema_path = Path(schema_path)
     if not schema_path.exists():
         raise FileNotFoundError(f"Schema file not found: {schema_path}")
     return schema_path
+
+
