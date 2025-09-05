@@ -37,6 +37,10 @@ OUT_DIR = DATA_DIR / "outputs"
 IMG_DIR = DATA_DIR / "images"
 LOG_DIR = DATA_DIR / "logs"
 
+def _default_timezone() -> str:
+    """Global fallback if the day context doesn't include a timezone."""
+    return os.getenv("TIMEZONE") or os.getenv("TZ") or "Europe/Lisbon"
+
 def ensure_weekday(post, target_date=None):
     """Make sure the payload includes a human weekday (e.g., 'Monday')."""
     if 'weekday' not in post:
@@ -60,6 +64,10 @@ def _load_json_schema() -> dict:
 def _env_flag(name: str) -> bool:
     return os.environ.get(name, "").strip() == "1"
 
+def _model_accepts_custom_temp(model: str) -> bool:
+    # Known families that only allow default temp = 1
+    return not (model.startswith(("gpt-5", "o1", "o3")))
+
 def _call_openai(system_prompt: str, user_message: str, schema: dict, max_retries: int = 2, sleep_seconds: float = 1.5) -> Optional[dict]:
     """Call OpenAI with JSON-schema responses; return parsed dict or None."""
     if not OPENAI_AVAILABLE:
@@ -74,15 +82,29 @@ def _call_openai(system_prompt: str, user_message: str, schema: dict, max_retrie
     # Default to gpt-4o-mini; can be overridden via env
     model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
+    def _chat_args():
+        args = dict(
+            model=model,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message},
+            ],
+            response_format=response_format,
+        )
+        temp_env = os.getenv("OPENAI_TEMPERATURE", "").strip()
+        if temp_env:
+            try:
+                args["temperature"] = float(temp_env)
+            except ValueError:
+                pass
+        else:
+            if _model_accepts_custom_temp(model):
+                args["temperature"] = 0.7
+        return args
+
     for attempt in range(1, max_retries + 1):
         try:
-            resp = client.chat.completions.create(
-                model=model,
-                messages=[{"role": "system", "content": system_prompt},
-                          {"role": "user", "content": user_message}],
-                response_format=response_format,
-                temperature=0.7,
-            )
+            resp = client.chat.completions.create(**_chat_args())
             msg = resp.choices[0].message
             if getattr(msg, "content", None):
                 try:
@@ -107,6 +129,7 @@ def _make_stub_payload(day_ctx: dict) -> dict:
     return {
         "date": day_ctx["date"],
         "tradition": day_ctx["tradition"],
+        "timezone": day_ctx.get("timezone") or _default_timezone(),
         "quote_text": quote,
         "quote_author": author,
         "med1": "Breathe in for 4, out for 6. Notice the pause.",
@@ -148,7 +171,7 @@ def _map_to_sheet(day_ctx: dict, payload: dict) -> Dict:
         "Time_Carousel": day_ctx.get("time_carousel", ""),
         "Time_Poem": day_ctx.get("time_reel", ""),
         "Time_Image": day_ctx.get("time_image", ""),
-        "Timezone": day_ctx.get("timezone", ""),
+        "Timezone": payload.get("timezone", day_ctx.get("timezone", "")),
 
         "Quote": f"{payload['quote_text']} — {payload['quote_author']}",
         "Meditation 1": payload.get("med1", ""),
@@ -194,9 +217,13 @@ def run_month(year: int, month: int, *, language: str = "EN", dry_run: bool = Fa
         else:
             payload = _make_stub_payload(day_ctx)  # always produce artifacts
 
-        # 🔧 Ensure schema-required 'weekday' exists (and mirror to day_ctx for Sheets mapping)
+        # Ensure required fields before validation
         payload = ensure_weekday(payload, day_ctx.get("date"))
+        payload.setdefault("timezone", day_ctx.get("timezone") or _default_timezone())
+
+        # Mirror back to day_ctx for Sheets mapping
         day_ctx.setdefault("weekday", payload["weekday"])
+        day_ctx.setdefault("timezone", payload["timezone"])
 
         ok, msg = validate_payload(payload, day_ctx["tradition"], str(CONFIG_DIR), str(SCHEMAS_DIR))
         if not ok:
