@@ -11,7 +11,7 @@ import json
 import os
 import time
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from datetime import datetime, date
 
 # NOTE: relative imports so `python -m src.runner` works
@@ -37,20 +37,55 @@ OUT_DIR = DATA_DIR / "outputs"
 IMG_DIR = DATA_DIR / "images"
 LOG_DIR = DATA_DIR / "logs"
 
+# ---------- helpers ----------
+
 def _default_timezone() -> str:
     """Global fallback if the day context doesn't include a timezone."""
     return os.getenv("TIMEZONE") or os.getenv("TZ") or "Europe/Lisbon"
 
 def ensure_weekday(post, target_date=None):
     """Make sure the payload includes a human weekday (e.g., 'Monday')."""
-    if 'weekday' not in post:
-        if 'date' in post:
-            d = datetime.fromisoformat(post['date']).date()
+    if "weekday" not in post:
+        if "date" in post:
+            d = datetime.fromisoformat(post["date"]).date()
         elif isinstance(target_date, (datetime, date)):
             d = target_date if isinstance(target_date, date) else target_date.date()
         else:
             raise ValueError("Cannot compute weekday: no date available")
-        post['weekday'] = d.strftime('%A')
+        post["weekday"] = d.strftime("%A")
+    return post
+
+def ensure_timezone(post, fallback: str):
+    if "timezone" not in post or not post["timezone"]:
+        post["timezone"] = fallback
+    return post
+
+def ensure_hashtags(post, min_count: int = 5, cap: int = 12):
+    """Pad + sanitize carousel_hashtags to satisfy local validation."""
+    tags = post.get("carousel_hashtags") or []
+    # normalize, dedupe (order-preserving)
+    norm = []
+    seen = set()
+    for t in tags:
+        t = t.strip()
+        if not t:
+            continue
+        if not t.startswith("#"):
+            t = "#" + t
+        if t not in seen:
+            seen.add(t)
+            norm.append(t)
+    defaults = [
+        "#mindfulness", "#presence", "#breathofnow", "#meditation", "#wellness",
+        "#selfcare", "#innerpeace", "#selfawareness", "#calm", "#mentalhealth"
+    ]
+    for t in defaults:
+        if len(norm) >= min_count:
+            break
+        if t not in seen:
+            seen.add(t)
+            norm.append(t)
+    post["carousel_hashtags"] = norm[:cap]
     return post
 
 def _ensure_dirs():
@@ -65,11 +100,30 @@ def _env_flag(name: str) -> bool:
     return os.environ.get(name, "").strip() == "1"
 
 def _model_accepts_custom_temp(model: str) -> bool:
-    # Known families that only allow default temp = 1
+    # Families that only allow default temp = 1
     return not (model.startswith(("gpt-5", "o1", "o3")))
 
+def _strip_unsupported_schema_bits(s: dict) -> dict:
+    """Remove keywords OpenAI structured outputs reject (e.g., uniqueItems)."""
+    if not isinstance(s, dict):
+        return s
+    blocked = {"uniqueItems"}  # extend if needed
+    out = {}
+    for k, v in s.items():
+        if k in blocked:
+            continue
+        if isinstance(v, dict):
+            out[k] = _strip_unsupported_schema_bits(v)
+        elif isinstance(v, list):
+            out[k] = [_strip_unsupported_schema_bits(x) for x in v]
+        else:
+            out[k] = v
+    return out
+
+# ---------- OpenAI call ----------
+
 def _call_openai(system_prompt: str, user_message: str, schema: dict, max_retries: int = 2, sleep_seconds: float = 1.5) -> Optional[dict]:
-    """Call OpenAI with JSON-schema responses; return parsed dict or None."""
+    """Call OpenAI and return a dict or None."""
     if not OPENAI_AVAILABLE:
         return None
     api_key = os.getenv("OPENAI_API_KEY", "").strip()
@@ -78,9 +132,16 @@ def _call_openai(system_prompt: str, user_message: str, schema: dict, max_retrie
         return None
 
     client = OpenAI(api_key=api_key)
-    response_format = {"type": "json_schema", "json_schema": {"name": "BreathOfNowDailyPost", "schema": schema, "strict": True}}
-    # Default to gpt-4o-mini; can be overridden via env
     model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+
+    # Prefer json_object (robust). Allow opt-in to server-side schema if desired.
+    use_schema = _env_flag("USE_OPENAI_SCHEMA")
+    response_format: Any
+    if use_schema and schema:
+        safe_schema = _strip_unsupported_schema_bits(schema)
+        response_format = {"type": "json_schema", "json_schema": {"name": "BreathOfNowDailyPost", "schema": safe_schema, "strict": True}}
+    else:
+        response_format = {"type": "json_object"}
 
     def _chat_args():
         args = dict(
@@ -106,6 +167,7 @@ def _call_openai(system_prompt: str, user_message: str, schema: dict, max_retrie
         try:
             resp = client.chat.completions.create(**_chat_args())
             msg = resp.choices[0].message
+            # json_object returns JSON in content
             if getattr(msg, "content", None):
                 try:
                     return json.loads(msg.content)
@@ -122,11 +184,13 @@ def _call_openai(system_prompt: str, user_message: str, schema: dict, max_retrie
                 time.sleep(sleep_seconds)
     return None
 
+# ---------- payload helpers ----------
+
 def _make_stub_payload(day_ctx: dict) -> dict:
     """Schema-like stub so Actions produces artifacts without OpenAI."""
     quote = f"{day_ctx['tradition']} practice for {day_ctx['date']}"
     author = f"Stub Author {day_ctx['date']}"
-    return {
+    payload = {
         "date": day_ctx["date"],
         "tradition": day_ctx["tradition"],
         "timezone": day_ctx.get("timezone") or _default_timezone(),
@@ -138,7 +202,7 @@ def _make_stub_payload(day_ctx: dict) -> dict:
         "jp2": "What can I release right now?",
         "cta_line": "Follow @breathofnow for daily calm.",
         "carousel_caption": f"{quote} — {author}",
-        "carousel_hashtags": ["#mindfulness", "#presence", "#breathofnow"],
+        "carousel_hashtags": ["#mindfulness", "#presence", "#breathofnow", "#meditation", "#wellness"],
         "carousel_first_comment": "Journal: What tiny action reconnects me to now?",
         "story_action": "Add a poll: 'Can you pause 1 min right now?'",
         "poem_text": "A quiet step / the world exhales / and I arrive.",
@@ -150,6 +214,9 @@ def _make_stub_payload(day_ctx: dict) -> dict:
         "image_first_comment": "Try the 4–6 breath for 1 minute.",
         "image_story_action": "Add a countdown sticker for tonight’s practice.",
     }
+    ensure_weekday(payload, day_ctx.get("date"))
+    ensure_hashtags(payload)
+    return payload
 
 def _write_day_payload(date_str: str, payload: dict, force: bool = False) -> Path:
     """Write per-day JSON (always writes even on --dry-run so artifacts exist)."""
@@ -194,7 +261,10 @@ def _map_to_sheet(day_ctx: dict, payload: dict) -> Dict:
         "Image Story Action": payload.get("image_story_action", ""),
     }
 
+# ---------- main flows ----------
+
 def run_month(year: int, month: int, *, language: str = "EN", dry_run: bool = False, skip_images: bool = False, force: bool = False) -> List[Dict]:
+    _ensure_dirs()  # create dirs early so artifacts upload even if we fail later
     plan = build_month_plan(year, month, str(CONFIG_DIR))
 
     guard = QuotesGuard(
@@ -218,8 +288,9 @@ def run_month(year: int, month: int, *, language: str = "EN", dry_run: bool = Fa
             payload = _make_stub_payload(day_ctx)  # always produce artifacts
 
         # Ensure required fields before validation
-        payload = ensure_weekday(payload, day_ctx.get("date"))
-        payload.setdefault("timezone", day_ctx.get("timezone") or _default_timezone())
+        ensure_weekday(payload, day_ctx.get("date"))
+        ensure_timezone(payload, day_ctx.get("timezone") or _default_timezone())
+        ensure_hashtags(payload)
 
         # Mirror back to day_ctx for Sheets mapping
         day_ctx.setdefault("weekday", payload["weekday"])
