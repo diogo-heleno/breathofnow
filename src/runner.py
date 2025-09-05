@@ -81,15 +81,15 @@ def _call_model(system_prompt: str, user_message: str) -> Dict[str, Any]:
     _log(f"Calling OpenAI model={OPENAI_MODEL}")
     client = OpenAI()
     # Use Responses API (robust) to get plain text JSON back
-    resp = client.responses.create(
-        model=OPENAI_MODEL,
-        input=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_message},
-        ],
-        temperature=0.7,
-    )
-    text = (resp.output_text or "").strip()
+resp = client.responses.create(
+    model=OPENAI_MODEL,
+    input=[
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_message},
+    ],
+)
+text = (resp.output_text or "").strip()
+
 
     # Strip ```json fences if present
     if text.startswith("```"):
@@ -278,3 +278,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
