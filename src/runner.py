@@ -21,7 +21,7 @@ Usage:
 import argparse
 import json
 import os
-from datetime import date, datetime
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -63,6 +63,22 @@ def _log(msg: str) -> None:
         f.write(line + "\n")
 
 
+def _strip_code_fences(s: str) -> str:
+    """Remove ``` or ```json fences if present."""
+    s = s.strip()
+    if not s.startswith("```"):
+        return s
+    parts = s.split("```")
+    # parts: ["", "json\n{...}\n", "" ] or ["", "{...}\n", ""]
+    if len(parts) >= 2:
+        body = parts[1]
+        if body.lower().startswith("json"):
+            # remove the 'json' line
+            body = body.split("\n", 1)[1] if "\n" in body else ""
+        return body.strip()
+    return s
+
+
 def _call_model(system_prompt: str, user_message: str) -> Dict[str, Any]:
     """
     Call the model. If USE_OPENAI=0, return a minimal stub so the pipeline runs.
@@ -80,32 +96,29 @@ def _call_model(system_prompt: str, user_message: str) -> Dict[str, Any]:
 
     _log(f"Calling OpenAI model={OPENAI_MODEL}")
     client = OpenAI()
-    # Use Responses API (robust) to get plain text JSON back
-resp = client.responses.create(
-    model=OPENAI_MODEL,
-    input=[
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_message},
-    ],
-)
-text = (resp.output_text or "").strip()
 
+    # Responses API: ask for plain JSON
+    resp = client.responses.create(
+        model=OPENAI_MODEL,
+        input=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_message},
+        ],
+    )
 
-    # Strip ```json fences if present
-    if text.startswith("```"):
-        chunks = text.split("```")
-    if len(chunks) >= 2:
-        body = chunks[1]
-    if body.lower().startswith("json"):
-        text = body.split("\n", 1)[1]
-    else:
-        
-        0.text = body
+    # Prefer the convenience property; fall back if needed
+    try:
+        text = (resp.output_text or "").strip()  # type: ignore[attr-defined]
+    except Exception:
+        # Fallback: best-effort extraction from the generic structure
+        text = json.dumps(getattr(resp, "output", {}), ensure_ascii=False)
 
+    text = _strip_code_fences(text)
+
+    # Try parsing as-is; if that fails, salvage first {...}
     try:
         return json.loads(text)
     except Exception:
-        # Attempt to salvage first {...}
         start, end = text.find("{"), text.rfind("}")
         if start != -1 and end > start:
             return json.loads(text[start : end + 1])
@@ -122,7 +135,7 @@ def _map_to_sheet_row(day_iso: str, payload: Dict[str, Any]) -> List[Any]:
     weekday = d.strftime("%A")
 
     def g(*path, default=""):
-        cur = payload
+        cur: Any = payload
         for k in path:
             if isinstance(k, int):
                 if not isinstance(cur, list) or k >= len(cur):
@@ -131,7 +144,7 @@ def _map_to_sheet_row(day_iso: str, payload: Dict[str, Any]) -> List[Any]:
             else:
                 if not isinstance(cur, dict):
                     return default
-                cur = cur.get(k, None)
+                cur = cur.get(k)
             if cur is None:
                 return default
         return cur
@@ -162,7 +175,7 @@ def run_for_day(day_iso: str) -> Dict[str, Any]:
     _log(f"Generating day={day_iso}")
 
     # Load prompt + schema
-    system_prompt = build_system_prompt(CONFIG_DIR)            # accepts directory
+    system_prompt = build_system_prompt(CONFIG_DIR)  # accepts directory
     schema = load_schema(SCHEMAS_DIR / "BreathOfNowDailyPost.schema.json")
 
     # Recent quotes guard
@@ -279,5 +292,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-
