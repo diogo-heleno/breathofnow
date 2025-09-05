@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from datetime import date, timedelta
 import json
-from typing import Dict, Set, Iterable
+from typing import Dict, Set, Iterable, List
 
 class QuotesGuard:
     """
@@ -27,6 +27,28 @@ class QuotesGuard:
             if d >= cutoff.isoformat() and norm in quotes:
                 return True
         return False
+
+    def get_recent(self, n: int = 30) -> List[str]:
+        """
+        Return up to n most recent UNIQUE quotes (normalized),
+        limited to the current window.
+        Most recent first.
+        """
+        cutoff = date.today() - timedelta(days=self.window_days)
+        out: List[str] = []
+        seen: Set[str] = set()
+        # iterate newest → oldest by date key
+        for d in sorted(self._by_day.keys(), reverse=True):
+            if d < cutoff.isoformat():
+                continue
+            for q in self._by_day[d]:
+                if q in seen:
+                    continue
+                seen.add(q)
+                out.append(q)
+                if len(out) >= n:
+                    return out
+        return out
 
     def register(self, quote: str, used_on: date | None = None) -> None:
         """Record a quote for the given day (defaults to today), then persist."""
@@ -67,5 +89,5 @@ class QuotesGuard:
 
     def _save(self) -> None:
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
-        data = {d: sorted(list(qs)) for d, qs in self._by_day.items()}
+        data = {d: sorted(list(qs)) for d in self._by_day.items()}
         self.db_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
