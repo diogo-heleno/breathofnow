@@ -1,32 +1,39 @@
+"""
+prompt_builder.py — loads system prompt and crafts user message
+"""
+
 from __future__ import annotations
 from pathlib import Path
+from typing import Dict
 
-def build_system_prompt(config_dir: str) -> str:
-    p = Path(config_dir) / "prompt_system.txt"
-    if p.exists():
-        return p.read_text(encoding="utf-8")
-    # Fallback minimal system rules
+ROOT = Path(__file__).resolve().parents[1]
+CONFIG_DIR = ROOT / "config"
+SCHEMAS_DIR = ROOT / "schemas"
+
+
+def build_system_prompt(*, language: str, timezone: str) -> str:
+    # If you have a config file, load it; else return a sensible default.
+    system_path = CONFIG_DIR / "prompt_system.txt"
+    if system_path.exists():
+        return system_path.read_text(encoding="utf-8")
     return (
-        "You are BreathOfNow content generator. "
-        "Return ONLY valid JSON following the schema keys used by the project. "
-        "Avoid repeated quotes, attribute authors correctly, and keep language clear."
+        f"You are BreathOfNow content producer. Language={language}. "
+        f"Timezone={timezone}. Return a JSON object with fields documented in the schema. "
+        f"Do NOT include 'weekday' — Sheet computes it."
     )
 
-def build_user_message(day_ctx: dict, config_dir: str, banned_norms: list[str], *, language: str = "EN") -> str:
-    # A concise message the model can use; add banned norms to steer novelty
-    banned_str = ", ".join(banned_norms[:50]) if banned_norms else "none"
+
+def build_user_message(day_ctx: Dict) -> str:
+    """
+    Build the concise user message for the model.
+    Include date & tradition and any guardrails.
+    """
+    date = day_ctx.get("date", "")
+    tradition = day_ctx.get("tradition", "Zen")
     return (
-        f"DATE: {day_ctx['date']}\n"
-        f"TRADITION: {day_ctx['tradition']}\n"
-        f"WEEK THEME: {day_ctx.get('week_theme','')}\n"
-        f"TIMEZONE: {day_ctx.get('timezone','')}\n"
-        f"LANGUAGE: {language}\n"
-        f"DO NOT REPEAT (normalized): {banned_str}\n\n"
-        "Produce a single JSON object with fields:\n"
-        "quote_text, quote_author,\n"
-        "med1, med2, jp1, jp2, cta_line,\n"
-        "carousel_caption, carousel_hashtags (array), carousel_first_comment, story_action,\n"
-        "poem_text, poem_caption, poem_first_comment, poem_story_action,\n"
-        "image_prompt, image_caption, image_first_comment, image_story_action.\n"
-        "No markdown, no extra text."
+        "Produce the daily content JSON with the following fields only:\n"
+        "date, tradition, time_carousel, time_poem, time_image, quote, "
+        "meditation_1, meditation_2, journal_prompt_1, journal_prompt_2.\n"
+        f"Date: {date}\nTradition: {tradition}\n"
+        "Keep it concise, contemplative, Instagram-ready. No markdown."
     )
