@@ -39,6 +39,7 @@ jobs:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
       SHEET_ID: ${{ secrets.SHEET_ID }}
+      SKIP_SCHEMA: "1" 
 
     steps:
       - name: Checkout
