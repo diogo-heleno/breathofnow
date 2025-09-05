@@ -28,22 +28,22 @@ from typing import Dict, Any, List
 try:
     from .allocator import build_month_plan
 except ImportError:
-    from allocator import build_month_plan
+    from .allocator import build_month_plan
 
 try:
     from .quotes_guard import QuotesGuard
 except ImportError:
-    from quotes_guard import QuotesGuard
+    from .quotes_guard import QuotesGuard
 
 try:
     from .prompt_builder import build_system_prompt, build_user_message, load_schema
 except ImportError:
-    from prompt_builder import build_system_prompt, build_user_message, load_schema
+    from .prompt_builder import build_system_prompt, build_user_message, load_schema
 
 try:
     from .validator import validate_payload
 except ImportError:
-    from validator import validate_payload
+    from .validator import validate_payload
 
 # Optional: only import OpenAI if USE_OPENAI=1
 USE_OPENAI = os.getenv("USE_OPENAI", "0") == "1"
@@ -184,3 +184,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
