@@ -1,3 +1,10 @@
+--- a/src/prompt_builder.py
++++ b/src/prompt_builder.py
+@@
++import os
+ from pathlib import Path
+ from datetime import date
+
 from __future__ import annotations
 from pathlib import Path
 from typing import List, Dict, Any
@@ -54,3 +61,4 @@ def load_schema(schema_path: Path) -> Dict[str, Any]:
         return obj
 
     return scrub(data)
+
