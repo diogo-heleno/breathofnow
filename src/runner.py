@@ -26,10 +26,10 @@ import time
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from allocator import build_month_plan
-from quotes_guard import QuotesGuard
-from prompt_builder import build_system_prompt, build_user_message
-from validator import validate_payload
+from .allocator import build_month_plan
+from .quotes_guard import QuotesGuard
+from .prompt_builder import build_system_prompt, build_user_message
+from .validator import validate_payload
 
 # --- optional OpenAI import (only if USE_OPENAI=1) ---
 OPENAI_AVAILABLE = False
@@ -238,3 +238,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
