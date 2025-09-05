@@ -1,214 +1,186 @@
 """
-runner.py — BreathOfNow content runner (Sheets-first, no weekday calc)
+runner.py
+Orchestrates day/month generation for BreathOfNow.
 
-Key points:
-- Guarantees an ISO date on each day context (column A).
-- Never writes to column B (Weekday) — your Sheet formula handles it.
-- Writes C..M with payload fields.
-- Works for --day YYYY-MM-DD or --month YYYY-MM (runs whole month).
+- Build calendar plan (allocator)
+- For each day:
+    - Query quote guard for banned norms (recent)
+    - Build system + user prompts
+    - Call model (placeholder or OpenAI v1 client)
+    - Validate payload
+    - Register quote in guard
+    - Map to Sheet columns
+- Batch write to Google Sheet
+
+This file is safe to run as:
+    python -m src.runner --day 2025-10-01
+or:
+    python -m src.runner --month 2025-10-01
 """
 
 from __future__ import annotations
-import os
 import argparse
-from dataclasses import dataclass
-from datetime import date as _date, datetime
-from typing import Dict, List, Tuple, Optional
+import os
+from pathlib import Path
+from typing import Dict, Any, List
 
-from allocator import build_month_plan
-from prompt_builder import build_system_prompt, build_user_message
-from validator import validate_payload
-from quotes_guard import QuotesGuard
-from sheets import SheetsWriter
+# --- make imports robust whether run as module or script ---
+try:
+    from .allocator import build_month_plan
+except ImportError:
+    from allocator import build_month_plan
 
+try:
+    from .quotes_guard import QuotesGuard
+except ImportError:
+    from quotes_guard import QuotesGuard
+
+try:
+    from .prompt_builder import build_system_prompt, build_user_message, load_schema
+except ImportError:
+    from prompt_builder import build_system_prompt, build_user_message, load_schema
+
+try:
+    from .validator import validate_payload
+except ImportError:
+    from validator import validate_payload
+
+# Optional: only import OpenAI if USE_OPENAI=1
 USE_OPENAI = os.getenv("USE_OPENAI", "0") == "1"
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-5")
-LANGUAGE = os.getenv("LANGUAGE", "EN")
-TIMEZONE = os.getenv("TIMEZONE", "Europe/Lisbon")
 
+if USE_OPENAI:
+    from openai import OpenAI  # type: ignore
 
-# ------------------------
-# Utilities
-# ------------------------
-def ensure_date(day_ctx: Dict, year: int, month: int, day: int) -> str:
-    """Ensure an ISO date (YYYY-MM-DD) is present on day_ctx and return it."""
-    if not day_ctx.get("date"):
-        day_ctx["date"] = _date(year, month, day).isoformat()
-    return day_ctx["date"]
+# Paths
+REPO_ROOT = Path(__file__).resolve().parents[1]
+CONFIG_DIR = REPO_ROOT / "config"
+SCHEMAS_DIR = REPO_ROOT / "schemas"
+DATA_DIR = REPO_ROOT / "data"
+OUTPUTS_DIR = DATA_DIR / "outputs"
+IMAGES_DIR = DATA_DIR / "images"
+LOGS_DIR = DATA_DIR / "logs"
 
+for p in (OUTPUTS_DIR, IMAGES_DIR, LOGS_DIR):
+    p.mkdir(parents=True, exist_ok=True)
 
-def iso_ymd(d: _date) -> Tuple[int, int, int]:
-    return d.year, d.month, d.day
-
-
-def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser()
-    g = p.add_mutually_exclusive_group(required=True)
-    g.add_argument("--day", help="YYYY-MM-DD")
-    g.add_argument("--month", help="YYYY-MM (runs entire month)")
-    p.add_argument("--dry-run", action="store_true", help="Do everything except write to Sheets / images")
-    p.add_argument("--skip-images", action="store_true")
-    p.add_argument("--force", action="store_true")
-    p.add_argument("--language", default=LANGUAGE)
-    return p.parse_args()
-
-
-# ------------------------
-# Core
-# ------------------------
-@dataclass
-class DayItem:
-    year: int
-    month: int
-    day: int
-    ctx: Dict
-
-
-def run_month(year: int, month: int, *, language: str, dry_run: bool, skip_images: bool, force: bool) -> None:
-    """
-    Build the plan for the month and write rows to Google Sheets.
-    """
-    # 1) Plan & helpers
-    plan: List[DayItem] = []
-    raw_plan = build_month_plan(year, month, language=language)  # list of dicts
-    for entry in raw_plan:
-        y, m, d = entry["year"], entry["month"], entry["day"]
-        ctx = entry.get("context", {})
-        ensure_date(ctx, y, m, d)  # <-- guarantees 'date' for Sheets A column
-        plan.append(DayItem(y, m, d, ctx))
-
-    # 2) Quote duplicate guard
-    guard = QuotesGuard()
-
-    # 3) Sheets writer
-    ws = SheetsWriter(os.environ["SHEET_ID"], worksheet="Posts", dry_run=dry_run)
-
-    # 4) Iterate days
-    for item in plan:
-        iso = ensure_date(item.ctx, item.year, item.month, item.day)  # redundant but safe
-
-        # Build prompts (system + user) from context
-        system_prompt = build_system_prompt(language=language, timezone=TIMEZONE)
-        user_msg = build_user_message(item.ctx)
-
-        # Call model (or stub) and validate
-        if USE_OPENAI:
-            # Real call wired in prompt_builder (kept here simple on purpose)
-            payload = prompt_builder_call(system_prompt, user_msg, model=OPENAI_MODEL)
-        else:
-            payload = fake_payload(item, timezone=TIMEZONE)  # offline/dev
-
-        validate_payload(payload)  # weekday is NOT required
-
-        # Guard: ban duplicate quotes near in time
-        guard.check_and_register(payload.get("quote", ""))
-
-        # Map payload to row values (A set separately; B skipped; C..M here)
-        row_values_C_to_M = map_payload_to_sheet_values(payload, timezone=TIMEZONE)
-
-        # Write to Sheets
-        ws.write_row_by_date(
-            date_iso=iso,
-            values_c_to_m=row_values_C_to_M,  # we never touch column B
-        )
-
-
-def run_day(day_str: str, **kwargs) -> None:
-    d = datetime.fromisoformat(day_str).date()
-    return run_month(d.year, d.month, **kwargs)
-
-
-# ------------------------
-# Mappers & Stubs
-# ------------------------
-def map_payload_to_sheet_values(payload: Dict, timezone: str) -> List:
-    """
-    Return list for columns C..M:
-    C Tradition
-    D Was it posted?
-    E Time_Carousel
-    F Time_Poem
-    G Time_Image
-    H Timezone
-    I Quote
-    J Meditation 1
-    K Meditation 2
-    L Journal Prompt 1
-    M Journal Prompt 2
-    """
-    return [
-        payload.get("tradition", ""),   # C
-        "No",                           # D
-        payload.get("time_carousel", ""),  # E
-        payload.get("time_poem", ""),      # F
-        payload.get("time_image", ""),     # G
-        timezone or payload.get("timezone", "Europe/Lisbon"),  # H
-        payload.get("quote", ""),       # I
-        payload.get("meditation_1", ""),# J
-        payload.get("meditation_2", ""),# K
-        payload.get("journal_prompt_1", ""), # L
-        payload.get("journal_prompt_2", ""), # M
-    ]
-
-
-def prompt_builder_call(system_prompt: str, user_msg: str, model: str) -> Dict:
-    """
-    Minimal OpenAI call using prompt_builder's recommended settings.
-    Replace/extend as needed; kept thin so runner remains simple.
-    """
-    # Lazy import to avoid dependency when USE_OPENAI=0
-    from openai import OpenAI
+def call_model(system_prompt: str, user_message: str) -> Dict[str, Any]:
+    """Call the model (or return a stub if USE_OPENAI=0)."""
+    if not USE_OPENAI:
+        # Minimal stub so the pipeline can run in dry environments
+        return {
+            "post_date": "2025-10-01",
+            "tradition": "Zen",
+            "quote_text": "When you realize nothing is lacking, the whole world belongs to you.",
+            "quote_source": "Attributed to Sengcan (Tang Dynasty) — often misattributed as “Zen Proverb”",
+            "carousel_hashtags": ["#mindfulness", "#presence", "#breathofnow"],
+            "caption": "Letting go reveals the plenty already here.",
+            "first_comment": "Journal prompt: Where in my day can I do less so I feel more?",
+            "image_style": "woodcut",
+        }
 
     client = OpenAI()
     resp = client.chat.completions.create(
-        model=model,
+        model=OPENAI_MODEL,
         messages=[
             {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_msg},
+            {"role": "user", "content": user_message},
         ],
-        response_format={"type": "json_object"},  # validator enforces schema
         temperature=0.7,
     )
-    content = resp.choices[0].message.content
-    import json as _json
+    # Expect JSON in assistant message
+    content = resp.choices[0].message.content or "{}"
+    import json
     try:
-        return _json.loads(content)
-    except Exception:
-        # If model didn't return JSON, wrap it
-        return {"quote": content}
+        return json.loads(content)
+    except json.JSONDecodeError:
+        # Fallback minimal payload if model returned text
+        return {"raw": content}
 
+def write_to_sheet(rows: List[List[Any]]) -> None:
+    """Batch write to Google Sheet if WRITE_TO_SHEETS=1 and SHEET_ID is set."""
+    if os.getenv("WRITE_TO_SHEETS", "0") != "1":
+        return
+    sheet_id = os.getenv("SHEET_ID")
+    if not sheet_id:
+        return
 
-def fake_payload(item: DayItem, timezone: str) -> Dict:
-    """Deterministic stub for offline/dev runs."""
-    iso = _date(item.year, item.month, item.day).isoformat()
-    return {
-        "date": iso,
-        "tradition": item.ctx.get("tradition", "Zen"),
-        "time_carousel": "08:30",
-        "time_poem": "12:00",
-        "time_image": "18:00",
-        "quote": f"When in doubt, breathe. ({iso})",
-        "meditation_1": "Observe five breaths, count backwards 5→1.",
-        "meditation_2": "Notice sounds; let them pass like clouds.",
-        "journal_prompt_1": "Where did I resist today?",
-        "journal_prompt_2": "What tiny action brings ease?",
-    }
+    import gspread
+    from google.oauth2.service_account import Credentials
 
+    gsa_path = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON_PATH") or os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+    if not gsa_path or not Path(gsa_path).exists():
+        raise RuntimeError("Google service account credentials not found.")
 
-# ------------------------
-# Entry
-# ------------------------
-def main() -> int:
-    args = parse_args()
-    language = args.language
+    scopes = ["https://www.googleapis.com/auth/spreadsheets"]
+    creds = Credentials.from_service_account_file(gsa_path, scopes=scopes)
+    gc = gspread.authorize(creds)
+    sh = gc.open_by_key(sheet_id)
+    ws = sh.sheet1  # adjust if you want a specific worksheet
+
+    # Append rows
+    ws.append_rows(rows, value_input_option="RAW")
+
+def map_payload_to_row(day: str, payload: Dict[str, Any]) -> List[Any]:
+    """
+    Map the validated payload to your Sheet columns.
+    TODO: adjust to your exact header order.
+    """
+    return [
+        day,
+        payload.get("tradition", ""),
+        payload.get("quote_text", ""),
+        payload.get("quote_source", ""),
+        ", ".join(payload.get("carousel_hashtags", [])),
+        payload.get("caption", ""),
+        payload.get("first_comment", ""),
+        payload.get("image_style", ""),
+    ]
+
+def run_for_day(day: str) -> None:
+    schema = load_schema(SCHEMAS_DIR / "BreathOfNowDailyPost.schema.json")
+    guard = QuotesGuard(DATA_DIR / "quotes_guard.json")
+
+    # Prompt build
+    system_prompt = build_system_prompt(CONFIG_DIR / "prompt_system.txt")
+    user_message = build_user_message(day=day, guard_recent=guard.get_recent(n=30))
+
+    # Model call
+    raw = call_model(system_prompt, user_message)
+
+    # Validate and normalize
+    payload = validate_payload(raw, schema)
+
+    # Register quote
+    if payload.get("quote_text"):
+        guard.register_quote(payload["quote_text"], payload.get("quote_source", ""))
+
+    # Map to sheet row
+    row = map_payload_to_row(day, payload)
+
+    # Write outputs locally for artifacts
+    (OUTPUTS_DIR / f"{day}.json").write_text(__import__("json").dumps(payload, ensure_ascii=False, indent=2))
+    (LOGS_DIR / f"{day}.log").write_text(f"Generated day {day}")
+
+    # Optionally write to Google Sheet
+    write_to_sheet([row])
+
+def run_for_month(date_str: str) -> None:
+    plan = build_month_plan(date_str)
+    for day in plan["days"]:
+        run_for_day(day)
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    grp = ap.add_mutually_exclusive_group(required=True)
+    grp.add_argument("--day", help="Generate a single day: YYYY-MM-DD")
+    grp.add_argument("--month", help="Generate an entire month anchored at YYYY-MM-01")
+    args = ap.parse_args()
 
     if args.day:
-        run_day(args.day, language=language, dry_run=args.dry_run, skip_images=args.skip_images, force=args.force)
+        run_for_day(args.day)
     else:
-        year, month = map(int, args.month.split("-"))
-        run_month(year, month, language=language, dry_run=args.dry_run, skip_images=args.skip_images, force=args.force)
-    return 0
-
+        run_for_month(args.month)
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()
