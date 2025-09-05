@@ -23,6 +23,7 @@ import argparse
 import os
 from pathlib import Path
 from typing import Dict, Any, List
+from datetime import date, datetime
 
 # --- make imports robust whether run as module or script ---
 try:
@@ -176,6 +177,8 @@ def run_for_month(date_str: str) -> None:
         run_for_day(day)
 
 def main() -> None:
+    import argparse
+
     ap = argparse.ArgumentParser()
     grp = ap.add_mutually_exclusive_group(required=True)
     grp.add_argument("--day", help="Generate a single day: YYYY-MM-DD")
@@ -183,11 +186,14 @@ def main() -> None:
     args = ap.parse_args()
 
     if args.day:
-        run_for_day(args.day)
+        # Convert 'YYYY-MM-DD' string to a datetime.date
+        day = datetime.strptime(args.day, "%Y-%m-%d").date()
+        run_for_day(day)
     else:
-        run_for_month(args.month)
+        # Normalize month anchor to the first of the month as a datetime.date
+        month_anchor = datetime.strptime(args.month, "%Y-%m-%d").date().replace(day=1)
+        run_for_month(month_anchor)
 
-if __name__ == "__main__":
-    main()
+
 
 
