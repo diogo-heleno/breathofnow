@@ -1,13 +1,15 @@
 from __future__ import annotations
+
 import os
+import time
 import datetime as dt
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 
 import gspread
 
-
 SHEET_ID = os.getenv("SHEET_ID", "").strip()
-WORKSHEET_NAME = os.getenv("SHEET_TAB", "Posts").strip() or "Posts"
+WORKSHEET_NAME = (os.getenv("SHEET_TAB", "Posts") or "Posts").strip()
+DEFAULT_TZ = os.getenv("TIMEZONE", "Europe/Lisbon")
 
 # Columns we expect in the "Posts" sheet (A..M)
 EXPECTED_HEADERS = [
@@ -27,16 +29,24 @@ EXPECTED_HEADERS = [
 ]
 
 
+# ------------------------ Auth & Worksheet helpers -----------------------------
+
 def _client() -> gspread.Client:
     """
     Build a gspread client.
-    Uses GOOGLE_APPLICATION_CREDENTIALS if present (filename to JSON).
-    Falls back to GOOGLE_SERVICE_ACCOUNT_JSON contents if needed.
+    Priority:
+      1) GOOGLE_APPLICATION_CREDENTIALS (path to file)
+      2) GOOGLE_SERVICE_ACCOUNT_JSON_PATH (path to file)
+      3) GOOGLE_SERVICE_ACCOUNT_JSON (inline JSON)
     """
-    creds_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "").strip()
-    if creds_path and os.path.exists(creds_path):
-        print(f"[sheets] Using credentials file: {creds_path}")
-        return gspread.service_account(filename=creds_path)
+    path_envs = [
+        os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "").strip(),
+        os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON_PATH", "").strip(),
+    ]
+    for p in path_envs:
+        if p and os.path.exists(p):
+            print(f"[sheets] Using credentials file: {p}")
+            return gspread.service_account(filename=p)
 
     raw_json = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON", "").strip()
     if raw_json:
@@ -46,7 +56,8 @@ def _client() -> gspread.Client:
         return gspread.service_account_from_dict(data)
 
     raise RuntimeError(
-        "No Google credentials found. Set GOOGLE_APPLICATION_CREDENTIALS or GOOGLE_SERVICE_ACCOUNT_JSON."
+        "No Google credentials found. Provide GOOGLE_APPLICATION_CREDENTIALS (file path) "
+        "or GOOGLE_SERVICE_ACCOUNT_JSON (inline)."
     )
 
 
@@ -65,7 +76,7 @@ def _open_worksheet(client: gspread.Client):
 
 
 def ensure_headers(ws) -> None:
-    """Ensure the first row matches EXPECTED_HEADERS."""
+    """Ensure the first row matches EXPECTED_HEADERS (exact order)."""
     current = ws.row_values(1)
     if current != EXPECTED_HEADERS:
         print("[sheets] Updating header row to expected schema.")
@@ -74,26 +85,69 @@ def ensure_headers(ws) -> None:
         ws.insert_row(EXPECTED_HEADERS, 1)
 
 
-def map_payload_to_row(payload: Dict[str, Any], timezone: str = "Europe/Lisbon") -> List[Any]:
-    """
-    Map your model payload to the Posts row format.
-    This is conservative: it fills what we are sure about, leaves the rest blank.
-    """
-    # Defensive gets — your runner can pass a richer payload later.
-    date_str = payload.get("date") or dt.date.today().isoformat()
-    weekday = payload.get("weekday") or ""
-    tradition = payload.get("tradition") or ""
-    was_posted = payload.get("was_posted") or "No"
-    time_carousel = payload.get("time_carousel") or ""
-    time_poem = payload.get("time_poem") or ""
-    time_image = payload.get("time_image") or ""
-    tz = payload.get("timezone") or timezone
-    quote = payload.get("quote") or ""
+# ------------------------ Mapping ------------------------------------------------
 
-    med1 = payload.get("meditation_1") or ""
-    med2 = payload.get("meditation_2") or ""
-    jp1 = payload.get("journal_prompt_1") or ""
-    jp2 = payload.get("journal_prompt_2") or ""
+def _get_nested(d: Any, *path, default: str = "") -> Any:
+    cur = d
+    for key in path:
+        if isinstance(key, int):
+            if not isinstance(cur, list) or key >= len(cur):
+                return default
+            cur = cur[key]
+        else:
+            if not isinstance(cur, dict):
+                return default
+            cur = cur.get(key, None)
+        if cur is None:
+            return default
+    return cur
+
+
+def map_payload_to_row(payload: Dict[str, Any], timezone: str = DEFAULT_TZ) -> List[Any]:
+    """
+    Map your payload to the Posts row format.
+    Supports BOTH:
+      - flat keys (date, time_carousel, meditation_1, ...)
+      - nested schema keys (quote.text, times.carousel, meditations[0], ...)
+    """
+    # Date & weekday (weekday can be computed)
+    date_str = payload.get("date") or _get_nested(payload, "date", default="")
+    if not date_str:
+        date_str = dt.date.today().isoformat()
+
+    try:
+        weekday = payload.get("weekday") or dt.datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
+    except Exception:
+        weekday = payload.get("weekday") or ""
+
+    # Tradition
+    tradition = payload.get("tradition") or _get_nested(payload, "tradition", default="")
+
+    # Was posted
+    was_posted = payload.get("was_posted") or "No"
+
+    # Times (flat or nested)
+    time_carousel = payload.get("time_carousel") or _get_nested(payload, "times", "carousel", default="")
+    time_poem = payload.get("time_poem") or _get_nested(payload, "times", "poem", default="")
+    time_image = payload.get("time_image") or _get_nested(payload, "times", "image", default="")
+
+    # Timezone
+    tz = payload.get("timezone") or timezone
+
+    # Quote (flat 'quote' or nested 'quote.text')
+    quote = payload.get("quote")
+    if isinstance(quote, dict):
+        quote = quote.get("text", "")
+    if not isinstance(quote, str):
+        quote = _get_nested(payload, "quote", "text", default=str(quote or ""))
+
+    # Meditations (flat keys or list)
+    med1 = payload.get("meditation_1") or _get_nested(payload, "meditations", 0, default="")
+    med2 = payload.get("meditation_2") or _get_nested(payload, "meditations", 1, default="")
+
+    # Journal prompts (flat keys or list)
+    jp1 = payload.get("journal_prompt_1") or _get_nested(payload, "journal_prompts", 0, default="")
+    jp2 = payload.get("journal_prompt_2") or _get_nested(payload, "journal_prompts", 1, default="")
 
     row = [
         date_str,
@@ -114,6 +168,22 @@ def map_payload_to_row(payload: Dict[str, Any], timezone: str = "Europe/Lisbon")
     return row[: len(EXPECTED_HEADERS)] + [""] * max(0, len(EXPECTED_HEADERS) - len(row))
 
 
+# ------------------------ Append API --------------------------------------------
+
+def _append_with_retry(ws, rows: List[List[Any]], value_input_option: str = "USER_ENTERED", retries: int = 3) -> None:
+    delay = 1.0
+    for attempt in range(1, retries + 1):
+        try:
+            ws.append_rows(rows, value_input_option=value_input_option)
+            return
+        except Exception as e:
+            if attempt == retries:
+                raise
+            print(f"[sheets] append_rows failed (attempt {attempt}/{retries}): {e} — retrying in {delay:.1f}s")
+            time.sleep(delay)
+            delay *= 2
+
+
 def append_rows(rows: List[List[Any]]) -> int:
     """
     Append rows to the Posts worksheet.
@@ -125,14 +195,14 @@ def append_rows(rows: List[List[Any]]) -> int:
     client = _client()
     ws = _open_worksheet(client)
     ensure_headers(ws)
-    ws.append_rows(rows, value_input_option="USER_ENTERED")
+    _append_with_retry(ws, rows, value_input_option="USER_ENTERED")
     print(f"[sheets] Appended {len(rows)} row(s) to '{WORKSHEET_NAME}'.")
     return len(rows)
 
 
 def heartbeat_write(date_iso: str, note: str) -> None:
     """
-    Writes a minimal heartbeat row so we can confirm pipeline-to-sheets works
+    Writes a minimal heartbeat row so we can confirm pipeline→Sheets works
     even if generation failed earlier in the run.
     """
     payload = {
@@ -143,7 +213,7 @@ def heartbeat_write(date_iso: str, note: str) -> None:
         "time_carousel": "",
         "time_poem": "",
         "time_image": "",
-        "timezone": os.getenv("TIMEZONE", "Europe/Lisbon"),
+        "timezone": DEFAULT_TZ,
         "quote": note,  # visible in the 'Quote' column
     }
     row = map_payload_to_row(payload)
