@@ -45,6 +45,10 @@ try:
 except ImportError:
     from .validator import validate_payload
 
+CONFIG_DIR = Path(__file__).resolve().parents[1] / "config"
+SCHEMAS_DIR = Path(__file__).resolve().parents[1] / "schemas"
+DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+
 # Optional: only import OpenAI if USE_OPENAI=1
 USE_OPENAI = os.getenv("USE_OPENAI", "0") == "1"
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-5")
@@ -60,6 +64,7 @@ DATA_DIR = REPO_ROOT / "data"
 OUTPUTS_DIR = DATA_DIR / "outputs"
 IMAGES_DIR = DATA_DIR / "images"
 LOGS_DIR = DATA_DIR / "logs"
+SCHEMA_PATH = SCHEMAS_DIR / "BreathOfNowDailyPost.schema.json"
 
 for p in (OUTPUTS_DIR, IMAGES_DIR, LOGS_DIR):
     p.mkdir(parents=True, exist_ok=True)
@@ -142,14 +147,14 @@ def run_for_day(day: str) -> None:
     guard = QuotesGuard(DATA_DIR / "quotes_guard.json")
 
     # Prompt build
-    system_prompt = build_system_prompt(CONFIG_DIR / "prompt_system.txt")
+    system_prompt = build_system_prompt(CONFIG_DIR)  # pass directory, not file
     user_message = build_user_message(day=day, guard_recent=guard.get_recent(n=30))
 
     # Model call
     raw = call_model(system_prompt, user_message)
 
     # Validate and normalize
-    payload = validate_payload(raw, schema)
+    payload = validate_payload(raw, SCHEMA_PATH)
 
     # Register quote
     if payload.get("quote_text"):
@@ -184,4 +189,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 
