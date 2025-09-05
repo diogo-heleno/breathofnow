@@ -2,7 +2,7 @@ from __future__ import annotations
 """
 BreathOfNow runner
 - Builds a monthly plan
-- For each day: builds prompts, (optionally) calls OpenAI, validates, dedupes quotes, writes per-day JSON
+- For each day: builds prompts, (optionally) calls OpenAI, validates, dedupes, writes per-day JSON
 - Optionally appends rows to Google Sheets
 
 Env toggles:
@@ -26,6 +26,7 @@ import time
 from pathlib import Path
 from typing import Dict, List, Optional
 
+# NOTE: relative imports so `python -m src.runner` works
 from .allocator import build_month_plan
 from .quotes_guard import QuotesGuard
 from .prompt_builder import build_system_prompt, build_user_message
@@ -99,7 +100,7 @@ def _call_openai(system_prompt: str, user_message: str, schema: dict, max_retrie
     return None
 
 def _make_stub_payload(day_ctx: dict) -> dict:
-    """A schema-like stub so Actions can produce artifacts without OpenAI."""
+    """Schema-like stub so Actions produces artifacts without OpenAI."""
     quote = f"{day_ctx['tradition']} practice for {day_ctx['date']}"
     author = f"Stub Author {day_ctx['date']}"
     return {
@@ -125,6 +126,7 @@ def _make_stub_payload(day_ctx: dict) -> dict:
     }
 
 def _write_day_payload(date_str: str, payload: dict, force: bool = False) -> Path:
+    """Write per-day JSON (always writes even on --dry-run so artifacts exist)."""
     _ensure_dirs()
     out_path = OUT_DIR / f"{date_str}.json"
     if out_path.exists() and not force:
@@ -133,7 +135,7 @@ def _write_day_payload(date_str: str, payload: dict, force: bool = False) -> Pat
     return out_path
 
 def _map_to_sheet(day_ctx: dict, payload: dict) -> Dict:
-    """Map model JSON → Google Sheet columns (Phase 1)."""
+    """Map model JSON → Google Sheet columns."""
     return {
         "Date": day_ctx["date"],
         "Weekday": day_ctx["weekday"],
@@ -181,7 +183,7 @@ def run_month(year: int, month: int, *, language: str = "EN", dry_run: bool = Fa
 
     for day_ctx in plan:
         print(f"[{day_ctx['date']}] {day_ctx['tradition']} • {day_ctx.get('week_theme','')}")
-        banned = guard.banned_norms()
+        banned = guard.banned_norms() if hasattr(guard, "banned_norms") else []
         user_msg = build_user_message(day_ctx, str(CONFIG_DIR), banned, language=language)
 
         if _env_flag("USE_OPENAI"):
@@ -206,7 +208,7 @@ def run_month(year: int, month: int, *, language: str = "EN", dry_run: bool = Fa
 
     if rows and _env_flag("WRITE_TO_SHEETS"):
         try:
-            from sheets_writer import write_rows
+            from .sheets_writer import write_rows  # lazy import (relative)
             write_rows(rows, os.environ)
             print(f"[Sheets] Wrote {len(rows)} rows.")
         except Exception as e:
@@ -238,4 +240,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
