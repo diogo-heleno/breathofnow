@@ -6,15 +6,13 @@ from pathlib import Path
 from datetime import date
 from typing import List
 
-def build_system_prompt(config_dir: Path) -> str:
-    """
-    Load the system prompt from config/prompt_system.txt.
-    """
-    config_dir = Path(config_dir)
-    path = config_dir / "prompt_system.txt"
-    if not path.exists():
-        raise FileNotFoundError(f"System prompt file not found: {path}")
-    return path.read_text(encoding="utf-8").strip()
+def build_system_prompt(path: Path | str) -> str:
+    p = Path(path)
+    if p.is_dir():
+        p = p / "prompt_system.txt"
+    if not p.exists():
+        raise FileNotFoundError(f"System prompt file not found: {p}")
+    return p.read_text(encoding="utf-8")
 
 def build_user_message(day: date, guard_recent: List[str]) -> str:
     """
@@ -38,19 +36,14 @@ def build_user_message(day: date, guard_recent: List[str]) -> str:
 
 
 
-def load_schema(schema_path: Path) -> Path:
-    """
-    Return the path to the JSON Schema used by validator.validate_payload.
-    Keeping it as a Path avoids duplicate JSON loading logic across modules.
+def load_schema(schema_path: Path | str) -> Path:
+    p = Path(schema_path)
+    if p.is_dir():
+        # Do NOT silently guess here; force callers to pass the full file path.
+        raise FileNotFoundError(f"Expected a schema *file*, got a directory: {p}")
+    if not p.exists():
+        raise FileNotFoundError(f"Schema file not found: {p}")
+    return p
 
-    Parameters
-    ----------
-    schema_path : Path
-        Full path to the schema file (e.g., SCHEMAS_DIR / "BreathOfNowDailyPost.schema.json").
-    """
-    schema_path = Path(schema_path)
-    if not schema_path.exists():
-        raise FileNotFoundError(f"Schema file not found: {schema_path}")
-    return schema_path
 
 
