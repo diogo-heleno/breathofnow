@@ -4,19 +4,6 @@ BreathOfNow runner
 - Builds a monthly plan
 - For each day: builds prompts, (optionally) calls OpenAI, validates, dedupes, writes per-day JSON
 - Optionally appends rows to Google Sheets
-
-Env toggles:
-  USE_OPENAI=1          -> call OpenAI
-  WRITE_TO_SHEETS=1     -> append rows to Google Sheet
-
-Sheets env (either style works):
-  SHEET_ID=... (preferred)   and  SHEET_NAME=Posts
-  or
-  SPREADSHEET_NAME=BreathOfNow_Content_Master and SHEET_NAME=Posts
-
-Credentials (either):
-  GOOGLE_SERVICE_ACCOUNT_JSON='{...}'  # JSON string (Actions secret)
-  or GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json
 """
 import argparse
 import datetime as dt
@@ -25,6 +12,7 @@ import os
 import time
 from pathlib import Path
 from typing import Dict, List, Optional
+from datetime import datetime, date
 
 # NOTE: relative imports so `python -m src.runner` works
 from .allocator import build_month_plan
@@ -49,6 +37,18 @@ OUT_DIR = DATA_DIR / "outputs"
 IMG_DIR = DATA_DIR / "images"
 LOG_DIR = DATA_DIR / "logs"
 
+def ensure_weekday(post, target_date=None):
+    """Make sure the payload includes a human weekday (e.g., 'Monday')."""
+    if 'weekday' not in post:
+        if 'date' in post:
+            d = datetime.fromisoformat(post['date']).date()
+        elif isinstance(target_date, (datetime, date)):
+            d = target_date if isinstance(target_date, date) else target_date.date()
+        else:
+            raise ValueError("Cannot compute weekday: no date available")
+        post['weekday'] = d.strftime('%A')
+    return post
+
 def _ensure_dirs():
     for p in (OUT_DIR, IMG_DIR, LOG_DIR):
         p.mkdir(parents=True, exist_ok=True)
@@ -71,6 +71,7 @@ def _call_openai(system_prompt: str, user_message: str, schema: dict, max_retrie
 
     client = OpenAI(api_key=api_key)
     response_format = {"type": "json_schema", "json_schema": {"name": "BreathOfNowDailyPost", "schema": schema, "strict": True}}
+    # Default to gpt-4o-mini; can be overridden via env
     model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
     for attempt in range(1, max_retries + 1):
@@ -104,8 +105,8 @@ def _make_stub_payload(day_ctx: dict) -> dict:
     quote = f"{day_ctx['tradition']} practice for {day_ctx['date']}"
     author = f"Stub Author {day_ctx['date']}"
     return {
-        "date": day_ctx["date"],                 # <-- add date to satisfy schema
-        "tradition": day_ctx["tradition"],       # <-- harmless extra
+        "date": day_ctx["date"],
+        "tradition": day_ctx["tradition"],
         "quote_text": quote,
         "quote_author": author,
         "med1": "Breathe in for 4, out for 6. Notice the pause.",
@@ -127,7 +128,6 @@ def _make_stub_payload(day_ctx: dict) -> dict:
         "image_story_action": "Add a countdown sticker for tonight’s practice.",
     }
 
-
 def _write_day_payload(date_str: str, payload: dict, force: bool = False) -> Path:
     """Write per-day JSON (always writes even on --dry-run so artifacts exist)."""
     _ensure_dirs()
@@ -141,7 +141,7 @@ def _map_to_sheet(day_ctx: dict, payload: dict) -> Dict:
     """Map model JSON → Google Sheet columns."""
     return {
         "Date": day_ctx["date"],
-        "Weekday": day_ctx["weekday"],
+        "Weekday": day_ctx.get("weekday", payload.get("weekday", "")),
         "Tradition": day_ctx["tradition"],
         "Was it posted?": "",
 
@@ -194,6 +194,10 @@ def run_month(year: int, month: int, *, language: str = "EN", dry_run: bool = Fa
         else:
             payload = _make_stub_payload(day_ctx)  # always produce artifacts
 
+        # 🔧 Ensure schema-required 'weekday' exists (and mirror to day_ctx for Sheets mapping)
+        payload = ensure_weekday(payload, day_ctx.get("date"))
+        day_ctx.setdefault("weekday", payload["weekday"])
+
         ok, msg = validate_payload(payload, day_ctx["tradition"], str(CONFIG_DIR), str(SCHEMAS_DIR))
         if not ok:
             print(f"  - Validation failed: {msg}")
@@ -243,4 +247,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
