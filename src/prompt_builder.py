@@ -1,64 +1,48 @@
---- a/src/prompt_builder.py
-+++ b/src/prompt_builder.py
-@@
-+import os
- from pathlib import Path
- from datetime import date
-
+# src/prompt_builder.py
 from __future__ import annotations
+
+import os
 from pathlib import Path
-from typing import List, Dict, Any
-import json
+from datetime import date
+from typing import List
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-
-def build_system_prompt(system_path: Path) -> str:
-    if not system_path.exists():
-        # Sensible default if file missing
-        return (
-            "You are BreathOfNow content generator. "
-            "Return ONLY valid JSON matching the provided schema. "
-            "Prefer accurate quote attributions over 'Zen proverb'."
-        )
-    return system_path.read_text(encoding="utf-8")
-
-def build_user_message(day: str, guard_recent: List[Dict[str, str]] | None = None) -> str:
+def build_system_prompt(config_dir: Path) -> str:
     """
-    Compose the user message with the target day and the recent quotes to avoid duplicates.
+    Load the system prompt from config/prompt_system.txt.
     """
-    guard_recent = guard_recent or []
-    recent_snippets = [
-        {"quote_text": q.get("quote_text", ""), "quote_source": q.get("quote_source", "")}
-        for q in guard_recent
+    config_dir = Path(config_dir)
+    path = config_dir / "prompt_system.txt"
+    if not path.exists():
+        raise FileNotFoundError(f"System prompt file not found: {path}")
+    return path.read_text(encoding="utf-8").strip()
+
+def build_user_message(day: date, guard_recent: List[str]) -> str:
+    """
+    Build a concise user message for the model. Includes:
+    - Target language (from env LANGUAGE, default EN)
+    - Date
+    - Reminder to avoid recent quotes
+    """
+    language = os.getenv("LANGUAGE") or "EN"
+    lines = [
+        f"Language: {language}",
+        f"Date: {day.isoformat()}",
+        "Task: Generate a valid BreathOfNowDailyPost JSON payload conforming to the schema.",
+        "Constraint: Avoid repeating any of these recent quotes (normalized):",
     ]
-    return json.dumps(
-        {
-            "instruction": "Generate the BreathOfNow payload for the given date.",
-            "target_date": day,
-            "avoid_duplicates_recent": recent_snippets,
-            "language": (os.getenv("LANGUAGE") or "EN"),
-            "timezone": (os.getenv("TIMEZONE") or "Europe/Lisbon"),
-        },
-        ensure_ascii=False,
-    )
+    if guard_recent:
+        lines += [f"- {q}" for q in guard_recent]
+    else:
+        lines.append("- (none)")
+    return "\n".join(lines)
 
-def load_schema(schema_path: Path) -> Dict[str, Any]:
+def load_schema(schemas_dir: Path) -> Path:
     """
-    Load and normalize the JSON Schema (strip forbidden keys for response_format if needed).
+    Return the path to the JSON Schema used by validator.validate_payload.
+    Keeping it as a Path avoids duplicate JSON loading logic across modules.
     """
-    data = json.loads(schema_path.read_text(encoding="utf-8"))
-    # GitHub logs showed: uniqueItems is not permitted in response_format schemas.
-    # Strip common offenders so the same schema can be reused everywhere.
-    def scrub(obj: Any) -> Any:
-        if isinstance(obj, dict):
-            obj.pop("uniqueItems", None)
-            obj.pop("$schema", None)
-            obj.pop("$id", None)
-            for k, v in list(obj.items()):
-                obj[k] = scrub(v)
-        elif isinstance(obj, list):
-            return [scrub(x) for x in obj]
-        return obj
-
-    return scrub(data)
-
+    schemas_dir = Path(schemas_dir)
+    schema_path = schemas_dir / "BreathOfNowDailyPost.schema.json"
+    if not schema_path.exists():
+        raise FileNotFoundError(f"Schema file not found: {schema_path}")
+    return schema_path
