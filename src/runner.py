@@ -104,6 +104,8 @@ def _make_stub_payload(day_ctx: dict) -> dict:
     quote = f"{day_ctx['tradition']} practice for {day_ctx['date']}"
     author = f"Stub Author {day_ctx['date']}"
     return {
+        "date": day_ctx["date"],                 # <-- add date to satisfy schema
+        "tradition": day_ctx["tradition"],       # <-- harmless extra
         "quote_text": quote,
         "quote_author": author,
         "med1": "Breathe in for 4, out for 6. Notice the pause.",
@@ -124,6 +126,7 @@ def _make_stub_payload(day_ctx: dict) -> dict:
         "image_first_comment": "Try the 4–6 breath for 1 minute.",
         "image_story_action": "Add a countdown sticker for tonight’s practice.",
     }
+
 
 def _write_day_payload(date_str: str, payload: dict, force: bool = False) -> Path:
     """Write per-day JSON (always writes even on --dry-run so artifacts exist)."""
@@ -240,3 +243,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
