@@ -34,17 +34,17 @@ export const regionPricing: Record<string, { tier: 'high' | 'medium' | 'low'; cu
   DE: { tier: 'high', currency: 'EUR', symbol: '€' },
   FR: { tier: 'high', currency: 'EUR', symbol: '€' },
   CH: { tier: 'high', currency: 'CHF', symbol: 'CHF' },
-  
+
   // Medium tier - Portugal, Spain, Italy, etc.
   PT: { tier: 'medium', currency: 'EUR', symbol: '€' },
   ES: { tier: 'medium', currency: 'EUR', symbol: '€' },
   IT: { tier: 'medium', currency: 'EUR', symbol: '€' },
-  
+
   // Low tier - Brazil, Angola, etc.
   BR: { tier: 'low', currency: 'BRL', symbol: 'R$' },
   AO: { tier: 'low', currency: 'AOA', symbol: 'Kz' },
   MZ: { tier: 'low', currency: 'MZN', symbol: 'MT' },
-  
+
   // Default
   default: { tier: 'medium', currency: 'EUR', symbol: '€' },
 };
@@ -56,11 +56,15 @@ export const priceMultipliers: Record<'high' | 'medium' | 'low', number> = {
   low: 0.3,
 };
 
-export default getRequestConfig(async ({ locale }) => {
+export default getRequestConfig(async ({ requestLocale }) => {
+  // Get the locale from the request
+  const locale = await requestLocale;
+
   // Validate that the incoming locale is valid
-  if (!locales.includes(locale as Locale)) notFound();
+  if (!locale || !locales.includes(locale as Locale)) notFound();
 
   return {
+    locale,
     messages: (await import(`../messages/${locale}.json`)).default,
   };
 });

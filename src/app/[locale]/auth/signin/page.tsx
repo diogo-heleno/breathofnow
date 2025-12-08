@@ -196,7 +196,7 @@ export default function SignInPage({ params: { locale } }: PageProps) {
                 href="/auth/signup"
                 className="text-primary-600 dark:text-primary-400 font-medium hover:underline"
               >
-                {t.raw('common.signUp') || 'Sign Up'}
+                {t('signUp')}
               </Link>
             </p>
           </CardContent>

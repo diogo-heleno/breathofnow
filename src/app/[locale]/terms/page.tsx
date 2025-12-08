@@ -1,11 +1,15 @@
 import { useTranslations } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
-import { type Locale } from '@/i18n';
+import { locales, type Locale } from '@/i18n';
 
 interface PageProps {
   params: { locale: Locale };
+}
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({ params: { locale } }: PageProps) {
@@ -16,6 +20,9 @@ export async function generateMetadata({ params: { locale } }: PageProps) {
 }
 
 export default function TermsPage({ params: { locale } }: PageProps) {
+  // Enable static rendering
+  setRequestLocale(locale);
+
   const t = useTranslations();
   const lastUpdated = new Date('2024-01-15').toLocaleDateString(locale, {
     year: 'numeric',
