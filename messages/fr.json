@@ -1,0 +1,311 @@
+{
+  "common": {
+    "appName": "Breath of Now",
+    "tagline": "Outils simples pour une vie consciente",
+    "getStarted": "Commencer",
+    "learnMore": "En Savoir Plus",
+    "signIn": "Se Connecter",
+    "signOut": "Se Déconnecter",
+    "signUp": "Créer un Compte",
+    "email": "Email",
+    "password": "Mot de passe",
+    "submit": "Envoyer",
+    "cancel": "Annuler",
+    "save": "Sauvegarder",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "warning": "Avertissement",
+    "info": "Information",
+    "free": "Gratuit",
+    "premium": "Premium",
+    "upgrade": "Passer à Premium",
+    "or": "ou",
+    "and": "et",
+    "yes": "Oui",
+    "no": "Non",
+    "all": "Tous",
+    "none": "Aucun",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "view": "Voir",
+    "download": "Télécharger",
+    "share": "Partager",
+    "copy": "Copier",
+    "copied": "Copié !",
+    "settings": "Paramètres",
+    "profile": "Profil",
+    "dashboard": "Tableau de bord",
+    "home": "Accueil",
+    "comingSoon": "Bientôt Disponible"
+  },
+  "nav": {
+    "apps": "Apps",
+    "pricing": "Tarifs",
+    "about": "À Propos",
+    "faq": "FAQ",
+    "support": "Support",
+    "blog": "Blog"
+  },
+  "footer": {
+    "company": "Entreprise",
+    "about": "À Propos de Nous",
+    "contact": "Contact",
+    "careers": "Carrières",
+    "legal": "Légal",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions d'Utilisation",
+    "cookies": "Politique de Cookies",
+    "resources": "Ressources",
+    "help": "Centre d'Aide",
+    "documentation": "Documentation",
+    "status": "État du Système",
+    "newsletter": "Newsletter",
+    "newsletterText": "Recevez des nouvelles sur les nouvelles apps et fonctionnalités",
+    "subscribe": "S'abonner",
+    "emailPlaceholder": "votre@email.com",
+    "copyright": "© {year} Breath of Now. Une marque de M21 Global, Lda.",
+    "allRightsReserved": "Tous droits réservés."
+  },
+  "hero": {
+    "title": "Outils simples pour une",
+    "titleHighlight": "vie consciente",
+    "subtitle": "Une collection de micro-apps conçues pour vous aider à suivre vos dépenses, investissements, entraînements, recettes et bien plus. Toutes vos données restent sur votre appareil.",
+    "cta": "Explorer les Apps",
+    "ctaSecondary": "Comment ça marche",
+    "trustedBy": "Approuvé par des personnes conscientes dans le monde entier",
+    "privacy": "100% Privé",
+    "privacyDesc": "Vos données ne quittent jamais votre appareil",
+    "offline": "Fonctionne Hors Ligne",
+    "offlineDesc": "Pas besoin d'internet",
+    "fair": "Prix Juste",
+    "fairDesc": "Payez ce qui vous semble juste"
+  },
+  "apps": {
+    "title": "Nos Apps",
+    "subtitle": "Chaque app est conçue pour faire une chose exceptionnellement bien",
+    "expenses": {
+      "name": "ExpenseFlow",
+      "tagline": "Suivi conscient de l'argent",
+      "description": "Suivez vos dépenses quotidiennes facilement. Catégorisez, analysez et comprenez où va votre argent.",
+      "features": ["Catégorisation intelligente", "Rapports mensuels", "Objectifs de budget", "Export CSV"]
+    },
+    "investments": {
+      "name": "InvestTrack",
+      "tagline": "Votre portfolio, à votre façon",
+      "description": "Surveillez vos investissements en actions, ETFs, crypto et plus. Calculez les rendements réels avec les considérations fiscales.",
+      "features": ["Support multi-actifs", "Prix en temps réel", "Calculs fiscaux", "Simulateur FIRE"]
+    },
+    "workouts": {
+      "name": "FitLog",
+      "tagline": "Chaque répétition compte",
+      "description": "Enregistrez vos entraînements, suivez vos progrès et atteignez vos objectifs fitness avec de belles visualisations.",
+      "features": ["Bibliothèque d'exercices", "Suivi des progrès", "Plans d'entraînement", "Records personnels"]
+    },
+    "strava": {
+      "name": "StravaSync",
+      "tagline": "Vos courses, améliorées",
+      "description": "Synchronisez vos activités Strava et obtenez des insights plus profonds sur votre entraînement avec des analyses avancées.",
+      "features": ["Intégration Strava", "Charge d'entraînement", "Tendances de performance", "Suivi des objectifs"]
+    },
+    "recipes": {
+      "name": "RecipeBox",
+      "tagline": "Votre livre de recettes numérique",
+      "description": "Organisez vos recettes préférées, planifiez les repas et générez des listes de courses sans effort.",
+      "features": ["Import de recettes", "Planification de repas", "Listes de courses", "Info nutritionnelle"]
+    },
+    "labels": {
+      "name": "LabelScan",
+      "tagline": "Sachez ce que vous mangez",
+      "description": "Scannez les étiquettes alimentaires, comprenez les ingrédients et faites des choix éclairés sur ce que vous consommez.",
+      "features": ["Lecture OCR", "Analyse des ingrédients", "Alertes allergènes", "Scores de santé"]
+    },
+    "viewApp": "En Savoir Plus",
+    "tryFree": "Essayer Gratuitement",
+    "status": {
+      "available": "Disponible",
+      "beta": "Bêta",
+      "comingSoon": "Bientôt Disponible"
+    }
+  },
+  "pricing": {
+    "title": "Prix Juste",
+    "subtitle": "Payez ce qui vous semble juste selon votre situation",
+    "description": "Nous croyons aux prix justes. Nos prix suggérés sont ajustés selon le coût de la vie de votre région, mais vous êtes libre de payer plus ou moins.",
+    "free": {
+      "title": "Gratuit",
+      "price": "€0",
+      "period": "pour toujours",
+      "description": "Parfait pour essayer nos apps",
+      "features": [
+        "Accès complet à une app",
+        "Toutes les fonctionnalités de base",
+        "Stockage local",
+        "Bannières publicitaires discrètes"
+      ],
+      "cta": "Commencer Gratuitement"
+    },
+    "supporter": {
+      "title": "Supporter",
+      "priceFrom": "À partir de",
+      "period": "par mois",
+      "description": "Pour ceux qui veulent soutenir notre travail",
+      "features": [
+        "Expérience sans publicité",
+        "Accès à toutes les apps",
+        "Sauvegarde cloud (optionnel)",
+        "Support prioritaire",
+        "Accès anticipé aux nouvelles fonctionnalités"
+      ],
+      "cta": "Devenir Supporter"
+    },
+    "lifetime": {
+      "title": "À Vie",
+      "priceFrom": "À partir de",
+      "period": "paiement unique",
+      "description": "Payez une fois, utilisez pour toujours",
+      "features": [
+        "Tout du plan Supporter",
+        "1 an de mises à jour inclus",
+        "Apps futures à 50% de réduction",
+        "Badge de membre fondateur"
+      ],
+      "cta": "Acheter À Vie"
+    },
+    "payWhatYouWant": "Payez Ce Que Vous Voulez",
+    "pwywDescription": "Prix suggéré basé sur votre région. Ajustez vers le haut ou le bas comme vous préférez.",
+    "suggestedPrice": "Suggéré",
+    "yourPrice": "Votre prix",
+    "regionNote": "Les prix affichés sont des suggestions basées sur votre emplacement ({region}). Vous êtes libre d'ajuster."
+  },
+  "features": {
+    "title": "Pourquoi Breath of Now ?",
+    "subtitle": "Construit différemment, volontairement",
+    "privacy": {
+      "title": "Confidentialité d'Abord",
+      "description": "Vos données vivent sur votre appareil. Nous ne pouvons pas les voir, les vendre ou les perdre."
+    },
+    "offline": {
+      "title": "Fonctionne Hors Ligne",
+      "description": "Pas d'internet ? Pas de problème. Toutes les apps fonctionnent totalement hors ligne avec synchronisation optionnelle."
+    },
+    "simple": {
+      "title": "Magnifiquement Simple",
+      "description": "Pas d'excès, pas de complexité. Chaque app fait une chose et la fait exceptionnellement bien."
+    },
+    "fair": {
+      "title": "Prix Juste",
+      "description": "Payez ce que vous pouvez. Nos prix s'adaptent au coût de la vie de votre région."
+    },
+    "open": {
+      "title": "Ouvert et Transparent",
+      "description": "Nous sommes clairs sur le fonctionnement de nos apps et ce qu'elles font de vos données."
+    },
+    "sustainable": {
+      "title": "Durable",
+      "description": "Pas de financement VC, pas de growth hacks. Juste un logiciel durable fait pour durer."
+    }
+  },
+  "faq": {
+    "title": "Questions Fréquentes",
+    "subtitle": "Tout ce que vous devez savoir",
+    "items": [
+      {
+        "question": "Où sont stockées mes données ?",
+        "answer": "Par défaut, toutes vos données sont stockées localement sur votre appareil en utilisant le stockage du navigateur. Cela signifie que vos données ne quittent jamais votre appareil à moins que vous n'activiez explicitement la sauvegarde cloud."
+      },
+      {
+        "question": "Puis-je utiliser les apps hors ligne ?",
+        "answer": "Oui ! Toutes nos apps fonctionnent totalement hors ligne. Certaines fonctionnalités comme la synchronisation des données Strava ou l'obtention des prix actuels des actions nécessitent internet, mais la fonctionnalité principale fonctionne sans."
+      },
+      {
+        "question": "Que se passe-t-il si j'efface les données du navigateur ?",
+        "answer": "Si vous effacez les données du navigateur, les données des apps seront supprimées. Nous recommandons d'activer la sauvegarde cloud ou d'exporter régulièrement vos données pour prévenir la perte de données."
+      },
+      {
+        "question": "Comment fonctionne Payez Ce Que Vous Voulez ?",
+        "answer": "Nous suggérons un prix basé sur le coût de la vie de votre région, mais vous êtes libre de payer plus ou moins. Si vous êtes étudiant ou faites face à des difficultés financières, n'hésitez pas à payer moins. Si vous pouvez payer plus, votre contribution supplémentaire nous aide à continuer à construire."
+      },
+      {
+        "question": "Puis-je alterner entre gratuit et payant ?",
+        "answer": "Oui ! Vous pouvez passer à la version premium pour supprimer les publicités et débloquer les fonctionnalités premium à tout moment. Si vous annulez votre abonnement, vous gardez l'accès jusqu'à la fin de la période de facturation, puis vous revenez au plan gratuit."
+      },
+      {
+        "question": "Que comprend le plan À Vie ?",
+        "answer": "Le plan À Vie comprend toutes les apps actuelles, une expérience sans publicité et 1 an de mises à jour. Après cette année, les apps continuent de fonctionner, mais vous pourriez ne pas recevoir les nouvelles fonctionnalités sans renouvellement."
+      },
+      {
+        "question": "Avez-vous une app mobile ?",
+        "answer": "Nos web apps sont entièrement responsives et fonctionnent très bien sur les navigateurs mobiles. Vous pouvez même les installer comme PWAs (Progressive Web Apps) pour une expérience similaire à une app."
+      },
+      {
+        "question": "Comment contacter le support ?",
+        "answer": "Vous pouvez nous contacter à support@breathofnow.site ou via le formulaire de contact. Nous répondons généralement sous 24-48 heures."
+      }
+    ]
+  },
+  "auth": {
+    "signInTitle": "Bon retour",
+    "signInSubtitle": "Connectez-vous pour accéder à vos apps",
+    "signUpTitle": "Créez votre compte",
+    "signUpSubtitle": "Commencez votre voyage vers une vie consciente",
+    "magicLinkTitle": "Vérifiez votre email",
+    "magicLinkSubtitle": "Nous vous avons envoyé un lien magique pour vous connecter",
+    "magicLinkSent": "Lien magique envoyé à {email}",
+    "magicLinkDescription": "Cliquez sur le lien dans votre email pour vous connecter. Le lien expire dans 10 minutes.",
+    "sendMagicLink": "Envoyer le Lien Magique",
+    "orContinueWith": "Ou continuez avec",
+    "noAccount": "Pas de compte ?",
+    "hasAccount": "Déjà un compte ?",
+    "forgotPassword": "Mot de passe oublié ?",
+    "emailLabel": "Adresse email",
+    "emailPlaceholder": "vous@exemple.com",
+    "passwordLabel": "Mot de passe",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "termsAgree": "En vous inscrivant, vous acceptez nos",
+    "termsLink": "Conditions d'Utilisation",
+    "privacyLink": "Politique de Confidentialité"
+  },
+  "legal": {
+    "privacy": {
+      "title": "Politique de Confidentialité",
+      "lastUpdated": "Dernière mise à jour : {date}",
+      "intro": "Chez Breath of Now, nous croyons que la confidentialité est un droit fondamental. Cette politique explique comment nous traitons vos données."
+    },
+    "terms": {
+      "title": "Conditions d'Utilisation",
+      "lastUpdated": "Dernière mise à jour : {date}",
+      "intro": "En utilisant les apps Breath of Now, vous acceptez ces conditions."
+    },
+    "cookies": {
+      "title": "Politique de Cookies",
+      "lastUpdated": "Dernière mise à jour : {date}",
+      "intro": "Nous utilisons un minimum de cookies pour fournir des fonctionnalités essentielles."
+    }
+  },
+  "ads": {
+    "banner": "Publicité",
+    "supported": "Soutenu par la publicité",
+    "removeAds": "Supprimer les pubs avec Premium"
+  },
+  "errors": {
+    "generic": "Quelque chose s'est mal passé. Veuillez réessayer.",
+    "notFound": "Page non trouvée",
+    "notFoundDescription": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "goHome": "Aller à l'Accueil",
+    "unauthorized": "Vous devez vous connecter pour accéder à cette page",
+    "forbidden": "Vous n'avez pas la permission d'accéder à cette page"
+  },
+  "meta": {
+    "title": "Breath of Now - Outils simples pour une vie consciente",
+    "description": "Une collection de micro-apps axées sur la confidentialité pour les dépenses, investissements, entraînements, recettes et plus. Vos données restent sur votre appareil."
+  }
+}
