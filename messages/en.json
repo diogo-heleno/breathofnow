@@ -139,51 +139,76 @@
     "title": "Fair Pricing",
     "subtitle": "Pay what feels right based on your situation",
     "description": "We believe in fair pricing. Our suggested prices are adjusted based on your region's cost of living, but you're free to pay more or less.",
+    "mostPopular": "Most Popular",
+    "freePrice": "Free",
+    "minPrice": "Minimum",
+    "payWhatYouWantShort": "Pay what you want",
+    "questions": "Have questions?",
+    "checkFaq": "Check our FAQ",
     "free": {
       "title": "Free",
-      "price": "€0",
       "period": "forever",
       "description": "Perfect for trying out our apps",
       "features": [
         "Full access to one app",
         "All core features",
-        "Local data storage",
+        "Local data storage only",
         "Discrete ad banners"
       ],
       "cta": "Start Free"
     },
     "supporter": {
       "title": "Supporter",
-      "priceFrom": "From",
-      "period": "per month",
-      "description": "For those who want to support our work",
+      "period": "per month / per app",
+      "description": "For those who want to support our work and use multiple devices",
       "features": [
         "Ad-free experience",
-        "Access to all apps",
-        "Cloud backup (optional)",
+        "Cloud sync across devices",
         "Priority support",
         "Early access to new features"
       ],
       "cta": "Become a Supporter"
     },
-    "lifetime": {
-      "title": "Lifetime",
-      "priceFrom": "From",
-      "period": "one-time",
-      "description": "Pay once, use forever",
+    "fan": {
+      "title": "Fan",
+      "period": "one-time payment",
+      "description": "All current apps included, with AI features",
       "features": [
+        "All current apps included",
         "Everything in Supporter",
-        "1 year of updates included",
-        "Future apps at 50% off",
-        "Founding member badge"
+        "AI assistant (limited credits)",
+        "Credit wallet for more AI usage",
+        "50% off future apps"
       ],
-      "cta": "Buy Lifetime"
+      "cta": "Become a Fan"
+    },
+    "founder": {
+      "title": "Founding Member",
+      "badge": "Limited",
+      "period": "one-time payment",
+      "description": "All apps forever - current and future",
+      "features": [
+        "All current apps included",
+        "All future apps included forever",
+        "AI assistant (generous credits)",
+        "Credit wallet for more AI usage",
+        "Founding member badge",
+        "Direct line to founders"
+      ],
+      "cta": "Become a Founder"
     },
     "payWhatYouWant": "Pay What You Want",
     "pwywDescription": "Suggested price based on your region. Adjust up or down as you see fit.",
     "suggestedPrice": "Suggested",
     "yourPrice": "Your price",
-    "regionNote": "Prices shown are suggestions based on your location ({region}). You're welcome to adjust."
+    "regionNote": "Prices shown are suggestions based on your location ({region}). You're welcome to adjust.",
+    "aiCredits": {
+      "title": "How AI Credits Work",
+      "description": "Fan and Founding Member plans include AI-powered features with monthly credits. When you run out, you can purchase more through your credit wallet.",
+      "feature1": "Fan: 100 AI credits/month included",
+      "feature2": "Founder: 500 AI credits/month included",
+      "feature3": "Additional credits available via wallet top-up"
+    }
   },
   "features": {
     "title": "Why Breath of Now?",
@@ -238,8 +263,8 @@
         "answer": "Yes! You can upgrade to remove ads and unlock premium features anytime. If you cancel your subscription, you'll keep access until the end of your billing period, then return to the free tier."
       },
       {
-        "question": "What's included in the Lifetime plan?",
-        "answer": "The Lifetime plan includes all current apps, ad-free experience, and 1 year of updates. After that year, the apps continue working, but you may not receive new features without renewing."
+        "question": "What's the difference between Fan and Founding Member?",
+        "answer": "The Fan plan includes all current apps with a one-time payment, plus AI features with limited credits and 50% off future apps. The Founding Member plan includes all current AND future apps forever, more generous AI credits, and direct access to our team. Both plans include a credit wallet to purchase additional AI credits when needed."
       },
       {
         "question": "Do you have a mobile app?",
