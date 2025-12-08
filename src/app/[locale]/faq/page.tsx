@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { cn } from '@/lib/utils';
-import { type Locale } from '@/i18n';
+import { locales, type Locale } from '@/i18n';
 
 interface PageProps {
   params: { locale: Locale };
