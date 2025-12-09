@@ -305,6 +305,125 @@
     "supported": "Soutenu par la publicité",
     "removeAds": "Supprimer les pubs avec Premium"
   },
+  "expenseFlow": {
+    "title": "ExpenseFlow",
+    "tagline": "Suivi conscient de l'argent",
+    "dashboard": {
+      "title": "Tableau de bord",
+      "thisMonth": "Ce mois",
+      "expenses": "Dépenses",
+      "income": "Revenus",
+      "balance": "Solde",
+      "transactions": "Transactions",
+      "recentTransactions": "Transactions Récentes",
+      "viewAll": "Voir tout",
+      "noTransactions": "Aucune transaction ce mois",
+      "addFirst": "Ajoutez votre première transaction"
+    },
+    "quickAdd": {
+      "title": "Nouvelle Transaction",
+      "titleExpense": "Nouvelle Dépense",
+      "titleIncome": "Nouveau Revenu",
+      "amount": "Montant",
+      "amountPlaceholder": "0,00",
+      "category": "Catégorie",
+      "selectCategory": "Sélectionner une catégorie",
+      "description": "Description",
+      "descriptionPlaceholder": "Description optionnelle",
+      "date": "Date",
+      "today": "Aujourd'hui",
+      "yesterday": "Hier",
+      "save": "Sauvegarder",
+      "saved": "Transaction sauvegardée !",
+      "expense": "Dépense",
+      "income": "Revenu"
+    },
+    "transactions": {
+      "title": "Transactions",
+      "all": "Toutes",
+      "expenses": "Dépenses",
+      "income": "Revenus",
+      "search": "Rechercher des transactions...",
+      "noResults": "Aucune transaction trouvée",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette transaction ?"
+    },
+    "categories": {
+      "title": "Catégories",
+      "expense": "Dépenses",
+      "income": "Revenus",
+      "add": "Ajouter une Catégorie",
+      "edit": "Modifier la Catégorie",
+      "name": "Nom",
+      "icon": "Icône",
+      "color": "Couleur",
+      "default": {
+        "food": "Alimentation",
+        "transport": "Transport",
+        "home": "Maison",
+        "health": "Santé",
+        "leisure": "Loisirs",
+        "shopping": "Achats",
+        "education": "Éducation",
+        "otherExpense": "Autres",
+        "salary": "Salaire",
+        "freelance": "Freelance",
+        "investments": "Investissements",
+        "otherIncome": "Autres"
+      }
+    },
+    "budgets": {
+      "title": "Budgets",
+      "add": "Ajouter un Budget",
+      "monthly": "Mensuel",
+      "yearly": "Annuel",
+      "spent": "Dépensé",
+      "remaining": "Restant",
+      "over": "Dépassé"
+    },
+    "reports": {
+      "title": "Rapports",
+      "byCategory": "Par Catégorie",
+      "byMonth": "Par Mois",
+      "trends": "Tendances"
+    },
+    "settings": {
+      "title": "Paramètres",
+      "currency": "Devise de Base",
+      "dateFormat": "Format de Date",
+      "firstDayOfWeek": "Premier Jour de la Semaine",
+      "monday": "Lundi",
+      "sunday": "Dimanche",
+      "export": "Exporter les Données",
+      "import": "Importer les Données",
+      "exportSuccess": "Données exportées avec succès !",
+      "importSuccess": "Données importées avec succès !"
+    },
+    "import": {
+      "title": "Importer",
+      "dragDrop": "Glissez un fichier ou cliquez pour sélectionner",
+      "supported": "CSV, Excel (.xlsx, .xls)",
+      "mapping": "Mappage des Colonnes",
+      "preview": "Aperçu",
+      "importing": "Importation...",
+      "success": "{count} transactions importées avec succès !"
+    },
+    "months": {
+      "january": "Janvier",
+      "february": "Février",
+      "march": "Mars",
+      "april": "Avril",
+      "may": "Mai",
+      "june": "Juin",
+      "july": "Juillet",
+      "august": "Août",
+      "september": "Septembre",
+      "october": "Octobre",
+      "november": "Novembre",
+      "december": "Décembre"
+    }
+  },
   "errors": {
     "generic": "Quelque chose s'est mal passé. Veuillez réessayer.",
     "notFound": "Page non trouvée",

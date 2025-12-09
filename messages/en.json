@@ -305,6 +305,125 @@
     "supported": "Supported by ads",
     "removeAds": "Remove ads with Premium"
   },
+  "expenseFlow": {
+    "title": "ExpenseFlow",
+    "tagline": "Mindful money tracking",
+    "dashboard": {
+      "title": "Dashboard",
+      "thisMonth": "This month",
+      "expenses": "Expenses",
+      "income": "Income",
+      "balance": "Balance",
+      "transactions": "Transactions",
+      "recentTransactions": "Recent Transactions",
+      "viewAll": "View all",
+      "noTransactions": "No transactions this month",
+      "addFirst": "Add your first transaction"
+    },
+    "quickAdd": {
+      "title": "New Transaction",
+      "titleExpense": "New Expense",
+      "titleIncome": "New Income",
+      "amount": "Amount",
+      "amountPlaceholder": "0.00",
+      "category": "Category",
+      "selectCategory": "Select category",
+      "description": "Description",
+      "descriptionPlaceholder": "Optional description",
+      "date": "Date",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "save": "Save",
+      "saved": "Transaction saved!",
+      "expense": "Expense",
+      "income": "Income"
+    },
+    "transactions": {
+      "title": "Transactions",
+      "all": "All",
+      "expenses": "Expenses",
+      "income": "Income",
+      "search": "Search transactions...",
+      "noResults": "No transactions found",
+      "delete": "Delete",
+      "edit": "Edit",
+      "confirmDelete": "Are you sure you want to delete this transaction?"
+    },
+    "categories": {
+      "title": "Categories",
+      "expense": "Expenses",
+      "income": "Income",
+      "add": "Add Category",
+      "edit": "Edit Category",
+      "name": "Name",
+      "icon": "Icon",
+      "color": "Color",
+      "default": {
+        "food": "Food & Dining",
+        "transport": "Transport",
+        "home": "Home",
+        "health": "Health",
+        "leisure": "Leisure",
+        "shopping": "Shopping",
+        "education": "Education",
+        "otherExpense": "Other",
+        "salary": "Salary",
+        "freelance": "Freelance",
+        "investments": "Investments",
+        "otherIncome": "Other"
+      }
+    },
+    "budgets": {
+      "title": "Budgets",
+      "add": "Add Budget",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "spent": "Spent",
+      "remaining": "Remaining",
+      "over": "Over budget"
+    },
+    "reports": {
+      "title": "Reports",
+      "byCategory": "By Category",
+      "byMonth": "By Month",
+      "trends": "Trends"
+    },
+    "settings": {
+      "title": "Settings",
+      "currency": "Base Currency",
+      "dateFormat": "Date Format",
+      "firstDayOfWeek": "First Day of Week",
+      "monday": "Monday",
+      "sunday": "Sunday",
+      "export": "Export Data",
+      "import": "Import Data",
+      "exportSuccess": "Data exported successfully!",
+      "importSuccess": "Data imported successfully!"
+    },
+    "import": {
+      "title": "Import",
+      "dragDrop": "Drag a file or click to select",
+      "supported": "CSV, Excel (.xlsx, .xls)",
+      "mapping": "Column Mapping",
+      "preview": "Preview",
+      "importing": "Importing...",
+      "success": "{count} transactions imported successfully!"
+    },
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
+  },
   "errors": {
     "generic": "Something went wrong. Please try again.",
     "notFound": "Page not found",

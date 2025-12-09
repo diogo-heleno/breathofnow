@@ -305,6 +305,125 @@
     "supported": "Suportado por anúncios",
     "removeAds": "Remover anúncios com Premium"
   },
+  "expenseFlow": {
+    "title": "ExpenseFlow",
+    "tagline": "Controle consciente do dinheiro",
+    "dashboard": {
+      "title": "Painel",
+      "thisMonth": "Este mês",
+      "expenses": "Despesas",
+      "income": "Receitas",
+      "balance": "Saldo",
+      "transactions": "Transações",
+      "recentTransactions": "Transações Recentes",
+      "viewAll": "Ver todas",
+      "noTransactions": "Sem transações este mês",
+      "addFirst": "Adicione sua primeira transação"
+    },
+    "quickAdd": {
+      "title": "Nova Transação",
+      "titleExpense": "Nova Despesa",
+      "titleIncome": "Nova Receita",
+      "amount": "Valor",
+      "amountPlaceholder": "0,00",
+      "category": "Categoria",
+      "selectCategory": "Selecionar categoria",
+      "description": "Descrição",
+      "descriptionPlaceholder": "Descrição opcional",
+      "date": "Data",
+      "today": "Hoje",
+      "yesterday": "Ontem",
+      "save": "Salvar",
+      "saved": "Transação salva!",
+      "expense": "Despesa",
+      "income": "Receita"
+    },
+    "transactions": {
+      "title": "Transações",
+      "all": "Todas",
+      "expenses": "Despesas",
+      "income": "Receitas",
+      "search": "Pesquisar transações...",
+      "noResults": "Nenhuma transação encontrada",
+      "delete": "Excluir",
+      "edit": "Editar",
+      "confirmDelete": "Tem certeza que quer excluir esta transação?"
+    },
+    "categories": {
+      "title": "Categorias",
+      "expense": "Despesas",
+      "income": "Receitas",
+      "add": "Adicionar Categoria",
+      "edit": "Editar Categoria",
+      "name": "Nome",
+      "icon": "Ícone",
+      "color": "Cor",
+      "default": {
+        "food": "Alimentação",
+        "transport": "Transporte",
+        "home": "Casa",
+        "health": "Saúde",
+        "leisure": "Lazer",
+        "shopping": "Compras",
+        "education": "Educação",
+        "otherExpense": "Outros",
+        "salary": "Salário",
+        "freelance": "Freelance",
+        "investments": "Investimentos",
+        "otherIncome": "Outros"
+      }
+    },
+    "budgets": {
+      "title": "Orçamentos",
+      "add": "Adicionar Orçamento",
+      "monthly": "Mensal",
+      "yearly": "Anual",
+      "spent": "Gasto",
+      "remaining": "Restante",
+      "over": "Excedido"
+    },
+    "reports": {
+      "title": "Relatórios",
+      "byCategory": "Por Categoria",
+      "byMonth": "Por Mês",
+      "trends": "Tendências"
+    },
+    "settings": {
+      "title": "Configurações",
+      "currency": "Moeda Base",
+      "dateFormat": "Formato de Data",
+      "firstDayOfWeek": "Primeiro Dia da Semana",
+      "monday": "Segunda-feira",
+      "sunday": "Domingo",
+      "export": "Exportar Dados",
+      "import": "Importar Dados",
+      "exportSuccess": "Dados exportados com sucesso!",
+      "importSuccess": "Dados importados com sucesso!"
+    },
+    "import": {
+      "title": "Importar",
+      "dragDrop": "Arraste um arquivo ou clique para selecionar",
+      "supported": "CSV, Excel (.xlsx, .xls)",
+      "mapping": "Mapeamento de Colunas",
+      "preview": "Pré-visualização",
+      "importing": "Importando...",
+      "success": "{count} transações importadas com sucesso!"
+    },
+    "months": {
+      "january": "Janeiro",
+      "february": "Fevereiro",
+      "march": "Março",
+      "april": "Abril",
+      "may": "Maio",
+      "june": "Junho",
+      "july": "Julho",
+      "august": "Agosto",
+      "september": "Setembro",
+      "october": "Outubro",
+      "november": "Novembro",
+      "december": "Dezembro"
+    }
+  },
   "errors": {
     "generic": "Algo deu errado. Por favor tente novamente.",
     "notFound": "Página não encontrada",
