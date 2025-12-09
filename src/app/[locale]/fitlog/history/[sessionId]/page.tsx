@@ -39,7 +39,7 @@ export default function SessionDetailPage({ params }: SessionDetailPageProps) {
           setSets(data.sets);
 
           // Load exercise details
-          const exerciseIds = [...new Set(data.sets.map((s) => s.exerciseId))];
+          const exerciseIds = Array.from(new Set(data.sets.map((s) => s.exerciseId)));
           const exerciseMap: { [key: number]: Exercise } = {};
 
           for (const exId of exerciseIds) {

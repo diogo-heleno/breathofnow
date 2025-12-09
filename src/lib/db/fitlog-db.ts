@@ -346,7 +346,7 @@ export class FitLogDatabase extends Dexie {
 
     const results: { date: Date; maxWeight: number; totalReps: number }[] = [];
 
-    for (const [sessionId, sessionSets] of bySession) {
+    for (const [sessionId, sessionSets] of Array.from(bySession.entries())) {
       const session = await this.workoutSessions.get(sessionId);
       if (!session) continue;
 
