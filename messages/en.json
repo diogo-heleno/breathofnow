@@ -136,78 +136,61 @@
     }
   },
   "pricing": {
-    "title": "Fair Pricing",
-    "subtitle": "Pay what feels right based on your situation",
-    "description": "We believe in fair pricing. Our suggested prices are adjusted based on your region's cost of living, but you're free to pay more or less.",
+    "title": "Simple, Fair Pricing",
+    "description": "Start free, upgrade when you're ready. No hidden fees, no surprises.",
     "mostPopular": "Most Popular",
     "freePrice": "Free",
-    "minPrice": "Minimum",
-    "payWhatYouWantShort": "Pay what you want",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
     "questions": "Have questions?",
     "checkFaq": "Check our FAQ",
+    "securePayment": "Secure payment via Stripe. Cancel anytime.",
     "free": {
       "title": "Free",
       "period": "forever",
-      "description": "Perfect for trying out our apps",
+      "description": "Perfect for trying out all our apps",
       "features": [
-        "Full access to one app",
-        "All core features",
+        "Access to all apps with basic features",
         "Local data storage only",
-        "Discrete ad banners"
+        "Discrete ad banners",
+        "Community support"
       ],
-      "cta": "Start Free"
+      "cta": "Get Started"
     },
     "supporter": {
       "title": "Supporter",
-      "period": "per month / per app",
-      "description": "For those who want to support our work and use multiple devices",
+      "periodMonthly": "/month",
+      "periodYearly": "/year",
+      "description": "Support our work and unlock the full experience",
+      "savings": "Save €3.89/year (2 months free)",
       "features": [
+        "Full access to ALL apps",
         "Ad-free experience",
         "Cloud sync across devices",
-        "Priority support",
-        "Early access to new features"
+        "All updates included",
+        "Priority email support"
       ],
-      "cta": "Become a Supporter"
-    },
-    "fan": {
-      "title": "Fan",
-      "period": "one-time payment",
-      "description": "All current apps included, with AI features",
-      "features": [
-        "All current apps included",
-        "Everything in Supporter",
-        "AI assistant (limited credits)",
-        "Credit wallet for more AI usage",
-        "50% off future apps"
-      ],
-      "cta": "Become a Fan"
+      "cta": "Subscribe Now"
     },
     "founder": {
       "title": "Founding Member",
-      "badge": "Limited",
-      "period": "one-time payment",
-      "description": "All apps forever - current and future",
+      "badge": "Early Bird",
+      "period": "one-time",
+      "description": "Lifetime access to everything, forever",
+      "limitedSpots": "Limited to 100 members",
       "features": [
-        "All current apps included",
-        "All future apps included forever",
-        "AI assistant (generous credits)",
-        "Credit wallet for more AI usage",
-        "Founding member badge",
-        "Direct line to founders"
+        "Lifetime access to ALL apps",
+        "All future versions included (v2, v3...)",
+        "Ad-free experience",
+        "Cloud sync across devices",
+        "Early access (2 weeks before public)",
+        "Name in Hall of Fame",
+        "Quarterly Q&A sessions with founder",
+        "Priority feature requests",
+        "Founding Member badge",
+        "Direct support via Discord"
       ],
       "cta": "Become a Founder"
-    },
-    "payWhatYouWant": "Pay What You Want",
-    "pwywDescription": "Suggested price based on your region. Adjust up or down as you see fit.",
-    "suggestedPrice": "Suggested",
-    "yourPrice": "Your price",
-    "regionNote": "Prices shown are suggestions based on your location ({region}). You're welcome to adjust.",
-    "aiCredits": {
-      "title": "How AI Credits Work",
-      "description": "Fan and Founding Member plans include AI-powered features with monthly credits. When you run out, you can purchase more through your credit wallet.",
-      "feature1": "Fan: 100 AI credits/month included",
-      "feature2": "Founder: 500 AI credits/month included",
-      "feature3": "Additional credits available via wallet top-up"
     }
   },
   "features": {
@@ -263,8 +246,8 @@
         "answer": "Yes! You can upgrade to remove ads and unlock premium features anytime. If you cancel your subscription, you'll keep access until the end of your billing period, then return to the free tier."
       },
       {
-        "question": "What's the difference between Fan and Founding Member?",
-        "answer": "The Fan plan includes all current apps with a one-time payment, plus AI features with limited credits and 50% off future apps. The Founding Member plan includes all current AND future apps forever, more generous AI credits, and direct access to our team. Both plans include a credit wallet to purchase additional AI credits when needed."
+        "question": "What's included in the Founding Member plan?",
+        "answer": "The Founding Member plan (€599 one-time) gives you lifetime access to ALL apps and ALL future versions forever. You also get early access to new features, your name in our Hall of Fame, quarterly Q&A sessions with the founder, priority feature requests, and direct support via Discord. It's limited to the first 100 members."
       },
       {
         "question": "Do you have a mobile app?",
