@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS expense_categories (
     name_key TEXT, -- i18n key for default categories
     icon TEXT NOT NULL DEFAULT 'circle',
     color TEXT NOT NULL DEFAULT '#6b7280',
-    type TEXT NOT NULL CHECK (type IN ('income', 'expense', 'both')),
+    category_type TEXT NOT NULL CHECK (category_type IN ('income', 'expense', 'both')),
     is_default BOOLEAN NOT NULL DEFAULT false,
     sort_order INTEGER NOT NULL DEFAULT 0,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS expense_categories (
 
 -- Index for faster queries
 CREATE INDEX idx_expense_categories_user_id ON expense_categories(user_id);
-CREATE INDEX idx_expense_categories_type ON expense_categories(type);
+CREATE INDEX idx_expense_categories_type ON expense_categories(category_type);
 
 -- RLS Policies
 ALTER TABLE expense_categories ENABLE ROW LEVEL SECURITY;
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS expense_transactions (
     currency TEXT NOT NULL DEFAULT 'EUR',
     amount_in_base DECIMAL(15, 2),
     exchange_rate DECIMAL(15, 6),
-    type TEXT NOT NULL CHECK (type IN ('income', 'expense')),
+    transaction_type TEXT NOT NULL CHECK (transaction_type IN ('income', 'expense')),
     description TEXT,
     notes TEXT,
     category_id UUID REFERENCES expense_categories(id) ON DELETE SET NULL,
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS expense_transactions (
 CREATE INDEX idx_expense_transactions_user_id ON expense_transactions(user_id);
 CREATE INDEX idx_expense_transactions_date ON expense_transactions(date);
 CREATE INDEX idx_expense_transactions_category_id ON expense_transactions(category_id);
-CREATE INDEX idx_expense_transactions_type ON expense_transactions(type);
+CREATE INDEX idx_expense_transactions_type ON expense_transactions(transaction_type);
 CREATE INDEX idx_expense_transactions_user_date ON expense_transactions(user_id, date);
 
 -- RLS Policies
@@ -294,9 +294,9 @@ RETURNS TABLE (
 BEGIN
     RETURN QUERY
     SELECT
-        COALESCE(SUM(CASE WHEN et.type = 'expense' THEN et.amount ELSE 0 END), 0) as total_expenses,
-        COALESCE(SUM(CASE WHEN et.type = 'income' THEN et.amount ELSE 0 END), 0) as total_income,
-        COALESCE(SUM(CASE WHEN et.type = 'income' THEN et.amount ELSE -et.amount END), 0) as balance,
+        COALESCE(SUM(CASE WHEN et.transaction_type = 'expense' THEN et.amount ELSE 0 END), 0) as total_expenses,
+        COALESCE(SUM(CASE WHEN et.transaction_type = 'income' THEN et.amount ELSE 0 END), 0) as total_income,
+        COALESCE(SUM(CASE WHEN et.transaction_type = 'income' THEN et.amount ELSE -et.amount END), 0) as balance,
         COUNT(*) as transaction_count
     FROM expense_transactions et
     WHERE et.user_id = p_user_id
@@ -333,11 +333,11 @@ BEGIN
     FROM expense_categories ec
     LEFT JOIN expense_transactions et ON et.category_id = ec.id
         AND et.date BETWEEN p_start_date AND p_end_date
-        AND et.type = p_type
+        AND et.transaction_type = p_type
         AND et.deleted_at IS NULL
     WHERE ec.user_id = p_user_id
       AND ec.deleted_at IS NULL
-      AND (ec.type = p_type OR ec.type = 'both')
+      AND (ec.category_type = p_type OR ec.category_type = 'both')
     GROUP BY ec.id, ec.name, ec.color
     ORDER BY total_amount DESC;
 END;
