@@ -87,11 +87,11 @@ export default function DashboardPage({ params }: DashboardPageProps) {
 
         <div className="space-y-4 mt-8">
           <Link
-            href={`/${locale}/fitlog/export`}
+            href={`/${locale}/fitlog/create`}
             className="flex items-center justify-center gap-2 w-full py-4 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition-colors"
           >
             <Sparkles className="w-5 h-5" />
-            Gerar Plano com AI
+            Criar Plano com Questionário
           </Link>
 
           <Link
@@ -99,7 +99,7 @@ export default function DashboardPage({ params }: DashboardPageProps) {
             className="flex items-center justify-center gap-2 w-full py-4 border-2 border-dashed border-neutral-300 text-neutral-700 rounded-xl font-semibold hover:border-primary hover:text-primary transition-colors"
           >
             <Plus className="w-5 h-5" />
-            Importar Plano JSON
+            Já tenho um JSON - Importar
           </Link>
         </div>
 
@@ -108,19 +108,19 @@ export default function DashboardPage({ params }: DashboardPageProps) {
           <ol className="text-sm text-neutral-600 space-y-2">
             <li className="flex gap-2">
               <span className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
-              <span>Usa o ChatGPT ou Claude para criar um plano de treino personalizado</span>
+              <span><strong>Responde ao questionário</strong> - Diz-nos os teus objetivos, disponibilidade e preferências</span>
             </li>
             <li className="flex gap-2">
               <span className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
-              <span>Importa o plano em formato JSON para a app</span>
+              <span><strong>Copia a prompt gerada</strong> - Cola no ChatGPT ou Claude</span>
             </li>
             <li className="flex gap-2">
               <span className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
-              <span>Regista os teus treinos e acompanha o progresso</span>
+              <span><strong>Importa o JSON</strong> - Copia o plano gerado e importa na app</span>
             </li>
             <li className="flex gap-2">
               <span className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
-              <span>Exporta o histórico para ajustar o plano semanalmente</span>
+              <span><strong>Treina e regista</strong> - Acompanha o progresso e ajusta semanalmente</span>
             </li>
           </ol>
         </div>

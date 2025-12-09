@@ -2,8 +2,9 @@
 
 'use client';
 
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { ExportOptions } from '@/components/fitlog/plans';
 
 interface ExportPageProps {
@@ -15,7 +16,7 @@ export default function ExportPage({ params }: ExportPageProps) {
   const router = useRouter();
 
   return (
-    <div className="p-4 space-y-6">
+    <div className="p-4 space-y-6 pb-24">
       {/* Header */}
       <div className="space-y-2">
         <button
@@ -29,6 +30,35 @@ export default function ExportPage({ params }: ExportPageProps) {
         <p className="text-neutral-600">
           Gera prompts para criar ou ajustar o teu plano de treino com ChatGPT ou Claude.
         </p>
+      </div>
+
+      {/* Quick action - Questionnaire */}
+      <Link
+        href={`/${locale}/fitlog/create`}
+        className="block p-4 bg-gradient-to-br from-primary to-primary/80 rounded-xl text-white"
+      >
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+            <Sparkles className="w-6 h-6" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-lg">Criar Novo Plano com Questionário</h3>
+            <p className="text-white/80 text-sm mt-1">
+              Responde a um questionário detalhado e gera automaticamente uma prompt
+              personalizada para o ChatGPT ou Claude criar o teu plano.
+            </p>
+            <span className="inline-flex items-center gap-1 mt-3 text-sm font-medium">
+              Começar questionário →
+            </span>
+          </div>
+        </div>
+      </Link>
+
+      {/* Divider */}
+      <div className="flex items-center gap-4">
+        <div className="flex-1 h-px bg-neutral-200" />
+        <span className="text-sm text-neutral-500">ou usa as opções rápidas</span>
+        <div className="flex-1 h-px bg-neutral-200" />
       </div>
 
       {/* Export Options */}
