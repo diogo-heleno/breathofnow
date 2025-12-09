@@ -1,15 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { Check } from 'lucide-react';
+import { Check, RefreshCw } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { useExpenseStore, selectExpenseCategories, selectIncomeCategories } from '@/stores/expense-store';
 import { addExpenseTransaction } from '@/lib/db';
+import { CurrencySelect } from '@/components/expenses/currency-select';
+import { getExchangeRate, formatCurrency as formatCurrencyService, getCurrencyInfo } from '@/services/currency-service';
 import type { ExpenseCategory } from '@/lib/db';
 
 // Dynamic icon component (simplified - uses first letter as fallback)
@@ -33,7 +35,7 @@ export default function QuickAddPage({
   const tCategories = useTranslations('expenseFlow.categories.default');
   const router = useRouter();
 
-  const { quickAddType, setQuickAddType, categories, baseCurrency } = useExpenseStore();
+  const { quickAddType, setQuickAddType, categories, baseCurrency, favoriteCurrencies } = useExpenseStore();
 
   const [amount, setAmount] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ExpenseCategory | null>(null);
@@ -41,6 +43,48 @@ export default function QuickAddPage({
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [isSaving, setIsSaving] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  // Multi-currency state
+  const [selectedCurrency, setSelectedCurrency] = useState(baseCurrency);
+  const [exchangeRate, setExchangeRate] = useState<number | null>(null);
+  const [isLoadingRate, setIsLoadingRate] = useState(false);
+  const [convertedAmount, setConvertedAmount] = useState<number | null>(null);
+
+  // Fetch exchange rate when currency changes
+  useEffect(() => {
+    async function fetchRate() {
+      if (selectedCurrency === baseCurrency) {
+        setExchangeRate(1);
+        setConvertedAmount(null);
+        return;
+      }
+
+      setIsLoadingRate(true);
+      try {
+        const rate = await getExchangeRate(selectedCurrency, baseCurrency);
+        setExchangeRate(rate);
+        if (amount) {
+          setConvertedAmount(parseFloat(amount) * rate);
+        }
+      } catch (error) {
+        console.error('Failed to fetch exchange rate:', error);
+        setExchangeRate(null);
+      } finally {
+        setIsLoadingRate(false);
+      }
+    }
+
+    fetchRate();
+  }, [selectedCurrency, baseCurrency]);
+
+  // Update converted amount when amount changes
+  useEffect(() => {
+    if (exchangeRate && amount && selectedCurrency !== baseCurrency) {
+      setConvertedAmount(parseFloat(amount) * exchangeRate);
+    } else {
+      setConvertedAmount(null);
+    }
+  }, [amount, exchangeRate, selectedCurrency, baseCurrency]);
 
   // Filter categories based on type
   const filteredCategories = categories.filter(
@@ -72,9 +116,15 @@ export default function QuickAddPage({
 
     setIsSaving(true);
     try {
+      const amountValue = parseFloat(amount);
+      const isDifferentCurrency = selectedCurrency !== baseCurrency;
+
       await addExpenseTransaction({
-        amount: parseFloat(amount),
-        currency: baseCurrency,
+        amount: amountValue,
+        currency: selectedCurrency,
+        // If using different currency, store converted amount in base currency
+        amountInBase: isDifferentCurrency && exchangeRate ? amountValue * exchangeRate : undefined,
+        exchangeRate: isDifferentCurrency ? exchangeRate || undefined : undefined,
         type: quickAddType,
         categoryId: selectedCategory?.id,
         description: description || undefined,
@@ -90,6 +140,7 @@ export default function QuickAddPage({
         setSelectedCategory(null);
         setDescription('');
         setDate(new Date().toISOString().split('T')[0]);
+        setSelectedCurrency(baseCurrency);
         // Navigate back to dashboard
         router.push(`/${locale}/expenses`);
       }, 1000);
@@ -155,15 +206,22 @@ export default function QuickAddPage({
         </CardContent>
       </Card>
 
-      {/* Amount Input */}
+      {/* Amount Input with Currency */}
       <Card>
         <CardContent className="pt-6">
-          <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-2">
-            {t('quickAdd.amount')}
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400">
+              {t('quickAdd.amount')}
+            </label>
+            <CurrencySelect
+              value={selectedCurrency}
+              onChange={setSelectedCurrency}
+              favorites={favoriteCurrencies}
+            />
+          </div>
           <div className="relative">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl text-neutral-400">
-              {formatCurrencySymbol()}
+              {getCurrencyInfo(selectedCurrency).symbol}
             </span>
             <input
               type="text"
@@ -182,6 +240,39 @@ export default function QuickAddPage({
               autoFocus
             />
           </div>
+
+          {/* Exchange Rate Info */}
+          {selectedCurrency !== baseCurrency && (
+            <div className="mt-3 p-3 rounded-lg bg-neutral-50 dark:bg-neutral-800/50">
+              {isLoadingRate ? (
+                <div className="flex items-center gap-2 text-sm text-neutral-500">
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <span>{t('quickAdd.loadingRate')}</span>
+                </div>
+              ) : exchangeRate ? (
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-neutral-500">{t('quickAdd.exchangeRate')}</span>
+                    <span className="font-medium text-neutral-700 dark:text-neutral-300">
+                      1 {selectedCurrency} = {exchangeRate.toFixed(4)} {baseCurrency}
+                    </span>
+                  </div>
+                  {convertedAmount !== null && (
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-neutral-500">{t('quickAdd.equivalent')}</span>
+                      <span className="font-semibold text-primary-600 dark:text-primary-400">
+                        {formatCurrencyService(convertedAmount, baseCurrency, locale)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm text-amber-600 dark:text-amber-400">
+                  {t('quickAdd.rateError')}
+                </p>
+              )}
+            </div>
+          )}
         </CardContent>
       </Card>
 

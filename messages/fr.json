@@ -336,7 +336,11 @@
       "save": "Sauvegarder",
       "saved": "Transaction sauvegardée !",
       "expense": "Dépense",
-      "income": "Revenu"
+      "income": "Revenu",
+      "exchangeRate": "Taux de change",
+      "equivalent": "Équivalent",
+      "loadingRate": "Chargement du taux de change...",
+      "rateError": "Impossible d'obtenir le taux de change"
     },
     "transactions": {
       "title": "Transactions",
