@@ -319,7 +319,12 @@ breathofnow/
 | Privacy | `/[locale]/privacy` | ✅ |
 | Terms | `/[locale]/terms` | ✅ |
 | Dashboard | `/[locale]/dashboard` | 🔜 |
-| ExpenseFlow | `/[locale]/expenses` | 🔜 |
+| ExpenseFlow Dashboard | `/[locale]/expenses` | ✅ |
+| ExpenseFlow Add | `/[locale]/expenses/add` | ✅ |
+| ExpenseFlow Transactions | `/[locale]/expenses/transactions` | ✅ |
+| ExpenseFlow Categories | `/[locale]/expenses/categories` | ✅ |
+| ExpenseFlow Settings | `/[locale]/expenses/settings` | ✅ |
+| ExpenseFlow Reports | `/[locale]/expenses/reports` | ✅ |
 
 ---
 
@@ -396,19 +401,26 @@ chore(deps): update dependencies
 
 ## 14. Próximos Passos
 
+### Concluído
+
+- [x] Criar CRUD de ExpenseFlow (transações)
+- [x] Dashboard de visualizações/gráficos (ExpenseFlow)
+- [x] Export de dados (JSON)
+- [x] Configurar RLS no Supabase (ExpenseFlow)
+- [x] Schema Supabase para ExpenseFlow
+
 ### Prioridade Alta
 
-- [ ] Implementar dashboard principal
-- [ ] Criar CRUD de ExpenseFlow (transações)
+- [ ] Implementar dashboard principal (home)
 - [ ] Implementar sync engine com Supabase
-- [ ] Configurar RLS no Supabase
+- [ ] Configurar subdomínios (www + app)
+- [ ] PWA com Service Worker
 
 ### Prioridade Média
 
-- [ ] Dashboard de visualizações/gráficos
-- [ ] Export/Import de dados (JSON)
-- [ ] PWA com Service Worker
+- [ ] Import de dados (JSON/CSV)
 - [ ] Sistema de notificações
+- [ ] Budgets/Orçamentos no ExpenseFlow
 
 ### Prioridade Baixa
 
@@ -419,10 +431,75 @@ chore(deps): update dependencies
 
 ---
 
-## 15. Domínios
+## 15. Domínios e Infraestrutura
 
-- **Landing/App**: `breathofnow.site`
-- **API**: Via Supabase (managed)
+### Estrutura de Domínios
+
+| Domínio | Propósito | Configuração |
+|---------|-----------|--------------|
+| **www.breathofnow.site** | Website/Landing Page | Vercel + DNS CNAME |
+| **app.breathofnow.site** | Aplicações (ExpenseFlow, etc.) | Vercel + DNS CNAME |
+| **API** | Backend/Auth | Supabase (managed) |
+
+### Configuração Vercel
+
+1. Adicionar ambos os domínios no projeto Vercel
+2. Configurar redirects no `next.config.mjs` se necessário
+3. Usar `NEXT_PUBLIC_SITE_URL` para o domínio principal
+
+### Configuração DNS
+
+```
+www.breathofnow.site    CNAME   cname.vercel-dns.com
+app.breathofnow.site    CNAME   cname.vercel-dns.com
+breathofnow.site        A       76.76.21.21
+```
+
+---
+
+## 16. ExpenseFlow - Implementação Concluída
+
+### Funcionalidades Phase 1 (MVP)
+
+- ✅ Dashboard com resumo mensal
+- ✅ Quick Add (despesas/rendimentos)
+- ✅ Lista de transações com filtros e pesquisa
+- ✅ Gráfico de pizza por categoria
+- ✅ Gestão de categorias (CRUD)
+- ✅ Página de configurações (moeda base, export)
+- ✅ Relatórios anuais
+
+### Estrutura de Ficheiros ExpenseFlow
+
+```
+src/
+├── app/[locale]/expenses/
+│   ├── layout.tsx          # Layout com navegação
+│   ├── page.tsx            # Dashboard
+│   ├── add/page.tsx        # Quick Add
+│   ├── transactions/page.tsx
+│   ├── categories/page.tsx
+│   ├── settings/page.tsx
+│   └── reports/page.tsx
+├── components/expenses/
+│   ├── expense-pie-chart.tsx
+│   ├── transaction-item.tsx
+│   └── edit-transaction-modal.tsx
+└── stores/
+    └── expense-store.ts    # Zustand store
+```
+
+### Schema Supabase
+
+Ficheiro SQL: `docs/supabase/expenseflow-schema.sql`
+
+Tabelas:
+- `expense_categories`
+- `expense_transactions`
+- `expense_budgets`
+- `expense_settings`
+- `exchange_rates`
+- `import_mappings`
 
 ---
 
