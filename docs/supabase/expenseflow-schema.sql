@@ -294,15 +294,15 @@ RETURNS TABLE (
 BEGIN
     RETURN QUERY
     SELECT
-        COALESCE(SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END), 0) as total_expenses,
-        COALESCE(SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END), 0) as total_income,
-        COALESCE(SUM(CASE WHEN type = 'income' THEN amount ELSE -amount END), 0) as balance,
+        COALESCE(SUM(CASE WHEN et.type = 'expense' THEN et.amount ELSE 0 END), 0) as total_expenses,
+        COALESCE(SUM(CASE WHEN et.type = 'income' THEN et.amount ELSE 0 END), 0) as total_income,
+        COALESCE(SUM(CASE WHEN et.type = 'income' THEN et.amount ELSE -et.amount END), 0) as balance,
         COUNT(*) as transaction_count
-    FROM expense_transactions
-    WHERE user_id = p_user_id
-      AND EXTRACT(YEAR FROM date) = p_year
-      AND EXTRACT(MONTH FROM date) = p_month
-      AND deleted_at IS NULL;
+    FROM expense_transactions et
+    WHERE et.user_id = p_user_id
+      AND EXTRACT(YEAR FROM et.date) = p_year
+      AND EXTRACT(MONTH FROM et.date) = p_month
+      AND et.deleted_at IS NULL;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
@@ -325,20 +325,20 @@ RETURNS TABLE (
 BEGIN
     RETURN QUERY
     SELECT
-        c.id as category_id,
-        c.name as category_name,
-        c.color as category_color,
-        COALESCE(SUM(t.amount), 0) as total_amount,
-        COUNT(t.id) as transaction_count
-    FROM expense_categories c
-    LEFT JOIN expense_transactions t ON t.category_id = c.id
-        AND t.date BETWEEN p_start_date AND p_end_date
-        AND t.type = p_type
-        AND t.deleted_at IS NULL
-    WHERE c.user_id = p_user_id
-      AND c.deleted_at IS NULL
-      AND (c.type = p_type OR c.type = 'both')
-    GROUP BY c.id, c.name, c.color
+        ec.id as category_id,
+        ec.name as category_name,
+        ec.color as category_color,
+        COALESCE(SUM(et.amount), 0) as total_amount,
+        COUNT(et.id) as transaction_count
+    FROM expense_categories ec
+    LEFT JOIN expense_transactions et ON et.category_id = ec.id
+        AND et.date BETWEEN p_start_date AND p_end_date
+        AND et.type = p_type
+        AND et.deleted_at IS NULL
+    WHERE ec.user_id = p_user_id
+      AND ec.deleted_at IS NULL
+      AND (ec.type = p_type OR ec.type = 'both')
+    GROUP BY ec.id, ec.name, ec.color
     ORDER BY total_amount DESC;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
