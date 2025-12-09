@@ -30,7 +30,7 @@ export function Header({ locale }: HeaderProps) {
   }, []);
 
   const navItems = [
-    { href: '/apps', label: t('nav.apps') },
+    { href: '#apps', label: t('nav.apps') },
     { href: '/pricing', label: t('nav.pricing') },
     { href: '/faq', label: t('nav.faq') },
   ];

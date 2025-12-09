@@ -1,12 +1,12 @@
 import { useTranslations } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
-import { 
-  Wallet, 
-  TrendingUp, 
-  Dumbbell, 
-  Activity, 
-  ChefHat, 
+import {
+  Wallet,
+  TrendingUp,
+  Dumbbell,
+  Activity,
+  ChefHat,
   ScanLine,
   Shield,
   Wifi,
@@ -24,6 +24,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AdBanner } from '@/components/ads/ad-banner';
 import { locales, type Locale } from '@/i18n';
+import { getAppUrl } from '@/lib/utils';
 
 interface PageProps {
   params: { locale: Locale };
@@ -54,6 +55,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
       color: 'text-emerald-600',
       bgColor: 'bg-emerald-100 dark:bg-emerald-900/30',
       status: 'available' as const,
+      appRoute: '/expenses',
     },
     {
       id: 'investments',
@@ -61,6 +63,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
       color: 'text-blue-600',
       bgColor: 'bg-blue-100 dark:bg-blue-900/30',
       status: 'beta' as const,
+      appRoute: '/investments',
     },
     {
       id: 'workouts',
@@ -68,6 +71,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
       color: 'text-orange-600',
       bgColor: 'bg-orange-100 dark:bg-orange-900/30',
       status: 'comingSoon' as const,
+      appRoute: '/fitlog',
     },
     {
       id: 'strava',
@@ -75,6 +79,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
       color: 'text-red-600',
       bgColor: 'bg-red-100 dark:bg-red-900/30',
       status: 'comingSoon' as const,
+      appRoute: '/strava',
     },
     {
       id: 'recipes',
@@ -82,6 +87,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
       color: 'text-amber-600',
       bgColor: 'bg-amber-100 dark:bg-amber-900/30',
       status: 'comingSoon' as const,
+      appRoute: '/recipes',
     },
     {
       id: 'labels',
@@ -89,6 +95,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
       color: 'text-purple-600',
       bgColor: 'bg-purple-100 dark:bg-purple-900/30',
       status: 'comingSoon' as const,
+      appRoute: '/labels',
     },
   ];
 
@@ -144,11 +151,11 @@ export default function HomePage({ params: { locale } }: PageProps) {
 
               {/* CTA buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up animation-delay-200">
-                <Link href="/apps">
+                <a href={getAppUrl('/expenses')}>
                   <Button variant="primary" size="lg" rightIcon={<ArrowRight className="w-5 h-5" />}>
                     {t('hero.cta')}
                   </Button>
-                </Link>
+                </a>
                 <Link href="#features">
                   <Button variant="outline" size="lg">
                     {t('hero.ctaSecondary')}
@@ -176,7 +183,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
         </section>
 
         {/* Apps Section */}
-        <section className="section bg-white dark:bg-neutral-900">
+        <section id="apps" className="section bg-white dark:bg-neutral-900">
           <div className="container-app">
             <div className="text-center mb-16">
               <h2 className="font-display text-display-sm md:text-display-md font-bold text-neutral-900 dark:text-neutral-100 mb-4">
@@ -226,13 +233,13 @@ export default function HomePage({ params: { locale } }: PageProps) {
                         ))}
                       </ul>
 
-                      <Link 
-                        href={app.status === 'available' ? `/apps/${app.id}` : '/pricing'}
+                      <a
+                        href={app.status === 'available' ? getAppUrl(app.appRoute) : '/pricing'}
                         className="inline-flex items-center gap-1 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
                       >
                         {app.status === 'available' ? t('apps.tryFree') : t('apps.viewApp')}
                         <ArrowRight className="w-4 h-4" />
-                      </Link>
+                      </a>
                     </CardContent>
                   </Card>
                 );
