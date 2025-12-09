@@ -70,7 +70,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
       icon: Dumbbell,
       color: 'text-orange-600',
       bgColor: 'bg-orange-100 dark:bg-orange-900/30',
-      status: 'comingSoon' as const,
+      status: 'available' as const,
       appRoute: '/fitlog',
     },
     {
