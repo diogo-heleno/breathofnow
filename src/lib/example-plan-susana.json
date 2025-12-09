@@ -1,0 +1,274 @@
+{
+  "planName": "Plano Força - Susana",
+  "version": "1.0",
+  "createdAt": "2024-12-09",
+  "athlete": {
+    "name": "Susana",
+    "goal": "Ganhar força e massa muscular + Perder gordura abdominal",
+    "frequency": "3x semana",
+    "sessionDuration": 45
+  },
+  "weeks": 8,
+  "workouts": [
+    {
+      "id": "workout-a",
+      "name": "Treino A - Inferior + Core",
+      "dayOfWeek": 1,
+      "targetDuration": 45,
+      "warmup": {
+        "description": "Passadeira: caminhada rápida ou bicicleta leve",
+        "duration": 5
+      },
+      "exercises": [
+        {
+          "id": "ex-a1",
+          "name": "Leg Press",
+          "muscleGroups": ["quadriceps", "glutes", "hamstrings"],
+          "sets": 4,
+          "reps": 12,
+          "restSeconds": 90,
+          "notes": "Pés mais afastados e altos na plataforma (protege joelho e trabalha glúteos)",
+          "videoUrl": "https://www.youtube.com/watch?v=IZxyjW7MPJQ",
+          "equipmentNeeded": "Máquina Leg Press"
+        },
+        {
+          "id": "ex-a2",
+          "name": "Cadeira Abdutora",
+          "muscleGroups": ["glutes", "abductors"],
+          "sets": 3,
+          "reps": 15,
+          "restSeconds": 60,
+          "notes": "Foco: glúteo médio - controlar o movimento na descida",
+          "videoUrl": "https://www.youtube.com/watch?v=FgKNH6HEvJc",
+          "equipmentNeeded": "Máquina Abdutora"
+        },
+        {
+          "id": "ex-a3",
+          "name": "Hip Thrust",
+          "muscleGroups": ["glutes", "hamstrings"],
+          "sets": 4,
+          "reps": 12,
+          "restSeconds": 90,
+          "notes": "Exercício favorito para glúteos! Aperta bem no topo do movimento",
+          "videoUrl": "https://www.youtube.com/watch?v=SEdqd1n0cvg",
+          "equipmentNeeded": "Banco + Barra ou Haltere"
+        },
+        {
+          "id": "ex-a4",
+          "name": "Cadeira Flexora",
+          "muscleGroups": ["hamstrings"],
+          "sets": 3,
+          "reps": 12,
+          "restSeconds": 60,
+          "notes": "Movimento controlado, sem embalar",
+          "videoUrl": "https://www.youtube.com/watch?v=1Tq3QdYUuHs",
+          "equipmentNeeded": "Máquina Flexora"
+        },
+        {
+          "id": "ex-a5",
+          "name": "Elevação Pélvica (Ponte)",
+          "muscleGroups": ["glutes", "core"],
+          "sets": 3,
+          "reps": 15,
+          "restSeconds": 45,
+          "notes": "Sem peso ou com haltere na anca - aperta glúteos no topo",
+          "videoUrl": "https://www.youtube.com/watch?v=8bbE64NuDTU",
+          "equipmentNeeded": "Colchonete (opcional: haltere)"
+        },
+        {
+          "id": "ex-a6",
+          "name": "Prancha Abdominal",
+          "muscleGroups": ["core", "abs"],
+          "sets": 3,
+          "reps": "30-45 seg",
+          "restSeconds": 45,
+          "notes": "Corpo reto, não deixar a anca subir nem descer",
+          "videoUrl": "https://www.youtube.com/watch?v=ASdvN_XEl_c",
+          "equipmentNeeded": "Colchonete"
+        }
+      ],
+      "cardio": {
+        "description": "Passadeira: caminhada inclinada (inclinação 8-12%, velocidade confortável)",
+        "duration": 10,
+        "alternatives": ["Bicicleta em ritmo moderado"]
+      }
+    },
+    {
+      "id": "workout-b",
+      "name": "Treino B - Superior + Core",
+      "dayOfWeek": 3,
+      "targetDuration": 45,
+      "warmup": {
+        "description": "Elíptica ou remo leve",
+        "duration": 5
+      },
+      "exercises": [
+        {
+          "id": "ex-b1",
+          "name": "Press de Ombros com Halteres",
+          "muscleGroups": ["shoulders"],
+          "sets": 4,
+          "reps": 10,
+          "restSeconds": 90,
+          "notes": "Sentada no banco, costas bem apoiadas",
+          "videoUrl": "https://www.youtube.com/watch?v=qEwKCR5JCog",
+          "equipmentNeeded": "Banco + Halteres"
+        },
+        {
+          "id": "ex-b2",
+          "name": "Pulley (Lat Pulldown)",
+          "muscleGroups": ["back", "biceps"],
+          "sets": 4,
+          "reps": 12,
+          "restSeconds": 60,
+          "notes": "Pegada neutra ou supinada (palmas para cima) - puxar até ao peito",
+          "videoUrl": "https://www.youtube.com/watch?v=CAwf7n6Luuc",
+          "equipmentNeeded": "Máquina Pulley"
+        },
+        {
+          "id": "ex-b3",
+          "name": "Press de Peito com Halteres",
+          "muscleGroups": ["chest", "triceps"],
+          "sets": 3,
+          "reps": 12,
+          "restSeconds": 90,
+          "notes": "Pode ser plano ou inclinado - controlar a descida",
+          "videoUrl": "https://www.youtube.com/watch?v=VmB1G1K7v94",
+          "equipmentNeeded": "Banco + Halteres"
+        },
+        {
+          "id": "ex-b4",
+          "name": "Elevações Laterais",
+          "muscleGroups": ["shoulders"],
+          "sets": 3,
+          "reps": 12,
+          "restSeconds": 60,
+          "notes": "Foco: ombros laterais - não balançar o corpo",
+          "videoUrl": "https://www.youtube.com/watch?v=3VcKaXpzqRo",
+          "equipmentNeeded": "Halteres"
+        },
+        {
+          "id": "ex-b5",
+          "name": "Rosca Bíceps com Halteres",
+          "muscleGroups": ["biceps"],
+          "sets": 3,
+          "reps": 12,
+          "restSeconds": 60,
+          "notes": "Cotovelos fixos junto ao corpo",
+          "videoUrl": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo",
+          "equipmentNeeded": "Halteres"
+        },
+        {
+          "id": "ex-b6",
+          "name": "Extensão de Tríceps com Haltere",
+          "muscleGroups": ["triceps"],
+          "sets": 3,
+          "reps": 12,
+          "restSeconds": 60,
+          "notes": "Pode ser com 1 ou 2 halteres - manter cotovelos apontados para cima",
+          "videoUrl": "https://www.youtube.com/watch?v=_gsUck-7M74",
+          "equipmentNeeded": "Haltere"
+        },
+        {
+          "id": "ex-b7",
+          "name": "Crunch Abdominal",
+          "muscleGroups": ["abs", "core"],
+          "sets": 3,
+          "reps": 20,
+          "restSeconds": 45,
+          "notes": "Movimento curto e controlado - não puxar o pescoço",
+          "videoUrl": "https://www.youtube.com/watch?v=Xyd_fa5zoEU",
+          "equipmentNeeded": "Colchonete"
+        }
+      ],
+      "cardio": {
+        "description": "Passadeira: intervalos (1 min rápido / 1 min devagar)",
+        "duration": 10,
+        "alternatives": ["Elíptica intervalada"]
+      }
+    },
+    {
+      "id": "workout-c",
+      "name": "Treino C - Cardio + Glúteos",
+      "dayOfWeek": 5,
+      "targetDuration": 45,
+      "warmup": {
+        "description": "Caminhada rápida na passadeira",
+        "duration": 5
+      },
+      "exercises": [
+        {
+          "id": "ex-c1",
+          "name": "Step-Ups",
+          "muscleGroups": ["glutes", "quadriceps"],
+          "sets": 3,
+          "reps": "12 cada perna",
+          "restSeconds": 60,
+          "notes": "Usar step ou banco - empurrar com o calcanhar",
+          "videoUrl": "https://www.youtube.com/watch?v=dQqApCGd5Ss",
+          "equipmentNeeded": "Step ou Banco baixo"
+        },
+        {
+          "id": "ex-c2",
+          "name": "Agachamento Sumô com Haltere",
+          "muscleGroups": ["glutes", "quadriceps", "adductors"],
+          "sets": 3,
+          "reps": 15,
+          "restSeconds": 60,
+          "notes": "Pés bem afastados, pontas dos pés para fora",
+          "videoUrl": "https://www.youtube.com/watch?v=9ZuXKqRbT9k",
+          "equipmentNeeded": "Haltere ou Kettlebell"
+        },
+        {
+          "id": "ex-c3",
+          "name": "Kickback de Glúteo (cabo ou máquina)",
+          "muscleGroups": ["glutes"],
+          "sets": 3,
+          "reps": "15 cada perna",
+          "restSeconds": 45,
+          "notes": "Movimento controlado - aperta no topo",
+          "videoUrl": "https://www.youtube.com/watch?v=BkLi1JBNIp8",
+          "equipmentNeeded": "Cabo ou Máquina"
+        },
+        {
+          "id": "ex-c4",
+          "name": "Afundo Búlgaro",
+          "muscleGroups": ["glutes", "quadriceps"],
+          "sets": 3,
+          "reps": "10 cada perna",
+          "restSeconds": 60,
+          "notes": "Pé de trás no banco - joelho da frente não passa dos dedos",
+          "videoUrl": "https://www.youtube.com/watch?v=2C-uNgKwPLE",
+          "equipmentNeeded": "Banco + Halteres (opcional)"
+        },
+        {
+          "id": "ex-c5",
+          "name": "Ponte de Glúteo Unilateral",
+          "muscleGroups": ["glutes"],
+          "sets": 3,
+          "reps": "12 cada perna",
+          "restSeconds": 45,
+          "notes": "Uma perna de cada vez - ótimo para corrigir desequilíbrios",
+          "videoUrl": "https://www.youtube.com/watch?v=AVAXhy6pl7o",
+          "equipmentNeeded": "Colchonete"
+        },
+        {
+          "id": "ex-c6",
+          "name": "Mountain Climbers",
+          "muscleGroups": ["core", "cardio"],
+          "sets": 3,
+          "reps": "30 seg",
+          "restSeconds": 30,
+          "notes": "Ritmo rápido mas controlado",
+          "videoUrl": "https://www.youtube.com/watch?v=nmwgirgXLYM",
+          "equipmentNeeded": "Colchonete"
+        }
+      ],
+      "cardio": {
+        "description": "HIIT na bicicleta: 20 seg sprint / 40 seg leve (8-10 rounds)",
+        "duration": 15,
+        "alternatives": ["Elíptica HIIT", "Remo intervalado"]
+      }
+    }
+  ]
+}
