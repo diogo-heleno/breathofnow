@@ -254,7 +254,7 @@ export async function exportSessionsForLLM(
 
       const exportedExercises: ExportedExercise[] = [];
 
-      for (const [exerciseId, exerciseSets] of exerciseMap) {
+      for (const [exerciseId, exerciseSets] of Array.from(exerciseMap.entries())) {
         // Get exercise info
         const exercise = await fitlogDb.exercises.get(exerciseId);
         if (!exercise) continue;
@@ -342,7 +342,7 @@ async function generateProgressionNotes(
   }
 
   // Analyze progression for each exercise
-  for (const exerciseId of exerciseIds) {
+  for (const exerciseId of Array.from(exerciseIds)) {
     const progression = await fitlogDb.getExerciseProgression(exerciseId, 4);
     if (progression.length < 2) continue;
 
