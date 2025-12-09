@@ -336,7 +336,11 @@
       "save": "Guardar",
       "saved": "Transação guardada!",
       "expense": "Despesa",
-      "income": "Receita"
+      "income": "Receita",
+      "exchangeRate": "Taxa de câmbio",
+      "equivalent": "Equivalente",
+      "loadingRate": "A carregar taxa de câmbio...",
+      "rateError": "Não foi possível obter a taxa de câmbio"
     },
     "transactions": {
       "title": "Transações",

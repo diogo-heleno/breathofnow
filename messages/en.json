@@ -336,7 +336,11 @@
       "save": "Save",
       "saved": "Transaction saved!",
       "expense": "Expense",
-      "income": "Income"
+      "income": "Income",
+      "exchangeRate": "Exchange rate",
+      "equivalent": "Equivalent",
+      "loadingRate": "Loading exchange rate...",
+      "rateError": "Could not load exchange rate"
     },
     "transactions": {
       "title": "Transactions",

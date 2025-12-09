@@ -336,7 +336,11 @@
       "save": "Guardar",
       "saved": "¡Transacción guardada!",
       "expense": "Gasto",
-      "income": "Ingreso"
+      "income": "Ingreso",
+      "exchangeRate": "Tipo de cambio",
+      "equivalent": "Equivalente",
+      "loadingRate": "Cargando tipo de cambio...",
+      "rateError": "No se pudo obtener el tipo de cambio"
     },
     "transactions": {
       "title": "Transacciones",

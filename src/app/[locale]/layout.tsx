@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     shortcut: '/favicon-16x16.png',
     apple: '/apple-touch-icon.png',
   },
-  manifest: '/site.webmanifest',
+  manifest: '/manifest.json',
 };
 
 export function generateStaticParams() {
@@ -87,6 +87,12 @@ export default async function RootLayout({
         {/* Preconnect to fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* PWA meta tags */}
+        <meta name="theme-color" content="#7c9a75" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Breath of Now" />
+        <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body className="min-h-screen bg-neutral-50 dark:bg-neutral-950 antialiased">
         <NextIntlClientProvider messages={messages}>
