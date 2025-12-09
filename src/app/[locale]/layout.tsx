@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Fraunces, Source_Sans_3, JetBrains_Mono } from 'next/font/google';
-import './globals.css';
+import '../globals.css';
 import { ConnectivityStatus } from '@/components/pwa/connectivity-status';
 import { InstallPrompt } from '@/components/pwa/install-prompt';
 
