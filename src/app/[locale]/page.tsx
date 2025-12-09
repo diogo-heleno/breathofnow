@@ -289,14 +289,14 @@ export default function HomePage({ params: { locale } }: PageProps) {
           <div className="container-app relative">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="font-display text-display-sm md:text-display-md font-bold text-white mb-6">
-                {t('pricing.payWhatYouWant')}
+                {t('pricing.title')}
               </h2>
               <p className="text-lg text-primary-100 mb-8">
-                {t('pricing.pwywDescription')}
+                {t('pricing.description')}
               </p>
               <Link href="/pricing">
-                <Button 
-                  variant="secondary" 
+                <Button
+                  variant="secondary"
                   size="lg"
                   className="bg-white text-primary-700 hover:bg-primary-50"
                 >

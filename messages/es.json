@@ -136,78 +136,61 @@
     }
   },
   "pricing": {
-    "title": "Precio Justo",
-    "subtitle": "Paga lo que te parezca justo según tu situación",
-    "description": "Creemos en precios justos. Nuestros precios sugeridos se ajustan según el costo de vida de tu región, pero eres libre de pagar más o menos.",
+    "title": "Precios Simples y Justos",
+    "description": "Empieza gratis, actualiza cuando quieras. Sin costos ocultos, sin sorpresas.",
     "mostPopular": "Más Popular",
     "freePrice": "Gratis",
-    "minPrice": "Mínimo",
-    "payWhatYouWantShort": "Paga lo que quieras",
+    "monthly": "Mensual",
+    "yearly": "Anual",
     "questions": "¿Tienes preguntas?",
     "checkFaq": "Consulta nuestro FAQ",
+    "securePayment": "Pago seguro vía Stripe. Cancela en cualquier momento.",
     "free": {
       "title": "Gratis",
       "period": "para siempre",
-      "description": "Perfecto para probar nuestras apps",
+      "description": "Perfecto para probar todas nuestras apps",
       "features": [
-        "Acceso completo a una app",
-        "Todas las funcionalidades básicas",
+        "Acceso a todas las apps con funciones básicas",
         "Solo almacenamiento local",
-        "Banners de publicidad discretos"
+        "Banners de publicidad discretos",
+        "Soporte de la comunidad"
       ],
-      "cta": "Empezar Gratis"
+      "cta": "Empezar"
     },
     "supporter": {
       "title": "Apoyador",
-      "period": "al mes / por app",
-      "description": "Para quienes quieren apoyar nuestro trabajo y usar múltiples dispositivos",
+      "periodMonthly": "/mes",
+      "periodYearly": "/año",
+      "description": "Apoya nuestro trabajo y desbloquea la experiencia completa",
+      "savings": "Ahorra €3.89/año (2 meses gratis)",
       "features": [
+        "Acceso completo a TODAS las apps",
         "Experiencia sin anuncios",
         "Sincronización en la nube entre dispositivos",
-        "Soporte prioritario",
-        "Acceso anticipado a nuevas funcionalidades"
+        "Todas las actualizaciones incluidas",
+        "Soporte prioritario por email"
       ],
-      "cta": "Convertirse en Apoyador"
-    },
-    "fan": {
-      "title": "Fan",
-      "period": "pago único",
-      "description": "Todas las apps actuales incluidas, con funciones de IA",
-      "features": [
-        "Todas las apps actuales incluidas",
-        "Todo del plan Apoyador",
-        "Asistente de IA (créditos limitados)",
-        "Cartera de créditos para más uso de IA",
-        "50% de descuento en apps futuras"
-      ],
-      "cta": "Convertirse en Fan"
+      "cta": "Suscribirse Ahora"
     },
     "founder": {
       "title": "Miembro Fundador",
-      "badge": "Limitado",
+      "badge": "Early Bird",
       "period": "pago único",
-      "description": "Todas las apps para siempre - actuales y futuras",
+      "description": "Acceso vitalicio a todo, para siempre",
+      "limitedSpots": "Limitado a 100 miembros",
       "features": [
-        "Todas las apps actuales incluidas",
-        "Todas las apps futuras incluidas para siempre",
-        "Asistente de IA (créditos generosos)",
-        "Cartera de créditos para más uso de IA",
-        "Badge de miembro fundador",
-        "Línea directa con los fundadores"
+        "Acceso vitalicio a TODAS las apps",
+        "Todas las versiones futuras incluidas (v2, v3...)",
+        "Experiencia sin anuncios",
+        "Sincronización en la nube entre dispositivos",
+        "Acceso anticipado (2 semanas antes del público)",
+        "Nombre en el Hall of Fame",
+        "Sesiones Q&A trimestrales con el fundador",
+        "Solicitudes de funciones priorizadas",
+        "Badge de Miembro Fundador",
+        "Soporte directo vía Discord"
       ],
       "cta": "Convertirse en Fundador"
-    },
-    "payWhatYouWant": "Paga Lo Que Quieras",
-    "pwywDescription": "Precio sugerido basado en tu región. Ajusta hacia arriba o abajo como prefieras.",
-    "suggestedPrice": "Sugerido",
-    "yourPrice": "Tu precio",
-    "regionNote": "Los precios mostrados son sugerencias basadas en tu ubicación ({region}). Eres bienvenido a ajustar.",
-    "aiCredits": {
-      "title": "Cómo Funcionan los Créditos de IA",
-      "description": "Los planes Fan y Miembro Fundador incluyen funciones de IA con créditos mensuales. Cuando se agoten, puedes comprar más a través de tu cartera de créditos.",
-      "feature1": "Fan: 100 créditos de IA/mes incluidos",
-      "feature2": "Fundador: 500 créditos de IA/mes incluidos",
-      "feature3": "Créditos adicionales disponibles vía cartera"
     }
   },
   "features": {
@@ -263,8 +246,8 @@
         "answer": "¡Sí! Puedes hacer upgrade para quitar anuncios y desbloquear funcionalidades premium en cualquier momento. Si cancelas tu suscripción, mantienes acceso hasta el final del período de facturación, luego vuelves al plan gratis."
       },
       {
-        "question": "¿Cuál es la diferencia entre Fan y Miembro Fundador?",
-        "answer": "El plan Fan incluye todas las apps actuales con un pago único, además de funciones de IA con créditos limitados y 50% de descuento en apps futuras. El plan Miembro Fundador incluye todas las apps actuales Y futuras para siempre, créditos de IA más generosos, y acceso directo a nuestro equipo. Ambos planes incluyen una cartera de créditos para comprar créditos de IA adicionales cuando sea necesario."
+        "question": "¿Qué incluye el plan Miembro Fundador?",
+        "answer": "El plan Miembro Fundador (€599 pago único) te da acceso vitalicio a TODAS las apps y TODAS las versiones futuras para siempre. También tienes acceso anticipado a nuevas funciones, tu nombre en el Hall of Fame, sesiones Q&A trimestrales con el fundador, solicitudes de funciones priorizadas, y soporte directo vía Discord. Está limitado a los primeros 100 miembros."
       },
       {
         "question": "¿Tienen una app móvil?",
