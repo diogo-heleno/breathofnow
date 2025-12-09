@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev)",
+      "Bash(npm run build)",
+      "Bash(npm run lint)",
+      "Bash(npm run start)",
+      "Bash(npm install)",
+      "Bash(npm install *)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(npx tsc *)",
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(git diff *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git log *)",
+      "Bash(git branch *)",
+      "Bash(git checkout *)",
+      "Bash(git fetch *)",
+      "Bash(git pull *)",
+      "Bash(ls *)",
+      "Bash(mkdir *)",
+      "Bash(rm -rf node_modules)",
+      "Bash(rm -rf .next)"
+    ],
+    "deny": []
+  }
+}
