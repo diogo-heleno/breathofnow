@@ -316,7 +316,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
       </main>
 
       <Footer />
-      <AdBanner position="bottom" />
+      <AdBanner position="bottom" slot="homepage-footer" />
     </>
   );
 }
