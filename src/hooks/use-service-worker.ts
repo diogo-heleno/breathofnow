@@ -65,9 +65,13 @@ export function useServiceWorker() {
       setState((prev) => ({ ...prev, isOnline: true }));
       
       // Trigger sync quando voltar online
-      if ('serviceWorker' in navigator && 'sync' in ServiceWorkerRegistration.prototype) {
+      if ('serviceWorker' in navigator && 'SyncManager' in window) {
         navigator.serviceWorker.ready.then((registration) => {
-          return registration.sync.register('sync-data');
+          // Background Sync API (experimental)
+          const reg = registration as ServiceWorkerRegistration & {
+            sync: { register: (tag: string) => Promise<void> };
+          };
+          return reg.sync?.register('sync-data');
         }).catch(console.error);
       }
     };
