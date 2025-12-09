@@ -4,8 +4,12 @@
 
 Breath of Now is a privacy-first ecosystem of micro-apps for mindful living, built by M21 Global, Lda.
 
+**Domains:**
+- Website/Landing: `www.breathofnow.site`
+- Apps: `app.breathofnow.site`
+
 **Current Apps:**
-- ExpenseFlow (Available) - Expense tracking
+- ExpenseFlow (Available) - Expense tracking with full CRUD, charts, and reports
 - InvestTrack (Beta) - Investment tracking
 - FitLog, StravaSync, RecipeBox, LabelScan (Coming Soon)
 
