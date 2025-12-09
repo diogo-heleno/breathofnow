@@ -139,51 +139,76 @@
     "title": "Prix Juste",
     "subtitle": "Payez ce qui vous semble juste selon votre situation",
     "description": "Nous croyons aux prix justes. Nos prix suggérés sont ajustés selon le coût de la vie de votre région, mais vous êtes libre de payer plus ou moins.",
+    "mostPopular": "Plus Populaire",
+    "freePrice": "Gratuit",
+    "minPrice": "Minimum",
+    "payWhatYouWantShort": "Payez ce que vous voulez",
+    "questions": "Des questions ?",
+    "checkFaq": "Consultez notre FAQ",
     "free": {
       "title": "Gratuit",
-      "price": "€0",
       "period": "pour toujours",
       "description": "Parfait pour essayer nos apps",
       "features": [
         "Accès complet à une app",
         "Toutes les fonctionnalités de base",
-        "Stockage local",
+        "Stockage local uniquement",
         "Bannières publicitaires discrètes"
       ],
       "cta": "Commencer Gratuitement"
     },
     "supporter": {
       "title": "Supporter",
-      "priceFrom": "À partir de",
-      "period": "par mois",
-      "description": "Pour ceux qui veulent soutenir notre travail",
+      "period": "par mois / par app",
+      "description": "Pour ceux qui veulent soutenir notre travail et utiliser plusieurs appareils",
       "features": [
         "Expérience sans publicité",
-        "Accès à toutes les apps",
-        "Sauvegarde cloud (optionnel)",
+        "Synchronisation cloud entre appareils",
         "Support prioritaire",
         "Accès anticipé aux nouvelles fonctionnalités"
       ],
       "cta": "Devenir Supporter"
     },
-    "lifetime": {
-      "title": "À Vie",
-      "priceFrom": "À partir de",
+    "fan": {
+      "title": "Fan",
       "period": "paiement unique",
-      "description": "Payez une fois, utilisez pour toujours",
+      "description": "Toutes les apps actuelles incluses, avec fonctions IA",
       "features": [
+        "Toutes les apps actuelles incluses",
         "Tout du plan Supporter",
-        "1 an de mises à jour inclus",
-        "Apps futures à 50% de réduction",
-        "Badge de membre fondateur"
+        "Assistant IA (crédits limités)",
+        "Portefeuille de crédits pour plus d'IA",
+        "50% de réduction sur les apps futures"
       ],
-      "cta": "Acheter À Vie"
+      "cta": "Devenir Fan"
+    },
+    "founder": {
+      "title": "Membre Fondateur",
+      "badge": "Limité",
+      "period": "paiement unique",
+      "description": "Toutes les apps pour toujours - actuelles et futures",
+      "features": [
+        "Toutes les apps actuelles incluses",
+        "Toutes les apps futures incluses pour toujours",
+        "Assistant IA (crédits généreux)",
+        "Portefeuille de crédits pour plus d'IA",
+        "Badge de membre fondateur",
+        "Ligne directe avec les fondateurs"
+      ],
+      "cta": "Devenir Fondateur"
     },
     "payWhatYouWant": "Payez Ce Que Vous Voulez",
     "pwywDescription": "Prix suggéré basé sur votre région. Ajustez vers le haut ou le bas comme vous préférez.",
     "suggestedPrice": "Suggéré",
     "yourPrice": "Votre prix",
-    "regionNote": "Les prix affichés sont des suggestions basées sur votre emplacement ({region}). Vous êtes libre d'ajuster."
+    "regionNote": "Les prix affichés sont des suggestions basées sur votre emplacement ({region}). Vous êtes libre d'ajuster.",
+    "aiCredits": {
+      "title": "Comment Fonctionnent les Crédits IA",
+      "description": "Les plans Fan et Membre Fondateur incluent des fonctions IA avec des crédits mensuels. Quand ils sont épuisés, vous pouvez en acheter plus via votre portefeuille de crédits.",
+      "feature1": "Fan : 100 crédits IA/mois inclus",
+      "feature2": "Fondateur : 500 crédits IA/mois inclus",
+      "feature3": "Crédits supplémentaires disponibles via portefeuille"
+    }
   },
   "features": {
     "title": "Pourquoi Breath of Now ?",
@@ -238,8 +263,8 @@
         "answer": "Oui ! Vous pouvez passer à la version premium pour supprimer les publicités et débloquer les fonctionnalités premium à tout moment. Si vous annulez votre abonnement, vous gardez l'accès jusqu'à la fin de la période de facturation, puis vous revenez au plan gratuit."
       },
       {
-        "question": "Que comprend le plan À Vie ?",
-        "answer": "Le plan À Vie comprend toutes les apps actuelles, une expérience sans publicité et 1 an de mises à jour. Après cette année, les apps continuent de fonctionner, mais vous pourriez ne pas recevoir les nouvelles fonctionnalités sans renouvellement."
+        "question": "Quelle est la différence entre Fan et Membre Fondateur ?",
+        "answer": "Le plan Fan comprend toutes les apps actuelles avec un paiement unique, plus des fonctions IA avec crédits limités et 50% de réduction sur les apps futures. Le plan Membre Fondateur comprend toutes les apps actuelles ET futures pour toujours, des crédits IA plus généreux, et un accès direct à notre équipe. Les deux plans incluent un portefeuille de crédits pour acheter des crédits IA supplémentaires si nécessaire."
       },
       {
         "question": "Avez-vous une app mobile ?",

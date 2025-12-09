@@ -139,51 +139,76 @@
     "title": "Preço Justo",
     "subtitle": "Pague o que achar justo de acordo com sua situação",
     "description": "Acreditamos em preços justos. Nossos preços sugeridos são ajustados com base no custo de vida da sua região, mas você é livre para pagar mais ou menos.",
+    "mostPopular": "Mais Popular",
+    "freePrice": "Grátis",
+    "minPrice": "Mínimo",
+    "payWhatYouWantShort": "Pague o que quiser",
+    "questions": "Tem dúvidas?",
+    "checkFaq": "Confira nosso FAQ",
     "free": {
       "title": "Grátis",
-      "price": "R$0",
       "period": "para sempre",
       "description": "Perfeito para experimentar nossos apps",
       "features": [
         "Acesso completo a um app",
         "Todas as funcionalidades básicas",
-        "Armazenamento local",
+        "Apenas armazenamento local",
         "Banners de publicidade discretos"
       ],
       "cta": "Começar Grátis"
     },
     "supporter": {
       "title": "Apoiador",
-      "priceFrom": "A partir de",
-      "period": "por mês",
-      "description": "Para quem quer apoiar nosso trabalho",
+      "period": "por mês / por app",
+      "description": "Para quem quer apoiar nosso trabalho e usar múltiplos dispositivos",
       "features": [
         "Experiência sem anúncios",
-        "Acesso a todos os apps",
-        "Backup na nuvem (opcional)",
+        "Sincronização na nuvem entre dispositivos",
         "Suporte prioritário",
         "Acesso antecipado a novas funcionalidades"
       ],
       "cta": "Tornar-se Apoiador"
     },
-    "lifetime": {
-      "title": "Vitalício",
-      "priceFrom": "A partir de",
+    "fan": {
+      "title": "Fã",
       "period": "pagamento único",
-      "description": "Pague uma vez, use para sempre",
+      "description": "Todos os apps atuais incluídos, com funcionalidades de IA",
       "features": [
+        "Todos os apps atuais incluídos",
         "Tudo do plano Apoiador",
-        "1 ano de atualizações incluído",
-        "Apps futuros com 50% de desconto",
-        "Badge de membro fundador"
+        "Assistente de IA (créditos limitados)",
+        "Carteira de créditos para mais uso de IA",
+        "50% de desconto em apps futuros"
       ],
-      "cta": "Comprar Vitalício"
+      "cta": "Tornar-se Fã"
+    },
+    "founder": {
+      "title": "Membro Fundador",
+      "badge": "Limitado",
+      "period": "pagamento único",
+      "description": "Todos os apps para sempre - atuais e futuros",
+      "features": [
+        "Todos os apps atuais incluídos",
+        "Todos os apps futuros incluídos para sempre",
+        "Assistente de IA (créditos generosos)",
+        "Carteira de créditos para mais uso de IA",
+        "Badge de membro fundador",
+        "Linha direta com os fundadores"
+      ],
+      "cta": "Tornar-se Fundador"
     },
     "payWhatYouWant": "Pague o Que Quiser",
     "pwywDescription": "Preço sugerido baseado na sua região. Ajuste para cima ou para baixo como preferir.",
     "suggestedPrice": "Sugerido",
     "yourPrice": "Seu preço",
-    "regionNote": "Preços mostrados são sugestões baseadas na sua localização ({region}). Você é bem-vindo a ajustar."
+    "regionNote": "Preços mostrados são sugestões baseadas na sua localização ({region}). Você é bem-vindo a ajustar.",
+    "aiCredits": {
+      "title": "Como Funcionam os Créditos de IA",
+      "description": "Os planos Fã e Membro Fundador incluem funcionalidades com IA com créditos mensais. Quando acabarem, você pode comprar mais através da sua carteira de créditos.",
+      "feature1": "Fã: 100 créditos de IA/mês incluídos",
+      "feature2": "Fundador: 500 créditos de IA/mês incluídos",
+      "feature3": "Créditos adicionais disponíveis via carteira"
+    }
   },
   "features": {
     "title": "Por que Breath of Now?",
@@ -238,8 +263,8 @@
         "answer": "Sim! Você pode fazer upgrade para remover anúncios e desbloquear funcionalidades premium a qualquer momento. Se cancelar sua assinatura, mantém acesso até o fim do período de cobrança, depois volta ao plano grátis."
       },
       {
-        "question": "O que está incluído no plano Vitalício?",
-        "answer": "O plano Vitalício inclui todos os apps atuais, experiência sem anúncios e 1 ano de atualizações. Após esse ano, os apps continuam funcionando, mas você pode não receber novas funcionalidades sem renovar."
+        "question": "Qual a diferença entre Fã e Membro Fundador?",
+        "answer": "O plano Fã inclui todos os apps atuais com um pagamento único, além de funcionalidades de IA com créditos limitados e 50% de desconto em apps futuros. O plano Membro Fundador inclui todos os apps atuais E futuros para sempre, créditos de IA mais generosos, e acesso direto à nossa equipe. Ambos os planos incluem uma carteira de créditos para comprar créditos de IA adicionais quando necessário."
       },
       {
         "question": "Vocês têm um app móvel?",
