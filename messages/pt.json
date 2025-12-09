@@ -136,61 +136,149 @@
     }
   },
   "pricing": {
-    "title": "Preços Simples e Justos",
-    "description": "Comece grátis, faça upgrade quando quiser. Sem taxas escondidas, sem surpresas.",
-    "mostPopular": "Mais Popular",
-    "freePrice": "Grátis",
-    "monthly": "Mensal",
-    "yearly": "Anual",
-    "questions": "Tem dúvidas?",
-    "checkFaq": "Consulte as nossas FAQ",
-    "securePayment": "Pagamento seguro via Stripe. Cancele a qualquer momento.",
+    "title": "Comece a Sua Jornada Hoje",
+    "description": "Todas as nossas apps são gratuitas. Faça upgrade a qualquer momento para mais funcionalidades e sincronização na nuvem.",
     "free": {
-      "title": "Grátis",
-      "period": "para sempre",
-      "description": "Perfeito para experimentar todas as nossas apps",
-      "features": [
-        "Acesso a todas as apps com funcionalidades básicas",
-        "Apenas armazenamento local",
-        "Banners de publicidade discretos",
-        "Suporte da comunidade"
-      ],
-      "cta": "Começar"
+      "cta": "Experimente Grátis"
     },
-    "supporter": {
-      "title": "Apoiante",
-      "periodMonthly": "/mês",
-      "periodYearly": "/ano",
-      "description": "Apoie o nosso trabalho e desbloqueie a experiência completa",
-      "savings": "Poupe €3.89/ano (2 meses grátis)",
-      "features": [
-        "Acesso completo a TODAS as apps",
-        "Experiência sem anúncios",
-        "Sincronização cloud entre dispositivos",
-        "Todas as atualizações incluídas",
-        "Suporte prioritário por email"
-      ],
-      "cta": "Subscrever Agora"
+    "hero": {
+      "badge": "Preços simples e transparentes",
+      "title": "Escolha o seu plano",
+      "subtitle": "Comece grátis, faça upgrade quando precisar. Sem taxas escondidas, cancele a qualquer momento."
     },
-    "founder": {
-      "title": "Membro Fundador",
-      "badge": "Early Bird",
-      "period": "pagamento único",
-      "description": "Acesso vitalício a tudo, para sempre",
-      "limitedSpots": "Limitado a 100 membros",
-      "features": [
-        "Acesso vitalício a TODAS as apps",
-        "Todas as versões futuras incluídas (v2, v3...)",
-        "Experiência sem anúncios",
-        "Sincronização cloud entre dispositivos",
-        "Acesso antecipado (2 semanas antes do público)",
-        "Nome no Hall of Fame",
-        "Sessões Q&A trimestrais com o fundador",
-        "Pedidos de funcionalidades priorizados",
-        "Badge de Membro Fundador",
-        "Suporte direto via Discord"
-      ],
-      "cta": "Tornar-se Fundador"
+    "billing": {
+      "monthly": "Mensal",
+      "yearly": "Anual",
+      "save": "Poupe {percent}%"
+    },
+    "price": {
+      "free": "Grátis",
+      "month": "mês",
+      "year": "ano",
+      "lifetime": "pagamento único",
+      "oneTime": "pagamento único",
+      "equivalent": "{price}/mês equivalente",
+      "savings": "Poupe {percent}% anualmente"
+    },
+    "badge": {
+      "mostPopular": "Mais Popular",
+      "popular": "Popular",
+      "limitedSpots": "{spots} lugares restantes"
+    },
+    "cta": {
+      "getStarted": "Começar",
+      "subscribe": "Subscrever",
+      "becomeFounder": "Tornar-se Fundador",
+      "select": "Selecionar"
+    },
+    "features": {
+      "noCloudSync": "Sincronização cloud",
+      "noPrioritySupport": "Suporte prioritário"
+    },
+    "appSelector": {
+      "title": "Escolha as suas apps",
+      "selected": "selecionadas",
+      "chooseApps": "Escolher apps:",
+      "status": {
+        "available": "Disponível",
+        "beta": "Beta",
+        "comingSoon": "Em Breve"
+      }
+    },
+    "plans": {
+      "free": {
+        "name": "Grátis",
+        "description": "Perfeito para experimentar todas as apps",
+        "features": {
+          "allApps": "Acesso a todas as apps",
+          "localStorage": "Apenas armazenamento local",
+          "ads": "Banners de publicidade discretos",
+          "communitySupport": "Suporte da comunidade"
+        },
+        "cta": "Começar"
+      },
+      "starter": {
+        "name": "Starter",
+        "description": "Foque-se no que mais importa",
+        "features": {
+          "oneApp": "1 app à sua escolha",
+          "googleDrive": "Local + Google Drive backup",
+          "noAds": "Experiência sem anúncios",
+          "emailSupport": "Suporte por email"
+        },
+        "cta": "Subscrever"
+      },
+      "plus": {
+        "name": "Plus",
+        "description": "Melhor valor para a maioria",
+        "features": {
+          "threeApps": "3 apps à sua escolha",
+          "cloudSync": "Local + Google Drive + Cloud sync",
+          "noAds": "Experiência sem anúncios",
+          "priorityEmail": "Suporte prioritário por email"
+        },
+        "cta": "Subscrever"
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "Tudo, sem limites",
+        "features": {
+          "allApps": "Todas as apps incluídas",
+          "cloudSync": "Local + Google Drive + Cloud sync",
+          "noAds": "Experiência sem anúncios",
+          "prioritySupport": "Suporte prioritário",
+          "earlyAccess": "Acesso antecipado a novas funcionalidades"
+        },
+        "cta": "Subscrever"
+      },
+      "founding": {
+        "name": "Membro Fundador",
+        "description": "Acesso vitalício, para sempre",
+        "features": {
+          "lifetime": "Acesso vitalício a TODAS as apps",
+          "futureVersions": "Todas as versões futuras incluídas (v2, v3...)",
+          "cloudSync": "Local + Google Drive + Cloud sync",
+          "noAds": "Experiência sem anúncios",
+          "prioritySupport": "Suporte prioritário para sempre",
+          "earlyAccess": "Acesso antecipado (2 semanas antes do público)",
+          "badge": "Badge exclusiva de Membro Fundador",
+          "qanda": "Q&A trimestral com o fundador",
+          "hallOfFame": "Nome no Hall of Fame"
+        },
+        "cta": "Tornar-se Fundador"
+      }
+    },
+    "founding": {
+      "title": "Torne-se um Membro Fundador",
+      "subtitle": "Junte-se ao nosso grupo exclusivo de apoiantes e obtenha acesso vitalício a tudo"
+    },
+    "comparison": {
+      "title": "Comparar planos",
+      "feature": "Funcionalidade",
+      "appsIncluded": "Apps incluídas",
+      "localStorage": "Armazenamento local",
+      "googleDrive": "Google Drive backup",
+      "cloudSync": "Cloud sync",
+      "noAds": "Sem anúncios",
+      "prioritySupport": "Suporte prioritário"
+    },
+    "trust": {
+      "privacy": {
+        "title": "Privacidade Primeiro",
+        "description": "Os seus dados ficam no seu dispositivo a menos que escolha sincronizar"
+      },
+      "payment": {
+        "title": "Pagamento Seguro",
+        "description": "Todos os pagamentos processados de forma segura via Stripe"
+      },
+      "cancel": {
+        "title": "Cancele a Qualquer Momento",
+        "description": "Sem perguntas, sem compromissos a longo prazo"
+      }
+    },
+    "faq": {
+      "question": "Tem dúvidas?",
+      "link": "Consulte as nossas FAQ"
     }
   },
   "features": {

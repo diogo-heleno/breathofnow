@@ -136,61 +136,149 @@
     }
   },
   "pricing": {
-    "title": "Simple, Fair Pricing",
-    "description": "Start free, upgrade when you're ready. No hidden fees, no surprises.",
-    "mostPopular": "Most Popular",
-    "freePrice": "Free",
-    "monthly": "Monthly",
-    "yearly": "Yearly",
-    "questions": "Have questions?",
-    "checkFaq": "Check our FAQ",
-    "securePayment": "Secure payment via Stripe. Cancel anytime.",
+    "title": "Start Your Journey Today",
+    "description": "All our apps are free to use. Upgrade anytime for more features and cloud sync.",
     "free": {
-      "title": "Free",
-      "period": "forever",
-      "description": "Perfect for trying out all our apps",
-      "features": [
-        "Access to all apps with basic features",
-        "Local data storage only",
-        "Discrete ad banners",
-        "Community support"
-      ],
-      "cta": "Get Started"
+      "cta": "Try Free Now"
     },
-    "supporter": {
-      "title": "Supporter",
-      "periodMonthly": "/month",
-      "periodYearly": "/year",
-      "description": "Support our work and unlock the full experience",
-      "savings": "Save €3.89/year (2 months free)",
-      "features": [
-        "Full access to ALL apps",
-        "Ad-free experience",
-        "Cloud sync across devices",
-        "All updates included",
-        "Priority email support"
-      ],
-      "cta": "Subscribe Now"
+    "hero": {
+      "badge": "Simple, transparent pricing",
+      "title": "Choose your plan",
+      "subtitle": "Start free, upgrade when you need more. No hidden fees, cancel anytime."
     },
-    "founder": {
-      "title": "Founding Member",
-      "badge": "Early Bird",
-      "period": "one-time",
-      "description": "Lifetime access to everything, forever",
-      "limitedSpots": "Limited to 100 members",
-      "features": [
-        "Lifetime access to ALL apps",
-        "All future versions included (v2, v3...)",
-        "Ad-free experience",
-        "Cloud sync across devices",
-        "Early access (2 weeks before public)",
-        "Name in Hall of Fame",
-        "Quarterly Q&A sessions with founder",
-        "Priority feature requests",
-        "Founding Member badge",
-        "Direct support via Discord"
-      ],
-      "cta": "Become a Founder"
+    "billing": {
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "save": "Save {percent}%"
+    },
+    "price": {
+      "free": "Free",
+      "month": "mo",
+      "year": "yr",
+      "lifetime": "one-time",
+      "oneTime": "one-time payment",
+      "equivalent": "{price}/mo equivalent",
+      "savings": "Save {percent}% yearly"
+    },
+    "badge": {
+      "mostPopular": "Most Popular",
+      "popular": "Popular",
+      "limitedSpots": "{spots} spots left"
+    },
+    "cta": {
+      "getStarted": "Get Started",
+      "subscribe": "Subscribe",
+      "becomeFounder": "Become a Founder",
+      "select": "Select"
+    },
+    "features": {
+      "noCloudSync": "Cloud sync",
+      "noPrioritySupport": "Priority support"
+    },
+    "appSelector": {
+      "title": "Choose your apps",
+      "selected": "selected",
+      "chooseApps": "Choose apps:",
+      "status": {
+        "available": "Available",
+        "beta": "Beta",
+        "comingSoon": "Coming Soon"
+      }
+    },
+    "plans": {
+      "free": {
+        "name": "Free",
+        "description": "Perfect for trying out all our apps",
+        "features": {
+          "allApps": "Access to all apps",
+          "localStorage": "Local storage only",
+          "ads": "Discrete ad banners",
+          "communitySupport": "Community support"
+        },
+        "cta": "Get Started"
+      },
+      "starter": {
+        "name": "Starter",
+        "description": "Focus on what matters most",
+        "features": {
+          "oneApp": "1 app of your choice",
+          "googleDrive": "Local + Google Drive backup",
+          "noAds": "Ad-free experience",
+          "emailSupport": "Email support"
+        },
+        "cta": "Subscribe"
+      },
+      "plus": {
+        "name": "Plus",
+        "description": "Best value for most users",
+        "features": {
+          "threeApps": "3 apps of your choice",
+          "cloudSync": "Local + Google Drive + Cloud sync",
+          "noAds": "Ad-free experience",
+          "priorityEmail": "Priority email support"
+        },
+        "cta": "Subscribe"
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "Everything, unlimited",
+        "features": {
+          "allApps": "All apps included",
+          "cloudSync": "Local + Google Drive + Cloud sync",
+          "noAds": "Ad-free experience",
+          "prioritySupport": "Priority support",
+          "earlyAccess": "Early access to new features"
+        },
+        "cta": "Subscribe"
+      },
+      "founding": {
+        "name": "Founding Member",
+        "description": "Lifetime access, forever",
+        "features": {
+          "lifetime": "Lifetime access to ALL apps",
+          "futureVersions": "All future versions included (v2, v3...)",
+          "cloudSync": "Local + Google Drive + Cloud sync",
+          "noAds": "Ad-free experience",
+          "prioritySupport": "Priority support forever",
+          "earlyAccess": "Early access (2 weeks before public)",
+          "badge": "Exclusive Founding Member badge",
+          "qanda": "Quarterly Q&A with founder",
+          "hallOfFame": "Name in Hall of Fame"
+        },
+        "cta": "Become a Founder"
+      }
+    },
+    "founding": {
+      "title": "Become a Founding Member",
+      "subtitle": "Join our exclusive group of early supporters and get lifetime access to everything"
+    },
+    "comparison": {
+      "title": "Compare plans",
+      "feature": "Feature",
+      "appsIncluded": "Apps included",
+      "localStorage": "Local storage",
+      "googleDrive": "Google Drive backup",
+      "cloudSync": "Cloud sync",
+      "noAds": "Ad-free",
+      "prioritySupport": "Priority support"
+    },
+    "trust": {
+      "privacy": {
+        "title": "Privacy First",
+        "description": "Your data stays on your device unless you choose to sync"
+      },
+      "payment": {
+        "title": "Secure Payment",
+        "description": "All payments processed securely via Stripe"
+      },
+      "cancel": {
+        "title": "Cancel Anytime",
+        "description": "No questions asked, no long-term commitments"
+      }
+    },
+    "faq": {
+      "question": "Have questions?",
+      "link": "Check our FAQ"
     }
   },
   "features": {
