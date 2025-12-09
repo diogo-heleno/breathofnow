@@ -1,0 +1,44 @@
+{
+  "expenseFlow": {
+    "sync": {
+      "syncing": "A sincronizar...",
+      "synced": "Tudo sincronizado",
+      "syncError": "Erro de sincronização",
+      "offline": "Offline",
+      "hasConflicts": "{count} conflitos por resolver",
+      "lastSync": "Última sync",
+      "never": "Nunca",
+      "justNow": "Agora mesmo",
+      "minutesAgo": "Há {minutes}m",
+      "hoursAgo": "Há {hours}h",
+      "syncNow": "Sincronizar",
+      "clickToSync": "Clica para sincronizar",
+      "signInToSync": "Inicia sessão para ativar sync cloud",
+      "connection": "Conexão",
+      "online": "Online",
+      "authentication": "Autenticação",
+      "authenticated": "Autenticado",
+      "notAuthenticated": "Não autenticado",
+      "conflicts": "Conflitos",
+      "status": "Estado"
+    }
+  },
+  "premium": {
+    "locked": "Funcionalidade Premium",
+    "upgrade": "Upgrade",
+    "viewPlans": "Ver Planos",
+    "premium": "Premium",
+    "premiumFeature": "Funcionalidade Premium",
+    "startingAt": "A partir de {price}",
+    "features": {
+      "cloudSync": "Sync cloud mantém os teus dados seguros em todos os dispositivos",
+      "googleDrive": "Faz backup dos teus dados para o Google Drive",
+      "prioritySupport": "Obtém suporte prioritário da nossa equipa",
+      "noAds": "Desfruta de uma experiência sem anúncios"
+    }
+  },
+  "ads": {
+    "banner": "Publicidade",
+    "removeAds": "Remover anúncios"
+  }
+}

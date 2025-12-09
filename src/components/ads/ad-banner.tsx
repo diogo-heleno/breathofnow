@@ -1,93 +1,201 @@
+/**
+ * Ad Banner Component
+ * 
+ * Mostra anúncios para utilizadores free
+ * Suporta Google AdSense quando configurado
+ */
+
 'use client';
 
-import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAppStore } from '@/stores/app-store';
 
 interface AdBannerProps {
-  position?: 'top' | 'bottom' | 'inline';
+  position: 'top' | 'bottom' | 'inline';
+  slot: string;
   className?: string;
+  format?: 'auto' | 'horizontal' | 'rectangle';
 }
 
-export function AdBanner({ position = 'bottom', className }: AdBannerProps) {
+export function AdBanner({
+  position,
+  slot,
+  className,
+  format = 'auto',
+}: AdBannerProps) {
   const t = useTranslations('ads');
-  const { showAds, user } = useAppStore();
-  const [isDismissed, setIsDismissed] = React.useState(false);
+  const adRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
-  // Don't show if premium user or ads disabled
-  if (!showAds || user?.isPremium || isDismissed) {
-    return null;
+  // Check if AdSense is configured
+  const adsenseClientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+  const isAdsenseEnabled = !!adsenseClientId;
+
+  useEffect(() => {
+    if (!isAdsenseEnabled || !adRef.current) return;
+
+    try {
+      // Load AdSense script if not already loaded
+      if (!window.adsbygoogle) {
+        const script = document.createElement('script');
+        script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`;
+        script.async = true;
+        script.crossOrigin = 'anonymous';
+        script.onload = () => {
+          pushAd();
+        };
+        script.onerror = () => {
+          setHasError(true);
+        };
+        document.head.appendChild(script);
+      } else {
+        pushAd();
+      }
+    } catch {
+      setHasError(true);
+    }
+  }, [isAdsenseEnabled, adsenseClientId]);
+
+  const pushAd = () => {
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      setIsLoaded(true);
+    } catch {
+      setHasError(true);
+    }
+  };
+
+  // Placeholder dimensions based on position
+  const getDimensions = () => {
+    switch (position) {
+      case 'top':
+        return 'h-[90px] max-h-[90px]';
+      case 'bottom':
+        return 'h-[50px] max-h-[50px]';
+      case 'inline':
+        return 'h-[250px] max-h-[250px]';
+      default:
+        return 'h-[90px]';
+    }
+  };
+
+  // If AdSense not configured, show placeholder
+  if (!isAdsenseEnabled) {
+    return (
+      <div
+        className={cn(
+          'flex items-center justify-center bg-neutral-100 dark:bg-neutral-800',
+          getDimensions(),
+          className
+        )}
+      >
+        <div className="text-center">
+          <p className="text-xs text-neutral-400 dark:text-neutral-500">
+            {t('banner')}
+          </p>
+          <p className="text-[10px] text-neutral-300 dark:text-neutral-600 mt-1">
+            {slot}
+          </p>
+        </div>
+      </div>
+    );
   }
 
-  const positions = {
-    top: 'fixed top-16 md:top-20 left-0 right-0 z-40',
-    bottom: 'fixed bottom-0 left-0 right-0 z-40',
-    inline: 'relative',
-  };
+  // If there was an error loading ads
+  if (hasError) {
+    return null; // Don't show anything if ads fail to load
+  }
 
   return (
     <div
       className={cn(
-        'bg-neutral-100 dark:bg-neutral-900',
-        'border-neutral-200 dark:border-neutral-800',
-        position === 'top' && 'border-b',
-        position === 'bottom' && 'border-t',
-        position === 'inline' && 'border rounded-xl',
-        positions[position],
+        'relative flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 overflow-hidden',
+        getDimensions(),
         className
       )}
     >
-      <div className="container-app py-3 px-4">
-        <div className="flex items-center justify-between gap-4">
-          {/* Ad content placeholder */}
-          <div className="flex-1 flex items-center justify-center">
-            <div className="flex items-center gap-3">
-              <span className="text-xs text-neutral-500 dark:text-neutral-500 uppercase tracking-wider">
-                {t('banner')}
-              </span>
-              {/* 
-                This is where you would integrate Google AdSense or similar.
-                Example AdSense code would go here:
-                <ins 
-                  className="adsbygoogle"
-                  style={{ display: 'inline-block', width: '728px', height: '90px' }}
-                  data-ad-client="ca-pub-XXXXXXX"
-                  data-ad-slot="XXXXXXX"
-                />
-              */}
-              <div className="bg-neutral-200 dark:bg-neutral-800 rounded-lg px-6 py-2 text-sm text-neutral-500">
-                Ad Space - 728x90
-              </div>
-            </div>
-          </div>
-
-          {/* Dismiss button (only for inline) */}
-          {position === 'inline' && (
-            <button
-              onClick={() => setIsDismissed(true)}
-              className="p-1.5 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-800"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-
-          {/* Upgrade prompt */}
-          <a
-            href="/pricing"
-            className="text-xs text-primary-600 dark:text-primary-400 hover:underline whitespace-nowrap"
-          >
-            {t('removeAds')}
-          </a>
+      {/* Loading state */}
+      {!isLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-4 h-4 border-2 border-neutral-300 border-t-primary-500 rounded-full animate-spin" />
         </div>
+      )}
+
+      {/* AdSense Ad Unit */}
+      <div ref={adRef} className="w-full h-full">
+        <ins
+          className="adsbygoogle"
+          style={{
+            display: 'block',
+            width: '100%',
+            height: '100%',
+          }}
+          data-ad-client={adsenseClientId}
+          data-ad-slot={slot}
+          data-ad-format={format}
+          data-full-width-responsive="true"
+        />
       </div>
+
+      {/* Ad label */}
+      <span className="absolute top-1 right-1 text-[9px] text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">
+        Ad
+      </span>
     </div>
   );
 }
 
-// Hook to add bottom padding when ad banner is visible
-export function useAdBannerPadding() {
-  const { showAds, user } = useAppStore();
-  return showAds && !user?.isPremium ? 'pb-16' : '';
+/**
+ * Inline ad for content feeds
+ */
+export function InlineAd({
+  slot,
+  className,
+}: {
+  slot: string;
+  className?: string;
+}) {
+  return (
+    <AdBanner
+      position="inline"
+      slot={slot}
+      format="rectangle"
+      className={cn('rounded-lg my-4', className)}
+    />
+  );
+}
+
+/**
+ * Native ad component (for future implementation)
+ */
+export function NativeAd({
+  className,
+}: {
+  className?: string;
+}) {
+  const t = useTranslations('ads');
+
+  return (
+    <div
+      className={cn(
+        'p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700',
+        className
+      )}
+    >
+      <p className="text-xs text-neutral-400 dark:text-neutral-500 mb-2">
+        {t('banner')}
+      </p>
+      <div className="h-20 bg-neutral-200 dark:bg-neutral-700 rounded animate-pulse" />
+    </div>
+  );
+}
+
+// Global type declaration for AdSense
+declare global {
+  interface Window {
+    adsbygoogle: unknown[];
+  }
 }

@@ -1,0 +1,46 @@
+{
+  "expenseFlow": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "dashboardShort": "Início",
+      "transactions": "Transações",
+      "transactionsShort": "Trans",
+      "reports": "Relatórios",
+      "reportsShort": "Relat",
+      "categories": "Categorias",
+      "categoriesShort": "Cats",
+      "budgets": "Orçamentos",
+      "budgetsShort": "Orç",
+      "settings": "Definições",
+      "settingsShort": "Mais",
+      "import": "Importar",
+      "addTransaction": "Adicionar"
+    },
+    "settings": {
+      "title": "Definições",
+      "subscription": "Subscrição",
+      "upgradeToUnlock": "Faz upgrade para desbloquear funcionalidades premium",
+      "manageBilling": "Gerir Faturação",
+      "cloudSync": "Sync Cloud",
+      "baseCurrency": "Moeda Base",
+      "baseCurrencyDescription": "Todas as transações serão convertidas para esta moeda nos relatórios",
+      "dataManagement": "Gestão de Dados",
+      "exportData": "Exportar Dados",
+      "exportDescription": "Descarrega todos os teus dados em JSON",
+      "export": "Exportar",
+      "exporting": "A exportar...",
+      "importData": "Importar Dados",
+      "importDescription": "Importa transações de CSV ou Excel",
+      "import": "Importar",
+      "deleteAllData": "Apagar Todos os Dados",
+      "deleteWarning": "Esta ação não pode ser desfeita",
+      "delete": "Apagar",
+      "signOut": "Terminar Sessão",
+      "confirmDelete": "Apagar Todos os Dados?",
+      "confirmDeleteMessage": "Isto vai apagar permanentemente todas as tuas transações, categorias e orçamentos. Esta ação não pode ser desfeita.",
+      "cancel": "Cancelar",
+      "confirmDeleteButton": "Sim, Apagar Tudo",
+      "deleting": "A apagar..."
+    }
+  }
+}

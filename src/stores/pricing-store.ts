@@ -1,200 +1,253 @@
+/**
+ * Subscription Store
+ * 
+ * Gere o estado de subscrição do utilizador
+ */
+
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { PlanTier, BillingPeriod, AppId } from '@/types/pricing';
-import { PLANS, APPS, getPlanById } from '@/types/pricing';
 
-// Pricing selection store (for checkout flow)
-interface PricingState {
-  selectedTier: PlanTier;
-  billingPeriod: BillingPeriod;
-  selectedApps: AppId[];
+export type SubscriptionTier = 'free' | 'starter' | 'plus' | 'pro' | 'founding';
 
-  // Actions
-  setSelectedTier: (tier: PlanTier) => void;
-  setBillingPeriod: (period: BillingPeriod) => void;
-  selectApp: (appId: AppId) => void;
-  deselectApp: (appId: AppId) => void;
-  toggleApp: (appId: AppId) => void;
-  clearSelectedApps: () => void;
-
-  // Computed helpers
-  canSelectMoreApps: () => boolean;
-  getMaxApps: () => number | 'all';
-  isAppSelected: (appId: AppId) => boolean;
-  getSelectedPlan: () => typeof PLANS[0] | undefined;
-  getCurrentPrice: () => number;
+interface TierFeatures {
+  cloudSync: boolean;
+  googleDrive: boolean;
+  prioritySupport: boolean;
+  noAds: boolean;
+  maxTransactions: number | null; // null = unlimited
+  maxCategories: number | null;
 }
 
-export const usePricingStore = create<PricingState>()((set, get) => ({
-  selectedTier: 'free',
-  billingPeriod: 'monthly',
-  selectedApps: [],
-
-  setSelectedTier: (tier) => {
-    const plan = getPlanById(tier);
-    set({
-      selectedTier: tier,
-      // Clear selected apps if the new plan doesn't allow choosing
-      selectedApps: plan?.features.canChooseApps ? get().selectedApps : [],
-    });
+const TIER_FEATURES: Record<SubscriptionTier, TierFeatures> = {
+  free: {
+    cloudSync: false,
+    googleDrive: false,
+    prioritySupport: false,
+    noAds: false,
+    maxTransactions: 100,
+    maxCategories: 10,
   },
-
-  setBillingPeriod: (period) => set({ billingPeriod: period }),
-
-  selectApp: (appId) => {
-    const state = get();
-    const plan = getPlanById(state.selectedTier);
-    if (!plan) return;
-
-    const maxApps = plan.features.appsIncluded;
-    if (maxApps === 'all') return; // Can't select specific apps
-
-    if (
-      !state.selectedApps.includes(appId) &&
-      state.selectedApps.length < maxApps
-    ) {
-      set({ selectedApps: [...state.selectedApps, appId] });
-    }
+  starter: {
+    cloudSync: true,
+    googleDrive: false,
+    prioritySupport: false,
+    noAds: true,
+    maxTransactions: 1000,
+    maxCategories: 25,
   },
-
-  deselectApp: (appId) => {
-    set({ selectedApps: get().selectedApps.filter((id) => id !== appId) });
+  plus: {
+    cloudSync: true,
+    googleDrive: true,
+    prioritySupport: false,
+    noAds: true,
+    maxTransactions: null,
+    maxCategories: null,
   },
-
-  toggleApp: (appId) => {
-    const state = get();
-    if (state.selectedApps.includes(appId)) {
-      state.deselectApp(appId);
-    } else {
-      state.selectApp(appId);
-    }
+  pro: {
+    cloudSync: true,
+    googleDrive: true,
+    prioritySupport: true,
+    noAds: true,
+    maxTransactions: null,
+    maxCategories: null,
   },
-
-  clearSelectedApps: () => set({ selectedApps: [] }),
-
-  canSelectMoreApps: () => {
-    const state = get();
-    const plan = getPlanById(state.selectedTier);
-    if (!plan) return false;
-
-    const maxApps = plan.features.appsIncluded;
-    if (maxApps === 'all') return false;
-    return state.selectedApps.length < maxApps;
+  founding: {
+    cloudSync: true,
+    googleDrive: true,
+    prioritySupport: true,
+    noAds: true,
+    maxTransactions: null,
+    maxCategories: null,
   },
+};
 
-  getMaxApps: () => {
-    const plan = getPlanById(get().selectedTier);
-    return plan?.features.appsIncluded ?? 'all';
-  },
-
-  isAppSelected: (appId) => get().selectedApps.includes(appId),
-
-  getSelectedPlan: () => getPlanById(get().selectedTier),
-
-  getCurrentPrice: () => {
-    const state = get();
-    const plan = getPlanById(state.selectedTier);
-    if (!plan) return 0;
-
-    if (plan.lifetimePrice !== null) {
-      return plan.lifetimePrice;
-    }
-
-    return state.billingPeriod === 'yearly'
-      ? plan.yearlyPrice ?? 0
-      : plan.monthlyPrice ?? 0;
-  },
-}));
-
-// Subscription state store (persisted, represents actual user subscription)
 interface SubscriptionState {
-  currentTier: PlanTier;
-  activeApps: AppId[];
-  isActive: boolean;
-  expiresAt: string | null;
+  currentTier: SubscriptionTier;
   isFoundingMember: boolean;
-
+  expiresAt: string | null;
+  customMonthlyPrice: number | null;
+  
   // Actions
-  setSubscription: (tier: PlanTier, apps: AppId[], expiresAt?: string) => void;
-  clearSubscription: () => void;
-
-  // Computed helpers
-  hasAccessToApp: (appId: AppId) => boolean;
+  setTier: (tier: SubscriptionTier) => void;
+  setFoundingMember: (isFounder: boolean) => void;
+  setExpiresAt: (date: string | null) => void;
+  setCustomPrice: (price: number | null) => void;
+  
+  // Feature checks
   canUseCloudSync: () => boolean;
   canUseGoogleDrive: () => boolean;
-  hasAds: () => boolean;
   hasPrioritySupport: () => boolean;
+  hasAds: () => boolean;
+  getMaxTransactions: () => number | null;
+  getMaxCategories: () => number | null;
+  getFeatures: () => TierFeatures;
 }
 
 export const useSubscriptionStore = create<SubscriptionState>()(
   persist(
     (set, get) => ({
       currentTier: 'free',
-      activeApps: [],
-      isActive: true,
-      expiresAt: null,
       isFoundingMember: false,
-
-      setSubscription: (tier, apps, expiresAt) => {
-        set({
-          currentTier: tier,
-          activeApps: apps,
-          isActive: true,
-          expiresAt: expiresAt ?? null,
-          isFoundingMember: tier === 'founding',
-        });
-      },
-
-      clearSubscription: () => {
-        set({
-          currentTier: 'free',
-          activeApps: [],
-          isActive: true,
-          expiresAt: null,
-          isFoundingMember: false,
-        });
-      },
-
-      hasAccessToApp: (appId) => {
-        const state = get();
-        const plan = getPlanById(state.currentTier);
-        if (!plan) return false;
-
-        // Free and Pro/Founding have access to all apps
-        if (plan.features.appsIncluded === 'all') return true;
-
-        // For Starter/Plus, check if the app is in active apps
-        return state.activeApps.includes(appId);
-      },
-
+      expiresAt: null,
+      customMonthlyPrice: null,
+      
+      setTier: (tier) => set({ currentTier: tier }),
+      setFoundingMember: (isFounder) => set({ 
+        isFoundingMember: isFounder,
+        currentTier: isFounder ? 'founding' : get().currentTier,
+      }),
+      setExpiresAt: (date) => set({ expiresAt: date }),
+      setCustomPrice: (price) => set({ customMonthlyPrice: price }),
+      
       canUseCloudSync: () => {
-        const plan = getPlanById(get().currentTier);
-        return plan?.features.storageOptions.includes('cloud') ?? false;
+        const tier = get().currentTier;
+        return TIER_FEATURES[tier].cloudSync;
       },
-
+      
       canUseGoogleDrive: () => {
-        const plan = getPlanById(get().currentTier);
-        return plan?.features.storageOptions.includes('google-drive') ?? false;
+        const tier = get().currentTier;
+        return TIER_FEATURES[tier].googleDrive;
       },
-
-      hasAds: () => {
-        const plan = getPlanById(get().currentTier);
-        return plan?.features.hasAds ?? true;
-      },
-
+      
       hasPrioritySupport: () => {
-        const plan = getPlanById(get().currentTier);
-        return plan?.features.hasPrioritySupport ?? false;
+        const tier = get().currentTier;
+        return TIER_FEATURES[tier].prioritySupport;
+      },
+      
+      hasAds: () => {
+        const tier = get().currentTier;
+        return !TIER_FEATURES[tier].noAds;
+      },
+      
+      getMaxTransactions: () => {
+        const tier = get().currentTier;
+        return TIER_FEATURES[tier].maxTransactions;
+      },
+      
+      getMaxCategories: () => {
+        const tier = get().currentTier;
+        return TIER_FEATURES[tier].maxCategories;
+      },
+      
+      getFeatures: () => {
+        const tier = get().currentTier;
+        return TIER_FEATURES[tier];
       },
     }),
     {
-      name: 'bon-subscription',
+      name: 'breathofnow-subscription',
       partialize: (state) => ({
         currentTier: state.currentTier,
-        activeApps: state.activeApps,
-        isActive: state.isActive,
-        expiresAt: state.expiresAt,
         isFoundingMember: state.isFoundingMember,
+        expiresAt: state.expiresAt,
+        customMonthlyPrice: state.customMonthlyPrice,
+      }),
+    }
+  )
+);
+
+// Pricing Store (para página de pricing)
+interface PricingState {
+  // Preços base (EUR)
+  baseMonthlyPrice: number;
+  baseYearlyPrice: number;
+  baseLifetimePrice: number;
+  
+  // Preços regionais sugeridos
+  suggestedMonthly: number;
+  suggestedYearly: number;
+  suggestedLifetime: number;
+  
+  // Preços personalizados (PWYW)
+  customMonthly: number | null;
+  customYearly: number | null;
+  customLifetime: number | null;
+  
+  // Tier de preço baseado em região
+  priceTier: 'high' | 'medium' | 'low';
+  
+  // Actions
+  setPriceTier: (tier: 'high' | 'medium' | 'low') => void;
+  setCustomMonthly: (price: number | null) => void;
+  setCustomYearly: (price: number | null) => void;
+  setCustomLifetime: (price: number | null) => void;
+  setSuggestedPrices: (monthly: number, yearly: number, lifetime: number) => void;
+  
+  // Getters
+  getEffectiveMonthly: () => number;
+  getEffectiveYearly: () => number;
+  getEffectiveLifetime: () => number;
+}
+
+const PRICE_MULTIPLIERS = {
+  high: 1.0,
+  medium: 0.6,
+  low: 0.3,
+};
+
+export const usePricingStore = create<PricingState>()(
+  persist(
+    (set, get) => ({
+      // Preços base em EUR
+      baseMonthlyPrice: 4.99,
+      baseYearlyPrice: 39.99,
+      baseLifetimePrice: 599,
+      
+      // Preços sugeridos (calculados com base na região)
+      suggestedMonthly: 4.99,
+      suggestedYearly: 39.99,
+      suggestedLifetime: 599,
+      
+      // Preços personalizados
+      customMonthly: null,
+      customYearly: null,
+      customLifetime: null,
+      
+      priceTier: 'medium',
+      
+      setPriceTier: (tier) => {
+        const state = get();
+        const multiplier = PRICE_MULTIPLIERS[tier];
+        set({
+          priceTier: tier,
+          suggestedMonthly: Math.round(state.baseMonthlyPrice * multiplier * 100) / 100,
+          suggestedYearly: Math.round(state.baseYearlyPrice * multiplier * 100) / 100,
+          suggestedLifetime: Math.round(state.baseLifetimePrice * multiplier),
+        });
+      },
+      
+      setCustomMonthly: (price) => set({ customMonthly: price }),
+      setCustomYearly: (price) => set({ customYearly: price }),
+      setCustomLifetime: (price) => set({ customLifetime: price }),
+      
+      setSuggestedPrices: (monthly, yearly, lifetime) => set({
+        suggestedMonthly: monthly,
+        suggestedYearly: yearly,
+        suggestedLifetime: lifetime,
+      }),
+      
+      getEffectiveMonthly: () => {
+        const state = get();
+        return state.customMonthly ?? state.suggestedMonthly;
+      },
+      
+      getEffectiveYearly: () => {
+        const state = get();
+        return state.customYearly ?? state.suggestedYearly;
+      },
+      
+      getEffectiveLifetime: () => {
+        const state = get();
+        return state.customLifetime ?? state.suggestedLifetime;
+      },
+    }),
+    {
+      name: 'breathofnow-pricing',
+      partialize: (state) => ({
+        priceTier: state.priceTier,
+        customMonthly: state.customMonthly,
+        customYearly: state.customYearly,
+        customLifetime: state.customLifetime,
       }),
     }
   )

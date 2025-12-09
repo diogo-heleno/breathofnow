@@ -1,0 +1,44 @@
+{
+  "expenseFlow": {
+    "sync": {
+      "syncing": "Syncing...",
+      "synced": "All changes synced",
+      "syncError": "Sync error",
+      "offline": "Offline",
+      "hasConflicts": "{count} conflicts to resolve",
+      "lastSync": "Last sync",
+      "never": "Never",
+      "justNow": "Just now",
+      "minutesAgo": "{minutes}m ago",
+      "hoursAgo": "{hours}h ago",
+      "syncNow": "Sync now",
+      "clickToSync": "Click to sync",
+      "signInToSync": "Sign in to enable cloud sync",
+      "connection": "Connection",
+      "online": "Online",
+      "authentication": "Authentication",
+      "authenticated": "Authenticated",
+      "notAuthenticated": "Not signed in",
+      "conflicts": "Conflicts",
+      "status": "Status"
+    }
+  },
+  "premium": {
+    "locked": "Premium Feature",
+    "upgrade": "Upgrade",
+    "viewPlans": "View Plans",
+    "premium": "Premium",
+    "premiumFeature": "Premium Feature",
+    "startingAt": "Starting at {price}",
+    "features": {
+      "cloudSync": "Cloud sync keeps your data safe across all devices",
+      "googleDrive": "Backup your data to Google Drive",
+      "prioritySupport": "Get priority support from our team",
+      "noAds": "Enjoy an ad-free experience"
+    }
+  },
+  "ads": {
+    "banner": "Advertisement",
+    "removeAds": "Remove ads"
+  }
+}

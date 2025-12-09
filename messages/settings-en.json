@@ -1,0 +1,46 @@
+{
+  "expenseFlow": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "dashboardShort": "Home",
+      "transactions": "Transactions",
+      "transactionsShort": "Trans",
+      "reports": "Reports",
+      "reportsShort": "Reports",
+      "categories": "Categories",
+      "categoriesShort": "Cats",
+      "budgets": "Budgets",
+      "budgetsShort": "Budget",
+      "settings": "Settings",
+      "settingsShort": "More",
+      "import": "Import",
+      "addTransaction": "Add"
+    },
+    "settings": {
+      "title": "Settings",
+      "subscription": "Subscription",
+      "upgradeToUnlock": "Upgrade to unlock premium features",
+      "manageBilling": "Manage Billing",
+      "cloudSync": "Cloud Sync",
+      "baseCurrency": "Base Currency",
+      "baseCurrencyDescription": "All transactions will be converted to this currency for reports",
+      "dataManagement": "Data Management",
+      "exportData": "Export Data",
+      "exportDescription": "Download all your data as JSON",
+      "export": "Export",
+      "exporting": "Exporting...",
+      "importData": "Import Data",
+      "importDescription": "Import transactions from CSV or Excel",
+      "import": "Import",
+      "deleteAllData": "Delete All Data",
+      "deleteWarning": "This action cannot be undone",
+      "delete": "Delete",
+      "signOut": "Sign Out",
+      "confirmDelete": "Delete All Data?",
+      "confirmDeleteMessage": "This will permanently delete all your transactions, categories, and budgets. This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirmDeleteButton": "Yes, Delete Everything",
+      "deleting": "Deleting..."
+    }
+  }
+}
