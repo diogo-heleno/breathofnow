@@ -53,3 +53,71 @@ export function getInitials(name: string): string {
     .toUpperCase()
     .slice(0, 2);
 }
+
+// Domain configuration
+export const DOMAINS = {
+  www: 'https://www.breathofnow.site',
+  app: 'https://app.breathofnow.site',
+} as const;
+
+/**
+ * Check if we're in a development/preview environment
+ */
+function isDevelopment(): boolean {
+  // Server-side check
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || '';
+  if (siteUrl.includes('localhost') || siteUrl.includes('127.0.0.1')) {
+    return true;
+  }
+
+  // Client-side check
+  if (typeof window !== 'undefined') {
+    const host = window.location.host;
+    if (host.includes('localhost') || host.includes('127.0.0.1') || host.includes('vercel.app')) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Get the URL for the app subdomain
+ * In development, returns relative paths
+ * In production, returns absolute URLs to app.breathofnow.site
+ */
+export function getAppUrl(path: string = '/'): string {
+  if (isDevelopment()) {
+    return path;
+  }
+  return `${DOMAINS.app}${path}`;
+}
+
+/**
+ * Get the URL for the www subdomain
+ * In development, returns relative paths
+ * In production, returns absolute URLs to www.breathofnow.site
+ */
+export function getWwwUrl(path: string = '/'): string {
+  if (isDevelopment()) {
+    return path;
+  }
+  return `${DOMAINS.www}${path}`;
+}
+
+/**
+ * Check if we're on the app subdomain
+ */
+export function isAppSubdomain(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.location.host.startsWith('app.');
+}
+
+/**
+ * Check if we're on the www subdomain
+ */
+export function isWwwSubdomain(): boolean {
+  if (typeof window === 'undefined') return false;
+  const host = window.location.host;
+  return host.startsWith('www.') || (!host.startsWith('app.') && host.includes('breathofnow'));
+}
