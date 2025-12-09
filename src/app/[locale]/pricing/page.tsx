@@ -21,7 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { PricingCard, BillingToggle } from '@/components/pricing';
-import { usePricingStore } from '@/stores/pricing-store';
+import { useSubscriptionStore } from '@/stores/pricing-store';
 import {
   PLANS,
   type BillingPeriod,
@@ -38,20 +38,27 @@ export default function PricingPage({ params: { locale } }: PageProps) {
   const t = useTranslations('pricing');
   const router = useRouter();
 
-  const {
-    billingPeriod,
-    setBillingPeriod,
-    selectedApps,
-    toggleApp,
-    setSelectedTier,
-  } = usePricingStore();
+  // Local UI state for pricing page
+  const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>('monthly');
+  const [selectedApps, setSelectedApps] = useState<AppId[]>([]);
+
+  // Subscription store for actual tier management
+  const { setTier } = useSubscriptionStore();
+
+  const toggleApp = (appId: AppId) => {
+    setSelectedApps((prev) =>
+      prev.includes(appId)
+        ? prev.filter((id) => id !== appId)
+        : [...prev, appId]
+    );
+  };
 
   // Filter plans for main grid (excluding founding)
   const mainPlans = PLANS.filter((p) => p.id !== 'founding');
   const foundingPlan = PLANS.find((p) => p.id === 'founding');
 
   const handleSelectPlan = (planId: string) => {
-    setSelectedTier(planId as 'free' | 'starter' | 'plus' | 'pro' | 'founding');
+    setTier(planId as 'free' | 'starter' | 'plus' | 'pro' | 'founding');
     // TODO: Navigate to checkout or handle subscription
     if (planId === 'free') {
       router.push(`/${locale}/expenses`);
@@ -93,7 +100,6 @@ export default function PricingPage({ params: { locale } }: PageProps) {
                 billingPeriod={billingPeriod}
                 selectedApps={selectedApps}
                 onAppToggle={(appId: AppId) => {
-                  setSelectedTier(plan.id);
                   toggleApp(appId);
                 }}
                 onSelect={() => handleSelectPlan(plan.id)}
