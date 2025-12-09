@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import {
@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { ExpensePieChart } from '@/components/expenses/expense-pie-chart';
 import { cn } from '@/lib/utils';
 import { useExpenseStore } from '@/stores/expense-store';
 import { getMonthlyExpenseSummary, getExpenseTransactions } from '@/lib/db';
@@ -99,6 +100,24 @@ export default function ExpenseDashboard({
     return categories.find((c) => c.id === id);
   };
 
+  // Prepare chart data
+  const chartData = useMemo(() => {
+    if (!monthSummary?.byCategory) return [];
+
+    return Object.entries(monthSummary.byCategory)
+      .map(([categoryId, amount]) => {
+        const category = getCategoryById(Number(categoryId));
+        if (!category) return null;
+        return {
+          id: Number(categoryId),
+          name: category.name,
+          amount,
+          color: category.color,
+        };
+      })
+      .filter((item): item is NonNullable<typeof item> => item !== null);
+  }, [monthSummary?.byCategory, categories]);
+
   return (
     <div className="space-y-6">
       {/* Month Selector */}
@@ -175,6 +194,23 @@ export default function ExpenseDashboard({
           </CardContent>
         </Card>
       </div>
+
+      {/* Expenses by Category Chart */}
+      {!isLoading && chartData.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">{t('reports.byCategory')}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ExpensePieChart
+              data={chartData}
+              total={monthSummary?.totalExpenses ?? 0}
+              locale={locale}
+              currency={baseCurrency}
+            />
+          </CardContent>
+        </Card>
+      )}
 
       {/* Quick Add Button */}
       <Link href={`/${locale}/expenses/add`}>
