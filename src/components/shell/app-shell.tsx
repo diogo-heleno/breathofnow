@@ -272,36 +272,31 @@ export function AppShell({ children, locale }: AppShellProps) {
               {t('common.home')}
             </Link>
 
-            {/* Apps Section */}
+            {/* My Apps Section - Apps user has access to */}
             <div className="mt-4 mb-2">
               <p className="px-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider">
-                {t('nav.apps')}
+                {t('nav.myApps')}
               </p>
             </div>
 
-            <div className="flex-1 space-y-1 overflow-y-auto">
-              {APPS.map((app) => {
+            <div className="space-y-1">
+              {APPS.filter((app) => {
+                const hasAccess = hasAccessToApp(app.id);
+                const isComingSoon = app.status === 'coming-soon';
+                return hasAccess && !isComingSoon;
+              }).map((app) => {
                 const IconComponent = APP_ICONS[app.icon];
                 const route = APP_ROUTES[app.id];
                 const isActive = currentApp === app.id;
-                const hasAccess = hasAccessToApp(app.id);
-                const isComingSoon = app.status === 'coming-soon';
 
                 return (
                   <Link
                     key={app.id}
-                    href={isComingSoon ? '#' : `/${locale}${route}`}
-                    onClick={(e) => {
-                      if (isComingSoon) {
-                        e.preventDefault();
-                      }
-                    }}
+                    href={`/${locale}${route}`}
                     className={cn(
                       'flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
                       isActive
                         ? 'bg-primary-50 dark:bg-primary-950 text-primary-700 dark:text-primary-300'
-                        : isComingSoon
-                        ? 'text-neutral-400 dark:text-neutral-600 cursor-not-allowed'
                         : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800'
                     )}
                   >
@@ -316,11 +311,63 @@ export function AppShell({ children, locale }: AppShellProps) {
                       )}
                       <span>{app.name}</span>
                     </div>
-                    
+
+                    {app.status === 'beta' && (
+                      <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                        Beta
+                      </Badge>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Other Apps Section */}
+            <div className="mt-6 mb-2">
+              <p className="px-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+                {t('nav.otherApps')}
+              </p>
+            </div>
+
+            <div className="flex-1 space-y-1 overflow-y-auto">
+              {APPS.filter((app) => {
+                const hasAccess = hasAccessToApp(app.id);
+                const isComingSoon = app.status === 'coming-soon';
+                return !hasAccess || isComingSoon;
+              }).map((app) => {
+                const IconComponent = APP_ICONS[app.icon];
+                const route = APP_ROUTES[app.id];
+                const isActive = currentApp === app.id;
+                const hasAccess = hasAccessToApp(app.id);
+                const isComingSoon = app.status === 'coming-soon';
+
+                return (
+                  <Link
+                    key={app.id}
+                    href={isComingSoon ? '#' : `/${locale}${route}`}
+                    onClick={(e) => {
+                      if (isComingSoon || !hasAccess) {
+                        e.preventDefault();
+                      }
+                    }}
+                    className={cn(
+                      'flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                      isActive
+                        ? 'bg-primary-50 dark:bg-primary-950 text-primary-700 dark:text-primary-300'
+                        : 'text-neutral-400 dark:text-neutral-500 cursor-not-allowed hover:bg-neutral-100 dark:hover:bg-neutral-800/50'
+                    )}
+                  >
+                    <div className="flex items-center gap-3">
+                      {IconComponent && (
+                        <IconComponent className="w-5 h-5 opacity-60" />
+                      )}
+                      <span>{app.name}</span>
+                    </div>
+
                     <div className="flex items-center gap-1">
                       {!hasAccess && !isComingSoon && (
                         <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                          Locked
+                          {t('nav.locked')}
                         </Badge>
                       )}
                       {app.status === 'beta' && (
@@ -330,7 +377,7 @@ export function AppShell({ children, locale }: AppShellProps) {
                       )}
                       {isComingSoon && (
                         <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                          Soon
+                          {t('nav.comingSoon')}
                         </Badge>
                       )}
                     </div>

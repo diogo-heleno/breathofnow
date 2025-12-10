@@ -48,6 +48,10 @@
   },
   "nav": {
     "apps": "Apps",
+    "myApps": "As Minhas Apps",
+    "otherApps": "Outras Apps",
+    "locked": "Bloqueado",
+    "comingSoon": "Em breve",
     "pricing": "Preços",
     "about": "Sobre",
     "faq": "FAQ",
@@ -363,10 +367,20 @@
     "forgotPassword": "Esqueceu a palavra-passe?",
     "emailLabel": "Endereço de email",
     "emailPlaceholder": "voce@exemplo.com",
+    "nameLabel": "O seu nome",
+    "namePlaceholder": "Introduza o seu nome",
     "passwordLabel": "Palavra-passe",
     "passwordPlaceholder": "Introduza a sua palavra-passe",
     "rememberMe": "Lembrar-me",
+    "signIn": "Entrar",
     "signUp": "Registar",
+    "createAccount": "Criar Conta",
+    "signUpBenefits": "O que obtém:",
+    "benefits": {
+      "freeApps": "Acesso a todas as apps, totalmente grátis",
+      "localData": "Os seus dados ficam no seu dispositivo",
+      "noCredit": "Não é necessário cartão de crédito"
+    },
     "termsAgree": "Ao registar-se, concorda com os nossos",
     "termsLink": "Termos de Serviço",
     "privacyLink": "Política de Privacidade"
