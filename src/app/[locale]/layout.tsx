@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Fraunces, Source_Sans_3, JetBrains_Mono } from 'next/font/google';
 import '../globals.css';
+import { AuthProvider } from '@/contexts/auth-context';
 import { ConnectivityStatus } from '@/components/pwa/connectivity-status';
 import { InstallPrompt } from '@/components/pwa/install-prompt';
 
@@ -142,7 +143,9 @@ export default async function RootLayout({
         className={`${fraunces.variable} ${sourceSans.variable} ${jetbrainsMono.variable} font-body antialiased bg-warm-50 text-warm-900`}
       >
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
           
           {/* PWA Components */}
           <ConnectivityStatus />

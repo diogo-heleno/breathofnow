@@ -7,6 +7,7 @@ import { Menu, X, ChevronDown, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
+import { ConnectionIndicator } from '@/components/pwa/connection-indicator';
 import { useAppStore } from '@/stores/app-store';
 import { locales, localeLabels, localeFlags, type Locale } from '@/i18n';
 
@@ -66,6 +67,9 @@ export function Header({ locale }: HeaderProps) {
 
           {/* Right side */}
           <div className="hidden md:flex items-center gap-4">
+            {/* Connection Indicator */}
+            <ConnectionIndicator />
+            
             {/* Language Selector */}
             <div className="relative">
               <button

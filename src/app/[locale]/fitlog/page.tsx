@@ -86,13 +86,39 @@ export default function DashboardPage({ params }: DashboardPageProps) {
         </div>
 
         <div className="space-y-4 mt-8">
+          {/* Link principal para o questionário - mais visível */}
           <Link
             href={`/${locale}/fitlog/create`}
-            className="flex items-center justify-center gap-2 w-full py-4 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition-colors"
+            className="block w-full"
           >
-            <Sparkles className="w-5 h-5" />
-            Criar Plano com Questionário
+            <div className="bg-gradient-to-br from-primary to-primary/80 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                  <Sparkles className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold">Criar Plano com IA</h3>
+                  <p className="text-white/80 text-sm">Questionário personalizado</p>
+                </div>
+              </div>
+              <p className="text-white/90 text-sm mb-4">
+                Responde a algumas perguntas e gera uma prompt perfeita para o ChatGPT ou Claude criar o teu plano de treino ideal.
+              </p>
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white text-primary rounded-lg font-semibold text-sm">
+                Começar Questionário
+                <Sparkles className="w-4 h-4" />
+              </span>
+            </div>
           </Link>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-neutral-200" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-neutral-50 text-neutral-500">ou</span>
+            </div>
+          </div>
 
           <Link
             href={`/${locale}/fitlog/plans/import`}
@@ -123,6 +149,22 @@ export default function DashboardPage({ params }: DashboardPageProps) {
               <span><strong>Treina e regista</strong> - Acompanha o progresso e ajusta semanalmente</span>
             </li>
           </ol>
+        </div>
+
+        {/* Link adicional para o questionário quando o user já tem planos mas quer criar novo */}
+        <div className="mt-6 p-4 bg-primary/5 border border-primary/20 rounded-xl">
+          <div className="flex items-center gap-3">
+            <Sparkles className="w-5 h-5 text-primary flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-neutral-900">Precisa de ajuda para criar o plano?</p>
+              <Link 
+                href={`/${locale}/fitlog/create`}
+                className="text-sm text-primary hover:underline"
+              >
+                Usar o questionário inteligente →
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     );

@@ -1,132 +1,68 @@
-# Breath of Now - Ecosystem of Micro Apps
+# Breath of Now - Alterações Dezembro 2024
 
-A collection of privacy-first micro-applications for mindful living. Built with Next.js 14, Tailwind CSS, Supabase, and IndexedDB.
+Este pacote contém **apenas** os 13 ficheiros novos ou modificados.
 
-**A brand of [M21 Global, Lda.](https://www.m21global.com)**
+## 📁 Ficheiros Incluídos
 
-## 🌟 Features
+### NOVOS (criar estas pastas/ficheiros):
+```
+src/contexts/
+├── auth-context.tsx      # Contexto de autenticação
+└── index.ts              # Exports
 
-- 🔒 **Privacy First**: All data stored locally by default (IndexedDB)
-- 🌍 **Fully Localized**: Support for EN, PT, PT-BR, ES, FR
-- 💰 **Fair Pricing**: Pay What You Want with regional pricing
-- 📱 **Responsive**: Works on desktop, tablet, and mobile
-- 🔄 **Offline First**: Works without internet connection
-- 🎨 **Beautiful Design**: Custom design system with dark mode support
+src/components/shell/
+├── app-shell.tsx         # Menu comum para todas as apps
+└── index.ts              # Exports
 
-## 📱 Apps in the Ecosystem
+src/components/pwa/
+└── connection-indicator.tsx  # Indicador online/offline
 
-| App | Description | Status |
-|-----|-------------|--------|
-| **ExpenseFlow** | Mindful money tracking | Available |
-| **InvestTrack** | Portfolio monitoring with tax calculations | Beta |
-| **FitLog** | Workout logging and progress tracking | Coming Soon |
-| **StravaSync** | Enhanced Strava analytics | Coming Soon |
-| **RecipeBox** | Digital cookbook with meal planning | Coming Soon |
-| **LabelScan** | Food label scanning and analysis | Coming Soon |
+src/app/[locale]/account/
+├── page.tsx              # Página da conta
+└── settings/
+    └── page.tsx          # Settings da conta
 
-## 🛠 Tech Stack
+docs/supabase/
+└── profiles-subscriptions-schema.sql  # SQL para Supabase
 
-- **Framework**: Next.js 14 (App Router)
-- **Styling**: Tailwind CSS
-- **Database**: IndexedDB (local) via Dexie.js
-- **Auth**: Supabase Auth (Magic Link + OAuth)
-- **State**: Zustand
-- **i18n**: next-intl
-- **Deployment**: Vercel
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- Supabase account (for auth)
-- Vercel account (for deployment)
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/breathofnow.git
-cd breathofnow
-
-# Install dependencies
-npm install
-
-# Copy environment variables
-cp .env.example .env.local
-
-# Start development server
-npm run dev
+docs/
+└── DECEMBER-2024-IMPROVEMENTS.md  # Documentação
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
-
-## ⚙️ Environment Variables
-
-Create a `.env.local` file:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
+### MODIFICADOS (substituir os existentes):
+```
+src/app/[locale]/layout.tsx           # Adicionado AuthProvider
+src/app/[locale]/offline/page.tsx     # Página offline melhorada
+src/app/[locale]/fitlog/page.tsx      # Link do questionário
+src/components/layout/header.tsx      # Indicador de conexão
 ```
 
-## 📁 Project Structure
+## 🚀 Instruções
 
-```
-breathofnow/
-├── messages/              # Translation files (en, pt, pt-BR, es, fr)
-├── src/
-│   ├── app/[locale]/      # Localized pages
-│   ├── components/
-│   │   ├── ui/            # Design system (Button, Input, Card, Badge)
-│   │   ├── layout/        # Header, Footer
-│   │   ├── brand/         # Logo
-│   │   └── ads/           # Ad components
-│   ├── lib/
-│   │   ├── db/            # IndexedDB setup (Dexie)
-│   │   ├── supabase/      # Supabase clients
-│   │   └── utils.ts
-│   ├── stores/            # Zustand stores
-│   └── i18n.ts            # i18n configuration
-└── tailwind.config.ts     # Design system tokens
-```
+### 1. No GitHub:
 
-## 🎨 Design System
+1. Vai ao teu repositório `breathofnow`
+2. Para cada ficheiro **NOVO**, cria o ficheiro/pasta
+3. Para cada ficheiro **MODIFICADO**, abre e substitui o conteúdo
 
-### Colors
-- **Primary**: Warm Sage Green (`#5a7d5a`)
-- **Secondary**: Warm Sand (`#b19373`)
-- **Accent**: Soft Terracotta (`#df7459`)
+### 2. Criar pastas novas (se não existirem):
+- `src/contexts/`
+- `src/components/shell/`
+- `src/app/[locale]/account/`
+- `src/app/[locale]/account/settings/`
 
-### Typography
-- **Display**: Fraunces (serif)
-- **Body**: Source Sans 3 (sans-serif)
-- **Mono**: JetBrains Mono
+### 3. No Supabase:
+1. Vai a **SQL Editor**
+2. Cola o conteúdo de `docs/supabase/profiles-subscriptions-schema.sql`
+3. Executa
 
-## 💰 Pricing Model
+### 4. Verificar no Claude Code:
+Depois de tudo, usa a prompt de verificação que te dei.
 
-| Tier | Price | Features |
-|------|-------|----------|
-| Free | €0 | One app, with ads |
-| Supporter | €3-5/mo | All apps, no ads |
-| Lifetime | €29-49 | Forever + 1yr updates |
+## ⚠️ Ordem Importante
 
-*Prices vary by region (Pay What You Want)*
+1. Primeiro cria as pastas `src/contexts/` e `src/components/shell/`
+2. Depois adiciona os ficheiros
+3. Por fim modifica os ficheiros existentes
 
-## 🎯 Revenue Target: €3,000/month
-
-- 10,000 MAU → 300 paid users (3% conversion)
-- Ads: €200-400/mo
-- Subscriptions: €1,500-2,000/mo
-- Lifetime: €800-1,000/mo
-
-## 📄 License
-
-Copyright © 2024 M21 Global, Lda. All rights reserved.
-
-## 📞 Contact
-
-- Website: [breathofnow.site](https://breathofnow.site)
-- Email: support@breathofnow.site
-- Company: [M21 Global](https://www.m21global.com)
+Isto evita erros de imports!
