@@ -22,7 +22,7 @@ export async function GET(
 ) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
-  const next = requestUrl.searchParams.get('next') || '/expenses';
+  const next = requestUrl.searchParams.get('next') || '/account';
   const nameFromUrl = requestUrl.searchParams.get('name');
   const locale = params.locale;
   const cookieDomain = getCookieDomain();

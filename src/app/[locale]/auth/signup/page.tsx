@@ -94,8 +94,8 @@ export default function SignUpPage({ params: { locale } }: PageProps) {
 
       if (verifyError) throw verifyError;
 
-      // Redirect to expenses on success
-      router.push('/expenses');
+      // Redirect to account on success
+      router.push('/account');
     } catch (err) {
       setError(err instanceof Error ? err.message : t('otpError'));
     } finally {

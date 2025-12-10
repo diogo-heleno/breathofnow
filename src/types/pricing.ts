@@ -93,7 +93,7 @@ export const APPS: App[] = [
     description: 'Every rep counts',
     descriptionKey: 'apps.fitLog.description',
     icon: 'Dumbbell',
-    status: 'coming-soon',
+    status: 'available',
     color: '#f97316',
   },
   {
