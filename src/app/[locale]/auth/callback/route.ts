@@ -1,6 +1,20 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { NextResponse, type NextRequest } from 'next/server';
+
+// Get cookie domain for cross-subdomain auth
+function getCookieDomain(): string | undefined {
+  try {
+    const headersList = headers();
+    const host = headersList.get('host') || '';
+    if (host.includes('breathofnow.site')) {
+      return '.breathofnow.site';
+    }
+  } catch {
+    // headers() may not be available
+  }
+  return undefined;
+}
 
 export async function GET(
   request: NextRequest,
@@ -11,6 +25,7 @@ export async function GET(
   const next = requestUrl.searchParams.get('next') || '/expenses';
   const nameFromUrl = requestUrl.searchParams.get('name');
   const locale = params.locale;
+  const cookieDomain = getCookieDomain();
 
   if (code) {
     const cookieStore = cookies();
@@ -24,10 +39,16 @@ export async function GET(
             return cookieStore.get(name)?.value;
           },
           set(name: string, value: string, options: CookieOptions) {
-            cookieStore.set({ name, value, ...options });
+            const enhancedOptions = cookieDomain
+              ? { ...options, domain: cookieDomain }
+              : options;
+            cookieStore.set({ name, value, ...enhancedOptions });
           },
           remove(name: string, options: CookieOptions) {
-            cookieStore.delete({ name, ...options });
+            const enhancedOptions = cookieDomain
+              ? { ...options, domain: cookieDomain }
+              : options;
+            cookieStore.delete({ name, ...enhancedOptions });
           },
         },
       }
