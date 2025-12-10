@@ -66,11 +66,20 @@ function isSharedRoute(path: string): boolean {
   return SHARED_ROUTES.some(prefix => path.startsWith(prefix));
 }
 
+// Get cookie domain for cross-subdomain auth
+function getCookieDomain(host: string): string | undefined {
+  if (host.includes('breathofnow.site')) {
+    return '.breathofnow.site';
+  }
+  return undefined;
+}
+
 export default async function middleware(request: NextRequest) {
   const host = request.headers.get('host') || '';
   const subdomain = getSubdomain(host);
   const pathname = request.nextUrl.pathname;
   const pathWithoutLocale = getPathWithoutLocale(pathname);
+  const cookieDomain = getCookieDomain(host);
 
   // Get country from Vercel's geo headers
   const country = request.geo?.country || 'PT';
@@ -120,17 +129,23 @@ export default async function middleware(request: NextRequest) {
             return request.cookies.get(name)?.value;
           },
           set(name: string, value: string, options: CookieOptions) {
+            const enhancedOptions = cookieDomain
+              ? { ...options, domain: cookieDomain }
+              : options;
             response.cookies.set({
               name,
               value,
-              ...options,
+              ...enhancedOptions,
             });
           },
           remove(name: string, options: CookieOptions) {
+            const enhancedOptions = cookieDomain
+              ? { ...options, domain: cookieDomain }
+              : options;
             response.cookies.set({
               name,
               value: '',
-              ...options,
+              ...enhancedOptions,
             });
           },
         },
@@ -161,6 +176,7 @@ export default async function middleware(request: NextRequest) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 30, // 30 days
+      ...(cookieDomain && { domain: cookieDomain }),
     });
 
     return intlResponse;
@@ -175,6 +191,7 @@ export default async function middleware(request: NextRequest) {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 30, // 30 days
+    ...(cookieDomain && { domain: cookieDomain }),
   });
 
   return response;
