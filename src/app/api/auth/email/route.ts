@@ -63,13 +63,24 @@ export async function POST(request: NextRequest) {
 
     // Get raw body
     const rawBody = await request.text();
-    console.log('Webhook payload received, length:', rawBody.length);
+    console.log('Webhook payload received:', rawBody);
 
-    // Parse the payload
-    const payload: SupabaseAuthEmailPayload = JSON.parse(rawBody);
-    const { type, email, token, redirect_to } = payload;
+    // Parse the payload - Supabase wraps it in a different structure
+    const rawPayload = JSON.parse(rawBody);
+    console.log('Parsed payload structure:', JSON.stringify(rawPayload, null, 2));
 
-    console.log(`Processing ${type} email for ${email}`);
+    // Supabase Auth Hook sends data in a nested structure
+    // The actual email data is in the payload
+    const payload = rawPayload as SupabaseAuthEmailPayload;
+
+    // Try different payload structures
+    const email = payload.email || rawPayload.user?.email || rawPayload.email_data?.email;
+    const token = payload.token || rawPayload.email_data?.token || rawPayload.token_hash;
+    const type = payload.type || rawPayload.email_data?.email_action_type || 'magiclink';
+    const redirect_to = payload.redirect_to || rawPayload.email_data?.redirect_to || '';
+    const token_hash = payload.token_hash || rawPayload.email_data?.token_hash || '';
+
+    console.log(`Processing ${type} email for ${email}, token: ${token ? 'present' : 'missing'}`);
 
     // Extract locale from redirect_to URL or default to 'en'
     let locale: Locale = 'en';
@@ -90,9 +101,18 @@ export async function POST(request: NextRequest) {
     // Determine email type for our template
     const emailType: 'signin' | 'signup' = type === 'signup' ? 'signup' : 'signin';
 
+    // Validate required fields
+    if (!email || !token) {
+      console.error('Missing required fields - email:', email, 'token:', token ? 'present' : 'missing');
+      return NextResponse.json(
+        { error: 'Missing required fields', email: !!email, token: !!token },
+        { status: 400 }
+      );
+    }
+
     // Build the magic link URL
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://app.breathofnow.site';
-    const magicLink = `${siteUrl}/${locale}/auth/callback?token_hash=${payload.token_hash}&type=${type}`;
+    const magicLink = `${siteUrl}/${locale}/auth/callback?token_hash=${token_hash}&type=${type}`;
 
     // Render the email HTML
     const emailHtml = await render(
