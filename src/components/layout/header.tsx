@@ -3,12 +3,12 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { Menu, X, ChevronDown, Globe } from 'lucide-react';
+import { Menu, X, ChevronDown, Globe, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
 import { ConnectionIndicator } from '@/components/pwa/connection-indicator';
-import { useAppStore } from '@/stores/app-store';
+import { useAuth } from '@/contexts/auth-context';
 import { locales, localeLabels, localeFlags, type Locale } from '@/i18n';
 
 interface HeaderProps {
@@ -20,7 +20,7 @@ export function Header({ locale }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isLangOpen, setIsLangOpen] = React.useState(false);
-  const user = useAppStore((state) => state.user);
+  const { isAuthenticated, profile } = useAuth();
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -109,10 +109,11 @@ export function Header({ locale }: HeaderProps) {
               )}
             </div>
 
-            {user ? (
-              <Link href="/dashboard">
-                <Button variant="primary" size="sm">
-                  {t('common.dashboard')}
+            {isAuthenticated ? (
+              <Link href="/expenses">
+                <Button variant="primary" size="sm" className="flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  {profile?.name || t('common.profile')}
                 </Button>
               </Link>
             ) : (
@@ -184,10 +185,11 @@ export function Header({ locale }: HeaderProps) {
               <div className="h-px bg-neutral-200 dark:bg-neutral-800" />
               
               <div className="px-4 space-y-3">
-                {user ? (
-                  <Link href="/dashboard" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="primary" className="w-full">
-                      {t('common.dashboard')}
+                {isAuthenticated ? (
+                  <Link href="/expenses" onClick={() => setIsMenuOpen(false)}>
+                    <Button variant="primary" className="w-full flex items-center justify-center gap-2">
+                      <User className="w-4 h-4" />
+                      {profile?.name || t('common.profile')}
                     </Button>
                   </Link>
                 ) : (
