@@ -161,7 +161,7 @@ export default function SignInPage({ params: { locale } }: PageProps) {
                     value={otpCode}
                     onChange={(e) => setOtpCode(e.target.value.replace(/\s/g, ''))}
                     leftIcon={<KeyRound className="w-4 h-4" />}
-                    maxLength={8}
+                    maxLength={6}
                     className="text-center text-lg tracking-widest"
                   />
                 </div>
@@ -170,7 +170,7 @@ export default function SignInPage({ params: { locale } }: PageProps) {
                   variant="primary"
                   className="w-full"
                   isLoading={isVerifying}
-                  disabled={otpCode.length < 8}
+                  disabled={otpCode.length < 6}
                 >
                   {t('verifyCode')}
                 </Button>
