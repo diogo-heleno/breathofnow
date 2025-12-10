@@ -157,11 +157,11 @@ export default function HistoryPage({ params }: HistoryPageProps) {
                   <Link
                     key={session.id}
                     href={`/${locale}/fitlog/history/${session.id}`}
-                    className="flex items-center justify-between p-4 bg-white rounded-xl border border-neutral-200 hover:border-primary/30 hover:shadow-sm transition-all group"
+                    className="flex items-center justify-between p-4 bg-white rounded-xl border border-neutral-200 hover:border-primary-300 hover:shadow-sm transition-all group"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Dumbbell className="w-5 h-5 text-primary" />
+                      <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                        <Dumbbell className="w-5 h-5 text-primary-600" />
                       </div>
                       <div>
                         <p className="font-medium text-neutral-900">
@@ -188,7 +188,7 @@ export default function HistoryPage({ params }: HistoryPageProps) {
                           {['😫', '😕', '😐', '😊', '🤩'][session.feeling - 1]}
                         </span>
                       )}
-                      <ChevronRight className="w-5 h-5 text-neutral-400 group-hover:text-primary transition-colors" />
+                      <ChevronRight className="w-5 h-5 text-neutral-400 group-hover:text-primary-600 transition-colors" />
                     </div>
                   </Link>
                 ))}

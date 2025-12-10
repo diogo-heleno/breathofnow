@@ -113,7 +113,7 @@ export default function WorkoutDetailPage({ params }: WorkoutDetailPageProps) {
         </button>
 
         <div>
-          <span className="text-sm text-primary font-medium">
+          <span className="text-sm text-primary-600 font-medium">
             {DAYS_OF_WEEK[workout.dayOfWeek]}
           </span>
           <h1 className="text-2xl font-bold text-neutral-900 mt-1">{workout.name}</h1>
@@ -170,12 +170,12 @@ export default function WorkoutDetailPage({ params }: WorkoutDetailPageProps) {
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
-                  <span className="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
+                  <span className="w-8 h-8 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
                     {index + 1}
                   </span>
                   <div>
                     <h3 className="font-semibold text-neutral-900">{exercise.name}</h3>
-                    <p className="text-sm text-primary font-medium mt-0.5">
+                    <p className="text-sm text-primary-600 font-medium mt-0.5">
                       {exercise.sets} × {exercise.reps}
                     </p>
                   </div>
@@ -240,7 +240,7 @@ export default function WorkoutDetailPage({ params }: WorkoutDetailPageProps) {
         <div className="max-w-lg mx-auto">
           <Link
             href={`/${locale}/fitlog/workout/${workout.id}/session`}
-            className="flex items-center justify-center gap-2 w-full py-4 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition-colors shadow-lg"
+            className="flex items-center justify-center gap-2 w-full py-4 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-colors shadow-lg"
           >
             <Play className="w-5 h-5" />
             Iniciar Treino

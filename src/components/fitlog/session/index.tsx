@@ -82,7 +82,7 @@ export function SessionHeader({
 
       <div className="h-1.5 bg-neutral-200 rounded-full overflow-hidden">
         <div
-          className="h-full bg-primary rounded-full transition-all duration-300"
+          className="h-full bg-primary-600 rounded-full transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -133,7 +133,7 @@ export function ExerciseTracker({
         <h2 className="text-2xl font-bold text-neutral-900">{exercise.name}</h2>
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-lg font-medium text-primary">
+          <span className="text-lg font-medium text-primary-600">
             {exercise.sets} × {exercise.reps}
           </span>
           <span className="text-neutral-400">•</span>
@@ -241,7 +241,7 @@ function SetInputRow({
         <span className="font-medium text-neutral-500">Série {setNumber}</span>
         <button
           onClick={() => onChange({ skipped: false })}
-          className="text-sm text-primary hover:underline"
+          className="text-sm text-primary-600 hover:underline"
         >
           Desfazer skip
         </button>
@@ -284,7 +284,7 @@ function SetInputRow({
             onChange={(e) =>
               onChange({ weight: e.target.value ? parseFloat(e.target.value) : undefined })
             }
-            className="w-full px-3 py-2 bg-white border border-neutral-300 rounded-lg text-lg font-medium focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3 py-2 bg-white border border-neutral-300 rounded-lg text-lg font-medium focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
         </div>
 
@@ -302,7 +302,7 @@ function SetInputRow({
             onChange={(e) =>
               onChange({ reps: e.target.value ? parseInt(e.target.value, 10) : undefined })
             }
-            className="w-full px-3 py-2 bg-white border border-neutral-300 rounded-lg text-lg font-medium focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3 py-2 bg-white border border-neutral-300 rounded-lg text-lg font-medium focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
         </div>
 
@@ -322,8 +322,8 @@ function SetInputRow({
           <button
             onClick={onToggleNotes}
             className={`flex items-center gap-1 text-sm ${
-              isExpanded || noteValue ? 'text-primary' : 'text-neutral-500'
-            } hover:text-primary`}
+              isExpanded || noteValue ? 'text-primary-600' : 'text-neutral-500'
+            } hover:text-primary-600`}
           >
             <MessageSquare className="w-4 h-4" />
             Nota
@@ -340,7 +340,7 @@ function SetInputRow({
         {isCompleted && (
           <button
             onClick={handleComplete}
-            className="flex items-center gap-1 px-3 py-1.5 bg-primary text-white text-sm rounded-lg hover:bg-primary/90"
+            className="flex items-center gap-1 px-3 py-1.5 bg-primary-600 text-white text-sm rounded-lg hover:bg-primary-700"
           >
             <Clock className="w-4 h-4" />
             Timer
@@ -359,7 +359,7 @@ function SetInputRow({
             }}
             placeholder="Adicionar nota..."
             rows={2}
-            className="w-full px-3 py-2 bg-white border border-neutral-300 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3 py-2 bg-white border border-neutral-300 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
         </div>
       )}
@@ -415,7 +415,7 @@ export function SessionNavigation({
         ) : (
           <button
             onClick={onNext}
-            className="flex-1 flex items-center justify-center gap-2 h-12 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 h-12 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-colors"
           >
             Próximo
             <ChevronRight className="w-5 h-5" />
@@ -531,7 +531,7 @@ export function SessionSummaryModal({
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Como correu o treino?"
             rows={3}
-            className="w-full px-3 py-2 border border-neutral-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3 py-2 border border-neutral-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
         </div>
 
@@ -545,7 +545,7 @@ export function SessionSummaryModal({
           </button>
           <button
             onClick={() => onSave(feeling, notes)}
-            className="flex-1 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition-colors"
+            className="flex-1 py-3 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-colors"
           >
             Guardar
           </button>

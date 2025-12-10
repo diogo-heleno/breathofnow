@@ -94,7 +94,7 @@ export default function SettingsPage({ params }: SettingsPageProps) {
             <select
               value={defaultRestTimer}
               onChange={(e) => setDefaultRestTimer(parseInt(e.target.value, 10))}
-              className="px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
               <option value={30}>30s</option>
               <option value={45}>45s</option>
@@ -146,7 +146,7 @@ export default function SettingsPage({ params }: SettingsPageProps) {
             <select
               value={weightUnit}
               onChange={(e) => setWeightUnit(e.target.value as 'kg' | 'lb')}
-              className="px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
               <option value="kg">Quilogramas (kg)</option>
               <option value="lb">Libras (lb)</option>
@@ -218,14 +218,14 @@ export default function SettingsPage({ params }: SettingsPageProps) {
               <p className="mt-2">
                 <a
                   href={`/${locale}/privacy`}
-                  className="text-primary hover:underline"
+                  className="text-primary-600 hover:underline"
                 >
                   Política de Privacidade
                 </a>
                 {' · '}
                 <a
                   href={`/${locale}/terms`}
-                  className="text-primary hover:underline"
+                  className="text-primary-600 hover:underline"
                 >
                   Termos de Serviço
                 </a>
@@ -284,7 +284,7 @@ function Toggle({ checked, onChange }: ToggleProps) {
       onClick={() => onChange(!checked)}
       className={`
         relative inline-flex h-7 w-12 items-center rounded-full transition-colors
-        ${checked ? 'bg-primary' : 'bg-neutral-300'}
+        ${checked ? 'bg-primary-600' : 'bg-neutral-300'}
       `}
     >
       <span

@@ -114,9 +114,9 @@ export function JsonImporter({ locale, onSuccess }: JsonImporterProps) {
   return (
     <div className="space-y-6">
       {/* Instructions */}
-      <div className="p-4 bg-primary/5 rounded-xl border border-primary/20">
+      <div className="p-4 bg-primary-50 rounded-xl border border-primary-200">
         <h3 className="font-semibold text-neutral-900 mb-2 flex items-center gap-2">
-          <FileJson className="w-5 h-5 text-primary" />
+          <FileJson className="w-5 h-5 text-primary-600" />
           Como importar
         </h3>
         <ol className="text-sm text-neutral-600 space-y-1 list-decimal list-inside">
@@ -135,7 +135,7 @@ export function JsonImporter({ locale, onSuccess }: JsonImporterProps) {
           </label>
           <button
             onClick={handlePaste}
-            className="text-sm text-primary hover:underline flex items-center gap-1"
+            className="text-sm text-primary-600 hover:underline flex items-center gap-1"
           >
             <Copy className="w-4 h-4" />
             Colar
@@ -150,7 +150,7 @@ export function JsonImporter({ locale, onSuccess }: JsonImporterProps) {
           }}
           placeholder='{"planName": "Meu Plano", "workouts": [...]}'
           rows={12}
-          className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
+          className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
       </div>
 
@@ -231,7 +231,7 @@ export function JsonImporter({ locale, onSuccess }: JsonImporterProps) {
         <button
           onClick={handleImport}
           disabled={!validationResult?.valid || isImporting}
-          className="flex-1 flex items-center justify-center gap-2 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 flex items-center justify-center gap-2 py-3 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isImporting ? (
             <RefreshCw className="w-5 h-5 animate-spin" />
@@ -310,7 +310,7 @@ export function PromptGenerator({ type }: PromptGeneratorProps) {
           <select
             value={weeksToExport}
             onChange={(e) => setWeeksToExport(parseInt(e.target.value, 10))}
-            className="w-full px-4 py-2 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-4 py-2 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
             <option value={2}>2 semanas</option>
             <option value={4}>4 semanas</option>
@@ -323,7 +323,7 @@ export function PromptGenerator({ type }: PromptGeneratorProps) {
       <button
         onClick={generatePrompt}
         disabled={isLoading}
-        className="w-full flex items-center justify-center gap-2 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+        className="w-full flex items-center justify-center gap-2 py-3 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-700 transition-colors disabled:opacity-50"
       >
         {isLoading ? (
           <RefreshCw className="w-5 h-5 animate-spin" />
@@ -339,7 +339,7 @@ export function PromptGenerator({ type }: PromptGeneratorProps) {
             <p className="text-sm font-medium text-neutral-700">Prompt Gerado</p>
             <button
               onClick={copyToClipboard}
-              className="flex items-center gap-1 text-sm text-primary hover:underline"
+              className="flex items-center gap-1 text-sm text-primary-600 hover:underline"
             >
               {copied ? (
                 <>
@@ -423,7 +423,7 @@ export function PlanCard({ plan, onActivate, onDelete, onClick }: PlanCardProps)
     <div
       className={`p-4 bg-white rounded-xl border transition-all ${
         plan.isActive
-          ? 'border-primary shadow-sm ring-1 ring-primary/20'
+          ? 'border-primary-600 shadow-sm ring-1 ring-primary-200'
           : 'border-neutral-200 hover:border-neutral-300'
       }`}
     >
@@ -432,7 +432,7 @@ export function PlanCard({ plan, onActivate, onDelete, onClick }: PlanCardProps)
           <div className="flex items-center gap-2">
             <h3 className="font-semibold text-neutral-900">{plan.planName}</h3>
             {plan.isActive && (
-              <span className="px-2 py-0.5 bg-primary/10 text-primary text-xs font-medium rounded-full">
+              <span className="px-2 py-0.5 bg-primary-100 text-primary-600 text-xs font-medium rounded-full">
                 Ativo
               </span>
             )}
@@ -453,7 +453,7 @@ export function PlanCard({ plan, onActivate, onDelete, onClick }: PlanCardProps)
         {!plan.isActive && (
           <button
             onClick={onActivate}
-            className="flex-1 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary/5 transition-colors"
+            className="flex-1 py-2 text-sm font-medium text-primary-600 border border-primary-600 rounded-lg hover:bg-primary-50 transition-colors"
           >
             Ativar
           </button>

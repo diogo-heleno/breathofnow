@@ -77,7 +77,7 @@ export default function PlansPage({ params }: PlansPageProps) {
         <h1 className="text-xl font-bold text-neutral-900">Planos de Treino</h1>
         <Link
           href={`/${locale}/fitlog/plans/import`}
-          className="flex items-center gap-1 px-3 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-1 px-3 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors"
         >
           <Plus className="w-4 h-4" />
           Novo
@@ -87,8 +87,8 @@ export default function PlansPage({ params }: PlansPageProps) {
       {plans.length === 0 ? (
         <EmptyState
           icon={
-            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-              <FileJson className="w-8 h-8 text-primary" />
+            <div className="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center">
+              <FileJson className="w-8 h-8 text-primary-600" />
             </div>
           }
           title="Sem planos"
