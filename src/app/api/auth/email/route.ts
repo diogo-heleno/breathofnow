@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { resend, EMAIL_FROM } from '@/lib/resend/client';
+import { getResendClient, EMAIL_FROM } from '@/lib/resend/client';
 import { AuthOtpEmail } from '@/emails/auth-otp';
 import { render } from '@react-email/components';
 
@@ -97,6 +97,7 @@ export async function POST(request: NextRequest) {
     );
 
     // Send the email via Resend
+    const resend = getResendClient();
     const { data, error } = await resend.emails.send({
       from: EMAIL_FROM,
       to: email,
