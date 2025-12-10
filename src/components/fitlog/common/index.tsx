@@ -21,7 +21,7 @@ export function MuscleBadge({ muscle, size = 'sm' }: MuscleBadgeProps) {
   return (
     <span
       className={`
-        inline-flex items-center rounded-full bg-primary/10 text-primary font-medium
+        inline-flex items-center rounded-full bg-primary-100 text-primary-600 font-medium
         ${size === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-3 py-1 text-sm'}
       `}
     >
@@ -77,12 +77,12 @@ export function VideoLink({ url, exerciseName }: VideoLinkProps) {
         </div>
       )}
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-neutral-900 group-hover:text-primary transition-colors">
+        <p className="text-sm font-medium text-neutral-900 group-hover:text-primary-600 transition-colors">
           Ver demonstração
         </p>
         <p className="text-xs text-neutral-500 truncate">{exerciseName}</p>
       </div>
-      <ExternalLink className="w-4 h-4 text-neutral-400 group-hover:text-primary transition-colors" />
+      <ExternalLink className="w-4 h-4 text-neutral-400 group-hover:text-primary-600 transition-colors" />
     </a>
   );
 }
@@ -173,7 +173,7 @@ export function RestTimer({ initialSeconds, onComplete, autoStart = false }: Res
             strokeDasharray={`${2 * Math.PI * 44}`}
             strokeDashoffset={`${2 * Math.PI * 44 * (1 - progress / 100)}`}
             className={`transition-all duration-1000 ${
-              seconds === 0 ? 'text-green-500' : 'text-primary'
+              seconds === 0 ? 'text-green-500' : 'text-primary-600'
             }`}
           />
         </svg>
@@ -198,8 +198,8 @@ export function RestTimer({ initialSeconds, onComplete, autoStart = false }: Res
             transition-colors
             ${
               isRunning
-                ? 'bg-accent text-white hover:bg-accent/90'
-                : 'bg-primary text-white hover:bg-primary/90'
+                ? 'bg-accent-600 text-white hover:bg-accent-700'
+                : 'bg-primary-600 text-white hover:bg-primary-700'
             }
           `}
         >
@@ -253,7 +253,7 @@ export function DifficultySelector({ value, onChange, disabled }: DifficultySele
             ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
             ${
               value === option.value
-                ? 'bg-primary/10 ring-2 ring-primary scale-110'
+                ? 'bg-primary-100 ring-2 ring-primary-600 scale-110'
                 : 'bg-neutral-100 hover:bg-neutral-200'
             }
           `}
@@ -297,7 +297,7 @@ export function FeelingSelector({ value, onChange }: FeelingSelectorProps) {
               flex flex-col items-center gap-1 p-2 rounded-lg transition-all flex-1
               ${
                 value === option.value
-                  ? 'bg-primary/10 ring-2 ring-primary'
+                  ? 'bg-primary-100 ring-2 ring-primary-600'
                   : 'bg-neutral-100 hover:bg-neutral-200'
               }
             `}
@@ -356,7 +356,7 @@ export function ProgressRing({
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          className="text-primary transition-all duration-500"
+          className="text-primary-600 transition-all duration-500"
         />
       </svg>
       {children && (
@@ -393,7 +393,7 @@ export function EmptyState({ icon, title, description, action }: EmptyStateProps
       {action && (
         <button
           onClick={action.onClick}
-          className="mt-6 px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
+          className="mt-6 px-6 py-2.5 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
         >
           {action.label}
         </button>
@@ -436,7 +436,7 @@ export function StatCard({ label, value, icon, trend, trendValue }: StatCardProp
           )}
         </div>
         {icon && (
-          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+          <div className="w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center text-primary-600">
             {icon}
           </div>
         )}

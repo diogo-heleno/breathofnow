@@ -71,7 +71,7 @@ export function TodayWorkout({ locale }: TodayWorkoutProps) {
 
   if (isLoading) {
     return (
-      <div className="bg-gradient-to-br from-primary to-primary/80 rounded-2xl p-6 text-white animate-pulse">
+      <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl p-6 text-white animate-pulse">
         <div className="h-6 bg-white/20 rounded w-1/3 mb-2"></div>
         <div className="h-8 bg-white/20 rounded w-2/3 mb-4"></div>
         <div className="h-4 bg-white/20 rounded w-1/2"></div>
@@ -120,7 +120,7 @@ export function TodayWorkout({ locale }: TodayWorkoutProps) {
     : null;
 
   return (
-    <div className="bg-gradient-to-br from-primary to-primary/80 rounded-2xl p-6 text-white shadow-lg">
+    <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl p-6 text-white shadow-lg">
       <div className="flex items-start justify-between mb-4">
         <div>
           <p className="text-white/80 text-sm flex items-center gap-1">
@@ -153,7 +153,7 @@ export function TodayWorkout({ locale }: TodayWorkoutProps) {
 
       <Link
         href={`/${locale}/fitlog/workout/${workout.id}/session`}
-        className="flex items-center justify-center gap-2 w-full py-3 bg-white text-primary rounded-xl font-semibold hover:bg-white/90 transition-colors"
+        className="flex items-center justify-center gap-2 w-full py-3 bg-white text-primary-600 rounded-xl font-semibold hover:bg-white/90 transition-colors"
       >
         <Play className="w-5 h-5" />
         Iniciar Treino
@@ -224,7 +224,7 @@ export function WeekOverview({ locale }: WeekOverviewProps) {
           return (
             <div key={day} className="flex flex-col items-center gap-1">
               <span
-                className={`text-xs ${isToday ? 'font-bold text-primary' : 'text-neutral-500'}`}
+                className={`text-xs ${isToday ? 'font-bold text-primary-600' : 'text-neutral-500'}`}
               >
                 {day}
               </span>
@@ -236,8 +236,8 @@ export function WeekOverview({ locale }: WeekOverviewProps) {
                       ? 'bg-green-500 text-white'
                       : hasWorkout
                       ? isToday
-                        ? 'bg-primary text-white'
-                        : 'bg-primary/20 text-primary'
+                        ? 'bg-primary-600 text-white'
+                        : 'bg-primary-100 text-primary-600'
                       : 'bg-neutral-100 text-neutral-400'
                   }
                 `}
@@ -410,11 +410,11 @@ export function RecentSessions({ locale, limit = 5 }: RecentSessionsProps) {
         <Link
           key={session.id}
           href={`/${locale}/fitlog/history/${session.id}`}
-          className="flex items-center justify-between p-4 bg-white rounded-xl border border-neutral-200 hover:border-primary/30 hover:shadow-sm transition-all group"
+          className="flex items-center justify-between p-4 bg-white rounded-xl border border-neutral-200 hover:border-primary-300 hover:shadow-sm transition-all group"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-              <Dumbbell className="w-5 h-5 text-primary" />
+            <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+              <Dumbbell className="w-5 h-5 text-primary-600" />
             </div>
             <div>
               <p className="font-medium text-neutral-900">
@@ -431,7 +431,7 @@ export function RecentSessions({ locale, limit = 5 }: RecentSessionsProps) {
                 {['😫', '😕', '😐', '😊', '🤩'][session.feeling - 1]}
               </span>
             )}
-            <ChevronRight className="w-5 h-5 text-neutral-400 group-hover:text-primary transition-colors" />
+            <ChevronRight className="w-5 h-5 text-neutral-400 group-hover:text-primary-600 transition-colors" />
           </div>
         </Link>
       ))}
@@ -439,7 +439,7 @@ export function RecentSessions({ locale, limit = 5 }: RecentSessionsProps) {
       {sessions.length >= limit && (
         <Link
           href={`/${locale}/fitlog/history`}
-          className="block text-center py-3 text-sm text-primary font-medium hover:underline"
+          className="block text-center py-3 text-sm text-primary-600 font-medium hover:underline"
         >
           Ver todo o histórico
         </Link>
@@ -492,7 +492,7 @@ export function ActivePlanCard({ locale }: ActivePlanCardProps) {
   return (
     <Link
       href={`/${locale}/fitlog/plans/${plan.id}`}
-      className="flex items-center justify-between p-4 bg-white rounded-xl border border-neutral-200 hover:border-primary/30 transition-colors group"
+      className="flex items-center justify-between p-4 bg-white rounded-xl border border-neutral-200 hover:border-primary-300 transition-colors group"
     >
       <div>
         <p className="text-sm text-neutral-500">Plano Ativo</p>
@@ -501,7 +501,7 @@ export function ActivePlanCard({ locale }: ActivePlanCardProps) {
           <p className="text-xs text-neutral-500 mt-1">{plan.athleteGoal}</p>
         )}
       </div>
-      <ChevronRight className="w-5 h-5 text-neutral-400 group-hover:text-primary transition-colors" />
+      <ChevronRight className="w-5 h-5 text-neutral-400 group-hover:text-primary-600 transition-colors" />
     </Link>
   );
 }

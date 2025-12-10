@@ -91,7 +91,7 @@ export default function DashboardPage({ params }: DashboardPageProps) {
             href={`/${locale}/fitlog/create`}
             className="block w-full"
           >
-            <div className="bg-gradient-to-br from-primary to-primary/80 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div className="bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
                   <Sparkles className="w-6 h-6" />
@@ -104,7 +104,7 @@ export default function DashboardPage({ params }: DashboardPageProps) {
               <p className="text-white/90 text-sm mb-4">
                 Responde a algumas perguntas e gera uma prompt perfeita para o ChatGPT ou Claude criar o teu plano de treino ideal.
               </p>
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white text-primary rounded-lg font-semibold text-sm">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white text-primary-600 rounded-lg font-semibold text-sm">
                 Começar Questionário
                 <Sparkles className="w-4 h-4" />
               </span>
@@ -122,7 +122,7 @@ export default function DashboardPage({ params }: DashboardPageProps) {
 
           <Link
             href={`/${locale}/fitlog/plans/import`}
-            className="flex items-center justify-center gap-2 w-full py-4 border-2 border-dashed border-neutral-300 text-neutral-700 rounded-xl font-semibold hover:border-primary hover:text-primary transition-colors"
+            className="flex items-center justify-center gap-2 w-full py-4 border-2 border-dashed border-neutral-300 text-neutral-700 rounded-xl font-semibold hover:border-primary-600 hover:text-primary-600 transition-colors"
           >
             <Plus className="w-5 h-5" />
             Já tenho um JSON - Importar
@@ -133,33 +133,33 @@ export default function DashboardPage({ params }: DashboardPageProps) {
           <h3 className="font-semibold text-neutral-900 mb-2">Como funciona?</h3>
           <ol className="text-sm text-neutral-600 space-y-2">
             <li className="flex gap-2">
-              <span className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+              <span className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
               <span><strong>Responde ao questionário</strong> - Diz-nos os teus objetivos, disponibilidade e preferências</span>
             </li>
             <li className="flex gap-2">
-              <span className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+              <span className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
               <span><strong>Copia a prompt gerada</strong> - Cola no ChatGPT ou Claude</span>
             </li>
             <li className="flex gap-2">
-              <span className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+              <span className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
               <span><strong>Importa o JSON</strong> - Copia o plano gerado e importa na app</span>
             </li>
             <li className="flex gap-2">
-              <span className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
+              <span className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
               <span><strong>Treina e regista</strong> - Acompanha o progresso e ajusta semanalmente</span>
             </li>
           </ol>
         </div>
 
         {/* Link adicional para o questionário quando o user já tem planos mas quer criar novo */}
-        <div className="mt-6 p-4 bg-primary/5 border border-primary/20 rounded-xl">
+        <div className="mt-6 p-4 bg-primary-50 border border-primary-200 rounded-xl">
           <div className="flex items-center gap-3">
-            <Sparkles className="w-5 h-5 text-primary flex-shrink-0" />
+            <Sparkles className="w-5 h-5 text-primary-600 flex-shrink-0" />
             <div>
               <p className="text-sm font-medium text-neutral-900">Precisa de ajuda para criar o plano?</p>
-              <Link 
+              <Link
                 href={`/${locale}/fitlog/create`}
-                className="text-sm text-primary hover:underline"
+                className="text-sm text-primary-600 hover:underline"
               >
                 Usar o questionário inteligente →
               </Link>
