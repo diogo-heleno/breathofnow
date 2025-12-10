@@ -402,7 +402,7 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
           </button>
           <button
             onClick={handleCopy}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
           >
             {copied ? (
               <>
@@ -476,7 +476,7 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
         </div>
         <div className="h-2 bg-neutral-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-primary rounded-full transition-all duration-300"
+            className="h-full bg-primary-600 rounded-full transition-all duration-300"
             style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
           />
         </div>
@@ -501,7 +501,7 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
                   isActive
-                    ? 'bg-primary text-white'
+                    ? 'bg-primary-600 text-white'
                     : isCompleted
                     ? 'bg-green-500 text-white'
                     : 'bg-neutral-200 text-neutral-500'
@@ -509,7 +509,7 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
               >
                 {isCompleted ? <CheckCircle className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
               </div>
-              <span className={`text-xs ${isActive ? 'text-primary font-medium' : 'text-neutral-500'}`}>
+              <span className={`text-xs ${isActive ? 'text-primary-600 font-medium' : 'text-neutral-500'}`}>
                 {step.title}
               </span>
             </button>
@@ -553,7 +553,7 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
         <button
           onClick={handleNext}
           disabled={!canProceed}
-          className="flex-1 flex items-center justify-center gap-2 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 flex items-center justify-center gap-2 py-3 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {currentStep === steps.length - 1 ? (
             <>
@@ -606,62 +606,40 @@ function StepPersonal({ data, updateData }: StepProps) {
             type="text"
             value={data.name}
             onChange={(e) => updateData?.({ name: e.target.value })}
-            placeholder="O teu nome"
-            className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50"
+            placeholder="Como te chamas?"
+            className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1">Idade</label>
-            <input
-              type="number"
-              value={data.age}
-              onChange={(e) => updateData?.({ age: e.target.value })}
-              placeholder="Anos"
-              className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1">Género</label>
-            <select
-              value={data.gender}
-              onChange={(e) => updateData?.({ gender: e.target.value as any })}
-              className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50"
-            >
-              <option value="">Selecionar</option>
-              <option value="female">Feminino</option>
-              <option value="male">Masculino</option>
-              <option value="other">Outro</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1">Peso (kg)</label>
+            <label className="block text-sm font-medium text-neutral-700 mb-1">
+              Peso (kg)
+            </label>
             <input
               type="number"
               value={data.weight}
               onChange={(e) => updateData?.({ weight: e.target.value })}
-              placeholder="kg"
-              className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50"
+              placeholder="70"
+              className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1">Altura (cm)</label>
+            <label className="block text-sm font-medium text-neutral-700 mb-1">
+              Altura (cm)
+            </label>
             <input
               type="number"
               value={data.height}
               onChange={(e) => updateData?.({ height: e.target.value })}
-              placeholder="cm"
-              className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50"
+              placeholder="175"
+              className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-neutral-700 mb-2">
+          <label className="block text-sm font-medium text-neutral-700 mb-3">
             Nível de experiência <span className="text-red-500">*</span>
           </label>
           <div className="grid grid-cols-3 gap-3">
@@ -674,14 +652,14 @@ function StepPersonal({ data, updateData }: StepProps) {
                 key={level.id}
                 type="button"
                 onClick={() => updateData?.({ experienceLevel: level.id as any })}
-                className={`p-3 rounded-xl border text-center transition-all ${
+                className={`p-4 rounded-xl border text-center transition-all ${
                   data.experienceLevel === level.id
-                    ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                    : 'border-neutral-300 hover:border-neutral-400'
+                    ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
+                    : 'border-neutral-300 hover:border-neutral-400 bg-white'
                 }`}
               >
                 <p className="font-medium text-neutral-900">{level.label}</p>
-                <p className="text-xs text-neutral-500">{level.desc}</p>
+                <p className="text-xs text-neutral-500 mt-1">{level.desc}</p>
               </button>
             ))}
           </div>
@@ -696,7 +674,7 @@ function StepPersonal({ data, updateData }: StepProps) {
             onChange={(e) => updateData?.({ trainingHistory: e.target.value })}
             placeholder="Ex: Treinei musculação há 2 anos, parei durante 1 ano..."
             rows={2}
-            className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+            className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
           />
         </div>
       </div>
@@ -724,8 +702,8 @@ function StepGoals({ data, toggleArrayItem }: StepProps) {
               onClick={() => toggleArrayItem?.('primaryGoal', goal.id)}
               className={`p-4 rounded-xl border text-left transition-all ${
                 data.primaryGoal.includes(goal.id)
-                  ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                  : 'border-neutral-300 hover:border-neutral-400'
+                  ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
+                  : 'border-neutral-300 hover:border-neutral-400 bg-white'
               }`}
             >
               <span className="text-2xl">{goal.icon}</span>
@@ -747,8 +725,8 @@ function StepGoals({ data, toggleArrayItem }: StepProps) {
               onClick={() => toggleArrayItem?.('targetAreas', area.id)}
               className={`p-3 rounded-xl border text-left transition-all ${
                 data.targetAreas.includes(area.id)
-                  ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                  : 'border-neutral-300 hover:border-neutral-400'
+                  ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
+                  : 'border-neutral-300 hover:border-neutral-400 bg-white'
               }`}
             >
               <span className="text-xl">{area.icon}</span>
@@ -781,8 +759,8 @@ function StepSchedule({ data, updateData, toggleArrayItem }: StepProps) {
               onClick={() => updateData?.({ daysPerWeek: num })}
               className={`w-12 h-12 rounded-xl border font-bold transition-all ${
                 data.daysPerWeek === num
-                  ? 'border-primary bg-primary text-white'
-                  : 'border-neutral-300 text-neutral-700 hover:border-neutral-400'
+                  ? 'border-primary-600 bg-primary-600 text-white'
+                  : 'border-neutral-300 text-neutral-700 hover:border-neutral-400 bg-white'
               }`}
             >
               {num}
@@ -806,8 +784,8 @@ function StepSchedule({ data, updateData, toggleArrayItem }: StepProps) {
               onClick={() => toggleArrayItem?.('availableDays', day.id)}
               className={`flex-1 py-3 rounded-xl border font-medium transition-all ${
                 data.availableDays.includes(day.id)
-                  ? 'border-primary bg-primary text-white'
-                  : 'border-neutral-300 text-neutral-700 hover:border-neutral-400'
+                  ? 'border-primary-600 bg-primary-600 text-white'
+                  : 'border-neutral-300 text-neutral-700 hover:border-neutral-400 bg-white'
               }`}
             >
               {day.label}
@@ -828,8 +806,8 @@ function StepSchedule({ data, updateData, toggleArrayItem }: StepProps) {
               onClick={() => updateData?.({ minutesPerSession: mins })}
               className={`flex-1 py-3 rounded-xl border font-medium transition-all ${
                 data.minutesPerSession === mins
-                  ? 'border-primary bg-primary text-white'
-                  : 'border-neutral-300 text-neutral-700 hover:border-neutral-400'
+                  ? 'border-primary-600 bg-primary-600 text-white'
+                  : 'border-neutral-300 text-neutral-700 hover:border-neutral-400 bg-white'
               }`}
             >
               {mins}m
@@ -855,8 +833,8 @@ function StepSchedule({ data, updateData, toggleArrayItem }: StepProps) {
               onClick={() => updateData?.({ preferredTime: time.id as any })}
               className={`p-3 rounded-xl border text-center transition-all ${
                 data.preferredTime === time.id
-                  ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                  : 'border-neutral-300 hover:border-neutral-400'
+                  ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
+                  : 'border-neutral-300 hover:border-neutral-400 bg-white'
               }`}
             >
               <span className="text-xl">{time.icon}</span>
@@ -889,8 +867,8 @@ function StepEquipment({ data, updateData, toggleArrayItem }: StepProps) {
               onClick={() => updateData?.({ gymType: gym.id as any })}
               className={`p-4 rounded-xl border text-left transition-all ${
                 data.gymType === gym.id
-                  ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                  : 'border-neutral-300 hover:border-neutral-400'
+                  ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
+                  : 'border-neutral-300 hover:border-neutral-400 bg-white'
               }`}
             >
               <p className="font-medium text-neutral-900">{gym.label}</p>
@@ -912,8 +890,8 @@ function StepEquipment({ data, updateData, toggleArrayItem }: StepProps) {
               onClick={() => toggleArrayItem?.('availableEquipment', eq.id)}
               className={`p-3 rounded-xl border text-left transition-all text-sm ${
                 data.availableEquipment.includes(eq.id)
-                  ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                  : 'border-neutral-300 hover:border-neutral-400'
+                  ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
+                  : 'border-neutral-300 hover:border-neutral-400 bg-white'
               }`}
             >
               {eq.label}
@@ -947,8 +925,8 @@ function StepHealth({ data, updateData, toggleArrayItem }: StepProps) {
               onClick={() => toggleArrayItem?.('healthConditions', condition.id)}
               className={`p-3 rounded-xl border text-left transition-all text-sm ${
                 data.healthConditions.includes(condition.id)
-                  ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                  : 'border-neutral-300 hover:border-neutral-400'
+                  ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
+                  : 'border-neutral-300 hover:border-neutral-400 bg-white'
               }`}
             >
               {condition.label}
@@ -966,7 +944,7 @@ function StepHealth({ data, updateData, toggleArrayItem }: StepProps) {
           onChange={(e) => updateData?.({ injuries: e.target.value })}
           placeholder="Ex: Hérnia discal L5-S1, tendinite no ombro direito..."
           rows={2}
-          className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+          className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
         />
       </div>
 
@@ -979,7 +957,7 @@ function StepHealth({ data, updateData, toggleArrayItem }: StepProps) {
           onChange={(e) => updateData?.({ exercisesToAvoid: e.target.value })}
           placeholder="Ex: Agachamento profundo, extensão de pernas..."
           rows={2}
-          className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+          className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
         />
       </div>
     </div>
@@ -1003,7 +981,7 @@ function StepPreferences({ data, updateData }: StepProps) {
           onChange={(e) => updateData?.({ preferredExercises: e.target.value })}
           placeholder="Ex: Hip thrust, deadlift, pull-ups..."
           rows={2}
-          className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+          className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
         />
       </div>
 
@@ -1016,7 +994,7 @@ function StepPreferences({ data, updateData }: StepProps) {
           onChange={(e) => updateData?.({ dislikedExercises: e.target.value })}
           placeholder="Ex: Burpees, lunges..."
           rows={2}
-          className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+          className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
         />
       </div>
 
@@ -1036,8 +1014,8 @@ function StepPreferences({ data, updateData }: StepProps) {
               onClick={() => updateData?.({ cardioPreference: pref.id as any })}
               className={`p-4 rounded-xl border text-center transition-all ${
                 data.cardioPreference === pref.id
-                  ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                  : 'border-neutral-300 hover:border-neutral-400'
+                  ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
+                  : 'border-neutral-300 hover:border-neutral-400 bg-white'
               }`}
             >
               <span className="text-2xl">{pref.icon}</span>

@@ -1,6 +1,8 @@
+// ExpenseFlow Layout with Unified Header
+
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -11,15 +13,18 @@ import {
   Tags,
   PieChart,
   Settings,
-  ArrowLeft,
+  Receipt,
+  Plus,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { initializeExpenseFlow } from '@/lib/db';
 import { useExpenseStore } from '@/stores/expense-store';
 import { getExpenseCategories } from '@/lib/db';
+import { UnifiedAppHeader } from '@/components/shell/unified-app-header';
+import { type Locale } from '@/i18n';
 
 interface ExpenseLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
   params: { locale: string };
 }
 
@@ -44,38 +49,45 @@ export default function ExpenseLayout({ children, params: { locale } }: ExpenseL
   const navigation = [
     {
       name: t('dashboard.title'),
+      shortName: 'Dashboard',
       href: `/${locale}/expenses`,
       icon: LayoutDashboard,
+      exactMatch: true,
     },
     {
       name: t('quickAdd.title'),
+      shortName: 'Adicionar',
       href: `/${locale}/expenses/add`,
       icon: PlusCircle,
     },
     {
       name: t('transactions.title'),
+      shortName: 'Transações',
       href: `/${locale}/expenses/transactions`,
       icon: List,
     },
     {
       name: t('categories.title'),
+      shortName: 'Categorias',
       href: `/${locale}/expenses/categories`,
       icon: Tags,
     },
     {
       name: t('reports.title'),
+      shortName: 'Relatórios',
       href: `/${locale}/expenses/reports`,
       icon: PieChart,
     },
     {
       name: t('settings.title'),
+      shortName: 'Definições',
       href: `/${locale}/expenses/settings`,
       icon: Settings,
     },
   ];
 
-  const isActive = (href: string) => {
-    if (href === `/${locale}/expenses`) {
+  const isActive = (href: string, exactMatch?: boolean) => {
+    if (exactMatch) {
       return pathname === href;
     }
     return pathname.startsWith(href);
@@ -83,36 +95,30 @@ export default function ExpenseLayout({ children, params: { locale } }: ExpenseL
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
-      {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl">
-        <div className="container mx-auto px-4">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link
-                href={`/${locale}`}
-                className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors"
-              >
-                <ArrowLeft className="h-5 w-5" />
-                <span className="sr-only">Back to home</span>
-              </Link>
-              <div className="h-6 w-px bg-neutral-200 dark:bg-neutral-800" />
-              <h1 className="font-display text-xl font-semibold text-neutral-900 dark:text-neutral-100">
-                {t('title')}
-              </h1>
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* Unified Header */}
+      <UnifiedAppHeader
+        locale={locale as Locale}
+        appTitle="ExpenseFlow"
+        appIcon={<Receipt className="w-5 h-5 text-primary-600" />}
+        rightContent={
+          <Link href={`/${locale}/expenses/add`}>
+            <button className="flex items-center gap-2 px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors">
+              <Plus className="w-4 h-4" />
+              <span className="hidden sm:inline">{t('nav.addTransaction')}</span>
+            </button>
+          </Link>
+        }
+      />
 
       {/* Main content with sidebar on desktop */}
-      <div className="container mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar navigation - desktop */}
           <aside className="hidden lg:block w-64 shrink-0">
-            <nav className="sticky top-24 space-y-1">
+            <nav className="sticky top-32 space-y-1">
               {navigation.map((item) => {
                 const Icon = item.icon;
-                const active = isActive(item.href);
+                const active = isActive(item.href, item.exactMatch);
                 return (
                   <Link
                     key={item.href}
@@ -142,7 +148,7 @@ export default function ExpenseLayout({ children, params: { locale } }: ExpenseL
         <div className="flex justify-around py-2">
           {navigation.slice(0, 5).map((item) => {
             const Icon = item.icon;
-            const active = isActive(item.href);
+            const active = isActive(item.href, item.exactMatch);
             return (
               <Link
                 key={item.href}
@@ -155,7 +161,7 @@ export default function ExpenseLayout({ children, params: { locale } }: ExpenseL
                 )}
               >
                 <Icon className="h-5 w-5" />
-                <span className="text-xs">{item.name.split(' ')[0]}</span>
+                <span className="text-xs">{item.shortName.split(' ')[0]}</span>
               </Link>
             );
           })}
