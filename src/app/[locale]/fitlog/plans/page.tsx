@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Plus, FileJson } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { fitlogDb } from '@/lib/db/fitlog-db';
 import { useFitLogStore } from '@/stores/fitlog-store';
 import { PlanCard } from '@/components/fitlog/plans';
@@ -18,6 +19,7 @@ interface PlansPageProps {
 
 export default function PlansPage({ params }: PlansPageProps) {
   const { locale } = params;
+  const t = useTranslations('fitLog');
   const router = useRouter();
   const [plans, setPlans] = useState<WorkoutPlan[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -74,13 +76,13 @@ export default function PlansPage({ params }: PlansPageProps) {
   return (
     <div className="p-4 space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-neutral-900">Planos de Treino</h1>
+        <h1 className="text-xl font-bold text-neutral-900">{t('plans.title')}</h1>
         <Link
           href={`/${locale}/fitlog/plans/import`}
           className="flex items-center gap-1 px-3 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors"
         >
           <Plus className="w-4 h-4" />
-          Novo
+          {t('plans.new')}
         </Link>
       </div>
 
@@ -91,10 +93,10 @@ export default function PlansPage({ params }: PlansPageProps) {
               <FileJson className="w-8 h-8 text-primary-600" />
             </div>
           }
-          title="Sem planos"
-          description="Importa um plano de treino em formato JSON para começar."
+          title={t('plans.noPlans')}
+          description={t('plans.noPlanDescription')}
           action={{
-            label: 'Importar Plano',
+            label: t('plans.importPlan'),
             onClick: () => router.push(`/${locale}/fitlog/plans/import`),
           }}
         />
@@ -114,10 +116,9 @@ export default function PlansPage({ params }: PlansPageProps) {
 
       {/* Info section */}
       <div className="p-4 bg-neutral-100 rounded-xl">
-        <h3 className="font-semibold text-neutral-900 mb-2">💡 Dica</h3>
+        <h3 className="font-semibold text-neutral-900 mb-2">{t('plans.tip')}</h3>
         <p className="text-sm text-neutral-600">
-          Podes ter múltiplos planos guardados e alternar entre eles. Apenas um plano pode estar ativo de cada vez.
-          Os dados de treino de cada plano são mantidos separadamente.
+          {t('plans.tipDescription')}
         </p>
       </div>
     </div>

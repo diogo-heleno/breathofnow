@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { WifiOff, X, RefreshCw, Home } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useServiceWorker } from '@/hooks/use-service-worker';
 
 export function UncachedPageBanner() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const t = useTranslations('pwa');
   const { isOnline } = useServiceWorker();
   const [isVisible, setIsVisible] = useState(false);
   const [originalPath, setOriginalPath] = useState<string | null>(null);
@@ -57,10 +59,10 @@ export function UncachedPageBanner() {
             <RefreshCw className="w-8 h-8 text-green-600 animate-spin" />
           </div>
           <h2 className="font-display text-xl font-bold text-neutral-900 mb-2">
-            De volta online!
+            {t('uncachedPage.backOnline')}
           </h2>
           <p className="text-neutral-600 mb-4">
-            A redirecionar para a página solicitada...
+            {t('uncachedPage.redirecting')}
           </p>
         </div>
       </div>
@@ -74,7 +76,7 @@ export function UncachedPageBanner() {
         <button
           onClick={handleDismiss}
           className="absolute top-4 right-4 p-2 text-neutral-400 hover:text-neutral-600 transition-colors"
-          aria-label="Fechar"
+          aria-label={t('uncachedPage.close')}
         >
           <X className="w-5 h-5" />
         </button>
@@ -86,18 +88,18 @@ export function UncachedPageBanner() {
 
         {/* Title */}
         <h2 className="font-display text-xl font-bold text-neutral-900 mb-2 text-center">
-          Estás offline
+          {t('uncachedPage.youAreOffline')}
         </h2>
 
         {/* Description */}
         <p className="text-neutral-600 text-center mb-4">
-          A página que tentaste aceder ainda não foi carregada enquanto estavas online.
+          {t('uncachedPage.pageNotLoaded')}
         </p>
 
         {/* Path info */}
         {originalPath && (
           <div className="bg-neutral-100 rounded-lg p-3 mb-6">
-            <p className="text-sm text-neutral-500 mb-1">Página solicitada:</p>
+            <p className="text-sm text-neutral-500 mb-1">{t('uncachedPage.requestedPage')}</p>
             <code className="text-sm font-mono text-neutral-700 break-all">
               {originalPath}
             </code>
@@ -107,8 +109,7 @@ export function UncachedPageBanner() {
         {/* Info */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
           <p className="text-sm text-blue-700">
-            <strong>Dica:</strong> As páginas que visitares enquanto estiveres online
-            ficarão disponíveis offline automaticamente.
+            <strong>Tip:</strong> {t('uncachedPage.tip')}
           </p>
         </div>
 
@@ -119,14 +120,14 @@ export function UncachedPageBanner() {
             className="w-full px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
           >
             <RefreshCw className="w-5 h-5" />
-            Tentar novamente
+            {t('uncachedPage.tryAgain')}
           </button>
           <button
             onClick={handleDismiss}
             className="w-full px-4 py-3 bg-neutral-200 hover:bg-neutral-300 text-neutral-700 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
           >
             <Home className="w-5 h-5" />
-            Continuar na Homepage
+            {t('uncachedPage.continueHome')}
           </button>
         </div>
       </div>

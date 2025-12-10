@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Play, Clock, Target, ChevronRight, Calendar } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { fitlogDb } from '@/lib/db/fitlog-db';
 import { useFitLogStore } from '@/stores/fitlog-store';
 import { EmptyState } from '@/components/fitlog/common';
@@ -17,6 +18,7 @@ interface WorkoutsPageProps {
 
 export default function WorkoutsPage({ params }: WorkoutsPageProps) {
   const { locale } = params;
+  const t = useTranslations('fitLog');
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [exerciseCounts, setExerciseCounts] = useState<{ [key: number]: number }>({});
   const [lastSessions, setLastSessions] = useState<{ [key: number]: WorkoutSession | null }>({});
@@ -61,16 +63,16 @@ export default function WorkoutsPage({ params }: WorkoutsPageProps) {
   const today = new Date().getDay();
 
   const formatLastSession = (session: WorkoutSession | null): string => {
-    if (!session || !session.completedAt) return 'Nunca';
-    
+    if (!session || !session.completedAt) return t('workout.neverDone');
+
     const date = new Date(session.completedAt);
     const diffDays = Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 0) return 'Hoje';
-    if (diffDays === 1) return 'Ontem';
-    if (diffDays < 7) return `Há ${diffDays} dias`;
-    
-    return date.toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' });
+
+    if (diffDays === 0) return t('history.todayLabel');
+    if (diffDays === 1) return t('history.yesterdayLabel');
+    if (diffDays < 7) return t('history.daysAgoLabel', { days: diffDays });
+
+    return date.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
   };
 
   if (isLoading) {
@@ -87,10 +89,10 @@ export default function WorkoutsPage({ params }: WorkoutsPageProps) {
     return (
       <div className="p-4">
         <EmptyState
-          title="Nenhum plano ativo"
-          description="Importa um plano de treino para ver os treinos disponíveis."
+          title={t('workout.noPlanActive')}
+          description={t('workout.noPlanActiveDescription')}
           action={{
-            label: 'Importar Plano',
+            label: t('plans.importPlan'),
             onClick: () => (window.location.href = `/${locale}/fitlog/plans/import`),
           }}
         />
@@ -102,8 +104,8 @@ export default function WorkoutsPage({ params }: WorkoutsPageProps) {
     return (
       <div className="p-4">
         <EmptyState
-          title="Sem treinos"
-          description="O plano atual não tem treinos definidos."
+          title={t('workout.noWorkoutsInPlan')}
+          description={t('workout.noWorkoutsInPlanDescription')}
         />
       </div>
     );
@@ -111,7 +113,7 @@ export default function WorkoutsPage({ params }: WorkoutsPageProps) {
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-xl font-bold text-neutral-900">Treinos da Semana</h1>
+      <h1 className="text-xl font-bold text-neutral-900">{t('workout.weekWorkouts')}</h1>
 
       <div className="space-y-3">
         {workouts.map((workout) => {
@@ -142,7 +144,7 @@ export default function WorkoutsPage({ params }: WorkoutsPageProps) {
                       {DAYS_OF_WEEK[workout.dayOfWeek]}
                     </span>
                     {isToday && (
-                      <span className="text-xs text-primary-600 font-medium">• Hoje</span>
+                      <span className="text-xs text-primary-600 font-medium">• {t('workout.today')}</span>
                     )}
                   </div>
                   <h3 className="font-semibold text-neutral-900 mt-2">{workout.name}</h3>
@@ -153,7 +155,7 @@ export default function WorkoutsPage({ params }: WorkoutsPageProps) {
               <div className="flex items-center gap-4 text-sm text-neutral-500">
                 <span className="flex items-center gap-1">
                   <Target className="w-4 h-4" />
-                  {exerciseCount} exercícios
+                  {t('dashboard.exercises', { count: exerciseCount })}
                 </span>
                 <span className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
@@ -163,9 +165,9 @@ export default function WorkoutsPage({ params }: WorkoutsPageProps) {
 
               <div className="flex items-center justify-between mt-4 pt-3 border-t border-neutral-100">
                 <span className="text-sm text-neutral-500">
-                  Último: {formatLastSession(lastSession)}
+                  {t('workout.lastSession')}: {formatLastSession(lastSession)}
                 </span>
-                
+
                 {isToday && (
                   <Link
                     href={`/${locale}/fitlog/workout/${workout.id}/session`}
@@ -173,7 +175,7 @@ export default function WorkoutsPage({ params }: WorkoutsPageProps) {
                     onClick={(e) => e.stopPropagation()}
                   >
                     <Play className="w-4 h-4" />
-                    Iniciar
+                    {t('dashboard.startWorkout')}
                   </Link>
                 )}
               </div>
