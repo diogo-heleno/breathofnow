@@ -123,7 +123,7 @@ export default function TermsPage({ params: { locale } }: PageProps) {
               For questions about these Terms of Service, please contact us at:
             </p>
             <ul>
-              <li>Email: legal@breathofnow.site</li>
+              <li>Email: support@breathofnow.site</li>
               <li>Address: M21 Global, Lda., Sardoal, Portugal</li>
               <li>Website: <a href="https://www.m21global.com">www.m21global.com</a></li>
             </ul>

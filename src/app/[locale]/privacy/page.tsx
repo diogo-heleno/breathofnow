@@ -84,7 +84,7 @@ export default function PrivacyPage({ params: { locale } }: PageProps) {
             </ul>
 
             <h2>6. Contact Us</h2>
-            <p>Email: privacy@breathofnow.site</p>
+            <p>Email: support@breathofnow.site</p>
             <p>Address: M21 Global, Lda., Sardoal, Portugal</p>
           </div>
         </article>
