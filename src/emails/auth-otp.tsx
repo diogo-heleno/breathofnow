@@ -148,7 +148,7 @@ export const AuthOtpEmail: React.FC<AuthOtpEmailProps> = ({
           {/* Header with Logo */}
           <Section style={header}>
             <Img
-              src="https://app.breathofnow.site/images/logo.png"
+              src="https://app.breathofnow.site/icons/icon-96x96.png"
               width="48"
               height="48"
               alt="Breath of Now"
