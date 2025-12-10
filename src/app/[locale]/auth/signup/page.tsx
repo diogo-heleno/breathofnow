@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { Mail, ArrowRight, User, Check } from 'lucide-react';
+import { Mail, ArrowRight, User, Check, KeyRound } from 'lucide-react';
 import { Logo } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,9 +18,12 @@ interface PageProps {
 
 export default function SignUpPage({ params: { locale } }: PageProps) {
   const t = useTranslations('auth');
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [otpCode, setOtpCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -75,6 +79,54 @@ export default function SignUpPage({ params: { locale } }: PageProps) {
     }
   };
 
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsVerifying(true);
+    setError(null);
+
+    try {
+      const supabase = createClient();
+      const { error: verifyError } = await supabase.auth.verifyOtp({
+        email,
+        token: otpCode,
+        type: 'email',
+      });
+
+      if (verifyError) throw verifyError;
+
+      // Redirect to expenses on success
+      router.push('/expenses');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('otpError'));
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  const handleResendCode = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: getCallbackUrl(`signup=true&name=${encodeURIComponent(name)}`),
+          data: {
+            full_name: name,
+          },
+        },
+      });
+
+      if (error) throw error;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (isSent) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-neutral-50 dark:bg-neutral-950">
@@ -87,19 +139,77 @@ export default function SignUpPage({ params: { locale } }: PageProps) {
           </div>
 
           <Card>
-            <CardContent className="p-8 text-center">
-              <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/50 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Mail className="w-8 h-8 text-primary-600" />
+            <CardContent className="p-8">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/50 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Mail className="w-8 h-8 text-primary-600" />
+                </div>
+                <h1 className="font-display text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
+                  {t('magicLinkTitle')}
+                </h1>
+                <p className="text-neutral-600 dark:text-neutral-400">
+                  {t('magicLinkSent', { email })}
+                </p>
               </div>
-              <h1 className="font-display text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
-                {t('magicLinkTitle')}
-              </h1>
-              <p className="text-neutral-600 dark:text-neutral-400 mb-6">
-                {t('magicLinkSent', { email })}
-              </p>
-              <p className="text-sm text-neutral-500">
+
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-700 dark:text-red-300 text-sm">
+                  {error}
+                </div>
+              )}
+
+              {/* OTP Code Input */}
+              <form onSubmit={handleVerifyOtp} className="space-y-4">
+                <div>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">
+                    {t('otpInstructions')}
+                  </p>
+                  <Input
+                    type="text"
+                    label={t('otpLabel')}
+                    placeholder={t('otpPlaceholder')}
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value.replace(/\s/g, ''))}
+                    leftIcon={<KeyRound className="w-4 h-4" />}
+                    maxLength={6}
+                    className="text-center text-lg tracking-widest"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  className="w-full"
+                  isLoading={isVerifying}
+                  disabled={otpCode.length < 6}
+                >
+                  {t('verifyCode')}
+                </Button>
+              </form>
+
+              {/* Divider */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-neutral-200 dark:border-neutral-800" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-white dark:bg-neutral-900 text-neutral-500">
+                    {t('orClickLink')}
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-sm text-neutral-500 text-center mb-4">
                 {t('magicLinkDescription')}
               </p>
+
+              <button
+                type="button"
+                onClick={handleResendCode}
+                disabled={isLoading}
+                className="w-full text-sm text-primary-600 dark:text-primary-400 hover:underline disabled:opacity-50"
+              >
+                {isLoading ? t('resending') : t('resendCode')}
+              </button>
             </CardContent>
           </Card>
         </div>
