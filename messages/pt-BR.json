@@ -48,6 +48,10 @@
   },
   "nav": {
     "apps": "Apps",
+    "myApps": "Meus Apps",
+    "otherApps": "Outros Apps",
+    "locked": "Bloqueado",
+    "comingSoon": "Em breve",
     "pricing": "Preços",
     "about": "Sobre",
     "faq": "FAQ",
