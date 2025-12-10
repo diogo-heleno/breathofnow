@@ -452,19 +452,25 @@
   },
   "account": {
     "title": "Account",
+    "myAccount": "My Account",
     "settings": "Account Settings",
+    "signInToView": "Sign in to view your account",
+    "signInDescription": "Create an account or sign in to manage your subscription and settings.",
     "profile": {
       "title": "Profile",
       "displayName": "Display Name",
       "email": "Email",
       "emailHint": "Email cannot be changed",
-      "user": "User"
+      "user": "User",
+      "namePlaceholder": "Your name",
+      "saveChanges": "Save Changes"
     },
     "subscription": {
       "title": "Subscription",
       "currentPlan": "Current Plan",
       "lifetimeAccess": "Lifetime access",
       "expiresOn": "Expires on {date}",
+      "renews": "Renews {date}",
       "appsIncluded": "{count} app included",
       "appsIncludedPlural": "{count} apps included",
       "allAppsIncluded": "All apps included",
@@ -486,6 +492,19 @@
       "earlyAccess": "Early Access",
       "whatsappSupport": "WhatsApp Support"
     },
+    "appAccess": {
+      "title": "App Access",
+      "selected": "{selected} / {max} selected",
+      "freeTierTitle": "Free tier: 1 app with permanent data",
+      "freeTierDescription": "You can try other apps, but their data will be deleted after 24 hours.",
+      "canChangeIn": "You can change your main app in {days} days.",
+      "trial24h": "24h Trial",
+      "active": "Active",
+      "locked": "Locked",
+      "comingSoon": "Coming Soon",
+      "tipFree": "Upgrade to get more apps and remove ads.",
+      "tipPaid": "You can change your selected apps in settings."
+    },
     "notifications": {
       "title": "Notifications",
       "budgetAlerts": "Budget Alerts",
@@ -493,14 +512,46 @@
       "weeklySummary": "Weekly Summary",
       "weeklySummaryDescription": "Receive a weekly summary of your activities"
     },
+    "appearance": {
+      "title": "Appearance",
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "regional": {
+      "title": "Regional",
+      "currency": "Currency",
+      "currencyDescription": "Default currency for new transactions",
+      "country": "Country",
+      "countryDescription": "Used for tax calculations"
+    },
     "dataManagement": {
       "title": "Data Management",
+      "localStorage": "Local Storage",
+      "localStorageActive": "Active",
+      "localStorageDescription": "Your data is stored locally on this device using IndexedDB.",
+      "cloudSyncTitle": "Cloud Sync",
+      "cloudSyncEnabled": "Enabled",
+      "cloudSyncDescription": "Your data is automatically synced across all your devices.",
+      "exportAllData": "Export All Data",
       "exportData": "Export Data",
       "exportDescription": "Download all your data",
+      "downloadAsJson": "Download your data as JSON",
+      "export": "Export",
+      "deleteLocalData": "Delete Local Data",
+      "deleteLocalDescription": "Remove all data from this device",
       "deleteData": "Delete All Data",
+      "delete": "Delete",
       "deleteWarning": "This action cannot be undone",
       "confirmDelete": "Are you sure you want to delete all local data? This cannot be undone."
-    }
+    },
+    "dangerZone": {
+      "title": "Danger Zone",
+      "deleteAccount": "Delete Account",
+      "deleteAccountDescription": "Permanently delete your account and all data"
+    },
+    "version": "Breath of Now v{version}"
   },
   "expenseFlow": {
     "title": "ExpenseFlow",
@@ -739,7 +790,29 @@
       "recentSessions": "Recent Sessions",
       "viewAllHistory": "View all history",
       "noSessionsYet": "No workouts logged yet",
-      "completedOf": "{completed} of {total} workouts completed"
+      "completedOf": "{completed} of {total} workouts completed",
+      "recentWorkouts": "Recent Workouts"
+    },
+    "onboarding": {
+      "createWithAI": "Create Plan with AI",
+      "personalizedQuestionnaire": "Personalized questionnaire",
+      "questionnaireDescription": "Answer a few questions and generate a perfect prompt for ChatGPT or Claude to create your ideal workout plan.",
+      "startQuestionnaire": "Start Questionnaire",
+      "or": "or",
+      "haveJSON": "I already have a JSON - Import",
+      "howItWorks": "How does it work?",
+      "step1Title": "Answer the questionnaire",
+      "step1Description": "Tell us your goals, availability and preferences",
+      "step2Title": "Copy the generated prompt",
+      "step2Description": "Paste into ChatGPT or Claude",
+      "step3Title": "Import the JSON",
+      "step3Description": "Copy the generated plan and import it in the app",
+      "step4Title": "Train and track",
+      "step4Description": "Track your progress and adjust weekly",
+      "needHelp": "Need help creating the plan?",
+      "useSmartQuestionnaire": "Use the smart questionnaire →",
+      "adjustPlan": "Adjust Plan",
+      "newPlan": "New Plan"
     },
     "workout": {
       "title": "Workout",
@@ -753,7 +826,22 @@
       "targetDuration": "Target Duration",
       "warmup": "Warmup",
       "cooldown": "Cooldown",
-      "exerciseList": "Exercises"
+      "exerciseList": "Exercises",
+      "weekWorkouts": "Workouts of the Week",
+      "today": "Today",
+      "lastSession": "Last",
+      "noPlanActive": "No active plan",
+      "noPlanActiveDescription": "Import a workout plan to see available workouts.",
+      "noWorkoutsInPlan": "No workouts",
+      "noWorkoutsInPlanDescription": "The current plan has no workouts defined.",
+      "back": "Back",
+      "lastWorkout": "Last workout",
+      "neverPerformed": "Never performed",
+      "warmupSection": "🔥 Warmup ({minutes} min)",
+      "cardioSection": "🏃 Final Cardio ({minutes} min)",
+      "cardioAlternatives": "Alternatives: {alternatives}",
+      "restInfo": "Rest: {seconds}s",
+      "startSession": "Start Workout"
     },
     "session": {
       "title": "Workout Session",
@@ -796,7 +884,24 @@
       "duration": "Duration",
       "feeling": "Feeling",
       "totalSets": "Total Sets",
-      "totalVolume": "Total Volume"
+      "totalVolume": "Total Volume",
+      "workoutHistory": "Workout History",
+      "workouts": "Workouts",
+      "minutes": "Minutes",
+      "volume": "Volume",
+      "workout": "Workout",
+      "todayLabel": "Today",
+      "yesterdayLabel": "Yesterday",
+      "daysAgoLabel": "{days} days ago",
+      "back": "Back",
+      "howYouFelt": "How you felt",
+      "notes": "Notes",
+      "exercisesList": "Exercises",
+      "series": "sets",
+      "skipped": "Skipped",
+      "setNumber": "Set {number}",
+      "setsCompleted": "{completed} sets completed",
+      "tonnesFormat": "{value} tonnes"
     },
     "plans": {
       "title": "Workout Plans",
@@ -807,6 +912,9 @@
       "setActive": "Set as Active",
       "deletePlan": "Delete Plan",
       "confirmDelete": "Are you sure you want to delete this plan?",
+      "new": "New",
+      "tip": "💡 Tip",
+      "tipDescription": "You can have multiple saved plans and switch between them. Only one plan can be active at a time. Training data for each plan is kept separately.",
       "import": {
         "title": "Import Plan",
         "description": "Upload a JSON file with your workout plan",
@@ -886,6 +994,17 @@
       "description": "Some features may be limited",
       "pageNotCached": "This page is not available offline",
       "goBack": "Go back"
+    },
+    "uncachedPage": {
+      "backOnline": "Back online!",
+      "redirecting": "Redirecting to the requested page...",
+      "youAreOffline": "You're offline",
+      "pageNotLoaded": "The page you tried to access has not been loaded while you were online.",
+      "requestedPage": "Requested page:",
+      "tip": "Pages you visit while online will be available offline automatically.",
+      "tryAgain": "Try again",
+      "continueHome": "Continue to Homepage",
+      "close": "Close"
     },
     "update": {
       "title": "Update available",

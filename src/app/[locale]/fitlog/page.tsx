@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Sparkles } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { fitlogDb, isFitLogDbAvailable } from '@/lib/db/fitlog-db';
 import { useFitLogStore } from '@/stores/fitlog-store';
 import {
@@ -23,6 +24,7 @@ interface DashboardPageProps {
 
 export default function DashboardPage({ params }: DashboardPageProps) {
   const { locale } = params;
+  const t = useTranslations('fitLog');
   const [isLoading, setIsLoading] = useState(true);
   const [hasPlans, setHasPlans] = useState(false);
   const { activePlanId, setActivePlan, setActivePlanId } = useFitLogStore();
@@ -80,8 +82,8 @@ export default function DashboardPage({ params }: DashboardPageProps) {
       <div className="p-4">
         <div className="py-12">
           <EmptyState
-            title="Bem-vindo ao FitLog! 💪"
-            description="Começa por criar ou importar um plano de treino personalizado."
+            title={t('dashboard.welcome')}
+            description={t('dashboard.welcomeDescription')}
           />
         </div>
 
@@ -97,15 +99,15 @@ export default function DashboardPage({ params }: DashboardPageProps) {
                   <Sparkles className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold">Criar Plano com IA</h3>
-                  <p className="text-white/80 text-sm">Questionário personalizado</p>
+                  <h3 className="text-lg font-bold">{t('onboarding.createWithAI')}</h3>
+                  <p className="text-white/80 text-sm">{t('onboarding.personalizedQuestionnaire')}</p>
                 </div>
               </div>
               <p className="text-white/90 text-sm mb-4">
-                Responde a algumas perguntas e gera uma prompt perfeita para o ChatGPT ou Claude criar o teu plano de treino ideal.
+                {t('onboarding.questionnaireDescription')}
               </p>
               <span className="inline-flex items-center gap-2 px-4 py-2 bg-white text-primary-600 rounded-lg font-semibold text-sm">
-                Começar Questionário
+                {t('onboarding.startQuestionnaire')}
                 <Sparkles className="w-4 h-4" />
               </span>
             </div>
@@ -116,7 +118,7 @@ export default function DashboardPage({ params }: DashboardPageProps) {
               <div className="w-full border-t border-neutral-200" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-neutral-50 text-neutral-500">ou</span>
+              <span className="px-4 bg-neutral-50 text-neutral-500">{t('onboarding.or')}</span>
             </div>
           </div>
 
@@ -125,28 +127,28 @@ export default function DashboardPage({ params }: DashboardPageProps) {
             className="flex items-center justify-center gap-2 w-full py-4 border-2 border-dashed border-neutral-300 text-neutral-700 rounded-xl font-semibold hover:border-primary-600 hover:text-primary-600 transition-colors"
           >
             <Plus className="w-5 h-5" />
-            Já tenho um JSON - Importar
+            {t('onboarding.haveJSON')}
           </Link>
         </div>
 
         <div className="mt-8 p-4 bg-neutral-100 rounded-xl">
-          <h3 className="font-semibold text-neutral-900 mb-2">Como funciona?</h3>
+          <h3 className="font-semibold text-neutral-900 mb-2">{t('onboarding.howItWorks')}</h3>
           <ol className="text-sm text-neutral-600 space-y-2">
             <li className="flex gap-2">
               <span className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
-              <span><strong>Responde ao questionário</strong> - Diz-nos os teus objetivos, disponibilidade e preferências</span>
+              <span><strong>{t('onboarding.step1Title')}</strong> - {t('onboarding.step1Description')}</span>
             </li>
             <li className="flex gap-2">
               <span className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
-              <span><strong>Copia a prompt gerada</strong> - Cola no ChatGPT ou Claude</span>
+              <span><strong>{t('onboarding.step2Title')}</strong> - {t('onboarding.step2Description')}</span>
             </li>
             <li className="flex gap-2">
               <span className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
-              <span><strong>Importa o JSON</strong> - Copia o plano gerado e importa na app</span>
+              <span><strong>{t('onboarding.step3Title')}</strong> - {t('onboarding.step3Description')}</span>
             </li>
             <li className="flex gap-2">
               <span className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
-              <span><strong>Treina e regista</strong> - Acompanha o progresso e ajusta semanalmente</span>
+              <span><strong>{t('onboarding.step4Title')}</strong> - {t('onboarding.step4Description')}</span>
             </li>
           </ol>
         </div>
@@ -156,12 +158,12 @@ export default function DashboardPage({ params }: DashboardPageProps) {
           <div className="flex items-center gap-3">
             <Sparkles className="w-5 h-5 text-primary-600 flex-shrink-0" />
             <div>
-              <p className="text-sm font-medium text-neutral-900">Precisa de ajuda para criar o plano?</p>
+              <p className="text-sm font-medium text-neutral-900">{t('onboarding.needHelp')}</p>
               <Link
                 href={`/${locale}/fitlog/create`}
                 className="text-sm text-primary-600 hover:underline"
               >
-                Usar o questionário inteligente →
+                {t('onboarding.useSmartQuestionnaire')}
               </Link>
             </div>
           </div>
@@ -180,13 +182,13 @@ export default function DashboardPage({ params }: DashboardPageProps) {
 
       {/* Quick Stats */}
       <div>
-        <h2 className="text-lg font-semibold text-neutral-900 mb-3">Esta Semana</h2>
+        <h2 className="text-lg font-semibold text-neutral-900 mb-3">{t('dashboard.thisWeek')}</h2>
         <QuickStats />
       </div>
 
       {/* Recent Sessions */}
       <div>
-        <h2 className="text-lg font-semibold text-neutral-900 mb-3">Últimos Treinos</h2>
+        <h2 className="text-lg font-semibold text-neutral-900 mb-3">{t('dashboard.recentWorkouts')}</h2>
         <RecentSessions locale={locale} limit={3} />
       </div>
 
@@ -200,14 +202,14 @@ export default function DashboardPage({ params }: DashboardPageProps) {
           className="flex items-center justify-center gap-2 py-3 bg-neutral-100 text-neutral-700 rounded-xl text-sm font-medium hover:bg-neutral-200 transition-colors"
         >
           <Sparkles className="w-4 h-4" />
-          Ajustar Plano
+          {t('onboarding.adjustPlan')}
         </Link>
         <Link
           href={`/${locale}/fitlog/plans/import`}
           className="flex items-center justify-center gap-2 py-3 bg-neutral-100 text-neutral-700 rounded-xl text-sm font-medium hover:bg-neutral-200 transition-colors"
         >
           <Plus className="w-4 h-4" />
-          Novo Plano
+          {t('onboarding.newPlan')}
         </Link>
       </div>
     </div>

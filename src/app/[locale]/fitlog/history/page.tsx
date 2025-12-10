@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Dumbbell, Clock, ChevronRight, TrendingUp, Calendar } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { fitlogDb } from '@/lib/db/fitlog-db';
 import { EmptyState } from '@/components/fitlog/common';
 import type { WorkoutSession } from '@/types/fitlog';
@@ -15,6 +16,7 @@ interface HistoryPageProps {
 
 export default function HistoryPage({ params }: HistoryPageProps) {
   const { locale } = params;
+  const t = useTranslations('fitLog');
   const [sessions, setSessions] = useState<WorkoutSession[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'week' | 'month'>('all');
@@ -53,11 +55,11 @@ export default function HistoryPage({ params }: HistoryPageProps) {
     const now = new Date();
     const diffDays = Math.floor((now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) return 'Hoje';
-    if (diffDays === 1) return 'Ontem';
-    if (diffDays < 7) return `Há ${diffDays} dias`;
+    if (diffDays === 0) return t('history.todayLabel');
+    if (diffDays === 1) return t('history.yesterdayLabel');
+    if (diffDays < 7) return t('history.daysAgoLabel', { days: diffDays });
 
-    return d.toLocaleDateString('pt-PT', {
+    return d.toLocaleDateString(locale, {
       weekday: 'short',
       day: 'numeric',
       month: 'short',
@@ -94,14 +96,14 @@ export default function HistoryPage({ params }: HistoryPageProps) {
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-xl font-bold text-neutral-900">Histórico de Treinos</h1>
+      <h1 className="text-xl font-bold text-neutral-900">{t('history.workoutHistory')}</h1>
 
       {/* Filter */}
       <div className="flex bg-neutral-100 p-1 rounded-xl">
         {[
-          { value: 'all' as const, label: 'Todos' },
-          { value: 'week' as const, label: 'Semana' },
-          { value: 'month' as const, label: 'Mês' },
+          { value: 'all' as const, label: t('history.filters.all') },
+          { value: 'week' as const, label: t('history.filters.week') },
+          { value: 'month' as const, label: t('history.filters.month') },
         ].map((option) => (
           <button
             key={option.value}
@@ -119,8 +121,8 @@ export default function HistoryPage({ params }: HistoryPageProps) {
 
       {sessions.length === 0 ? (
         <EmptyState
-          title="Sem treinos registados"
-          description="Completa o teu primeiro treino para ver o histórico aqui."
+          title={t('history.noHistory')}
+          description={t('history.noHistoryDescription')}
         />
       ) : (
         <div className="space-y-6">
@@ -128,19 +130,19 @@ export default function HistoryPage({ params }: HistoryPageProps) {
           <div className="grid grid-cols-3 gap-3">
             <div className="p-3 bg-white rounded-xl border border-neutral-200 text-center">
               <p className="text-2xl font-bold text-neutral-900">{sessions.length}</p>
-              <p className="text-xs text-neutral-500">Treinos</p>
+              <p className="text-xs text-neutral-500">{t('history.workouts')}</p>
             </div>
             <div className="p-3 bg-white rounded-xl border border-neutral-200 text-center">
               <p className="text-2xl font-bold text-neutral-900">
                 {sessions.reduce((sum, s) => sum + (s.duration || 0), 0)}
               </p>
-              <p className="text-xs text-neutral-500">Minutos</p>
+              <p className="text-xs text-neutral-500">{t('history.minutes')}</p>
             </div>
             <div className="p-3 bg-white rounded-xl border border-neutral-200 text-center">
               <p className="text-xl font-bold text-neutral-900">
                 {formatVolume(sessions.reduce((sum, s) => sum + (s.totalVolume || 0), 0))}
               </p>
-              <p className="text-xs text-neutral-500">Volume</p>
+              <p className="text-xs text-neutral-500">{t('history.volume')}</p>
             </div>
           </div>
 
