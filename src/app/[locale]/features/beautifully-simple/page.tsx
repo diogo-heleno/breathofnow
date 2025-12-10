@@ -108,7 +108,7 @@ export default function BeautifullySimplePage({ params: { locale } }: PageProps)
                 Our Design Principles
               </h2>
               <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-                Simplicity isn't about removing features—it's about making the right features effortless
+                Simplicity isn&apos;t about removing features—it&apos;s about making the right features effortless
               </p>
             </div>
 
@@ -144,7 +144,7 @@ export default function BeautifullySimplePage({ params: { locale } }: PageProps)
                   Speed Matters
                 </h2>
                 <p className="text-neutral-600 dark:text-neutral-400">
-                  We obsess over performance so you don't have to wait
+                  We obsess over performance so you don&apos;t have to wait
                 </p>
               </div>
 

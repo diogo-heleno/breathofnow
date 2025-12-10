@@ -82,7 +82,7 @@ export default function WorksOfflinePage({ params: { locale } }: PageProps) {
 
               <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 max-w-2xl mx-auto">
                 No internet? No problem. All apps work fully offline with optional cloud sync.
-                Your productivity doesn't depend on a connection.
+                Your productivity doesn&apos;t depend on a connection.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

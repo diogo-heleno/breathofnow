@@ -109,8 +109,8 @@ export default function ExportPage({ params }: ExportPageProps) {
               5
             </span>
             <span>
-              <strong className="text-neutral-900">Importa</strong> - Vai à página de "Importar
-              Plano" e cola o JSON para adicionar à app.
+              <strong className="text-neutral-900">Importa</strong> - Vai à página de &quot;Importar
+              Plano&quot; e cola o JSON para adicionar à app.
             </span>
           </li>
         </ol>

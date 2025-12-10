@@ -81,7 +81,7 @@ export default function SustainablePage({ params: { locale } }: PageProps) {
 
               <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 max-w-2xl mx-auto">
                 No VC funding, no growth hacks. Just sustainable software built to last.
-                We're playing the long game.
+                We&apos;re playing the long game.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -141,7 +141,7 @@ export default function SustainablePage({ params: { locale } }: PageProps) {
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="font-display text-display-sm font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                  Why We're Bootstrapped
+                  Why We&apos;re Bootstrapped
                 </h2>
               </div>
 
@@ -166,7 +166,7 @@ export default function SustainablePage({ params: { locale } }: PageProps) {
                     <li>• Keep prices fair and predictable</li>
                     <li>• Never sell your data—ever</li>
                     <li>• Keep building as long as users need us</li>
-                    <li>• Make decisions based on what's right</li>
+                    <li>• Make decisions based on what&apos;s right</li>
                   </ul>
                 </div>
               </div>
@@ -192,7 +192,7 @@ export default function SustainablePage({ params: { locale } }: PageProps) {
                   },
                   {
                     title: 'No Bait-and-Switch Pricing',
-                    description: 'We won\'t slash prices to get you in, then raise them once you\'re hooked.',
+                    description: "We won't slash prices to get you in, then raise them once you're hooked.",
                   },
                   {
                     title: 'Founding Member Guarantee',
@@ -232,8 +232,8 @@ export default function SustainablePage({ params: { locale } }: PageProps) {
             <div className="max-w-3xl mx-auto text-center">
               <div className="p-8 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800">
                 <blockquote className="text-xl italic text-neutral-700 dark:text-neutral-300 mb-4">
-                  "We're building software we'd want to use ourselves—tools that respect our time, 
-                  our privacy, and our intelligence. No tricks, no gimmicks, just genuinely useful applications."
+                  &quot;We&apos;re building software we&apos;d want to use ourselves—tools that respect our time,
+                  our privacy, and our intelligence. No tricks, no gimmicks, just genuinely useful applications.&quot;
                 </blockquote>
                 <p className="text-neutral-500">— The Breath of Now Team</p>
               </div>
@@ -249,7 +249,7 @@ export default function SustainablePage({ params: { locale } }: PageProps) {
                 Join Our Sustainable Journey
               </h2>
               <p className="text-lg text-emerald-100 mb-8">
-                Support software that's built to last. Start free, upgrade when you're ready.
+                Support software that&apos;s built to last. Start free, upgrade when you&apos;re ready.
               </p>
               <Link href={`/${locale}/auth/signup`}>
                 <Button variant="secondary" size="lg" className="bg-white text-emerald-700 hover:bg-emerald-50">

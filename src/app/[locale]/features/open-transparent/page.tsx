@@ -75,7 +75,7 @@ export default function OpenTransparentPage({ params: { locale } }: PageProps) {
               </h1>
 
               <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 max-w-2xl mx-auto">
-                We're clear about how our apps work and what they do with your data.
+                We&apos;re clear about how our apps work and what they do with your data.
                 No surprises, no fine print, no hidden agendas.
               </p>
 
@@ -136,10 +136,10 @@ export default function OpenTransparentPage({ params: { locale } }: PageProps) {
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="font-display text-display-sm font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                  What We Don't Do
+                  What We Don&apos;t Do
                 </h2>
                 <p className="text-neutral-600 dark:text-neutral-400">
-                  Practices we'll never engage in
+                  Practices we&apos;ll never engage in
                 </p>
               </div>
 
@@ -239,7 +239,7 @@ export default function OpenTransparentPage({ params: { locale } }: PageProps) {
                 Questions? Just Ask
               </h2>
               <p className="text-lg text-cyan-100 mb-8">
-                We're always happy to explain how things work. No question is too small.
+                We&apos;re always happy to explain how things work. No question is too small.
               </p>
               <a href="mailto:support@breathofnow.site">
                 <Button variant="secondary" size="lg" className="bg-white text-cyan-700 hover:bg-cyan-50">
