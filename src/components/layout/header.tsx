@@ -110,7 +110,7 @@ export function Header({ locale }: HeaderProps) {
             </div>
 
             {isAuthenticated ? (
-              <Link href="/expenses">
+              <Link href="/account">
                 <Button variant="primary" size="sm" className="flex items-center gap-2">
                   <User className="w-4 h-4" />
                   {profile?.name || t('common.profile')}
@@ -186,7 +186,7 @@ export function Header({ locale }: HeaderProps) {
               
               <div className="px-4 space-y-3">
                 {isAuthenticated ? (
-                  <Link href="/expenses" onClick={() => setIsMenuOpen(false)}>
+                  <Link href="/account" onClick={() => setIsMenuOpen(false)}>
                     <Button variant="primary" className="w-full flex items-center justify-center gap-2">
                       <User className="w-4 h-4" />
                       {profile?.name || t('common.profile')}
