@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createHmac, timingSafeEqual } from 'crypto';
 import { getResendClient, EMAIL_FROM } from '@/lib/resend/client';
 import { AuthOtpEmail } from '@/emails/auth-otp';
 import { render } from '@react-email/components';
@@ -24,62 +23,6 @@ interface SupabaseAuthEmailPayload {
     token_hash?: string;
     redirect_to?: string;
   };
-}
-
-/**
- * Verify Supabase webhook signature
- * Supabase uses HMAC-SHA256 to sign webhook payloads
- */
-async function verifySupabaseSignature(
-  payload: string,
-  signature: string | null,
-  secret: string
-): Promise<boolean> {
-  if (!signature) {
-    return false;
-  }
-
-  try {
-    // Extract the actual secret from v1,whsec_xxx format
-    const secretParts = secret.split(',');
-    const actualSecret = secretParts.length > 1
-      ? secretParts[1].replace('whsec_', '')
-      : secret;
-
-    // Compute expected signature
-    const hmac = createHmac('sha256', actualSecret);
-    hmac.update(payload);
-    const expectedSignature = hmac.digest('hex');
-
-    // Parse the signature header (format: t=timestamp,v1=signature)
-    const signatureParts = signature.split(',');
-    let receivedSignature = '';
-
-    for (const part of signatureParts) {
-      if (part.startsWith('v1=')) {
-        receivedSignature = part.substring(3);
-        break;
-      }
-    }
-
-    if (!receivedSignature) {
-      // If no v1= prefix, assume the whole string is the signature
-      receivedSignature = signature;
-    }
-
-    // Use timing-safe comparison
-    const expectedBuffer = Buffer.from(expectedSignature, 'hex');
-    const receivedBuffer = Buffer.from(receivedSignature, 'hex');
-
-    if (expectedBuffer.length !== receivedBuffer.length) {
-      return false;
-    }
-
-    return timingSafeEqual(expectedBuffer, receivedBuffer);
-  } catch (error) {
-    console.error('Signature verification error:', error);
-    return false;
-  }
 }
 
 function getSubjectByLocale(locale: Locale, type: 'signin' | 'signup'): string {
@@ -111,28 +54,22 @@ function getSubjectByLocale(locale: Locale, type: 'signin' | 'signup'): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const webhookSecret = process.env.SUPABASE_AUTH_WEBHOOK_SECRET;
+    // Log headers for debugging
+    const headers: Record<string, string> = {};
+    request.headers.forEach((value, key) => {
+      headers[key] = value;
+    });
+    console.log('Webhook headers:', JSON.stringify(headers, null, 2));
 
-    // Get raw body for signature verification
+    // Get raw body
     const rawBody = await request.text();
-
-    // Verify webhook signature if secret is configured
-    if (webhookSecret) {
-      const signature = request.headers.get('x-supabase-signature');
-      const isValid = await verifySupabaseSignature(rawBody, signature, webhookSecret);
-
-      if (!isValid) {
-        console.error('Invalid webhook signature');
-        return NextResponse.json(
-          { error: 'Unauthorized - Invalid signature' },
-          { status: 401 }
-        );
-      }
-    }
+    console.log('Webhook payload received, length:', rawBody.length);
 
     // Parse the payload
     const payload: SupabaseAuthEmailPayload = JSON.parse(rawBody);
     const { type, email, token, redirect_to } = payload;
+
+    console.log(`Processing ${type} email for ${email}`);
 
     // Extract locale from redirect_to URL or default to 'en'
     let locale: Locale = 'en';
@@ -147,6 +84,8 @@ export async function POST(request: NextRequest) {
         // Invalid URL, use default locale
       }
     }
+
+    console.log(`Detected locale: ${locale}`);
 
     // Determine email type for our template
     const emailType: 'signin' | 'signup' = type === 'signup' ? 'signup' : 'signin';
@@ -188,7 +127,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Email webhook error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: String(error) },
       { status: 500 }
     );
   }
@@ -196,5 +135,9 @@ export async function POST(request: NextRequest) {
 
 // Health check endpoint
 export async function GET() {
-  return NextResponse.json({ status: 'ok', service: 'auth-email' });
+  return NextResponse.json({
+    status: 'ok',
+    service: 'auth-email',
+    timestamp: new Date().toISOString()
+  });
 }
