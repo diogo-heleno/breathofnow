@@ -1,13 +1,21 @@
 // Service Worker para Breath of Now
-// Versão: 1.0.0
+// Versão: 2.0.0
 
-const CACHE_NAME = 'breathofnow-v1';
-const RUNTIME_CACHE = 'breathofnow-runtime-v1';
+const CACHE_NAME = 'breathofnow-v2';
+const RUNTIME_CACHE = 'breathofnow-runtime-v2';
 
 // Ficheiros críticos para funcionamento offline
 const CRITICAL_ASSETS = [
   '/',
+  '/en',
+  '/pt',
+  '/es',
+  '/fr',
   '/offline',
+  '/en/offline',
+  '/pt/offline',
+  '/es/offline',
+  '/fr/offline',
   '/manifest.json',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png'
@@ -83,12 +91,39 @@ self.addEventListener('fetch', (event) => {
             console.log('[SW] Serving from cache:', request.url);
             return cachedResponse;
           }
-          
-          // Se for uma página HTML, mostrar página offline
+
+          // Se for uma página HTML, redirecionar para homepage com parâmetro
           if (request.headers.get('accept').includes('text/html')) {
-            return caches.match('/offline');
+            // Primeiro tentar a página offline
+            return caches.match('/offline').then((offlinePage) => {
+              if (offlinePage) {
+                return offlinePage;
+              }
+
+              // Se a página offline não estiver em cache, redirecionar para homepage
+              // A homepage (/) está sempre em cache (CRITICAL_ASSETS)
+              const originalPath = url.pathname;
+              console.log('[SW] Redirecting uncached page to homepage:', originalPath);
+
+              return caches.match('/').then((homePage) => {
+                if (homePage) {
+                  // Criar redirect response para homepage com query params
+                  const redirectUrl = `/?offline=uncached&path=${encodeURIComponent(originalPath)}`;
+                  return Response.redirect(redirectUrl, 302);
+                }
+
+                // Fallback absoluto
+                return new Response('Offline - Page not available', {
+                  status: 503,
+                  statusText: 'Service Unavailable',
+                  headers: new Headers({
+                    'Content-Type': 'text/plain'
+                  })
+                });
+              });
+            });
           }
-          
+
           // Para outros recursos, retornar erro
           return new Response('Offline - Resource not available', {
             status: 503,
