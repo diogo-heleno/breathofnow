@@ -383,7 +383,15 @@
     },
     "termsAgree": "Ao se registrar, você concorda com nossos",
     "termsLink": "Termos de Serviço",
-    "privacyLink": "Política de Privacidade"
+    "privacyLink": "Política de Privacidade",
+    "otpInstructions": "Ou digite o código de 6 dígitos que você recebeu por email:",
+    "otpLabel": "Código de verificação",
+    "otpPlaceholder": "000000",
+    "verifyCode": "Verificar Código",
+    "otpError": "Código inválido ou expirado",
+    "orClickLink": "Ou clique no link do email",
+    "resendCode": "Reenviar código",
+    "resending": "Reenviando..."
   },
   "legal": {
     "privacy": {

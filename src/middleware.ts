@@ -84,6 +84,23 @@ export default async function middleware(request: NextRequest) {
   // Get country from Vercel's geo headers
   const country = request.geo?.country || 'PT';
 
+  // Handle auth code on any page - redirect to callback route
+  // This catches magic links that redirect to wrong URL (e.g., homepage with ?code=)
+  const code = request.nextUrl.searchParams.get('code');
+  if (code && !pathWithoutLocale.startsWith('/auth/callback')) {
+    // Extract locale from pathname if present
+    const localeMatch = pathname.match(/^\/(en|pt|pt-BR|es|fr)/);
+    const locale = localeMatch ? localeMatch[1] : 'pt';
+
+    // Redirect to app subdomain callback route
+    const isProduction = host.includes('breathofnow.site');
+    const callbackUrl = isProduction
+      ? `https://app.breathofnow.site/${locale}/auth/callback?code=${code}`
+      : `${request.nextUrl.origin}/${locale}/auth/callback?code=${code}`;
+
+    return NextResponse.redirect(callbackUrl);
+  }
+
   // Subdomain routing logic
   if (subdomain) {
     // Skip shared routes

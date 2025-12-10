@@ -383,7 +383,15 @@
     },
     "termsAgree": "By signing up, you agree to our",
     "termsLink": "Terms of Service",
-    "privacyLink": "Privacy Policy"
+    "privacyLink": "Privacy Policy",
+    "otpInstructions": "Or enter the 6-digit code you received by email:",
+    "otpLabel": "Verification code",
+    "otpPlaceholder": "000000",
+    "verifyCode": "Verify Code",
+    "otpError": "Invalid or expired code",
+    "orClickLink": "Or click the email link",
+    "resendCode": "Resend code",
+    "resending": "Resending..."
   },
   "legal": {
     "privacy": {
