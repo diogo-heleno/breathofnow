@@ -363,10 +363,20 @@
     "forgotPassword": "Forgot password?",
     "emailLabel": "Email address",
     "emailPlaceholder": "you@example.com",
+    "nameLabel": "Your name",
+    "namePlaceholder": "Enter your name",
     "passwordLabel": "Password",
     "passwordPlaceholder": "Enter your password",
     "rememberMe": "Remember me",
+    "signIn": "Sign In",
     "signUp": "Sign Up",
+    "createAccount": "Create Account",
+    "signUpBenefits": "What you get:",
+    "benefits": {
+      "freeApps": "Access to all apps, completely free",
+      "localData": "Your data stays on your device",
+      "noCredit": "No credit card required"
+    },
     "termsAgree": "By signing up, you agree to our",
     "termsLink": "Terms of Service",
     "privacyLink": "Privacy Policy"

@@ -1,4 +1,5 @@
 import createMiddleware from 'next-intl/middleware';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextRequest, NextResponse } from 'next/server';
 import { locales, defaultLocale } from './i18n';
 
@@ -11,8 +12,11 @@ const intlMiddleware = createMiddleware({
 // Routes that belong to the website (www subdomain)
 const WEBSITE_ROUTES = ['/', '/pricing', '/faq', '/privacy', '/terms'];
 
+// Routes that belong to the app subdomain and REQUIRE authentication
+const PROTECTED_APP_ROUTES = ['/expenses', '/investments', '/fitlog', '/recipes', '/dashboard', '/account'];
+
 // Routes that belong to the app subdomain
-const APP_ROUTE_PREFIXES = ['/expenses', '/investments', '/fitlog', '/recipes', '/dashboard'];
+const APP_ROUTE_PREFIXES = ['/expenses', '/investments', '/fitlog', '/recipes', '/dashboard', '/account'];
 
 // Shared routes (available on both subdomains)
 const SHARED_ROUTES = ['/auth'];
@@ -54,11 +58,15 @@ function isAppRoute(path: string): boolean {
   return APP_ROUTE_PREFIXES.some(prefix => path.startsWith(prefix));
 }
 
+function isProtectedRoute(path: string): boolean {
+  return PROTECTED_APP_ROUTES.some(prefix => path.startsWith(prefix));
+}
+
 function isSharedRoute(path: string): boolean {
   return SHARED_ROUTES.some(prefix => path.startsWith(prefix));
 }
 
-export default function middleware(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   const host = request.headers.get('host') || '';
   const subdomain = getSubdomain(host);
   const pathname = request.nextUrl.pathname;
@@ -94,7 +102,71 @@ export default function middleware(request: NextRequest) {
     }
   }
 
-  // Continue with i18n middleware
+  // Check authentication for protected routes
+  if (isProtectedRoute(pathWithoutLocale)) {
+    // Create Supabase client for middleware
+    let response = NextResponse.next({
+      request: {
+        headers: request.headers,
+      },
+    });
+
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return request.cookies.get(name)?.value;
+          },
+          set(name: string, value: string, options: CookieOptions) {
+            response.cookies.set({
+              name,
+              value,
+              ...options,
+            });
+          },
+          remove(name: string, options: CookieOptions) {
+            response.cookies.set({
+              name,
+              value: '',
+              ...options,
+            });
+          },
+        },
+      }
+    );
+
+    // Get the session
+    const { data: { session } } = await supabase.auth.getSession();
+
+    // If no session, redirect to sign in
+    if (!session) {
+      const signInUrl = new URL('/auth/signin', request.url);
+      signInUrl.searchParams.set('next', pathname);
+      return NextResponse.redirect(signInUrl);
+    }
+
+    // User is authenticated, continue with i18n middleware
+    const intlResponse = intlMiddleware(request);
+
+    // Copy cookies from supabase response to intl response
+    response.cookies.getAll().forEach(cookie => {
+      intlResponse.cookies.set(cookie);
+    });
+
+    // Store country in a cookie for client-side access
+    intlResponse.cookies.set('user-country', country, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+    });
+
+    return intlResponse;
+  }
+
+  // Continue with i18n middleware for non-protected routes
   const response = intlMiddleware(request);
 
   // Store country in a cookie for client-side access

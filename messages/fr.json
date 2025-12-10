@@ -363,10 +363,20 @@
     "forgotPassword": "Mot de passe oublié ?",
     "emailLabel": "Adresse email",
     "emailPlaceholder": "vous@exemple.com",
+    "nameLabel": "Votre nom",
+    "namePlaceholder": "Entrez votre nom",
     "passwordLabel": "Mot de passe",
     "passwordPlaceholder": "Entrez votre mot de passe",
     "rememberMe": "Se souvenir de moi",
+    "signIn": "Se Connecter",
     "signUp": "S'inscrire",
+    "createAccount": "Créer un Compte",
+    "signUpBenefits": "Ce que vous obtenez :",
+    "benefits": {
+      "freeApps": "Accès à toutes les apps, entièrement gratuit",
+      "localData": "Vos données restent sur votre appareil",
+      "noCredit": "Pas de carte de crédit requise"
+    },
     "termsAgree": "En vous inscrivant, vous acceptez nos",
     "termsLink": "Conditions d'Utilisation",
     "privacyLink": "Politique de Confidentialité"
