@@ -65,14 +65,14 @@ export default function OfflinePage() {
 
         {/* Title */}
         <h1 className="font-display text-3xl md:text-4xl font-bold text-warm-900 mb-4">
-          You're Offline
+          You&apos;re Offline
         </h1>
 
         {/* Description */}
         <p className="text-warm-600 mb-8 leading-relaxed">
-          Don't worry! Your data is safely stored locally. You can continue using
+          Don&apos;t worry! Your data is safely stored locally. You can continue using
           <span className="font-semibold text-primary-600"> Breath of Now </span>
-          offline. Any changes will sync automatically when you're back online.
+          offline. Any changes will sync automatically when you&apos;re back online.
         </p>
 
         {/* Status Card */}

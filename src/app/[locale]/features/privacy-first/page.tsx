@@ -81,8 +81,8 @@ export default function PrivacyFirstPage({ params: { locale } }: PageProps) {
               </h1>
 
               <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 max-w-2xl mx-auto">
-                Your data lives on your device. We can't see it, we can't sell it, we can't lose it. 
-                This isn't just a feature—it's our fundamental principle.
+                Your data lives on your device. We can&apos;t see it, we can&apos;t sell it, we can&apos;t lose it.
+                This isn&apos;t just a feature—it&apos;s our fundamental principle.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -109,7 +109,7 @@ export default function PrivacyFirstPage({ params: { locale } }: PageProps) {
                 How We Protect Your Privacy
               </h2>
               <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-                Privacy isn't an afterthought—it's baked into our architecture
+                Privacy isn&apos;t an afterthought—it&apos;s baked into our architecture
               </p>
             </div>
 
@@ -190,7 +190,7 @@ export default function PrivacyFirstPage({ params: { locale } }: PageProps) {
             <div className="max-w-3xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="font-display text-display-sm font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                  We're Different
+                  We&apos;re Different
                 </h2>
               </div>
 

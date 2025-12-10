@@ -43,7 +43,7 @@ export function ConnectivityStatus() {
           ) : (
             <>
               <WifiOff className="w-5 h-5" />
-              <span className="font-medium">You're offline</span>
+              <span className="font-medium">You&apos;re offline</span>
             </>
           )}
         </div>

@@ -55,7 +55,7 @@ export default function FairPricingPage({ params: { locale } }: PageProps) {
               </h1>
 
               <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 max-w-2xl mx-auto">
-                Pay what you can afford. Our prices automatically adapt to your region's cost of living.
+                Pay what you can afford. Our prices automatically adapt to your region&apos;s cost of living.
                 Quality tools should be accessible to everyone.
               </p>
 
@@ -122,7 +122,7 @@ export default function FairPricingPage({ params: { locale } }: PageProps) {
                     <Wallet className="w-6 h-6" />
                   </div>
                   <h3 className="font-display text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
-                    3. Pay What's Fair
+                    3. Pay What&apos;s Fair
                   </h3>
                   <p className="text-neutral-600 dark:text-neutral-400 text-sm">
                     You see adjusted prices that reflect your local economy

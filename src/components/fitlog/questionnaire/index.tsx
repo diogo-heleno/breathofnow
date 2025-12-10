@@ -425,8 +425,8 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
             <div>
               <h3 className="font-semibold text-green-800">Prompt gerado com sucesso!</h3>
               <p className="text-sm text-green-700 mt-1">
-                Copia o prompt abaixo e cola no ChatGPT ou Claude. Depois de gerar o plano, 
-                copia o JSON e importa na página "Importar Plano".
+                Copia o prompt abaixo e cola no ChatGPT ou Claude. Depois de gerar o plano,
+                copia o JSON e importa na página &quot;Importar Plano&quot;.
               </p>
             </div>
           </div>
