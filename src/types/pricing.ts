@@ -18,6 +18,9 @@ export type AppId =
 // Storage types
 export type StorageType = 'local' | 'google-drive' | 'cloud';
 
+// Support types
+export type SupportType = 'community' | 'email' | 'priority-email' | 'whatsapp-priority';
+
 // App status
 export type AppStatus = 'available' | 'beta' | 'coming-soon';
 
@@ -39,9 +42,12 @@ export interface PlanFeatures {
   canChooseApps: boolean;
   storageOptions: StorageType[];
   hasAds: boolean;
-  hasPrioritySupport: boolean;
-  hasFoundingBadge: boolean;
+  supportType: SupportType;
   hasEarlyAccess: boolean;
+  hasFoundingBadge: boolean;
+  hasQuarterlyQA: boolean;
+  hasWhatsAppSupport: boolean;
+  dataRetentionDays: number | 'unlimited'; // For non-selected apps on free tier
 }
 
 // Plan definition
@@ -128,38 +134,45 @@ export const APPS: App[] = [
   },
 ];
 
-// Pricing plans
+// Pricing plans - Updated according to new structure
 export const PLANS: Plan[] = [
   {
     id: 'free',
     name: 'Free',
     nameKey: 'pricing.plans.free.name',
-    description: 'Perfect for trying out all our apps',
+    description: 'Perfect for trying out one app',
     descriptionKey: 'pricing.plans.free.description',
     icon: 'Zap',
     monthlyPrice: 0,
     yearlyPrice: 0,
     lifetimePrice: null,
     features: {
-      appsIncluded: 'all',
-      canChooseApps: false,
+      appsIncluded: 1,
+      canChooseApps: true,
       storageOptions: ['local'],
       hasAds: true,
-      hasPrioritySupport: false,
-      hasFoundingBadge: false,
+      supportType: 'community',
       hasEarlyAccess: false,
+      hasFoundingBadge: false,
+      hasQuarterlyQA: false,
+      hasWhatsAppSupport: false,
+      dataRetentionDays: 1, // 24 hours for non-selected apps
     },
     featureList: [
-      'Access to all apps with basic features',
+      '1 app of your choice',
       'Local storage only',
-      'Discrete ad banners',
+      'Ad banners',
       'Community support',
+      'Try other apps (data expires after 24h)',
+      'Change app once per week',
     ],
     featureListKeys: [
-      'pricing.plans.free.features.allApps',
+      'pricing.plans.free.features.oneApp',
       'pricing.plans.free.features.localStorage',
       'pricing.plans.free.features.ads',
       'pricing.plans.free.features.communitySupport',
+      'pricing.plans.free.features.tryOtherApps',
+      'pricing.plans.free.features.changeAppWeekly',
     ],
     ctaKey: 'pricing.plans.free.cta',
   },
@@ -170,26 +183,29 @@ export const PLANS: Plan[] = [
     description: 'Focus on what matters most',
     descriptionKey: 'pricing.plans.starter.description',
     icon: 'Star',
-    monthlyPrice: 1.99,
-    yearlyPrice: 19.90,
+    monthlyPrice: 2.99,
+    yearlyPrice: 29.90,
     lifetimePrice: null,
     features: {
-      appsIncluded: 1,
+      appsIncluded: 2,
       canChooseApps: true,
       storageOptions: ['local', 'google-drive'],
       hasAds: false,
-      hasPrioritySupport: false,
-      hasFoundingBadge: false,
+      supportType: 'email',
       hasEarlyAccess: false,
+      hasFoundingBadge: false,
+      hasQuarterlyQA: false,
+      hasWhatsAppSupport: false,
+      dataRetentionDays: 'unlimited',
     },
     featureList: [
-      '1 app of your choice',
+      '2 apps of your choice',
       'Local + Google Drive backup',
       'Ad-free experience',
       'Email support',
     ],
     featureListKeys: [
-      'pricing.plans.starter.features.oneApp',
+      'pricing.plans.starter.features.twoApps',
       'pricing.plans.starter.features.googleDrive',
       'pricing.plans.starter.features.noAds',
       'pricing.plans.starter.features.emailSupport',
@@ -203,27 +219,30 @@ export const PLANS: Plan[] = [
     description: 'Best value for most users',
     descriptionKey: 'pricing.plans.plus.description',
     icon: 'Sparkles',
-    monthlyPrice: 3.99,
-    yearlyPrice: 39.90,
+    monthlyPrice: 4.99,
+    yearlyPrice: 49.90,
     lifetimePrice: null,
     features: {
-      appsIncluded: 3,
+      appsIncluded: 5,
       canChooseApps: true,
-      storageOptions: ['local', 'google-drive', 'cloud'],
+      storageOptions: ['local', 'google-drive'],
       hasAds: false,
-      hasPrioritySupport: false,
-      hasFoundingBadge: false,
+      supportType: 'priority-email',
       hasEarlyAccess: false,
+      hasFoundingBadge: false,
+      hasQuarterlyQA: false,
+      hasWhatsAppSupport: false,
+      dataRetentionDays: 'unlimited',
     },
     featureList: [
-      '3 apps of your choice',
-      'Local + Google Drive + Cloud sync',
+      '5 apps of your choice',
+      'Local + Google Drive backup',
       'Ad-free experience',
       'Priority email support',
     ],
     featureListKeys: [
-      'pricing.plans.plus.features.threeApps',
-      'pricing.plans.plus.features.cloudSync',
+      'pricing.plans.plus.features.fiveApps',
+      'pricing.plans.plus.features.googleDrive',
       'pricing.plans.plus.features.noAds',
       'pricing.plans.plus.features.priorityEmail',
     ],
@@ -245,15 +264,18 @@ export const PLANS: Plan[] = [
       canChooseApps: false,
       storageOptions: ['local', 'google-drive', 'cloud'],
       hasAds: false,
-      hasPrioritySupport: true,
+      supportType: 'priority-email',
+      hasEarlyAccess: true,
       hasFoundingBadge: false,
-      hasEarlyAccess: false,
+      hasQuarterlyQA: false,
+      hasWhatsAppSupport: false,
+      dataRetentionDays: 'unlimited',
     },
     featureList: [
       'All apps included',
       'Local + Google Drive + Cloud sync',
       'Ad-free experience',
-      'Priority support',
+      'Priority email support',
       'Early access to new features',
     ],
     featureListKeys: [
@@ -280,31 +302,32 @@ export const PLANS: Plan[] = [
       canChooseApps: false,
       storageOptions: ['local', 'google-drive', 'cloud'],
       hasAds: false,
-      hasPrioritySupport: true,
-      hasFoundingBadge: true,
+      supportType: 'whatsapp-priority',
       hasEarlyAccess: true,
+      hasFoundingBadge: true,
+      hasQuarterlyQA: true,
+      hasWhatsAppSupport: true,
+      dataRetentionDays: 'unlimited',
     },
     featureList: [
       'Lifetime access to ALL apps',
       'All future versions included (v2, v3...)',
+      'Help us develop our ecosystem',
+      'WhatsApp priority support',
+      'Quarterly Q&A with founder',
       'Local + Google Drive + Cloud sync',
       'Ad-free experience',
-      'Priority support forever',
-      'Early access (2 weeks before public)',
       'Exclusive Founding Member badge',
-      'Quarterly Q&A with founder',
-      'Name in Hall of Fame',
     ],
     featureListKeys: [
       'pricing.plans.founding.features.lifetime',
       'pricing.plans.founding.features.futureVersions',
+      'pricing.plans.founding.features.helpDevelop',
+      'pricing.plans.founding.features.whatsappSupport',
+      'pricing.plans.founding.features.qanda',
       'pricing.plans.founding.features.cloudSync',
       'pricing.plans.founding.features.noAds',
-      'pricing.plans.founding.features.prioritySupport',
-      'pricing.plans.founding.features.earlyAccess',
       'pricing.plans.founding.features.badge',
-      'pricing.plans.founding.features.qanda',
-      'pricing.plans.founding.features.hallOfFame',
     ],
     isLimited: true,
     limitedSpots: 100,
@@ -314,15 +337,15 @@ export const PLANS: Plan[] = [
 
 // Helper functions
 export function getPlanById(id: PlanTier): Plan | undefined {
-  return PLANS.find(plan => plan.id === id);
+  return PLANS.find((plan) => plan.id === id);
 }
 
 export function getAppById(id: AppId): App | undefined {
-  return APPS.find(app => app.id === id);
+  return APPS.find((app) => app.id === id);
 }
 
 export function getAvailableApps(): App[] {
-  return APPS.filter(app => app.status !== 'coming-soon');
+  return APPS.filter((app) => app.status !== 'coming-soon');
 }
 
 export function formatPrice(price: number, locale: string = 'en'): string {
@@ -343,4 +366,52 @@ export function getYearlySavingsPercent(plan: Plan): number {
   if (!plan.monthlyPrice || !plan.yearlyPrice) return 0;
   const monthlyTotal = plan.monthlyPrice * 12;
   return Math.round(((monthlyTotal - plan.yearlyPrice) / monthlyTotal) * 100);
+}
+
+// Get maximum number of apps for a tier
+export function getMaxAppsForTier(tier: PlanTier): number | 'all' {
+  const plan = getPlanById(tier);
+  return plan?.features.appsIncluded ?? 1;
+}
+
+// Check if tier has access to a specific app
+export function tierHasAccessToApp(
+  tier: PlanTier,
+  appId: AppId,
+  selectedApps: AppId[]
+): boolean {
+  const plan = getPlanById(tier);
+  if (!plan) return false;
+
+  // Pro and Founding have access to all apps
+  if (plan.features.appsIncluded === 'all') return true;
+
+  // For other tiers, check if app is in selected apps
+  return selectedApps.includes(appId);
+}
+
+// Check if user can change their selected app (once per week for free tier)
+export function canChangeSelectedApp(
+  tier: PlanTier,
+  lastChangeDate: Date | null
+): boolean {
+  if (tier !== 'free') return true;
+  if (!lastChangeDate) return true;
+
+  const now = new Date();
+  const daysSinceChange = Math.floor(
+    (now.getTime() - lastChangeDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  return daysSinceChange >= 7;
+}
+
+// Get days until next app change allowed
+export function daysUntilNextAppChange(lastChangeDate: Date | null): number {
+  if (!lastChangeDate) return 0;
+
+  const now = new Date();
+  const daysSinceChange = Math.floor(
+    (now.getTime() - lastChangeDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  return Math.max(0, 7 - daysSinceChange);
 }

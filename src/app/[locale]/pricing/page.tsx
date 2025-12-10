@@ -213,7 +213,7 @@ export default function PricingPage({ params: { locale } }: PageProps) {
                   {/* Apps Included */}
                   <ComparisonRow
                     feature={t('comparison.appsIncluded')}
-                    values={['all', '1', '3', 'all']}
+                    values={['1', '2', '5', 'all']}
                     icons={[true, true, true, true]}
                   />
                   {/* Local Storage */}
@@ -229,7 +229,7 @@ export default function PricingPage({ params: { locale } }: PageProps) {
                   {/* Cloud Sync */}
                   <ComparisonRow
                     feature={t('comparison.cloudSync')}
-                    values={[false, false, true, true]}
+                    values={[false, false, false, true]}
                   />
                   {/* Ads */}
                   <ComparisonRow
@@ -239,6 +239,11 @@ export default function PricingPage({ params: { locale } }: PageProps) {
                   {/* Priority Support */}
                   <ComparisonRow
                     feature={t('comparison.prioritySupport')}
+                    values={[false, false, true, true]}
+                  />
+                  {/* Early Access */}
+                  <ComparisonRow
+                    feature={t('comparison.earlyAccess')}
                     values={[false, false, false, true]}
                   />
                 </tbody>

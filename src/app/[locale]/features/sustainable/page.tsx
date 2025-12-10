@@ -1,0 +1,267 @@
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import Link from 'next/link';
+import { Leaf, Building2, TrendingDown, Heart, Clock, ArrowRight, Check, Users } from 'lucide-react';
+import { Header } from '@/components/layout/header';
+import { Footer } from '@/components/layout/footer';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { locales, type Locale } from '@/i18n';
+
+interface PageProps {
+  params: { locale: Locale };
+}
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({ params: { locale } }: PageProps) {
+  return {
+    title: 'Sustainable - Breath of Now',
+    description: 'No VC funding, no growth hacks. Just sustainable software built to last.',
+  };
+}
+
+export default function SustainablePage({ params: { locale } }: PageProps) {
+  setRequestLocale(locale);
+
+  const principles = [
+    {
+      icon: Building2,
+      title: 'Bootstrapped & Independent',
+      description: 'We\'re not backed by venture capital. Our incentives align with yours—building great products, not chasing growth at all costs.',
+    },
+    {
+      icon: TrendingDown,
+      title: 'No Growth Hacks',
+      description: 'We don\'t use dark patterns, gamification, or psychological tricks to keep you hooked. If you leave, we hope it\'s because you found something better.',
+    },
+    {
+      icon: Heart,
+      title: 'Human-Centered',
+      description: 'We build for humans, not metrics. Our success is measured by how much we help you, not by engagement numbers.',
+    },
+    {
+      icon: Clock,
+      title: 'Built to Last',
+      description: 'We\'re not racing to an exit. We\'re building software that will serve you for years, not months.',
+    },
+    {
+      icon: Users,
+      title: 'Small Team, Big Care',
+      description: 'A small, dedicated team means every decision is made with intention. We can\'t hide behind bureaucracy.',
+    },
+    {
+      icon: Leaf,
+      title: 'Environmental Awareness',
+      description: 'Efficient code, minimal servers, local-first architecture. Our approach is naturally lighter on resources.',
+    },
+  ];
+
+  return (
+    <>
+      <Header locale={locale} />
+      
+      <main className="min-h-screen pt-24 pb-20">
+        {/* Hero Section */}
+        <section className="relative py-20 overflow-hidden">
+          <div className="absolute inset-0 -z-10">
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-200/30 dark:bg-emerald-900/20 rounded-full blur-3xl" />
+          </div>
+
+          <div className="container-app">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 mb-8">
+                <Leaf className="w-10 h-10" />
+              </div>
+
+              <h1 className="font-display text-display-lg md:text-display-xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">
+                Sustainable
+              </h1>
+
+              <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 max-w-2xl mx-auto">
+                No VC funding, no growth hacks. Just sustainable software built to last.
+                We're playing the long game.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link href={`/${locale}/auth/signup`}>
+                  <Button variant="primary" size="lg" rightIcon={<ArrowRight className="w-5 h-5" />}>
+                    Get Started Free
+                  </Button>
+                </Link>
+                <Link href="https://www.breathofnow.site/#apps">
+                  <Button variant="outline" size="lg">
+                    Explore Apps
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Principles Section */}
+        <section className="py-20 bg-white dark:bg-neutral-900">
+          <div className="container-app">
+            <div className="text-center mb-16">
+              <h2 className="font-display text-display-sm md:text-display-md font-bold text-neutral-900 dark:text-neutral-100 mb-4">
+                Our Sustainability Principles
+              </h2>
+              <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+                Building software that respects you, the planet, and the long term
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {principles.map((principle, index) => {
+                const Icon = principle.icon;
+                return (
+                  <Card key={index} variant="interactive">
+                    <CardContent className="p-6">
+                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 mb-4">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <h3 className="font-display text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
+                        {principle.title}
+                      </h3>
+                      <p className="text-neutral-600 dark:text-neutral-400">
+                        {principle.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Why Bootstrapped */}
+        <section className="py-20">
+          <div className="container-app">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="font-display text-display-sm font-bold text-neutral-900 dark:text-neutral-100 mb-4">
+                  Why We're Bootstrapped
+                </h2>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="p-6 rounded-2xl border-2 border-red-200 bg-red-50/50 dark:bg-red-900/10">
+                  <h3 className="font-semibold text-red-700 dark:text-red-400 mb-4">❌ VC-Funded Companies Often...</h3>
+                  <ul className="space-y-3 text-sm text-neutral-600 dark:text-neutral-400">
+                    <li>• Prioritize growth over user experience</li>
+                    <li>• Add features that increase engagement, not value</li>
+                    <li>• Raise prices dramatically after gaining market share</li>
+                    <li>• Sell user data to meet investor expectations</li>
+                    <li>• Shut down or pivot when growth slows</li>
+                    <li>• Make decisions based on exit strategy</li>
+                  </ul>
+                </div>
+
+                <div className="p-6 rounded-2xl border-2 border-green-200 bg-green-50/50 dark:bg-green-900/10">
+                  <h3 className="font-semibold text-green-700 dark:text-green-400 mb-4">✓ Bootstrapped, We Can...</h3>
+                  <ul className="space-y-3 text-sm text-neutral-600 dark:text-neutral-400">
+                    <li>• Focus entirely on user value</li>
+                    <li>• Only add features that truly help</li>
+                    <li>• Keep prices fair and predictable</li>
+                    <li>• Never sell your data—ever</li>
+                    <li>• Keep building as long as users need us</li>
+                    <li>• Make decisions based on what's right</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Long-term Commitment */}
+        <section className="py-20 bg-white dark:bg-neutral-900">
+          <div className="container-app">
+            <div className="max-w-3xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="font-display text-display-sm font-bold text-neutral-900 dark:text-neutral-100 mb-4">
+                  Our Commitment to You
+                </h2>
+              </div>
+
+              <div className="space-y-4">
+                {[
+                  {
+                    title: 'Data Export Always Available',
+                    description: 'Your data is always exportable in standard formats. You\'re never locked in.',
+                  },
+                  {
+                    title: 'No Bait-and-Switch Pricing',
+                    description: 'We won\'t slash prices to get you in, then raise them once you\'re hooked.',
+                  },
+                  {
+                    title: 'Founding Member Guarantee',
+                    description: 'Lifetime members get lifetime access—no future changes will affect your deal.',
+                  },
+                  {
+                    title: 'Honest Communication',
+                    description: 'If we ever have to make changes, you\'ll hear about it directly and honestly.',
+                  },
+                  {
+                    title: 'Grace Period for Closure',
+                    description: 'If we ever have to shut down (we don\'t plan to!), you\'ll get months of notice and full data access.',
+                  },
+                ].map((item, index) => (
+                  <div key={index} className="flex gap-4 p-4 rounded-xl bg-neutral-50 dark:bg-neutral-800/50">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                      <Check className="w-5 h-5 text-emerald-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-1">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Quote Section */}
+        <section className="py-20">
+          <div className="container-app">
+            <div className="max-w-3xl mx-auto text-center">
+              <div className="p-8 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800">
+                <blockquote className="text-xl italic text-neutral-700 dark:text-neutral-300 mb-4">
+                  "We're building software we'd want to use ourselves—tools that respect our time, 
+                  our privacy, and our intelligence. No tricks, no gimmicks, just genuinely useful applications."
+                </blockquote>
+                <p className="text-neutral-500">— The Breath of Now Team</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20 bg-emerald-600 dark:bg-emerald-800">
+          <div className="container-app">
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="font-display text-display-sm md:text-display-md font-bold text-white mb-6">
+                Join Our Sustainable Journey
+              </h2>
+              <p className="text-lg text-emerald-100 mb-8">
+                Support software that's built to last. Start free, upgrade when you're ready.
+              </p>
+              <Link href={`/${locale}/auth/signup`}>
+                <Button variant="secondary" size="lg" className="bg-white text-emerald-700 hover:bg-emerald-50">
+                  Get Started Free
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </>
+  );
+}

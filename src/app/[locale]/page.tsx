@@ -100,12 +100,12 @@ export default function HomePage({ params: { locale } }: PageProps) {
   ];
 
   const features = [
-    { id: 'privacy', icon: Shield },
-    { id: 'offline', icon: Wifi },
-    { id: 'simple', icon: Sparkles },
-    { id: 'fair', icon: Heart },
-    { id: 'open', icon: Eye },
-    { id: 'sustainable', icon: Leaf },
+    { id: 'privacy', icon: Shield, href: '/features/privacy-first' },
+    { id: 'offline', icon: Wifi, href: '/features/works-offline' },
+    { id: 'simple', icon: Sparkles, href: '/features/beautifully-simple' },
+    { id: 'fair', icon: Heart, href: '/features/fair-pricing' },
+    { id: 'open', icon: Eye, href: '/features/open-transparent' },
+    { id: 'sustainable', icon: Leaf, href: '/features/sustainable' },
   ];
 
   const statusColors = {
@@ -264,21 +264,22 @@ export default function HomePage({ params: { locale } }: PageProps) {
               {features.map((feature, index) => {
                 const Icon = feature.icon;
                 return (
-                  <div
+                  <Link
                     key={feature.id}
-                    className="text-center animate-fade-in-up"
+                    href={`/${locale}${feature.href}`}
+                    className="text-center animate-fade-in-up group cursor-pointer"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 mb-4">
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 mb-4 group-hover:scale-110 transition-transform">
                       <Icon className="w-7 h-7" />
                     </div>
-                    <h3 className="font-display text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
+                    <h3 className="font-display text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2 group-hover:text-primary-600 transition-colors">
                       {t(`features.${feature.id}.title`)}
                     </h3>
                     <p className="text-neutral-600 dark:text-neutral-400">
                       {t(`features.${feature.id}.description`)}
                     </p>
-                  </div>
+                  </Link>
                 );
               })}
             </div>

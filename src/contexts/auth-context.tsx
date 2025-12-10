@@ -178,17 +178,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Check if user has access to a specific app
   const hasAccessToApp = useCallback((appId: string): boolean => {
-    if (!profile) return true; // Allow access for non-authenticated users (free tier)
+    if (!profile) return true; // Allow access for non-authenticated users (shows all apps initially)
 
     const { tier, selectedApps } = profile;
 
-    // Free, Pro, and Founding have access to all
-    if (tier === 'free' || tier === 'pro' || tier === 'founding') {
+    // Pro and Founding have access to all apps
+    if (tier === 'pro' || tier === 'founding') {
       return true;
     }
 
-    // Starter (1 app) and Plus (3 apps) - check selected apps
-    if (tier === 'starter' || tier === 'plus') {
+    // Free (1 app), Starter (2 apps), Plus (5 apps) - check selected apps
+    if (tier === 'free' || tier === 'starter' || tier === 'plus') {
       return selectedApps?.includes(appId) ?? false;
     }
 

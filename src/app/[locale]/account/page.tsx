@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import {
@@ -12,19 +12,31 @@ import {
   Star,
   Zap,
   Settings,
-  CreditCard,
   Calendar,
   Check,
   X,
   ChevronRight,
-  ExternalLink,
+  Clock,
+  AlertTriangle,
+  Lock,
+  Info,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AppShell } from '@/components/shell';
-import { APPS, type AppId } from '@/types/pricing';
+import { AdBanner } from '@/components/ads/ad-banner';
+import {
+  APPS,
+  PLANS,
+  getPlanById,
+  getMaxAppsForTier,
+  canChangeSelectedApp,
+  daysUntilNextAppChange,
+  type AppId,
+  type PlanTier,
+} from '@/types/pricing';
 import { type Locale } from '@/i18n';
 
 interface PageProps {
@@ -57,7 +69,19 @@ const TIER_LABELS = {
 
 export default function AccountPage({ params: { locale } }: PageProps) {
   const t = useTranslations();
-  const { profile, isAuthenticated, isLoading, hasAccessToApp } = useAuth();
+  const { profile, isAuthenticated, isLoading, hasAccessToApp, showAds } = useAuth();
+  const [lastAppChange, setLastAppChange] = useState<Date | null>(null);
+
+  // Simulate loading last app change date (in real app, fetch from profile)
+  useEffect(() => {
+    if (profile?.tier === 'free') {
+      // This would come from the database in a real implementation
+      const storedDate = localStorage.getItem('bon_last_app_change');
+      if (storedDate) {
+        setLastAppChange(new Date(storedDate));
+      }
+    }
+  }, [profile?.tier]);
 
   if (isLoading) {
     return (
@@ -97,10 +121,22 @@ export default function AccountPage({ params: { locale } }: PageProps) {
   }
 
   const TierIcon = TIER_ICONS[profile.tier];
+  const plan = getPlanById(profile.tier);
+  const maxApps = getMaxAppsForTier(profile.tier);
+  const selectedAppsCount = profile.selectedApps?.length ?? 0;
+
+  // For free tier, check if user can change app
+  const canChangeApp = canChangeSelectedApp(profile.tier, lastAppChange);
+  const daysUntilChange = daysUntilNextAppChange(lastAppChange);
 
   return (
     <AppShell locale={locale}>
       <div className="p-6 max-w-4xl mx-auto space-y-6">
+        {/* Ad Banner for free users */}
+        {showAds && (
+          <AdBanner position="top" slot="account-top" />
+        )}
+
         {/* Header */}
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-neutral-900">My Account</h1>
@@ -179,6 +215,11 @@ export default function AccountPage({ params: { locale } }: PageProps) {
                     {profile.tier === 'founding' && (
                       <p className="text-sm text-amber-600">Lifetime access</p>
                     )}
+                    {plan && (
+                      <p className="text-sm text-neutral-500">
+                        {maxApps === 'all' ? 'All apps' : `${maxApps} app${maxApps !== 1 ? 's' : ''}`} included
+                      </p>
+                    )}
                   </div>
                 </div>
                 
@@ -192,11 +233,15 @@ export default function AccountPage({ params: { locale } }: PageProps) {
                 )}
               </div>
 
-              {/* Features */}
+              {/* Plan Features */}
               <div className="grid grid-cols-2 gap-3">
                 <FeatureItem
                   label="Cloud Sync"
-                  enabled={['plus', 'pro', 'founding'].includes(profile.tier)}
+                  enabled={['pro', 'founding'].includes(profile.tier)}
+                />
+                <FeatureItem
+                  label="Google Drive"
+                  enabled={['starter', 'plus', 'pro', 'founding'].includes(profile.tier)}
                 />
                 <FeatureItem
                   label="Ad-Free"
@@ -204,11 +249,15 @@ export default function AccountPage({ params: { locale } }: PageProps) {
                 />
                 <FeatureItem
                   label="Priority Support"
-                  enabled={['pro', 'founding'].includes(profile.tier)}
+                  enabled={['plus', 'pro', 'founding'].includes(profile.tier)}
                 />
                 <FeatureItem
                   label="Early Access"
                   enabled={['pro', 'founding'].includes(profile.tier)}
+                />
+                <FeatureItem
+                  label="WhatsApp Support"
+                  enabled={profile.tier === 'founding'}
                 />
               </div>
             </div>
@@ -218,11 +267,43 @@ export default function AccountPage({ params: { locale } }: PageProps) {
         {/* App Access Card */}
         <Card>
           <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-neutral-900 mb-4">App Access</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-neutral-900">App Access</h3>
+              {maxApps !== 'all' && (
+                <span className="text-sm text-neutral-500">
+                  {selectedAppsCount} / {maxApps} selected
+                </span>
+              )}
+            </div>
+
+            {/* Free tier warning about app switching */}
+            {profile.tier === 'free' && (
+              <div className="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                <div className="flex items-start gap-3">
+                  <Info className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-amber-800 font-medium">
+                      Free tier: 1 app with permanent data
+                    </p>
+                    <p className="text-sm text-amber-700 mt-1">
+                      You can try other apps, but their data will be deleted after 24 hours.
+                      {!canChangeApp && (
+                        <span className="block mt-1">
+                          <Clock className="w-3.5 h-3.5 inline mr-1" />
+                          You can change your main app in {daysUntilChange} days.
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             
             <div className="space-y-2">
               {APPS.filter(app => app.status !== 'coming-soon').map((app) => {
                 const hasAccess = hasAccessToApp(app.id);
+                const isSelected = profile.selectedApps?.includes(app.id);
+                const isTrialApp = profile.tier === 'free' && !isSelected;
                 
                 return (
                   <div
@@ -234,7 +315,7 @@ export default function AccountPage({ params: { locale } }: PageProps) {
                         className="w-8 h-8 rounded-lg flex items-center justify-center"
                         style={{ backgroundColor: `${app.color}20` }}
                       >
-                        <span style={{ color: app.color }}>
+                        <span style={{ color: app.color }} className="font-medium">
                           {app.name.charAt(0)}
                         </span>
                       </div>
@@ -244,26 +325,80 @@ export default function AccountPage({ params: { locale } }: PageProps) {
                       </div>
                     </div>
                     
-                    {hasAccess ? (
-                      <Badge variant="success" className="bg-green-100 text-green-700">
-                        <Check className="w-3 h-3 mr-1" />
-                        Access
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline" className="text-neutral-500">
-                        <X className="w-3 h-3 mr-1" />
-                        Locked
-                      </Badge>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {app.status === 'beta' && (
+                        <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                          Beta
+                        </Badge>
+                      )}
+                      
+                      {hasAccess || maxApps === 'all' ? (
+                        isTrialApp ? (
+                          <Badge variant="warning" className="bg-amber-100 text-amber-700">
+                            <Clock className="w-3 h-3 mr-1" />
+                            24h Trial
+                          </Badge>
+                        ) : (
+                          <Badge variant="success" className="bg-green-100 text-green-700">
+                            <Check className="w-3 h-3 mr-1" />
+                            Active
+                          </Badge>
+                        )
+                      ) : (
+                        <Badge variant="outline" className="text-neutral-500">
+                          <Lock className="w-3 h-3 mr-1" />
+                          Locked
+                        </Badge>
+                      )}
+                    </div>
                   </div>
                 );
               })}
+
+              {/* Coming Soon Apps */}
+              <div className="mt-4 pt-4 border-t border-neutral-200">
+                <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-2">
+                  Coming Soon
+                </p>
+                {APPS.filter(app => app.status === 'coming-soon').map((app) => (
+                  <div
+                    key={app.id}
+                    className="flex items-center justify-between p-3 rounded-lg opacity-60"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        style={{ backgroundColor: `${app.color}20` }}
+                      >
+                        <span style={{ color: app.color }} className="font-medium">
+                          {app.name.charAt(0)}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="font-medium text-neutral-900">{app.name}</p>
+                        <p className="text-xs text-neutral-500">{app.description}</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="text-[10px]">
+                      Soon
+                    </Badge>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {(profile.tier === 'starter' || profile.tier === 'plus') && (
-              <div className="mt-4 p-4 bg-amber-50 rounded-xl">
-                <p className="text-sm text-amber-800">
-                  <strong>Tip:</strong> You can change your selected apps at the start of each billing period.
+            {(profile.tier === 'free' || profile.tier === 'starter' || profile.tier === 'plus') && (
+              <div className="mt-4 p-4 bg-primary-50 rounded-xl">
+                <p className="text-sm text-primary-800">
+                  {profile.tier === 'free' ? (
+                    <>
+                      <strong>Tip:</strong> Upgrade to get more apps and remove ads.
+                    </>
+                  ) : (
+                    <>
+                      <strong>Tip:</strong> You can change your selected apps in settings.
+                    </>
+                  )}
                 </p>
               </div>
             )}
@@ -290,6 +425,11 @@ export default function AccountPage({ params: { locale } }: PageProps) {
             </div>
           </CardContent>
         </Card>
+
+        {/* Bottom Ad Banner for free users */}
+        {showAds && (
+          <AdBanner position="bottom" slot="account-bottom" />
+        )}
       </div>
     </AppShell>
   );

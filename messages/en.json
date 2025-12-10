@@ -192,12 +192,14 @@
     "plans": {
       "free": {
         "name": "Free",
-        "description": "Perfect for trying out all our apps",
+        "description": "Perfect for trying out one app",
         "features": {
-          "allApps": "Access to all apps",
+          "oneApp": "1 app of your choice",
           "localStorage": "Local storage only",
-          "ads": "Discrete ad banners",
-          "communitySupport": "Community support"
+          "ads": "Ad banners",
+          "communitySupport": "Community support",
+          "tryOtherApps": "Try other apps (data expires after 24h)",
+          "changeAppWeekly": "Change app once per week"
         },
         "cta": "Get Started"
       },
@@ -205,7 +207,7 @@
         "name": "Starter",
         "description": "Focus on what matters most",
         "features": {
-          "oneApp": "1 app of your choice",
+          "twoApps": "2 apps of your choice",
           "googleDrive": "Local + Google Drive backup",
           "noAds": "Ad-free experience",
           "emailSupport": "Email support"
@@ -216,8 +218,8 @@
         "name": "Plus",
         "description": "Best value for most users",
         "features": {
-          "threeApps": "3 apps of your choice",
-          "cloudSync": "Local + Google Drive + Cloud sync",
+          "fiveApps": "5 apps of your choice",
+          "googleDrive": "Local + Google Drive backup",
           "noAds": "Ad-free experience",
           "priorityEmail": "Priority email support"
         },
@@ -230,7 +232,7 @@
           "allApps": "All apps included",
           "cloudSync": "Local + Google Drive + Cloud sync",
           "noAds": "Ad-free experience",
-          "prioritySupport": "Priority support",
+          "prioritySupport": "Priority email support",
           "earlyAccess": "Early access to new features"
         },
         "cta": "Subscribe"
@@ -241,13 +243,12 @@
         "features": {
           "lifetime": "Lifetime access to ALL apps",
           "futureVersions": "All future versions included (v2, v3...)",
+          "helpDevelop": "Help us develop our ecosystem",
+          "whatsappSupport": "WhatsApp priority support",
+          "qanda": "Quarterly Q&A with founder",
           "cloudSync": "Local + Google Drive + Cloud sync",
           "noAds": "Ad-free experience",
-          "prioritySupport": "Priority support forever",
-          "earlyAccess": "Early access (2 weeks before public)",
-          "badge": "Exclusive Founding Member badge",
-          "qanda": "Quarterly Q&A with founder",
-          "hallOfFame": "Name in Hall of Fame"
+          "badge": "Exclusive Founding Member badge"
         },
         "cta": "Become a Founder"
       }
@@ -264,7 +265,8 @@
       "googleDrive": "Google Drive backup",
       "cloudSync": "Cloud sync",
       "noAds": "Ad-free",
-      "prioritySupport": "Priority support"
+      "prioritySupport": "Priority support",
+      "earlyAccess": "Early access"
     },
     "trust": {
       "privacy": {

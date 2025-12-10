@@ -31,9 +31,9 @@ export function Header({ locale }: HeaderProps) {
   }, []);
 
   const navItems = [
-    { href: '#apps', label: t('nav.apps') },
-    { href: '/pricing', label: t('nav.pricing') },
-    { href: '/faq', label: t('nav.faq') },
+    { href: 'https://www.breathofnow.site/#apps', label: t('nav.apps') },
+    { href: 'https://www.breathofnow.site/pricing', label: t('nav.pricing') },
+    { href: 'https://www.breathofnow.site/faq', label: t('nav.faq') },
   ];
 
   return (
@@ -113,7 +113,7 @@ export function Header({ locale }: HeaderProps) {
               <Link href="/account">
                 <Button variant="primary" size="sm" className="flex items-center gap-2">
                   <User className="w-4 h-4" />
-                  {profile?.name || t('common.profile')}
+                  {t('common.profile')}
                 </Button>
               </Link>
             ) : (
@@ -189,7 +189,7 @@ export function Header({ locale }: HeaderProps) {
                   <Link href="/account" onClick={() => setIsMenuOpen(false)}>
                     <Button variant="primary" className="w-full flex items-center justify-center gap-2">
                       <User className="w-4 h-4" />
-                      {profile?.name || t('common.profile')}
+                      {t('common.profile')}
                     </Button>
                   </Link>
                 ) : (
