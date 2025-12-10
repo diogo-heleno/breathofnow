@@ -5,6 +5,7 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Home,
   Dumbbell,
@@ -24,13 +25,14 @@ interface FitLogLayoutProps {
 export default function FitLogLayout({ children, params }: FitLogLayoutProps) {
   const { locale } = params;
   const pathname = usePathname();
+  const t = useTranslations('fitLog');
 
   const navItems = [
-    { href: `/${locale}/fitlog`, icon: Home, label: 'Início', exactMatch: true },
-    { href: `/${locale}/fitlog/workout`, icon: Dumbbell, label: 'Treinos' },
-    { href: `/${locale}/fitlog/history`, icon: History, label: 'Histórico' },
-    { href: `/${locale}/fitlog/export`, icon: Upload, label: 'Export' },
-    { href: `/${locale}/fitlog/plans`, icon: FileText, label: 'Planos' },
+    { href: `/${locale}/fitlog`, icon: Home, label: t('nav.home'), exactMatch: true },
+    { href: `/${locale}/fitlog/workout`, icon: Dumbbell, label: t('nav.workouts') },
+    { href: `/${locale}/fitlog/history`, icon: History, label: t('nav.history') },
+    { href: `/${locale}/fitlog/export`, icon: Upload, label: t('nav.export') },
+    { href: `/${locale}/fitlog/plans`, icon: FileText, label: t('nav.plans') },
   ];
 
   const isActive = (href: string, exactMatch?: boolean) => {
@@ -45,7 +47,7 @@ export default function FitLogLayout({ children, params }: FitLogLayoutProps) {
       {/* Unified Header */}
       <UnifiedAppHeader
         locale={locale as Locale}
-        appTitle="FitLog"
+        appTitle={t('title')}
         appIcon={<Dumbbell className="w-5 h-5 text-primary-600" />}
       />
 

@@ -44,7 +44,25 @@
     "profile": "Profile",
     "dashboard": "Dashboard",
     "home": "Home",
-    "comingSoon": "Coming Soon"
+    "comingSoon": "Coming Soon",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{days} days ago",
+    "never": "Never",
+    "total": "Total",
+    "manage": "Manage",
+    "import": "Import",
+    "export": "Export",
+    "clear": "Clear",
+    "clearing": "Clearing...",
+    "confirm": "Confirm",
+    "start": "Start",
+    "finish": "Finish",
+    "complete": "Complete",
+    "incomplete": "Incomplete",
+    "active": "Active",
+    "inactive": "Inactive",
+    "toggleMenu": "Toggle menu"
   },
   "nav": {
     "apps": "Apps",
@@ -312,7 +330,8 @@
     },
     "sustainable": {
       "title": "Sustainable",
-      "description": "No VC funding, no growth hacks. Just sustainable software built to last."
+      "description": "No VC funding, no growth hacks. Just sustainable software built to last.",
+      "noBaitAndSwitch": "We won't slash prices to get you in, then raise them once you're hooked."
     }
   },
   "faq": {
@@ -431,6 +450,58 @@
       "noAds": "Enjoy an ad-free experience"
     }
   },
+  "account": {
+    "title": "Account",
+    "settings": "Account Settings",
+    "profile": {
+      "title": "Profile",
+      "displayName": "Display Name",
+      "email": "Email",
+      "emailHint": "Email cannot be changed",
+      "user": "User"
+    },
+    "subscription": {
+      "title": "Subscription",
+      "currentPlan": "Current Plan",
+      "lifetimeAccess": "Lifetime access",
+      "expiresOn": "Expires on {date}",
+      "appsIncluded": "{count} app included",
+      "appsIncludedPlural": "{count} apps included",
+      "allAppsIncluded": "All apps included",
+      "upgrade": "Upgrade",
+      "manage": "Manage"
+    },
+    "tiers": {
+      "free": "Free",
+      "starter": "Starter",
+      "plus": "Plus",
+      "pro": "Pro",
+      "founding": "Founding Member"
+    },
+    "features": {
+      "cloudSync": "Cloud Sync",
+      "googleDrive": "Google Drive",
+      "adFree": "Ad-Free",
+      "prioritySupport": "Priority Support",
+      "earlyAccess": "Early Access",
+      "whatsappSupport": "WhatsApp Support"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "budgetAlerts": "Budget Alerts",
+      "budgetAlertsDescription": "Get notified when you're close to budget limits",
+      "weeklySummary": "Weekly Summary",
+      "weeklySummaryDescription": "Receive a weekly summary of your activities"
+    },
+    "dataManagement": {
+      "title": "Data Management",
+      "exportData": "Export Data",
+      "exportDescription": "Download all your data",
+      "deleteData": "Delete All Data",
+      "deleteWarning": "This action cannot be undone",
+      "confirmDelete": "Are you sure you want to delete all local data? This cannot be undone."
+    }
+  },
   "expenseFlow": {
     "title": "ExpenseFlow",
     "tagline": "Mindful money tracking",
@@ -482,7 +553,8 @@
       "recentTransactions": "Recent Transactions",
       "viewAll": "View all",
       "noTransactions": "No transactions this month",
-      "addFirst": "Add your first transaction"
+      "addFirst": "Add your first transaction",
+      "transaction": "Transaction"
     },
     "quickAdd": {
       "title": "New Transaction",
@@ -544,6 +616,7 @@
     "budgets": {
       "title": "Budgets",
       "add": "Add Budget",
+      "edit": "Edit Budget",
       "monthly": "Monthly",
       "yearly": "Yearly",
       "spent": "Spent",
@@ -565,6 +638,7 @@
       "baseCurrency": "Base Currency",
       "baseCurrencyDescription": "All transactions will be converted to this currency for reports",
       "currency": "Base Currency",
+      "currencyUpdated": "Currency updated",
       "dateFormat": "Date Format",
       "firstDayOfWeek": "First Day of Week",
       "monday": "Monday",
@@ -596,7 +670,15 @@
       "mapping": "Column Mapping",
       "preview": "Preview",
       "importing": "Importing...",
-      "success": "{count} transactions imported successfully!"
+      "success": "{count} transactions imported successfully!",
+      "dateColumn": "Date Column *",
+      "amountColumn": "Amount Column *",
+      "descriptionColumn": "Description Column",
+      "categoryColumn": "Category Column",
+      "invalidDate": "Invalid date",
+      "invalidAmount": "Invalid amount",
+      "unsupportedFormat": "Unsupported file format. Please use CSV or Excel (.xlsx, .xls)",
+      "parseError": "Failed to parse Excel file"
     },
     "months": {
       "january": "January",
@@ -611,6 +693,204 @@
       "october": "October",
       "november": "November",
       "december": "December"
+    },
+    "currencies": {
+      "EUR": "Euro",
+      "USD": "US Dollar",
+      "GBP": "British Pound",
+      "BRL": "Brazilian Real",
+      "CHF": "Swiss Franc",
+      "JPY": "Japanese Yen",
+      "AUD": "Australian Dollar",
+      "CAD": "Canadian Dollar"
+    }
+  },
+  "fitLog": {
+    "title": "FitLog",
+    "tagline": "Every rep counts",
+    "nav": {
+      "home": "Home",
+      "workouts": "Workouts",
+      "history": "History",
+      "export": "Export",
+      "plans": "Plans",
+      "settings": "Settings"
+    },
+    "dashboard": {
+      "welcome": "Welcome to FitLog! 💪",
+      "welcomeDescription": "Start by creating or importing a personalized workout plan.",
+      "noPlan": "No active plan",
+      "noPlanDescription": "Import a workout plan to get started",
+      "importPlan": "Import Plan",
+      "thisWeek": "This Week",
+      "totalVolume": "Total Volume",
+      "totalTime": "Total Time",
+      "avgFeeling": "Avg. Feeling",
+      "todayWorkout": "Today's Workout",
+      "restDay": "Rest Day",
+      "restDayMessage": "No workout scheduled for today. Rest and recover! 🧘",
+      "exercises": "{count} exercises",
+      "targetDuration": "~{minutes} min",
+      "lastWorkout": "Last workout: {days} day ago",
+      "lastWorkoutPlural": "Last workout: {days} days ago",
+      "feltLike": "Felt {emoji}",
+      "startWorkout": "Start Workout",
+      "activePlan": "Active Plan",
+      "recentSessions": "Recent Sessions",
+      "viewAllHistory": "View all history",
+      "noSessionsYet": "No workouts logged yet",
+      "completedOf": "{completed} of {total} workouts completed"
+    },
+    "workout": {
+      "title": "Workout",
+      "noWorkouts": "No workouts",
+      "noWorkoutsDescription": "Your workout plan has no workouts configured for this period.",
+      "neverDone": "Never done",
+      "lastDone": "Last done",
+      "notFound": "Workout not found",
+      "notFoundDescription": "This workout doesn't exist or has been deleted.",
+      "details": "Workout Details",
+      "targetDuration": "Target Duration",
+      "warmup": "Warmup",
+      "cooldown": "Cooldown",
+      "exerciseList": "Exercises"
+    },
+    "session": {
+      "title": "Workout Session",
+      "inProgress": "In Progress",
+      "exercise": "Exercise",
+      "set": "Set",
+      "reps": "Reps",
+      "weight": "Weight",
+      "rest": "Rest",
+      "notes": "Notes",
+      "addSet": "Add Set",
+      "skipExercise": "Skip",
+      "nextExercise": "Next Exercise",
+      "finishWorkout": "Finish Workout",
+      "cancelWorkout": "Cancel Workout",
+      "confirmCancel": "Are you sure you want to cancel this workout? Your progress will be lost.",
+      "howDidYouFeel": "How did you feel?",
+      "sessionNotes": "Session notes (optional)",
+      "saveSession": "Save Session",
+      "feelings": {
+        "terrible": "Terrible",
+        "bad": "Bad",
+        "okay": "Okay",
+        "good": "Good",
+        "excellent": "Excellent"
+      }
+    },
+    "history": {
+      "title": "History",
+      "noHistory": "No workouts logged",
+      "noHistoryDescription": "Complete your first workout to see your history here.",
+      "sessionNotFound": "Session not found",
+      "sessionNotFoundDescription": "This session doesn't exist or has been deleted.",
+      "filters": {
+        "all": "All",
+        "week": "Week",
+        "month": "Month"
+      },
+      "sessionDetails": "Session Details",
+      "duration": "Duration",
+      "feeling": "Feeling",
+      "totalSets": "Total Sets",
+      "totalVolume": "Total Volume"
+    },
+    "plans": {
+      "title": "Workout Plans",
+      "noPlans": "No plans",
+      "noPlanDescription": "Import a workout plan in JSON format to get started.",
+      "importPlan": "Import Plan",
+      "activePlan": "Active",
+      "setActive": "Set as Active",
+      "deletePlan": "Delete Plan",
+      "confirmDelete": "Are you sure you want to delete this plan?",
+      "import": {
+        "title": "Import Plan",
+        "description": "Upload a JSON file with your workout plan",
+        "dragDrop": "Drag and drop or click to select",
+        "supported": "JSON files only",
+        "example": "Example format",
+        "importing": "Importing...",
+        "success": "Plan imported successfully!",
+        "error": "Failed to import plan"
+      }
+    },
+    "settings": {
+      "title": "FitLog Settings",
+      "units": {
+        "title": "Units",
+        "weight": "Weight Unit",
+        "kg": "Kilograms (kg)",
+        "lb": "Pounds (lb)"
+      },
+      "restTimer": {
+        "title": "Rest Timer",
+        "defaultDuration": "Default Duration",
+        "sound": "Sound Notification",
+        "vibration": "Vibration"
+      },
+      "data": {
+        "title": "Data Management",
+        "exportData": "Export Data",
+        "exportDescription": "Download all your workout data",
+        "clearData": "Clear All Data",
+        "clearDescription": "Delete all workout data",
+        "confirmClear": "Are you sure you want to delete all FitLog data? This cannot be undone.",
+        "clearAll": "Clear All"
+      },
+      "featureInDevelopment": "Feature in development"
+    },
+    "exercise": {
+      "sets": "{count} sets",
+      "reps": "{count} reps",
+      "rest": "{seconds}s rest",
+      "equipment": "Equipment: {equipment}",
+      "notes": "Notes"
+    },
+    "days": {
+      "sunday": "Sunday",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday"
+    },
+    "daysShort": {
+      "sunday": "Sun",
+      "monday": "Mon",
+      "tuesday": "Tue",
+      "wednesday": "Wed",
+      "thursday": "Thu",
+      "friday": "Fri",
+      "saturday": "Sat"
+    },
+    "questionnaire": {
+      "title": "Create Your Plan",
+      "description": "Answer a few questions to generate a personalized workout plan",
+      "exampleFormat": "Example JSON format"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Install App",
+      "description": "Install Breath of Now for the best experience",
+      "button": "Install",
+      "dismiss": "Dismiss"
+    },
+    "offline": {
+      "title": "You're offline",
+      "description": "Some features may be limited",
+      "pageNotCached": "This page is not available offline",
+      "goBack": "Go back"
+    },
+    "update": {
+      "title": "Update available",
+      "description": "A new version is available",
+      "button": "Update"
     }
   },
   "errors": {
@@ -619,7 +899,10 @@
     "notFoundDescription": "The page you're looking for doesn't exist or has been moved.",
     "goHome": "Go Home",
     "unauthorized": "You need to sign in to access this page",
-    "forbidden": "You don't have permission to access this page"
+    "forbidden": "You don't have permission to access this page",
+    "exportFailed": "Export failed",
+    "deleteFailed": "Delete failed",
+    "loadFailed": "Failed to load data"
   },
   "meta": {
     "title": "Breath of Now - Simple tools for mindful living",

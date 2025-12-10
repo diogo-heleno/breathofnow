@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import {
   Play,
   Calendar,
@@ -34,6 +35,7 @@ export function TodayWorkout({ locale }: TodayWorkoutProps) {
   const [lastSession, setLastSession] = useState<WorkoutSession | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { activePlanId } = useFitLogStore();
+  const t = useTranslations('fitLog');
 
   useEffect(() => {
     async function loadTodayWorkout() {
@@ -83,10 +85,10 @@ export function TodayWorkout({ locale }: TodayWorkoutProps) {
     return (
       <div className="bg-neutral-100 rounded-2xl p-6">
         <EmptyState
-          title="Nenhum plano ativo"
-          description="Importa um plano de treino para começar"
+          title={t('dashboard.noPlan')}
+          description={t('dashboard.noPlanDescription')}
           action={{
-            label: 'Importar Plano',
+            label: t('dashboard.importPlan'),
             onClick: () => (window.location.href = `/${locale}/fitlog/plans/import`),
           }}
         />
@@ -102,12 +104,12 @@ export function TodayWorkout({ locale }: TodayWorkoutProps) {
             <Calendar className="w-6 h-6 text-secondary" />
           </div>
           <div>
-            <p className="text-sm text-secondary/80">Hoje</p>
-            <h3 className="text-xl font-bold text-neutral-900">Dia de Descanso</h3>
+            <p className="text-sm text-secondary/80">{t('dashboard.todayWorkout')}</p>
+            <h3 className="text-xl font-bold text-neutral-900">{t('dashboard.restDay')}</h3>
           </div>
         </div>
         <p className="text-neutral-600">
-          Hoje não tens treino agendado. Descansa e recupera! 🧘
+          {t('dashboard.restDayMessage')}
         </p>
       </div>
     );
@@ -137,17 +139,19 @@ export function TodayWorkout({ locale }: TodayWorkoutProps) {
       <div className="flex items-center gap-4 text-white/90 text-sm mb-6">
         <span className="flex items-center gap-1">
           <Target className="w-4 h-4" />
-          {exerciseCount} exercícios
+          {t('dashboard.exercises', { count: exerciseCount })}
         </span>
         <span className="flex items-center gap-1">
-          <Clock className="w-4 h-4" />~{workout.targetDuration} min
+          <Clock className="w-4 h-4" />{t('dashboard.targetDuration', { minutes: workout.targetDuration })}
         </span>
       </div>
 
       {lastSession && (
         <p className="text-white/70 text-sm mb-4">
-          Último treino: há {daysSinceLastSession} dia{daysSinceLastSession !== 1 ? 's' : ''}
-          {lastSession.feeling && ` • Sentiste-te ${['😫', '😕', '😐', '😊', '🤩'][lastSession.feeling - 1]}`}
+          {daysSinceLastSession === 1 
+            ? t('dashboard.lastWorkout', { days: daysSinceLastSession })
+            : t('dashboard.lastWorkoutPlural', { days: daysSinceLastSession })}
+          {lastSession.feeling && ` • ${t('dashboard.feltLike', { emoji: ['😫', '😕', '😐', '😊', '🤩'][lastSession.feeling - 1] })}`}
         </p>
       )}
 
@@ -156,7 +160,7 @@ export function TodayWorkout({ locale }: TodayWorkoutProps) {
         className="flex items-center justify-center gap-2 w-full py-3 bg-white text-primary-600 rounded-xl font-semibold hover:bg-white/90 transition-colors"
       >
         <Play className="w-5 h-5" />
-        Iniciar Treino
+        {t('dashboard.startWorkout')}
       </Link>
     </div>
   );
@@ -175,6 +179,7 @@ export function WeekOverview({ locale }: WeekOverviewProps) {
   const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
   const { activePlanId } = useFitLogStore();
   const today = new Date().getDay();
+  const t = useTranslations('fitLog');
 
   useEffect(() => {
     async function loadWeek() {
@@ -213,7 +218,7 @@ export function WeekOverview({ locale }: WeekOverviewProps) {
 
   return (
     <div className="bg-white rounded-xl p-4 shadow-sm border border-neutral-200">
-      <h3 className="font-semibold text-neutral-900 mb-4">Esta Semana</h3>
+      <h3 className="font-semibold text-neutral-900 mb-4">{t('dashboard.thisWeek')}</h3>
 
       <div className="flex items-center justify-between">
         {DAYS_OF_WEEK_SHORT.map((day, index) => {
@@ -258,9 +263,7 @@ export function WeekOverview({ locale }: WeekOverviewProps) {
       {workouts.length > 0 && (
         <div className="mt-4 pt-4 border-t border-neutral-100">
           <p className="text-sm text-neutral-600">
-            <span className="font-medium text-neutral-900">{completedDays.size}</span> de{' '}
-            <span className="font-medium text-neutral-900">{workouts.length}</span> treinos
-            concluídos
+            {t('dashboard.completedOf', { completed: completedDays.size, total: workouts.length })}
           </p>
           <div className="mt-2 h-2 bg-neutral-100 rounded-full overflow-hidden">
             <div
@@ -285,6 +288,7 @@ export function QuickStats() {
     totalDuration: 0,
     avgFeeling: 0,
   });
+  const t = useTranslations('fitLog');
 
   useEffect(() => {
     async function loadStats() {
@@ -318,22 +322,22 @@ export function QuickStats() {
   return (
     <div className="grid grid-cols-2 gap-3">
       <StatCard
-        label="Esta Semana"
+        label={t('dashboard.thisWeek')}
         value={stats.sessionsThisWeek}
         icon={<Flame className="w-5 h-5" />}
       />
       <StatCard
-        label="Volume Total"
+        label={t('dashboard.totalVolume')}
         value={formatVolume(stats.totalVolume)}
         icon={<TrendingUp className="w-5 h-5" />}
       />
       <StatCard
-        label="Tempo Total"
+        label={t('dashboard.totalTime')}
         value={formatDuration(stats.totalDuration)}
         icon={<Clock className="w-5 h-5" />}
       />
       <StatCard
-        label="Sensação Média"
+        label={t('dashboard.avgFeeling')}
         value={stats.avgFeeling > 0 ? `${stats.avgFeeling.toFixed(1)}/5` : '-'}
         icon={<span className="text-xl">😊</span>}
       />
@@ -353,6 +357,8 @@ interface RecentSessionsProps {
 export function RecentSessions({ locale, limit = 5 }: RecentSessionsProps) {
   const [sessions, setSessions] = useState<WorkoutSession[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const t = useTranslations('fitLog');
+  const tc = useTranslations('common');
 
   useEffect(() => {
     async function loadSessions() {
@@ -385,7 +391,7 @@ export function RecentSessions({ locale, limit = 5 }: RecentSessionsProps) {
   if (sessions.length === 0) {
     return (
       <div className="text-center py-8 text-neutral-500">
-        <p>Ainda não tens treinos registados</p>
+        <p>{t('dashboard.noSessionsYet')}</p>
       </div>
     );
   }
@@ -394,11 +400,11 @@ export function RecentSessions({ locale, limit = 5 }: RecentSessionsProps) {
     const now = new Date();
     const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) return 'Hoje';
-    if (diffDays === 1) return 'Ontem';
-    if (diffDays < 7) return `Há ${diffDays} dias`;
+    if (diffDays === 0) return tc('today');
+    if (diffDays === 1) return tc('yesterday');
+    if (diffDays < 7) return tc('daysAgo', { days: diffDays });
 
-    return date.toLocaleDateString('pt-PT', {
+    return date.toLocaleDateString(locale, {
       day: 'numeric',
       month: 'short',
     });
@@ -441,7 +447,7 @@ export function RecentSessions({ locale, limit = 5 }: RecentSessionsProps) {
           href={`/${locale}/fitlog/history`}
           className="block text-center py-3 text-sm text-primary-600 font-medium hover:underline"
         >
-          Ver todo o histórico
+          {t('dashboard.viewAllHistory')}
         </Link>
       )}
     </div>
@@ -459,6 +465,7 @@ interface ActivePlanCardProps {
 export function ActivePlanCard({ locale }: ActivePlanCardProps) {
   const [plan, setPlan] = useState<WorkoutPlan | null>(null);
   const { activePlanId, setActivePlan } = useFitLogStore();
+  const t = useTranslations('fitLog');
 
   useEffect(() => {
     async function loadPlan() {
@@ -495,7 +502,7 @@ export function ActivePlanCard({ locale }: ActivePlanCardProps) {
       className="flex items-center justify-between p-4 bg-white rounded-xl border border-neutral-200 hover:border-primary-300 transition-colors group"
     >
       <div>
-        <p className="text-sm text-neutral-500">Plano Ativo</p>
+        <p className="text-sm text-neutral-500">{t('dashboard.activePlan')}</p>
         <p className="font-semibold text-neutral-900">{plan.planName}</p>
         {plan.athleteGoal && (
           <p className="text-xs text-neutral-500 mt-1">{plan.athleteGoal}</p>
