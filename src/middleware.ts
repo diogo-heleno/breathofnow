@@ -119,11 +119,11 @@ export default async function middleware(request: NextRequest) {
         return NextResponse.redirect(wwwUrl);
       }
 
-      // On app subdomain, redirect root to /expenses (main app)
+      // On app subdomain, redirect root to /account (app selection)
       if (subdomain === 'app' && pathWithoutLocale === '/') {
-        const expensesUrl = new URL(request.url);
-        expensesUrl.pathname = '/expenses';
-        return NextResponse.redirect(expensesUrl);
+        const accountUrl = new URL(request.url);
+        accountUrl.pathname = '/account';
+        return NextResponse.redirect(accountUrl);
       }
     }
   }
