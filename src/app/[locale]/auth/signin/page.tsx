@@ -22,6 +22,15 @@ export default function SignInPage({ params: { locale } }: PageProps) {
   const [isSent, setIsSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Use app subdomain for callback in production to ensure cookies are set correctly
+  const getCallbackUrl = () => {
+    if (typeof window === 'undefined') return '';
+    const isProduction = window.location.hostname.includes('breathofnow.site');
+    return isProduction
+      ? `https://app.breathofnow.site/${locale}/auth/callback`
+      : `${window.location.origin}/${locale}/auth/callback`;
+  };
+
   const handleMagicLink = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -32,7 +41,7 @@ export default function SignInPage({ params: { locale } }: PageProps) {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: getCallbackUrl(),
         },
       });
 
@@ -51,7 +60,7 @@ export default function SignInPage({ params: { locale } }: PageProps) {
       await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: getCallbackUrl(),
         },
       });
     } catch (err) {

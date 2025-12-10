@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Mail, ArrowRight, User, Check } from 'lucide-react';
 import { Logo } from '@/components/brand/logo';
@@ -18,12 +17,21 @@ interface PageProps {
 
 export default function SignUpPage({ params: { locale } }: PageProps) {
   const t = useTranslations('auth');
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Use app subdomain for callback in production to ensure cookies are set correctly
+  const getCallbackUrl = (extraParams?: string) => {
+    if (typeof window === 'undefined') return '';
+    const isProduction = window.location.hostname.includes('breathofnow.site');
+    const baseUrl = isProduction
+      ? `https://app.breathofnow.site/${locale}/auth/callback`
+      : `${window.location.origin}/${locale}/auth/callback`;
+    return extraParams ? `${baseUrl}?${extraParams}` : baseUrl;
+  };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +45,7 @@ export default function SignUpPage({ params: { locale } }: PageProps) {
       const { error: signUpError } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback?signup=true&name=${encodeURIComponent(name)}`,
+          emailRedirectTo: getCallbackUrl(`signup=true&name=${encodeURIComponent(name)}`),
           data: {
             full_name: name,
           },
@@ -59,7 +67,7 @@ export default function SignUpPage({ params: { locale } }: PageProps) {
       await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?signup=true`,
+          redirectTo: getCallbackUrl('signup=true'),
         },
       });
     } catch (err) {
