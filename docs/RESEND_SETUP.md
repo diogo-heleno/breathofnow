@@ -1,0 +1,269 @@
+# Resend Email Setup for Breath of Now
+
+This guide explains how to configure Resend as the email service for authentication emails in Breath of Now.
+
+## Overview
+
+The application uses:
+- **Resend** - Email delivery service
+- **React Email** - Email template framework
+- **Supabase Auth Hooks** - To intercept auth emails and send via our custom endpoint
+
+## Prerequisites
+
+1. A Resend account (https://resend.com)
+2. A verified domain in Resend (breathofnow.site)
+3. Supabase project with Auth enabled
+
+---
+
+## Step 1: Configure Resend
+
+### 1.1 Create Resend Account
+
+1. Go to https://resend.com and sign up
+2. Verify your email address
+
+### 1.2 Add and Verify Domain
+
+1. Go to **Domains** in the Resend dashboard
+2. Click **Add Domain**
+3. Enter: `breathofnow.site`
+4. Add the DNS records provided by Resend:
+   - **SPF record** (TXT)
+   - **DKIM records** (CNAME)
+   - **DMARC record** (TXT) - Recommended
+
+Example DNS records:
+```
+Type: TXT
+Name: @
+Value: v=spf1 include:_spf.resend.com ~all
+
+Type: CNAME
+Name: resend._domainkey
+Value: [provided by Resend]
+
+Type: TXT
+Name: _dmarc
+Value: v=DMARC1; p=none;
+```
+
+5. Wait for domain verification (usually 5-10 minutes)
+
+### 1.3 Generate API Key
+
+1. Go to **API Keys** in Resend dashboard
+2. Click **Create API Key**
+3. Name it: `breathofnow-production`
+4. Permissions: **Sending access**
+5. Copy the API key (starts with `re_`)
+
+---
+
+## Step 2: Configure Environment Variables
+
+Add the following to your `.env.local` file:
+
+```bash
+# Resend Configuration
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Supabase Auth Webhook Secret (generate a secure random string)
+SUPABASE_AUTH_WEBHOOK_SECRET=your-secure-webhook-secret-here
+```
+
+### Generate Webhook Secret
+
+Generate a secure random string for the webhook secret:
+
+```bash
+openssl rand -hex 32
+```
+
+---
+
+## Step 3: Configure Supabase Auth Hooks
+
+Supabase Auth Hooks allow you to intercept authentication events and customize behavior.
+
+### 3.1 Access Supabase Dashboard
+
+1. Go to your Supabase project dashboard
+2. Navigate to **Authentication** > **Hooks** (Beta)
+
+### 3.2 Configure Send Email Hook
+
+1. Click **Add Hook**
+2. Select hook type: **Send Email**
+3. Configure the hook:
+
+   - **Name**: `custom-email-sender`
+   - **Enabled**: Yes
+   - **HTTP Endpoint**: `https://app.breathofnow.site/api/auth/email`
+   - **HTTP Method**: POST
+   - **HTTP Headers**:
+     ```
+     Authorization: Bearer your-secure-webhook-secret-here
+     Content-Type: application/json
+     ```
+
+4. Click **Save**
+
+### 3.3 Test the Hook
+
+1. Go to **Authentication** > **Users**
+2. Click **Invite User** or trigger a magic link
+3. Check Resend dashboard for the sent email
+
+---
+
+## Step 4: Alternative - Custom SMTP in Supabase
+
+If you prefer using Resend as a custom SMTP provider (simpler but less customizable):
+
+### 4.1 Get Resend SMTP Credentials
+
+Resend SMTP settings:
+- **Host**: `smtp.resend.com`
+- **Port**: `465` (SSL) or `587` (TLS)
+- **Username**: `resend`
+- **Password**: Your Resend API key
+
+### 4.2 Configure in Supabase
+
+1. Go to **Project Settings** > **Authentication**
+2. Scroll to **SMTP Settings**
+3. Enable **Custom SMTP**
+4. Enter the following:
+
+   | Field | Value |
+   |-------|-------|
+   | Sender email | `noreply@breathofnow.site` |
+   | Sender name | `Breath of Now` |
+   | Host | `smtp.resend.com` |
+   | Port | `465` |
+   | Username | `resend` |
+   | Password | `re_xxxxxxxxxxxxxx` (your API key) |
+
+5. Click **Save**
+
+> **Note**: Using Custom SMTP means you'll use Supabase's built-in email templates instead of our custom React Email templates. The Auth Hook approach (Step 3) provides full customization.
+
+---
+
+## Email Template Features
+
+Our custom email template (`src/emails/auth-otp.tsx`) includes:
+
+### Multi-language Support
+- English (en)
+- Portuguese - Portugal (pt)
+- Portuguese - Brazil (pt-BR)
+- Spanish (es)
+- French (fr)
+
+The locale is automatically detected from the redirect URL.
+
+### Design Features
+- Brand colors (Primary: #5C6B54)
+- Professional header with logo
+- Clear OTP code display (large, monospace font)
+- Magic link button as alternative
+- Security notice
+- Expiration warning
+- Footer with copyright
+
+### Email Types
+- **Sign In** - For returning users
+- **Sign Up** - For new user registration
+
+---
+
+## File Structure
+
+```
+src/
+├── emails/
+│   └── auth-otp.tsx          # React Email template
+├── lib/
+│   └── resend/
+│       └── client.ts         # Resend client configuration
+└── app/
+    └── api/
+        └── auth/
+            └── email/
+                └── route.ts   # Webhook endpoint
+```
+
+---
+
+## Troubleshooting
+
+### Emails not sending
+
+1. **Check Resend Dashboard**
+   - View **Logs** for delivery status
+   - Check for bounces or failures
+
+2. **Verify Domain Configuration**
+   - Ensure DNS records are properly configured
+   - Check SPF, DKIM, and DMARC
+
+3. **Check Webhook Logs**
+   - In Supabase: **Authentication** > **Hooks** > View logs
+   - Check for HTTP errors
+
+4. **Environment Variables**
+   - Ensure `RESEND_API_KEY` is set correctly
+   - Ensure `SUPABASE_AUTH_WEBHOOK_SECRET` matches the hook configuration
+
+### Emails going to spam
+
+1. **Warm up the domain** - Send emails gradually over a few days
+2. **Check domain reputation** - Use tools like mail-tester.com
+3. **Ensure proper authentication** - SPF, DKIM, DMARC should pass
+4. **Avoid spam trigger words** - Keep email content professional
+
+### Wrong language in emails
+
+The locale is extracted from the `redirect_to` URL in the webhook payload. Ensure:
+1. The sign-in/sign-up pages pass the correct locale in the redirect URL
+2. The URL format is: `https://app.breathofnow.site/{locale}/auth/callback`
+
+---
+
+## Testing Locally
+
+1. Use ngrok to expose your local server:
+   ```bash
+   ngrok http 3000
+   ```
+
+2. Update the Supabase webhook URL to your ngrok URL:
+   ```
+   https://your-ngrok-id.ngrok.io/api/auth/email
+   ```
+
+3. Test by triggering a magic link sign-in
+
+---
+
+## Production Checklist
+
+- [ ] Resend domain verified
+- [ ] DNS records (SPF, DKIM, DMARC) configured
+- [ ] `RESEND_API_KEY` set in production environment
+- [ ] `SUPABASE_AUTH_WEBHOOK_SECRET` set in production environment
+- [ ] Supabase Auth Hook configured with production URL
+- [ ] Test email delivery in production
+- [ ] Monitor Resend dashboard for deliverability
+
+---
+
+## Resources
+
+- [Resend Documentation](https://resend.com/docs)
+- [React Email Documentation](https://react.email/docs)
+- [Supabase Auth Hooks](https://supabase.com/docs/guides/auth/auth-hooks)
+- [Email Deliverability Best Practices](https://resend.com/blog/email-deliverability-101)
