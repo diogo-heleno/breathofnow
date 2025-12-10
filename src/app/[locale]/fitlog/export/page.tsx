@@ -35,7 +35,7 @@ export default function ExportPage({ params }: ExportPageProps) {
       {/* Quick action - Questionnaire */}
       <Link
         href={`/${locale}/fitlog/create`}
-        className="block p-4 bg-gradient-to-br from-primary to-primary/80 rounded-xl text-white"
+        className="block p-4 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl text-white"
       >
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -65,11 +65,11 @@ export default function ExportPage({ params }: ExportPageProps) {
       <ExportOptions locale={locale} />
 
       {/* Instructions */}
-      <div className="p-4 bg-primary/5 rounded-xl border border-primary/20">
+      <div className="p-4 bg-primary-50 rounded-xl border border-primary-200">
         <h3 className="font-semibold text-neutral-900 mb-3">Como usar</h3>
         <ol className="text-sm text-neutral-600 space-y-3">
           <li className="flex gap-3">
-            <span className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
+            <span className="w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
               1
             </span>
             <span>
@@ -78,7 +78,7 @@ export default function ExportPage({ params }: ExportPageProps) {
             </span>
           </li>
           <li className="flex gap-3">
-            <span className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
+            <span className="w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
               2
             </span>
             <span>
@@ -87,7 +87,7 @@ export default function ExportPage({ params }: ExportPageProps) {
             </span>
           </li>
           <li className="flex gap-3">
-            <span className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
+            <span className="w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
               3
             </span>
             <span>
@@ -96,7 +96,7 @@ export default function ExportPage({ params }: ExportPageProps) {
             </span>
           </li>
           <li className="flex gap-3">
-            <span className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
+            <span className="w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
               4
             </span>
             <span>
@@ -105,7 +105,7 @@ export default function ExportPage({ params }: ExportPageProps) {
             </span>
           </li>
           <li className="flex gap-3">
-            <span className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
+            <span className="w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
               5
             </span>
             <span>
