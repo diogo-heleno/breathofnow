@@ -78,22 +78,31 @@ export default function SignUpPage({ params: { locale } }: PageProps) {
   if (isSent) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-neutral-50 dark:bg-neutral-950">
-        <Card className="w-full max-w-md">
-          <CardContent className="p-8 text-center">
-            <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/50 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Mail className="w-8 h-8 text-primary-600" />
-            </div>
-            <h1 className="font-display text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
-              {t('magicLinkTitle')}
-            </h1>
-            <p className="text-neutral-600 dark:text-neutral-400 mb-6">
-              {t('magicLinkSent', { email })}
-            </p>
-            <p className="text-sm text-neutral-500">
-              {t('magicLinkDescription')}
-            </p>
-          </CardContent>
-        </Card>
+        <div className="w-full max-w-md">
+          {/* Logo */}
+          <div className="text-center mb-8">
+            <Link href="/">
+              <Logo size="lg" className="justify-center" />
+            </Link>
+          </div>
+
+          <Card>
+            <CardContent className="p-8 text-center">
+              <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Mail className="w-8 h-8 text-primary-600" />
+              </div>
+              <h1 className="font-display text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
+                {t('magicLinkTitle')}
+              </h1>
+              <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+                {t('magicLinkSent', { email })}
+              </p>
+              <p className="text-sm text-neutral-500">
+                {t('magicLinkDescription')}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     );
   }
