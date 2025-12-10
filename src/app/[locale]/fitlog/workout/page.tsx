@@ -125,7 +125,7 @@ export default function WorkoutsPage({ params }: WorkoutsPageProps) {
               href={`/${locale}/fitlog/workout/${workout.id}`}
               className={`block p-4 rounded-xl border transition-all ${
                 isToday
-                  ? 'bg-primary/5 border-primary/30 ring-1 ring-primary/20'
+                  ? 'bg-primary-50 border-primary-300 ring-1 ring-primary-200'
                   : 'bg-white border-neutral-200 hover:border-neutral-300'
               }`}
             >
@@ -135,14 +135,14 @@ export default function WorkoutsPage({ params }: WorkoutsPageProps) {
                     <span
                       className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                         isToday
-                          ? 'bg-primary text-white'
+                          ? 'bg-primary-600 text-white'
                           : 'bg-neutral-100 text-neutral-600'
                       }`}
                     >
                       {DAYS_OF_WEEK[workout.dayOfWeek]}
                     </span>
                     {isToday && (
-                      <span className="text-xs text-primary font-medium">• Hoje</span>
+                      <span className="text-xs text-primary-600 font-medium">• Hoje</span>
                     )}
                   </div>
                   <h3 className="font-semibold text-neutral-900 mt-2">{workout.name}</h3>
@@ -169,7 +169,7 @@ export default function WorkoutsPage({ params }: WorkoutsPageProps) {
                 {isToday && (
                   <Link
                     href={`/${locale}/fitlog/workout/${workout.id}/session`}
-                    className="flex items-center gap-1 px-3 py-1.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors"
+                    className="flex items-center gap-1 px-3 py-1.5 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <Play className="w-4 h-4" />

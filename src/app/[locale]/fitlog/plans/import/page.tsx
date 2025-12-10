@@ -245,7 +245,7 @@ export default function ImportPage({ params }: ImportPageProps) {
               <p className="text-sm font-medium text-neutral-700">Prompt de exemplo</p>
               <button
                 onClick={() => copyToClipboard(EXAMPLE_PROMPT, 'prompt')}
-                className="flex items-center gap-1 text-sm text-primary hover:underline"
+                className="flex items-center gap-1 text-sm text-primary-600 hover:underline"
               >
                 {copiedPrompt ? (
                   <>
@@ -295,7 +295,7 @@ export default function ImportPage({ params }: ImportPageProps) {
               <p className="text-sm font-medium text-neutral-700">JSON de exemplo (2 treinos)</p>
               <button
                 onClick={() => copyToClipboard(EXAMPLE_JSON, 'json')}
-                className="flex items-center gap-1 text-sm text-primary hover:underline"
+                className="flex items-center gap-1 text-sm text-primary-600 hover:underline"
               >
                 {copiedJson ? (
                   <>
