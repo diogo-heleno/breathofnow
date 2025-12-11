@@ -106,6 +106,11 @@ breathofnow/
 │   │   │   ├── client.ts        # Cliente browser
 │   │   │   └── server.ts        # Cliente server
 │   │   └── utils.ts
+│   ├── hooks/
+│   │   ├── use-mounted.ts       # Hook para client-side mount detection
+│   │   ├── use-premium.ts       # Hook para premium features
+│   │   ├── use-service-worker.ts # Hook para PWA service worker
+│   │   └── use-sync.ts          # Hook para sincronização
 │   ├── stores/
 │   │   └── app-store.ts         # Zustand stores
 │   ├── i18n.ts                  # Configuração i18n
@@ -293,6 +298,7 @@ breathofnow/
 | **AdBanner** | top, bottom, inline | ✅ |
 | **Header** | com navegação mobile | ✅ |
 | **Footer** | 4 colunas + newsletter | ✅ |
+| **ClientOnly** | fallback | ✅ |
 
 ### Animações
 
@@ -325,6 +331,13 @@ breathofnow/
 | ExpenseFlow Categories | `/[locale]/expenses/categories` | ✅ |
 | ExpenseFlow Settings | `/[locale]/expenses/settings` | ✅ |
 | ExpenseFlow Reports | `/[locale]/expenses/reports` | ✅ |
+| Features - Privacy First | `/[locale]/features/privacy-first` | ✅ |
+| Features - Works Offline | `/[locale]/features/works-offline` | ✅ |
+| Features - Beautifully Simple | `/[locale]/features/beautifully-simple` | ✅ |
+| Features - Fair Pricing | `/[locale]/features/fair-pricing` | ✅ |
+| Features - Open Transparent | `/[locale]/features/open-transparent` | ✅ |
+| Features - Sustainable | `/[locale]/features/sustainable` | ✅ |
+| Account | `/[locale]/account` | ✅ |
 
 ---
 
@@ -413,7 +426,7 @@ chore(deps): update dependencies
 
 - [ ] Implementar dashboard principal (home)
 - [ ] Implementar sync engine com Supabase
-- [ ] Configurar subdomínios (www + app)
+- [x] Configurar subdomínios (www + app)
 - [ ] PWA com Service Worker
 
 ### Prioridade Média
