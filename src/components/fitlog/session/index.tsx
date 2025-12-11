@@ -4,6 +4,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   ChevronLeft,
   ChevronRight,
@@ -40,6 +41,8 @@ export function SessionHeader({
   totalExercises,
   onExit,
 }: SessionHeaderProps) {
+  const t = useTranslations('fitLog.session');
+  const tCommon = useTranslations('common');
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
@@ -65,7 +68,7 @@ export function SessionHeader({
           className="flex items-center gap-1 text-neutral-600 hover:text-neutral-900"
         >
           <X className="w-5 h-5" />
-          <span className="text-sm">Sair</span>
+          <span className="text-sm">{tCommon('exit')}</span>
         </button>
         <div className="flex items-center gap-2 text-sm text-neutral-600">
           <Clock className="w-4 h-4" />
@@ -357,7 +360,7 @@ function SetInputRow({
               onNoteChange(e.target.value);
               onChange({ notes: e.target.value });
             }}
-            placeholder="Adicionar nota..."
+            placeholder={t('notesPlaceholder')}
             rows={2}
             className="w-full px-3 py-2 bg-white border border-neutral-300 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
@@ -437,18 +440,21 @@ interface SessionTimerModalProps {
 }
 
 export function SessionTimerModal({ seconds, isOpen, onClose }: SessionTimerModalProps) {
+  const t = useTranslations('fitLog.session');
+  const tCommon = useTranslations('common');
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white rounded-2xl p-6 m-4 w-full max-w-sm">
-        <h3 className="text-lg font-semibold text-center mb-6">Tempo de Descanso</h3>
+        <h3 className="text-lg font-semibold text-center mb-6">{t('restTime')}</h3>
         <RestTimer initialSeconds={seconds} onComplete={onClose} autoStart />
         <button
           onClick={onClose}
           className="w-full mt-6 py-3 text-neutral-600 hover:text-neutral-900 transition-colors"
         >
-          Fechar
+          {tCommon('close')}
         </button>
       </div>
     </div>
@@ -478,6 +484,8 @@ export function SessionSummaryModal({
   onSave,
   onCancel,
 }: SessionSummaryModalProps) {
+  const t = useTranslations('fitLog.session');
+  const tCommon = useTranslations('common');
   const [feeling, setFeeling] = useState<Feeling | undefined>();
   const [notes, setNotes] = useState('');
 
@@ -529,7 +537,7 @@ export function SessionSummaryModal({
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Como correu o treino?"
+            placeholder={t('howWasWorkout')}
             rows={3}
             className="w-full px-3 py-2 border border-neutral-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
@@ -541,13 +549,13 @@ export function SessionSummaryModal({
             onClick={onCancel}
             className="flex-1 py-3 text-neutral-600 hover:text-neutral-900 transition-colors"
           >
-            Cancelar
+            {tCommon('cancel')}
           </button>
           <button
             onClick={() => onSave(feeling, notes)}
             className="flex-1 py-3 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-colors"
           >
-            Guardar
+            {tCommon('save')}
           </button>
         </div>
       </div>
@@ -570,27 +578,30 @@ export function ExitConfirmationModal({
   onConfirm,
   onCancel,
 }: ExitConfirmationModalProps) {
+  const t = useTranslations('fitLog.session');
+  const tCommon = useTranslations('common');
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white rounded-2xl p-6 m-4 w-full max-w-sm">
-        <h3 className="text-lg font-semibold text-neutral-900 mb-2">Sair do treino?</h3>
+        <h3 className="text-lg font-semibold text-neutral-900 mb-2">{t('confirmCancel')}</h3>
         <p className="text-neutral-600 mb-6">
-          O progresso desta sessão não será guardado.
+          {t('cancelWorkoutWarning')}
         </p>
         <div className="flex gap-3">
           <button
             onClick={onCancel}
             className="flex-1 py-3 border border-neutral-300 rounded-xl font-medium hover:bg-neutral-100 transition-colors"
           >
-            Continuar
+            {tCommon('continue')}
           </button>
           <button
             onClick={onConfirm}
             className="flex-1 py-3 bg-red-500 text-white rounded-xl font-medium hover:bg-red-600 transition-colors"
           >
-            Sair
+            {tCommon('exit')}
           </button>
         </div>
       </div>

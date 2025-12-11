@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 interface CategoryData {
   id: number;
@@ -25,6 +26,8 @@ export function ExpensePieChart({
   currency,
   className,
 }: ExpensePieChartProps) {
+  const t = useTranslations('common');
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat(locale, {
       style: 'currency',
@@ -83,7 +86,7 @@ export function ExpensePieChart({
     return (
       <div className={cn('flex flex-col items-center justify-center py-8', className)}>
         <div className="w-32 h-32 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
-          <span className="text-neutral-400 text-sm">No data</span>
+          <span className="text-neutral-400 text-sm">{t('noData')}</span>
         </div>
       </div>
     );
@@ -108,7 +111,7 @@ export function ExpensePieChart({
         </svg>
         {/* Center text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-xs text-neutral-500">Total</span>
+          <span className="text-xs text-neutral-500">{t('total')}</span>
           <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
             {formatCurrency(total)}
           </span>

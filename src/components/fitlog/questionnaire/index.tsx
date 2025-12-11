@@ -3,6 +3,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   ChevronRight,
   ChevronLeft,
@@ -89,68 +90,68 @@ const initialData: QuestionnaireData = {
 // ============================================
 
 const GOALS = [
-  { id: 'strength', label: 'Ganhar força', icon: '💪' },
-  { id: 'muscle', label: 'Ganhar massa muscular', icon: '🏋️' },
-  { id: 'fat_loss', label: 'Perder gordura', icon: '🔥' },
-  { id: 'endurance', label: 'Melhorar resistência', icon: '🏃' },
-  { id: 'flexibility', label: 'Melhorar flexibilidade', icon: '🧘' },
-  { id: 'health', label: 'Saúde geral', icon: '❤️' },
-  { id: 'sport', label: 'Melhorar para um desporto', icon: '⚽' },
-  { id: 'tone', label: 'Tonificar o corpo', icon: '✨' },
+  { id: 'strength', labelKey: 'goals.strength', icon: '💪' },
+  { id: 'muscle', labelKey: 'goals.muscle', icon: '🏋️' },
+  { id: 'fat_loss', labelKey: 'goals.fatLoss', icon: '🔥' },
+  { id: 'endurance', labelKey: 'goals.endurance', icon: '🏃' },
+  { id: 'flexibility', labelKey: 'goals.flexibility', icon: '🧘' },
+  { id: 'health', labelKey: 'goals.health', icon: '❤️' },
+  { id: 'sport', labelKey: 'goals.sport', icon: '⚽' },
+  { id: 'tone', labelKey: 'goals.tone', icon: '✨' },
 ];
 
 const TARGET_AREAS = [
-  { id: 'glutes', label: 'Glúteos', icon: '🍑' },
-  { id: 'legs', label: 'Pernas', icon: '🦵' },
-  { id: 'abs', label: 'Abdominais', icon: '🎯' },
-  { id: 'back', label: 'Costas', icon: '🔙' },
-  { id: 'chest', label: 'Peito', icon: '💪' },
-  { id: 'arms', label: 'Braços', icon: '💪' },
-  { id: 'shoulders', label: 'Ombros', icon: '🎯' },
-  { id: 'full_body', label: 'Corpo inteiro', icon: '🏋️' },
+  { id: 'glutes', labelKey: 'targetAreas.glutes', icon: '🍑' },
+  { id: 'legs', labelKey: 'targetAreas.legs', icon: '🦵' },
+  { id: 'abs', labelKey: 'targetAreas.abs', icon: '🎯' },
+  { id: 'back', labelKey: 'targetAreas.back', icon: '🔙' },
+  { id: 'chest', labelKey: 'targetAreas.chest', icon: '💪' },
+  { id: 'arms', labelKey: 'targetAreas.arms', icon: '💪' },
+  { id: 'shoulders', labelKey: 'targetAreas.shoulders', icon: '🎯' },
+  { id: 'full_body', labelKey: 'targetAreas.fullBody', icon: '🏋️' },
 ];
 
 const DAYS_OF_WEEK = [
-  { id: 0, label: 'Dom', fullLabel: 'Domingo' },
-  { id: 1, label: 'Seg', fullLabel: 'Segunda' },
-  { id: 2, label: 'Ter', fullLabel: 'Terça' },
-  { id: 3, label: 'Qua', fullLabel: 'Quarta' },
-  { id: 4, label: 'Qui', fullLabel: 'Quinta' },
-  { id: 5, label: 'Sex', fullLabel: 'Sexta' },
-  { id: 6, label: 'Sáb', fullLabel: 'Sábado' },
+  { id: 0, labelKey: 'daysShort.sunday', fullLabelKey: 'days.sunday' },
+  { id: 1, labelKey: 'daysShort.monday', fullLabelKey: 'days.monday' },
+  { id: 2, labelKey: 'daysShort.tuesday', fullLabelKey: 'days.tuesday' },
+  { id: 3, labelKey: 'daysShort.wednesday', fullLabelKey: 'days.wednesday' },
+  { id: 4, labelKey: 'daysShort.thursday', fullLabelKey: 'days.thursday' },
+  { id: 5, labelKey: 'daysShort.friday', fullLabelKey: 'days.friday' },
+  { id: 6, labelKey: 'daysShort.saturday', fullLabelKey: 'days.saturday' },
 ];
 
 const GYM_TYPES = [
-  { id: 'full_gym', label: 'Ginásio completo', description: 'Máquinas, pesos livres, cabos' },
-  { id: 'home_basic', label: 'Casa - básico', description: 'Poucos halteres, tapete' },
-  { id: 'home_advanced', label: 'Casa - equipado', description: 'Barra, banco, vários pesos' },
-  { id: 'outdoor', label: 'Ao ar livre', description: 'Parque, calistenia' },
+  { id: 'full_gym', labelKey: 'equipment.fullGym', descriptionKey: 'equipment.fullGymDesc' },
+  { id: 'home_basic', labelKey: 'equipment.homeBasic', descriptionKey: 'equipment.homeBasicDesc' },
+  { id: 'home_advanced', labelKey: 'equipment.homeAdvanced', descriptionKey: 'equipment.homeAdvancedDesc' },
+  { id: 'outdoor', labelKey: 'equipment.outdoor', descriptionKey: 'equipment.outdoorDesc' },
 ];
 
 const EQUIPMENT = [
-  { id: 'barbells', label: 'Barras' },
-  { id: 'dumbbells', label: 'Halteres' },
-  { id: 'kettlebells', label: 'Kettlebells' },
-  { id: 'cables', label: 'Cabos/Polias' },
-  { id: 'machines', label: 'Máquinas' },
-  { id: 'bench', label: 'Banco' },
-  { id: 'squat_rack', label: 'Rack de agachamento' },
-  { id: 'pull_up_bar', label: 'Barra de pull-ups' },
-  { id: 'resistance_bands', label: 'Elásticos' },
-  { id: 'trx', label: 'TRX/Suspensão' },
-  { id: 'cardio_machines', label: 'Máquinas cardio' },
-  { id: 'bodyweight', label: 'Apenas peso corporal' },
+  { id: 'barbells', labelKey: 'equipment.barbells' },
+  { id: 'dumbbells', labelKey: 'equipment.dumbbells' },
+  { id: 'kettlebells', labelKey: 'equipment.kettlebells' },
+  { id: 'cables', labelKey: 'equipment.cables' },
+  { id: 'machines', labelKey: 'equipment.machines' },
+  { id: 'bench', labelKey: 'equipment.bench' },
+  { id: 'squat_rack', labelKey: 'equipment.squatRack' },
+  { id: 'pull_up_bar', labelKey: 'equipment.pullUpBar' },
+  { id: 'resistance_bands', labelKey: 'equipment.resistanceBands' },
+  { id: 'trx', labelKey: 'equipment.trx' },
+  { id: 'cardio_machines', labelKey: 'equipment.cardioMachines' },
+  { id: 'bodyweight', labelKey: 'equipment.bodyweight' },
 ];
 
 const HEALTH_CONDITIONS = [
-  { id: 'back_pain', label: 'Dores nas costas' },
-  { id: 'knee_issues', label: 'Problemas nos joelhos' },
-  { id: 'shoulder_issues', label: 'Problemas nos ombros' },
-  { id: 'hypertension', label: 'Hipertensão' },
-  { id: 'diabetes', label: 'Diabetes' },
-  { id: 'pregnancy', label: 'Gravidez/Pós-parto' },
-  { id: 'heart_condition', label: 'Condição cardíaca' },
-  { id: 'none', label: 'Nenhuma' },
+  { id: 'back_pain', labelKey: 'health.backPain' },
+  { id: 'knee_issues', labelKey: 'health.kneeIssues' },
+  { id: 'shoulder_issues', labelKey: 'health.shoulderIssues' },
+  { id: 'hypertension', labelKey: 'health.hypertension' },
+  { id: 'diabetes', labelKey: 'health.diabetes' },
+  { id: 'pregnancy', labelKey: 'health.pregnancy' },
+  { id: 'heart_condition', labelKey: 'health.heartCondition' },
+  { id: 'none', labelKey: 'health.none' },
 ];
 
 // ============================================
@@ -162,18 +163,21 @@ interface WorkoutQuestionnaireProps {
 }
 
 export function WorkoutQuestionnaire({ onComplete }: WorkoutQuestionnaireProps) {
+  const t = useTranslations('fitLog.questionnaire');
+  const tFitLog = useTranslations('fitLog');
+  const tCommon = useTranslations('common');
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState<QuestionnaireData>(initialData);
   const [showPrompt, setShowPrompt] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const steps = [
-    { id: 'personal', title: 'Sobre Ti', icon: User },
-    { id: 'goals', title: 'Objetivos', icon: Target },
-    { id: 'schedule', title: 'Disponibilidade', icon: Calendar },
-    { id: 'equipment', title: 'Equipamento', icon: Dumbbell },
-    { id: 'health', title: 'Saúde', icon: Heart },
-    { id: 'preferences', title: 'Preferências', icon: Zap },
+    { id: 'personal', titleKey: 'stepTitles.personal', icon: User },
+    { id: 'goals', titleKey: 'stepTitles.goals', icon: Target },
+    { id: 'schedule', titleKey: 'stepTitles.schedule', icon: Calendar },
+    { id: 'equipment', titleKey: 'stepTitles.equipment', icon: Dumbbell },
+    { id: 'health', titleKey: 'stepTitles.health', icon: Heart },
+    { id: 'preferences', titleKey: 'stepTitles.preferences', icon: Zap },
   ];
 
   const updateData = (updates: Partial<QuestionnaireData>) => {
@@ -398,7 +402,7 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
             className="flex items-center gap-1 text-neutral-600 hover:text-neutral-900"
           >
             <ChevronLeft className="w-5 h-5" />
-            Voltar ao questionário
+            {t('backToQuestionnaire')}
           </button>
           <button
             onClick={handleCopy}
@@ -407,12 +411,12 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
             {copied ? (
               <>
                 <CheckCircle className="w-5 h-5" />
-                Copiado!
+                {tCommon('copied')}
               </>
             ) : (
               <>
                 <Copy className="w-5 h-5" />
-                Copiar Prompt
+                {t('copyPrompt')}
               </>
             )}
           </button>
@@ -423,10 +427,9 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
           <div className="flex items-start gap-3">
             <Sparkles className="w-6 h-6 text-green-600 flex-shrink-0" />
             <div>
-              <h3 className="font-semibold text-green-800">Prompt gerado com sucesso!</h3>
+              <h3 className="font-semibold text-green-800">{t('promptGenerated')}</h3>
               <p className="text-sm text-green-700 mt-1">
-                Copia o prompt abaixo e cola no ChatGPT ou Claude. Depois de gerar o plano,
-                copia o JSON e importa na página &quot;Importar Plano&quot;.
+                {t('promptInstructions')}
               </p>
             </div>
           </div>
@@ -435,8 +438,8 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
         {/* Prompt display */}
         <div className="bg-neutral-50 border border-neutral-200 rounded-xl overflow-hidden">
           <div className="p-3 bg-neutral-100 border-b border-neutral-200 flex items-center justify-between">
-            <span className="text-sm font-medium text-neutral-700">Prompt para o LLM</span>
-            <span className="text-xs text-neutral-500">{prompt.length} caracteres</span>
+            <span className="text-sm font-medium text-neutral-700">{t('llmPrompt')}</span>
+            <span className="text-xs text-neutral-500">{prompt.length} {t('characters')}</span>
           </div>
           <div className="p-4 max-h-[500px] overflow-y-auto">
             <pre className="text-sm text-neutral-800 whitespace-pre-wrap font-mono leading-relaxed">
@@ -447,13 +450,13 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
 
         {/* Next steps */}
         <div className="p-4 bg-blue-50 rounded-xl border border-blue-200">
-          <h4 className="font-semibold text-blue-800 mb-2">Próximos passos:</h4>
+          <h4 className="font-semibold text-blue-800 mb-2">{t('nextSteps')}</h4>
           <ol className="text-sm text-blue-700 space-y-1 list-decimal list-inside">
-            <li>Copia o prompt acima</li>
-            <li>Abre o ChatGPT ou Claude</li>
-            <li>Cola o prompt e envia</li>
-            <li>Copia o JSON gerado</li>
-            <li>Volta à app e importa o plano</li>
+            <li>{t('steps.copyPrompt')}</li>
+            <li>{t('steps.openAI')}</li>
+            <li>{t('steps.pastePrompt')}</li>
+            <li>{t('steps.copyJSON')}</li>
+            <li>{t('steps.returnAndImport')}</li>
           </ol>
         </div>
       </div>
@@ -470,9 +473,9 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
       <div className="space-y-2">
         <div className="flex items-center justify-between text-sm">
           <span className="text-neutral-600">
-            Passo {currentStep + 1} de {steps.length}
+            {t('stepOf', { current: currentStep + 1, total: steps.length })}
           </span>
-          <span className="font-medium text-neutral-900">{steps[currentStep].title}</span>
+          <span className="font-medium text-neutral-900">{t(steps[currentStep].titleKey)}</span>
         </div>
         <div className="h-2 bg-neutral-200 rounded-full overflow-hidden">
           <div
@@ -510,7 +513,7 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
                 {isCompleted ? <CheckCircle className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
               </div>
               <span className={`text-xs ${isActive ? 'text-primary-600 font-medium' : 'text-neutral-500'}`}>
-                {step.title}
+                {t(step.titleKey)}
               </span>
             </button>
           );
@@ -547,7 +550,7 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
             className="flex items-center gap-1 px-4 py-3 border border-neutral-300 rounded-xl font-medium text-neutral-700 hover:bg-neutral-100 transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
-            Voltar
+            {tCommon('back')}
           </button>
         )}
         <button
@@ -558,11 +561,11 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
           {currentStep === steps.length - 1 ? (
             <>
               <Sparkles className="w-5 h-5" />
-              Gerar Prompt
+              {t('generatePrompt')}
             </>
           ) : (
             <>
-              Continuar
+              {tCommon('continue')}
               <ChevronRight className="w-5 h-5" />
             </>
           )}
@@ -572,7 +575,7 @@ Por favor gera o plano completo em JSON válido, pronto para importar na app Fit
       {!canProceed && (
         <p className="text-sm text-amber-600 flex items-center gap-1">
           <AlertCircle className="w-4 h-4" />
-          Preenche os campos obrigatórios para continuar
+          {t('fillRequired')}
         </p>
       )}
     </div>
@@ -590,23 +593,25 @@ interface StepProps {
 }
 
 function StepPersonal({ data, updateData }: StepProps) {
+  const t = useTranslations('fitLog.questionnaire');
+
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-neutral-900 mb-2">Conta-nos sobre ti</h2>
-        <p className="text-neutral-600">Informação básica para personalizar o teu plano.</p>
+        <h2 className="text-xl font-bold text-neutral-900 mb-2">{t('personal.title')}</h2>
+        <p className="text-neutral-600">{t('personal.subtitle')}</p>
       </div>
 
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-neutral-700 mb-1">
-            Nome <span className="text-red-500">*</span>
+            {t('personal.name')} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={data.name}
             onChange={(e) => updateData?.({ name: e.target.value })}
-            placeholder="Como te chamas?"
+            placeholder={t('namePlaceholder')}
             className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           />
         </div>
@@ -614,7 +619,7 @@ function StepPersonal({ data, updateData }: StepProps) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-neutral-700 mb-1">
-              Peso (kg)
+              {t('personal.weight')}
             </label>
             <input
               type="number"
@@ -626,7 +631,7 @@ function StepPersonal({ data, updateData }: StepProps) {
           </div>
           <div>
             <label className="block text-sm font-medium text-neutral-700 mb-1">
-              Altura (cm)
+              {t('personal.height')}
             </label>
             <input
               type="number"
@@ -640,26 +645,26 @@ function StepPersonal({ data, updateData }: StepProps) {
 
         <div>
           <label className="block text-sm font-medium text-neutral-700 mb-3">
-            Nível de experiência <span className="text-red-500">*</span>
+            {t('personal.experienceLevel')} <span className="text-red-500">*</span>
           </label>
           <div className="grid grid-cols-3 gap-3">
             {[
-              { id: 'beginner', label: 'Iniciante', desc: '< 6 meses' },
-              { id: 'intermediate', label: 'Intermédio', desc: '6 meses - 2 anos' },
-              { id: 'advanced', label: 'Avançado', desc: '> 2 anos' },
+              { id: 'beginner', labelKey: 'experience.beginner', descKey: 'experience.beginnerDesc' },
+              { id: 'intermediate', labelKey: 'experience.intermediate', descKey: 'experience.intermediateDesc' },
+              { id: 'advanced', labelKey: 'experience.advanced', descKey: 'experience.advancedDesc' },
             ].map((level) => (
               <button
                 key={level.id}
                 type="button"
-                onClick={() => updateData?.({ experienceLevel: level.id as any })}
+                onClick={() => updateData?.({ experienceLevel: level.id as 'beginner' | 'intermediate' | 'advanced' })}
                 className={`p-4 rounded-xl border text-center transition-all ${
                   data.experienceLevel === level.id
                     ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
                     : 'border-neutral-300 hover:border-neutral-400 bg-white'
                 }`}
               >
-                <p className="font-medium text-neutral-900">{level.label}</p>
-                <p className="text-xs text-neutral-500 mt-1">{level.desc}</p>
+                <p className="font-medium text-neutral-900">{t(level.labelKey)}</p>
+                <p className="text-xs text-neutral-500 mt-1">{t(level.descKey)}</p>
               </button>
             ))}
           </div>
@@ -667,12 +672,12 @@ function StepPersonal({ data, updateData }: StepProps) {
 
         <div>
           <label className="block text-sm font-medium text-neutral-700 mb-1">
-            Histórico de treino (opcional)
+            {t('personal.trainingHistory')}
           </label>
           <textarea
             value={data.trainingHistory}
             onChange={(e) => updateData?.({ trainingHistory: e.target.value })}
-            placeholder="Ex: Treinei musculação há 2 anos, parei durante 1 ano..."
+            placeholder={t('experiencePlaceholder')}
             rows={2}
             className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
           />
@@ -683,16 +688,18 @@ function StepPersonal({ data, updateData }: StepProps) {
 }
 
 function StepGoals({ data, toggleArrayItem }: StepProps) {
+  const t = useTranslations('fitLog.questionnaire');
+
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-neutral-900 mb-2">Quais são os teus objetivos?</h2>
-        <p className="text-neutral-600">Seleciona um ou mais objetivos principais.</p>
+        <h2 className="text-xl font-bold text-neutral-900 mb-2">{t('goals.title')}</h2>
+        <p className="text-neutral-600">{t('goals.subtitle')}</p>
       </div>
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-3">
-          Objetivos principais <span className="text-red-500">*</span>
+          {t('goals.mainGoals')} <span className="text-red-500">*</span>
         </label>
         <div className="grid grid-cols-2 gap-3">
           {GOALS.map((goal) => (
@@ -707,7 +714,7 @@ function StepGoals({ data, toggleArrayItem }: StepProps) {
               }`}
             >
               <span className="text-2xl">{goal.icon}</span>
-              <p className="font-medium text-neutral-900 mt-1">{goal.label}</p>
+              <p className="font-medium text-neutral-900 mt-1">{t(goal.labelKey)}</p>
             </button>
           ))}
         </div>
@@ -715,7 +722,7 @@ function StepGoals({ data, toggleArrayItem }: StepProps) {
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-3">
-          Zonas do corpo prioritárias (opcional)
+          {t('goals.targetAreas')}
         </label>
         <div className="grid grid-cols-2 gap-3">
           {TARGET_AREAS.map((area) => (
@@ -730,7 +737,7 @@ function StepGoals({ data, toggleArrayItem }: StepProps) {
               }`}
             >
               <span className="text-xl">{area.icon}</span>
-              <p className="font-medium text-neutral-900 text-sm mt-1">{area.label}</p>
+              <p className="font-medium text-neutral-900 text-sm mt-1">{t(area.labelKey)}</p>
             </button>
           ))}
         </div>
@@ -740,16 +747,19 @@ function StepGoals({ data, toggleArrayItem }: StepProps) {
 }
 
 function StepSchedule({ data, updateData, toggleArrayItem }: StepProps) {
+  const t = useTranslations('fitLog.questionnaire');
+  const tFitLog = useTranslations('fitLog');
+
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-neutral-900 mb-2">Qual a tua disponibilidade?</h2>
-        <p className="text-neutral-600">Define quantos dias e quanto tempo podes treinar.</p>
+        <h2 className="text-xl font-bold text-neutral-900 mb-2">{t('schedule.title')}</h2>
+        <p className="text-neutral-600">{t('schedule.subtitle')}</p>
       </div>
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-3">
-          Quantos dias por semana? <span className="text-red-500">*</span>
+          {t('schedule.daysPerWeek')} <span className="text-red-500">*</span>
         </label>
         <div className="flex items-center gap-3">
           {[2, 3, 4, 5, 6].map((num) => (
@@ -771,9 +781,9 @@ function StepSchedule({ data, updateData, toggleArrayItem }: StepProps) {
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-3">
-          Quais dias? <span className="text-red-500">*</span>
+          {t('schedule.whichDays')} <span className="text-red-500">*</span>
           <span className="text-neutral-500 font-normal ml-1">
-            (seleciona pelo menos {data.daysPerWeek})
+            {t('schedule.selectAtLeast', { count: data.daysPerWeek })}
           </span>
         </label>
         <div className="flex items-center gap-2">
@@ -788,7 +798,7 @@ function StepSchedule({ data, updateData, toggleArrayItem }: StepProps) {
                   : 'border-neutral-300 text-neutral-700 hover:border-neutral-400 bg-white'
               }`}
             >
-              {day.label}
+              {tFitLog(day.labelKey)}
             </button>
           ))}
         </div>
@@ -796,7 +806,7 @@ function StepSchedule({ data, updateData, toggleArrayItem }: StepProps) {
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-3">
-          Duração de cada sessão
+          {t('schedule.sessionDuration')}
         </label>
         <div className="flex items-center gap-3">
           {[30, 45, 60, 75, 90].map((mins) => (
@@ -818,19 +828,19 @@ function StepSchedule({ data, updateData, toggleArrayItem }: StepProps) {
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-3">
-          Horário preferido (opcional)
+          {t('schedule.preferredTime')}
         </label>
         <div className="grid grid-cols-4 gap-3">
           {[
-            { id: 'morning', label: 'Manhã', icon: '🌅' },
-            { id: 'afternoon', label: 'Tarde', icon: '☀️' },
-            { id: 'evening', label: 'Noite', icon: '🌙' },
-            { id: 'flexible', label: 'Flexível', icon: '🔄' },
+            { id: 'morning', labelKey: 'schedule.morning', icon: '🌅' },
+            { id: 'afternoon', labelKey: 'schedule.afternoon', icon: '☀️' },
+            { id: 'evening', labelKey: 'schedule.evening', icon: '🌙' },
+            { id: 'flexible', labelKey: 'schedule.flexible', icon: '🔄' },
           ].map((time) => (
             <button
               key={time.id}
               type="button"
-              onClick={() => updateData?.({ preferredTime: time.id as any })}
+              onClick={() => updateData?.({ preferredTime: time.id as 'morning' | 'afternoon' | 'evening' | 'flexible' })}
               className={`p-3 rounded-xl border text-center transition-all ${
                 data.preferredTime === time.id
                   ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
@@ -838,7 +848,7 @@ function StepSchedule({ data, updateData, toggleArrayItem }: StepProps) {
               }`}
             >
               <span className="text-xl">{time.icon}</span>
-              <p className="text-sm font-medium text-neutral-900 mt-1">{time.label}</p>
+              <p className="text-sm font-medium text-neutral-900 mt-1">{t(time.labelKey)}</p>
             </button>
           ))}
         </div>
@@ -848,31 +858,33 @@ function StepSchedule({ data, updateData, toggleArrayItem }: StepProps) {
 }
 
 function StepEquipment({ data, updateData, toggleArrayItem }: StepProps) {
+  const t = useTranslations('fitLog.questionnaire');
+
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-neutral-900 mb-2">Onde vais treinar?</h2>
-        <p className="text-neutral-600">Seleciona o teu local e equipamento disponível.</p>
+        <h2 className="text-xl font-bold text-neutral-900 mb-2">{t('equipment.title')}</h2>
+        <p className="text-neutral-600">{t('equipment.subtitle')}</p>
       </div>
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-3">
-          Tipo de local <span className="text-red-500">*</span>
+          {t('equipment.locationType')} <span className="text-red-500">*</span>
         </label>
         <div className="grid grid-cols-2 gap-3">
           {GYM_TYPES.map((gym) => (
             <button
               key={gym.id}
               type="button"
-              onClick={() => updateData?.({ gymType: gym.id as any })}
+              onClick={() => updateData?.({ gymType: gym.id as 'full_gym' | 'home_basic' | 'home_advanced' | 'outdoor' })}
               className={`p-4 rounded-xl border text-left transition-all ${
                 data.gymType === gym.id
                   ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
                   : 'border-neutral-300 hover:border-neutral-400 bg-white'
               }`}
             >
-              <p className="font-medium text-neutral-900">{gym.label}</p>
-              <p className="text-xs text-neutral-500 mt-1">{gym.description}</p>
+              <p className="font-medium text-neutral-900">{t(gym.labelKey)}</p>
+              <p className="text-xs text-neutral-500 mt-1">{t(gym.descriptionKey)}</p>
             </button>
           ))}
         </div>
@@ -880,7 +892,7 @@ function StepEquipment({ data, updateData, toggleArrayItem }: StepProps) {
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-3">
-          Equipamento disponível (opcional)
+          {t('equipment.availableEquipment')}
         </label>
         <div className="grid grid-cols-2 gap-2">
           {EQUIPMENT.map((eq) => (
@@ -894,7 +906,7 @@ function StepEquipment({ data, updateData, toggleArrayItem }: StepProps) {
                   : 'border-neutral-300 hover:border-neutral-400 bg-white'
               }`}
             >
-              {eq.label}
+              {t(eq.labelKey)}
             </button>
           ))}
         </div>
@@ -904,18 +916,20 @@ function StepEquipment({ data, updateData, toggleArrayItem }: StepProps) {
 }
 
 function StepHealth({ data, updateData, toggleArrayItem }: StepProps) {
+  const t = useTranslations('fitLog.questionnaire');
+
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-neutral-900 mb-2">Considerações de saúde</h2>
+        <h2 className="text-xl font-bold text-neutral-900 mb-2">{t('health.title')}</h2>
         <p className="text-neutral-600">
-          Informação importante para adaptar o treino de forma segura.
+          {t('health.subtitle')}
         </p>
       </div>
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-3">
-          Condições de saúde
+          {t('health.conditions')}
         </label>
         <div className="grid grid-cols-2 gap-2">
           {HEALTH_CONDITIONS.map((condition) => (
@@ -929,7 +943,7 @@ function StepHealth({ data, updateData, toggleArrayItem }: StepProps) {
                   : 'border-neutral-300 hover:border-neutral-400 bg-white'
               }`}
             >
-              {condition.label}
+              {t(condition.labelKey)}
             </button>
           ))}
         </div>
@@ -937,12 +951,12 @@ function StepHealth({ data, updateData, toggleArrayItem }: StepProps) {
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-1">
-          Lesões ou limitações específicas
+          {t('health.injuries')}
         </label>
         <textarea
           value={data.injuries}
           onChange={(e) => updateData?.({ injuries: e.target.value })}
-          placeholder="Ex: Hérnia discal L5-S1, tendinite no ombro direito..."
+          placeholder={t('injuriesPlaceholder')}
           rows={2}
           className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
         />
@@ -950,12 +964,12 @@ function StepHealth({ data, updateData, toggleArrayItem }: StepProps) {
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-1">
-          Exercícios a evitar
+          {t('health.exercisesToAvoid')}
         </label>
         <textarea
           value={data.exercisesToAvoid}
           onChange={(e) => updateData?.({ exercisesToAvoid: e.target.value })}
-          placeholder="Ex: Agachamento profundo, extensão de pernas..."
+          placeholder={t('avoidExercisesPlaceholder')}
           rows={2}
           className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
         />
@@ -965,21 +979,23 @@ function StepHealth({ data, updateData, toggleArrayItem }: StepProps) {
 }
 
 function StepPreferences({ data, updateData }: StepProps) {
+  const t = useTranslations('fitLog.questionnaire');
+
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-neutral-900 mb-2">Preferências pessoais</h2>
-        <p className="text-neutral-600">Ajuda-nos a criar um plano que vais gostar de seguir.</p>
+        <h2 className="text-xl font-bold text-neutral-900 mb-2">{t('preferences.title')}</h2>
+        <p className="text-neutral-600">{t('preferences.subtitle')}</p>
       </div>
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-1">
-          Exercícios favoritos
+          {t('preferences.favoriteExercises')}
         </label>
         <textarea
           value={data.preferredExercises}
           onChange={(e) => updateData?.({ preferredExercises: e.target.value })}
-          placeholder="Ex: Hip thrust, deadlift, pull-ups..."
+          placeholder={t('favoriteExercisesPlaceholder')}
           rows={2}
           className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
         />
@@ -987,12 +1003,12 @@ function StepPreferences({ data, updateData }: StepProps) {
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-1">
-          Exercícios que não gostas
+          {t('preferences.dislikedExercises')}
         </label>
         <textarea
           value={data.dislikedExercises}
           onChange={(e) => updateData?.({ dislikedExercises: e.target.value })}
-          placeholder="Ex: Burpees, lunges..."
+          placeholder={t('otherAvoidPlaceholder')}
           rows={2}
           className="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
         />
@@ -1000,18 +1016,18 @@ function StepPreferences({ data, updateData }: StepProps) {
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-3">
-          Qual a tua relação com cardio?
+          {t('preferences.cardioRelation')}
         </label>
         <div className="grid grid-cols-3 gap-3">
           {[
-            { id: 'love', label: 'Adoro', icon: '❤️' },
-            { id: 'tolerate', label: 'Tolero', icon: '😐' },
-            { id: 'hate', label: 'Odeio', icon: '😤' },
+            { id: 'love', labelKey: 'preferences.love', icon: '❤️' },
+            { id: 'tolerate', labelKey: 'preferences.tolerate', icon: '😐' },
+            { id: 'hate', labelKey: 'preferences.hate', icon: '😤' },
           ].map((pref) => (
             <button
               key={pref.id}
               type="button"
-              onClick={() => updateData?.({ cardioPreference: pref.id as any })}
+              onClick={() => updateData?.({ cardioPreference: pref.id as 'love' | 'tolerate' | 'hate' })}
               className={`p-4 rounded-xl border text-center transition-all ${
                 data.cardioPreference === pref.id
                   ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
@@ -1019,7 +1035,7 @@ function StepPreferences({ data, updateData }: StepProps) {
               }`}
             >
               <span className="text-2xl">{pref.icon}</span>
-              <p className="font-medium text-neutral-900 mt-1">{pref.label}</p>
+              <p className="font-medium text-neutral-900 mt-1">{t(pref.labelKey)}</p>
             </button>
           ))}
         </div>
@@ -1027,8 +1043,7 @@ function StepPreferences({ data, updateData }: StepProps) {
 
       <div className="p-4 bg-amber-50 rounded-xl border border-amber-200">
         <p className="text-sm text-amber-800">
-          💡 <strong>Dica:</strong> Quanto mais informação forneceres, mais personalizado será o
-          teu plano de treino!
+          💡 {t('preferences.tip')}
         </p>
       </div>
     </div>

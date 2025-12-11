@@ -3,10 +3,12 @@
 import { useServiceWorker } from '@/hooks/use-service-worker';
 import { WifiOff, Wifi, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export function ConnectivityStatus() {
   const { isOnline, updateAvailable, updateServiceWorker } = useServiceWorker();
   const [showBanner, setShowBanner] = useState(false);
+  const t = useTranslations('pwa');
 
   useEffect(() => {
     // Mostrar banner quando ficar offline
@@ -38,12 +40,12 @@ export function ConnectivityStatus() {
           {isOnline ? (
             <>
               <Wifi className="w-5 h-5" />
-              <span className="font-medium">Back online</span>
+              <span className="font-medium">{t('status.backOnline')}</span>
             </>
           ) : (
             <>
               <WifiOff className="w-5 h-5" />
-              <span className="font-medium">You&apos;re offline</span>
+              <span className="font-medium">{t('offline.title')}</span>
             </>
           )}
         </div>
@@ -53,12 +55,12 @@ export function ConnectivityStatus() {
       {updateAvailable && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-accent-500 text-white px-4 py-3 rounded-lg shadow-soft-lg flex items-center gap-3 animate-fade-in-down">
           <Download className="w-5 h-5" />
-          <span className="font-medium">Update available</span>
+          <span className="font-medium">{t('update.title')}</span>
           <button
             onClick={updateServiceWorker}
             className="ml-2 px-3 py-1 bg-white text-accent-600 rounded-md text-sm font-medium hover:bg-warm-50 transition-colors"
           >
-            Update Now
+            {t('update.button')}
           </button>
         </div>
       )}
