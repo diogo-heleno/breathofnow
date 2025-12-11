@@ -93,8 +93,28 @@ export default function AccountPage({ params: { locale } }: PageProps) {
 
 function AccountPageContent({ locale }: { locale: Locale }) {
   const t = useTranslations();
-  const { profile, isAuthenticated, isLoading, hasAccessToApp, showAds } = useAuth();
+  const { profile, isAuthenticated, isLoading, hasAccessToApp, showAds, user, session } = useAuth();
   const [lastAppChange, setLastAppChange] = useState<Date | null>(null);
+  const [debugInfo, setDebugInfo] = useState<string>('Loading...');
+
+  // Debug: Update debug info whenever auth state changes
+  useEffect(() => {
+    const info = {
+      isLoading,
+      isAuthenticated,
+      hasUser: !!user,
+      userId: user?.id?.slice(0, 8) + '...',
+      userEmail: user?.email,
+      hasSession: !!session,
+      hasProfile: !!profile,
+      profileId: profile?.id?.slice(0, 8) + '...',
+      profileEmail: profile?.email,
+      profileTier: profile?.tier,
+      profileName: profile?.fullName,
+    };
+    setDebugInfo(JSON.stringify(info, null, 2));
+    console.log('Auth Debug:', info);
+  }, [isLoading, isAuthenticated, user, session, profile]);
 
   // Simulate loading last app change date (in real app, fetch from profile)
   useEffect(() => {
@@ -107,14 +127,34 @@ function AccountPageContent({ locale }: { locale: Locale }) {
     }
   }, [profile?.tier]);
 
+  // Debug panel component
+  const DebugPanel = () => (
+    <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-xl text-xs font-mono overflow-auto">
+      <p className="font-bold text-blue-800 mb-2">🔍 Debug Info:</p>
+      <pre className="whitespace-pre-wrap text-blue-700">{debugInfo}</pre>
+    </div>
+  );
+
   if (isLoading) {
-    return <AccountLoadingSkeleton locale={locale} />;
+    return (
+      <AppShell locale={locale}>
+        <div className="p-6 max-w-4xl mx-auto">
+          <DebugPanel />
+          <div className="animate-pulse space-y-6">
+            <div className="h-8 bg-neutral-200 rounded w-1/4" />
+            <div className="h-48 bg-neutral-200 rounded-xl" />
+            <div className="h-32 bg-neutral-200 rounded-xl" />
+          </div>
+        </div>
+      </AppShell>
+    );
   }
 
   if (!isAuthenticated || !profile) {
     return (
       <AppShell locale={locale}>
         <div className="p-6 max-w-4xl mx-auto">
+          <DebugPanel />
           <Card>
             <CardContent className="p-8 text-center">
               <User className="w-12 h-12 mx-auto text-neutral-400 mb-4" />
@@ -146,6 +186,9 @@ function AccountPageContent({ locale }: { locale: Locale }) {
   return (
     <AppShell locale={locale}>
       <div className="p-6 max-w-4xl mx-auto space-y-6">
+        {/* Debug Panel */}
+        <DebugPanel />
+
         {/* Ad Banner for free users */}
         {showAds && (
           <AdBanner position="top" slot="account-top" />
