@@ -103,16 +103,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Fetch user profile from Supabase
   const fetchProfile = useCallback(async (userId: string): Promise<UserProfile | null> => {
+    console.log('[fetchProfile] Starting fetch for userId:', userId);
     try {
       const supabase = createClient();
+
+      // Debug: Check if we have an active session
+      const { data: sessionData } = await supabase.auth.getSession();
+      console.log('[fetchProfile] Current session:', sessionData?.session?.user?.id);
+
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
         .single();
 
+      console.log('[fetchProfile] Result:', { data, error });
+
       if (error) {
-        console.error('Error fetching profile:', error);
+        console.error('[fetchProfile] Error fetching profile:', error);
         return null;
       }
 
@@ -128,13 +136,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         createdAt: data.created_at,
       };
 
+      console.log('[fetchProfile] Profile loaded:', userProfile);
+
       // Cache the profile for offline use
       setStoredData(STORAGE_KEYS.PROFILE, userProfile);
       setStoredData(STORAGE_KEYS.LAST_SYNC, new Date().toISOString());
 
       return userProfile;
     } catch (error) {
-      console.error('Error in fetchProfile:', error);
+      console.error('[fetchProfile] Exception:', error);
       return null;
     }
   }, []);
