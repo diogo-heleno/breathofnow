@@ -106,6 +106,11 @@ breathofnow/
 │   │   │   ├── client.ts        # Cliente browser
 │   │   │   └── server.ts        # Cliente server
 │   │   └── utils.ts
+│   ├── hooks/
+│   │   ├── use-mounted.ts       # Hook para client-side mount detection
+│   │   ├── use-premium.ts       # Hook para premium features
+│   │   ├── use-service-worker.ts # Hook para PWA service worker
+│   │   └── use-sync.ts          # Hook para sincronização
 │   ├── stores/
 │   │   └── app-store.ts         # Zustand stores
 │   ├── i18n.ts                  # Configuração i18n
