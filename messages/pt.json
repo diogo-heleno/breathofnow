@@ -1204,7 +1204,10 @@
   "featuresPages": {
     "common": {
       "getStartedFree": "Começar Grátis",
-      "exploreApps": "Explorar Apps"
+      "exploreApps": "Explorar Apps",
+      "viewPricing": "Ver Preços",
+      "readPrivacyPolicy": "Ler Política de Privacidade",
+      "viewFaq": "Ver FAQ"
     },
     "privacyFirst": {
       "title": "Privacidade Primeiro",
