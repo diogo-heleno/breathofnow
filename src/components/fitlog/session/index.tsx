@@ -230,6 +230,7 @@ function SetInputRow({
   noteValue,
   onNoteChange,
 }: SetInputRowProps) {
+  const t = useTranslations('fitLog.session');
   const isCompleted = data.weight !== undefined && data.reps !== undefined;
 
   const handleComplete = () => {

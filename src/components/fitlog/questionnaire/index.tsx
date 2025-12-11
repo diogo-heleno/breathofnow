@@ -214,29 +214,39 @@ export function WorkoutQuestionnaire({ onComplete }: WorkoutQuestionnaireProps) 
   }, [currentStep, data]);
 
   const generatePrompt = (): string => {
-    const goalLabels = data.primaryGoal.map(
-      (g) => GOALS.find((goal) => goal.id === g)?.label
-    ).filter(Boolean);
-    
-    const areaLabels = data.targetAreas.map(
-      (a) => TARGET_AREAS.find((area) => area.id === a)?.label
-    ).filter(Boolean);
-    
+    const goalLabels = data.primaryGoal.map((g) => {
+      const goal = GOALS.find((goal) => goal.id === g);
+      return goal ? t(goal.labelKey) : null;
+    }).filter(Boolean);
+
+    const areaLabels = data.targetAreas.map((a) => {
+      const area = TARGET_AREAS.find((area) => area.id === a);
+      return area ? t(area.labelKey) : null;
+    }).filter(Boolean);
+
     const dayLabels = data.availableDays
       .sort((a, b) => a - b)
-      .map((d) => DAYS_OF_WEEK.find((day) => day.id === d)?.fullLabel)
-      .filter(Boolean);
-    
-    const equipmentLabels = data.availableEquipment.map(
-      (e) => EQUIPMENT.find((eq) => eq.id === e)?.label
-    ).filter(Boolean);
-    
-    const healthLabels = data.healthConditions
-      .filter((h) => h !== 'none')
-      .map((h) => HEALTH_CONDITIONS.find((hc) => hc.id === h)?.label)
+      .map((d) => {
+        const day = DAYS_OF_WEEK.find((day) => day.id === d);
+        return day ? tFitLog(day.fullLabelKey) : null;
+      })
       .filter(Boolean);
 
-    const gymLabel = GYM_TYPES.find((g) => g.id === data.gymType)?.label || data.gymType;
+    const equipmentLabels = data.availableEquipment.map((e) => {
+      const eq = EQUIPMENT.find((eq) => eq.id === e);
+      return eq ? t(eq.labelKey) : null;
+    }).filter(Boolean);
+
+    const healthLabels = data.healthConditions
+      .filter((h) => h !== 'none')
+      .map((h) => {
+        const hc = HEALTH_CONDITIONS.find((hc) => hc.id === h);
+        return hc ? t(hc.labelKey) : null;
+      })
+      .filter(Boolean);
+
+    const gymType = GYM_TYPES.find((g) => g.id === data.gymType);
+    const gymLabel = gymType ? t(gymType.labelKey) : data.gymType;
 
     return `# Pedido de Plano de Treino Personalizado
 
