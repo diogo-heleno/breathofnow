@@ -331,6 +331,13 @@ breathofnow/
 | ExpenseFlow Categories | `/[locale]/expenses/categories` | ✅ |
 | ExpenseFlow Settings | `/[locale]/expenses/settings` | ✅ |
 | ExpenseFlow Reports | `/[locale]/expenses/reports` | ✅ |
+| Features - Privacy First | `/[locale]/features/privacy-first` | ✅ |
+| Features - Works Offline | `/[locale]/features/works-offline` | ✅ |
+| Features - Beautifully Simple | `/[locale]/features/beautifully-simple` | ✅ |
+| Features - Fair Pricing | `/[locale]/features/fair-pricing` | ✅ |
+| Features - Open Transparent | `/[locale]/features/open-transparent` | ✅ |
+| Features - Sustainable | `/[locale]/features/sustainable` | ✅ |
+| Account | `/[locale]/account` | ✅ |
 
 ---
 
