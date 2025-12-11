@@ -93,20 +93,8 @@ export default function AccountPage({ params: { locale } }: PageProps) {
 
 function AccountPageContent({ locale }: { locale: Locale }) {
   const t = useTranslations();
-  const { profile, isAuthenticated, isLoading, hasAccessToApp, showAds, user } = useAuth();
+  const { profile, isAuthenticated, isLoading, hasAccessToApp, showAds } = useAuth();
   const [lastAppChange, setLastAppChange] = useState<Date | null>(null);
-  const [loadingTimeout, setLoadingTimeout] = useState(false);
-
-  // Safety timeout - if still loading after 5 seconds, show content anyway
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (isLoading) {
-        console.warn('Auth loading timeout - forcing render');
-        setLoadingTimeout(true);
-      }
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [isLoading]);
 
   // Simulate loading last app change date (in real app, fetch from profile)
   useEffect(() => {
@@ -119,53 +107,25 @@ function AccountPageContent({ locale }: { locale: Locale }) {
     }
   }, [profile?.tier]);
 
-  // Debug info - remove after debugging
-  const debugInfo = {
-    isLoading,
-    isAuthenticated,
-    hasProfile: !!profile,
-    hasUser: !!user,
-    loadingTimeout,
-  };
-
-  // Show loading only if auth is loading AND timeout hasn't expired
-  if (isLoading && !loadingTimeout) {
-    return (
-      <AppShell locale={locale}>
-        <div className="p-6 max-w-4xl mx-auto">
-          <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-neutral-200 rounded w-1/4" />
-            <div className="h-48 bg-neutral-200 rounded-xl" />
-            <div className="h-32 bg-neutral-200 rounded-xl" />
-          </div>
-          {/* Debug info */}
-          <div className="mt-4 p-4 bg-red-50 rounded text-xs font-mono">
-            <p>Debug: {JSON.stringify(debugInfo)}</p>
-          </div>
-        </div>
-      </AppShell>
-    );
+  if (isLoading) {
+    return <AccountLoadingSkeleton locale={locale} />;
   }
 
   if (!isAuthenticated || !profile) {
     return (
       <AppShell locale={locale}>
         <div className="p-6 max-w-4xl mx-auto">
-          {/* Debug info */}
-          <div className="mb-4 p-4 bg-yellow-50 rounded text-xs font-mono">
-            <p>Debug (not auth): {JSON.stringify(debugInfo)}</p>
-          </div>
           <Card>
             <CardContent className="p-8 text-center">
               <User className="w-12 h-12 mx-auto text-neutral-400 mb-4" />
               <h2 className="text-xl font-semibold text-neutral-900 mb-2">
-                Sign in to view your account
+                {t('account.signInToView')}
               </h2>
               <p className="text-neutral-600 mb-6">
-                Create an account or sign in to manage your subscription and settings.
+                {t('account.signInDescription')}
               </p>
               <Link href={`/${locale}/auth/signin`}>
-                <Button variant="primary">Sign In</Button>
+                <Button variant="primary">{t('common.signIn')}</Button>
               </Link>
             </CardContent>
           </Card>

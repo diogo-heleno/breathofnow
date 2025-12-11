@@ -86,7 +86,7 @@ export default function SignUpPage({ params: { locale } }: PageProps) {
 
     try {
       const supabase = createClient();
-      const { error: verifyError } = await supabase.auth.verifyOtp({
+      const { data, error: verifyError } = await supabase.auth.verifyOtp({
         email,
         token: otpCode,
         type: 'email',
@@ -94,9 +94,47 @@ export default function SignUpPage({ params: { locale } }: PageProps) {
 
       if (verifyError) throw verifyError;
 
+      // After successful OTP verification, ensure profile exists
+      if (data.user) {
+        const { data: existingProfile } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('id', data.user.id)
+          .single();
+
+        // If no profile exists, create one
+        if (!existingProfile) {
+          const fullName = name ||
+            data.user.user_metadata?.full_name ||
+            data.user.user_metadata?.name ||
+            data.user.email?.split('@')[0] ||
+            'User';
+
+          // Check if this email should get premium access
+          const { data: premiumEmail } = await supabase
+            .from('premium_emails')
+            .select('tier')
+            .eq('email', data.user.email)
+            .single();
+
+          await supabase.from('profiles').insert({
+            id: data.user.id,
+            email: data.user.email,
+            full_name: fullName,
+            avatar_url: data.user.user_metadata?.avatar_url || null,
+            subscription_tier: premiumEmail?.tier || 'free',
+            is_founding_member: premiumEmail?.tier === 'founding',
+            selected_apps: [],
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          });
+        }
+      }
+
       // Redirect to account on success
       router.push('/account');
     } catch (err) {
+      console.error('OTP verification error:', err);
       setError(err instanceof Error ? err.message : t('otpError'));
     } finally {
       setIsVerifying(false);

@@ -181,15 +181,9 @@ export default function SignInPage({ params: { locale } }: PageProps) {
 
               {error && (
                 <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-700 dark:text-red-300 text-sm">
-                  <p className="font-medium">Error:</p>
-                  <p>{error}</p>
+                  {error}
                 </div>
               )}
-
-              {/* Debug info */}
-              <div className="mb-4 p-3 bg-blue-50 rounded text-xs font-mono">
-                <p>Debug: isVerifying={String(isVerifying)}, email={email}, codeLen={otpCode.length}</p>
-              </div>
 
               {/* OTP Code Input */}
               <form onSubmit={handleVerifyOtp} className="space-y-4">
