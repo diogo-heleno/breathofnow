@@ -62,7 +62,11 @@
     "incomplete": "Incompleto",
     "active": "Ativo",
     "inactive": "Inativo",
-    "toggleMenu": "Alternar menu"
+    "toggleMenu": "Alternar menu",
+    "language": "Idioma",
+    "noData": "Sem dados",
+    "default": "Predefinido",
+    "exit": "Sair"
   },
   "nav": {
     "apps": "Apps",
@@ -410,7 +414,16 @@
     "install": { "title": "Instalar App", "description": "Instala Breath of Now para a melhor experiência", "button": "Instalar", "dismiss": "Dispensar" },
     "offline": { "title": "Estás offline", "description": "Algumas funcionalidades podem estar limitadas", "pageNotCached": "Esta página não está disponível offline", "goBack": "Voltar" },
     "uncachedPage": { "backOnline": "De volta online!", "redirecting": "A redirecionar para a página solicitada...", "youAreOffline": "Estás offline", "pageNotLoaded": "A página que tentaste aceder ainda não foi carregada enquanto estavas online.", "requestedPage": "Página solicitada:", "tip": "As páginas que visitares enquanto estiveres online ficarão disponíveis offline automaticamente.", "tryAgain": "Tentar novamente", "continueHome": "Continuar na Homepage", "close": "Fechar" },
-    "update": { "title": "Atualização disponível", "description": "Uma nova versão está disponível", "button": "Atualizar" }
+    "update": { "title": "Atualização disponível", "description": "Uma nova versão está disponível", "button": "Atualizar" },
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "backOnline": "De volta online",
+      "updateAvailable": "Atualização disponível",
+      "connectionStatus": "Estado da Ligação",
+      "dataSafe": "Os teus dados estão seguros localmente",
+      "featuresOffline": "Todas as funcionalidades disponíveis offline"
+    }
   },
   "errors": { "generic": "Algo correu mal. Por favor tenta novamente.", "notFound": "Página não encontrada", "notFoundDescription": "A página que procuras não existe ou foi movida.", "goHome": "Ir para Início", "unauthorized": "Precisas de entrar para aceder a esta página", "forbidden": "Não tens permissão para aceder a esta página", "exportFailed": "Falha na exportação", "deleteFailed": "Falha na eliminação", "loadFailed": "Falha ao carregar dados" },
   "meta": { "title": "Breath of Now - Ferramentas simples para uma vida consciente", "description": "Uma coleção de micro-apps privacy-first para despesas, investimentos, treinos, receitas e mais. Os teus dados ficam no teu dispositivo." }

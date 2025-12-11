@@ -3,6 +3,7 @@
 import { useServiceWorker } from '@/hooks/use-service-worker';
 import { Wifi, WifiOff, Cloud, CloudOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 interface ConnectionIndicatorProps {
   showLabel?: boolean;
@@ -11,6 +12,7 @@ interface ConnectionIndicatorProps {
 
 export function ConnectionIndicator({ showLabel = false, className }: ConnectionIndicatorProps) {
   const { isOnline } = useServiceWorker();
+  const t = useTranslations('pwa.status');
 
   return (
     <div
@@ -18,7 +20,7 @@ export function ConnectionIndicator({ showLabel = false, className }: Connection
         'flex items-center gap-1.5 transition-colors',
         className
       )}
-      title={isOnline ? 'Online - Connected' : 'Offline - Working locally'}
+      title={isOnline ? t('online') : t('offline')}
     >
       <div
         className={cn(
@@ -53,7 +55,7 @@ export function ConnectionIndicator({ showLabel = false, className }: Connection
               : 'text-amber-700 dark:text-amber-400'
           )}
         >
-          {isOnline ? 'Online' : 'Offline'}
+          {isOnline ? t('online') : t('offline')}
         </span>
       )}
     </div>
@@ -63,6 +65,7 @@ export function ConnectionIndicator({ showLabel = false, className }: Connection
 // Versão compacta para mobile
 export function ConnectionIndicatorCompact() {
   const { isOnline } = useServiceWorker();
+  const t = useTranslations('pwa.status');
 
   return (
     <div
@@ -70,7 +73,7 @@ export function ConnectionIndicatorCompact() {
         'w-2 h-2 rounded-full',
         isOnline ? 'bg-green-500' : 'bg-amber-500 animate-pulse'
       )}
-      title={isOnline ? 'Online' : 'Offline'}
+      title={isOnline ? t('online') : t('offline')}
     />
   );
 }
@@ -84,12 +87,14 @@ interface SyncStatusBadgeProps {
 
 export function SyncStatusBadge({ isSyncing, lastSyncedAt, className }: SyncStatusBadgeProps) {
   const { isOnline } = useServiceWorker();
+  const t = useTranslations('pwa.status');
+  const tSync = useTranslations('expenseFlow.sync');
 
   if (!isOnline) {
     return (
       <div className={cn('flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400', className)}>
         <CloudOff className="w-3.5 h-3.5" />
-        <span>Offline</span>
+        <span>{t('offline')}</span>
       </div>
     );
   }
@@ -98,7 +103,7 @@ export function SyncStatusBadge({ isSyncing, lastSyncedAt, className }: SyncStat
     return (
       <div className={cn('flex items-center gap-1.5 text-xs text-blue-600 dark:text-blue-400', className)}>
         <Cloud className="w-3.5 h-3.5 animate-pulse" />
-        <span>Syncing...</span>
+        <span>{tSync('syncing')}</span>
       </div>
     );
   }
@@ -108,7 +113,7 @@ export function SyncStatusBadge({ isSyncing, lastSyncedAt, className }: SyncStat
     return (
       <div className={cn('flex items-center gap-1.5 text-xs text-neutral-500', className)}>
         <Cloud className="w-3.5 h-3.5" />
-        <span>Synced {timeAgo}</span>
+        <span>{tSync('synced')} {timeAgo}</span>
       </div>
     );
   }
@@ -116,7 +121,7 @@ export function SyncStatusBadge({ isSyncing, lastSyncedAt, className }: SyncStat
   return (
     <div className={cn('flex items-center gap-1.5 text-xs text-green-600 dark:text-green-400', className)}>
       <Cloud className="w-3.5 h-3.5" />
-      <span>Online</span>
+      <span>{t('online')}</span>
     </div>
   );
 }

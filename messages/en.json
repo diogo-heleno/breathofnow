@@ -62,7 +62,11 @@
     "incomplete": "Incomplete",
     "active": "Active",
     "inactive": "Inactive",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "language": "Language",
+    "noData": "No data",
+    "default": "Default",
+    "exit": "Exit"
   },
   "nav": {
     "apps": "Apps",
@@ -678,7 +682,10 @@
       "title": "Reports",
       "byCategory": "By Category",
       "byMonth": "By Month",
-      "trends": "Trends"
+      "trends": "Trends",
+      "totalExpenses": "Total Expenses",
+      "totalIncome": "Total Income",
+      "balance": "Balance"
     },
     "settings": {
       "title": "Settings",
@@ -729,7 +736,13 @@
       "invalidDate": "Invalid date",
       "invalidAmount": "Invalid amount",
       "unsupportedFormat": "Unsupported file format. Please use CSV or Excel (.xlsx, .xls)",
-      "parseError": "Failed to parse Excel file"
+      "parseError": "Failed to parse Excel file",
+      "columns": {
+        "date": "Date",
+        "description": "Description",
+        "amount": "Amount",
+        "type": "Type"
+      }
     },
     "months": {
       "january": "January",
@@ -754,6 +767,11 @@
       "JPY": "Japanese Yen",
       "AUD": "Australian Dollar",
       "CAD": "Canadian Dollar"
+    },
+    "currency": {
+      "searchPlaceholder": "Search currencies...",
+      "allCurrencies": "All Currencies",
+      "noResults": "No currencies found"
     }
   },
   "fitLog": {
@@ -851,7 +869,9 @@
       "reps": "Reps",
       "weight": "Weight",
       "rest": "Rest",
+      "restTime": "Rest Time",
       "notes": "Notes",
+      "notesPlaceholder": "Add a note...",
       "addSet": "Add Set",
       "skipExercise": "Skip",
       "nextExercise": "Next Exercise",
@@ -859,6 +879,7 @@
       "cancelWorkout": "Cancel Workout",
       "confirmCancel": "Are you sure you want to cancel this workout? Your progress will be lost.",
       "howDidYouFeel": "How did you feel?",
+      "howWasWorkout": "How was the workout?",
       "sessionNotes": "Session notes (optional)",
       "saveSession": "Save Session",
       "feelings": {
@@ -928,6 +949,7 @@
     },
     "settings": {
       "title": "FitLog Settings",
+      "timer": "Timer",
       "units": {
         "title": "Units",
         "weight": "Weight Unit",
@@ -938,17 +960,20 @@
         "title": "Rest Timer",
         "defaultDuration": "Default Duration",
         "sound": "Sound Notification",
-        "vibration": "Vibration"
+        "soundDescription": "When the timer ends",
+        "vibration": "Vibration",
+        "showDuringWorkout": "Show during workout"
       },
       "data": {
         "title": "Data Management",
         "exportData": "Export Data",
-        "exportDescription": "Download all your workout data",
+        "exportDescription": "Download all your data",
         "clearData": "Clear All Data",
         "clearDescription": "Delete all workout data",
         "confirmClear": "Are you sure you want to delete all FitLog data? This cannot be undone.",
         "clearAll": "Clear All"
       },
+      "about": "About",
       "featureInDevelopment": "Feature in development"
     },
     "exercise": {
@@ -979,7 +1004,36 @@
     "questionnaire": {
       "title": "Create Your Plan",
       "description": "Answer a few questions to generate a personalized workout plan",
-      "exampleFormat": "Example JSON format"
+      "exampleFormat": "Example JSON format",
+      "llmPrompt": "Prompt for LLM",
+      "howToUse": "How to use",
+      "steps": {
+        "copyPrompt": "Copy the prompt above",
+        "openAI": "Open ChatGPT or Claude",
+        "pastePrompt": "Paste the prompt and send",
+        "copyJSON": "Copy the generated JSON"
+      },
+      "backToQuestionnaire": "Back to questionnaire",
+      "namePlaceholder": "What's your name?",
+      "experiencePlaceholder": "E.g.: I trained weights for 2 years, stopped for 1 year...",
+      "injuriesPlaceholder": "E.g.: L5-S1 disc herniation, tendinitis in right shoulder...",
+      "avoidExercisesPlaceholder": "E.g.: Deep squats, leg extensions...",
+      "favoriteExercisesPlaceholder": "E.g.: Hip thrust, deadlift, pull-ups...",
+      "otherAvoidPlaceholder": "E.g.: Burpees, lunges..."
+    },
+    "export": {
+      "title": "Export to AI",
+      "howToUse": "How to use",
+      "steps": {
+        "generatePrompt": "Generate the prompt",
+        "generateDescription": "Choose if you want to create a new plan or adjust your current one",
+        "pasteInAI": "Paste in ChatGPT or Claude",
+        "pasteDescription": "Open your favorite AI assistant and paste the generated prompt",
+        "copyJSON": "Copy the JSON",
+        "copyDescription": "When the AI generates the plan, copy the JSON response",
+        "import": "Import",
+        "importDescription": "Go to the \"Import Plan\" page and paste the JSON"
+      }
     }
   },
   "pwa": {
@@ -1010,6 +1064,15 @@
       "title": "Update available",
       "description": "A new version is available",
       "button": "Update"
+    },
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "backOnline": "Back online",
+      "updateAvailable": "Update available",
+      "connectionStatus": "Connection Status",
+      "dataSafe": "Your data is safe locally",
+      "featuresOffline": "All features available offline"
     }
   },
   "errors": {
