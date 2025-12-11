@@ -1201,6 +1201,309 @@
       "featuresOffline": "Todas as funcionalidades disponíveis offline"
     }
   },
+  "featuresPages": {
+    "common": {
+      "getStartedFree": "Get Started Free",
+      "exploreApps": "Explore Apps"
+    },
+    "privacyFirst": {
+      "title": "Privacy First",
+      "subtitle": "Your data lives on your device. We can't see it, we can't sell it, we can't lose it. This isn't just a feature—it's our fundamental principle.",
+      "metaDescription": "Your data lives on your device. We can't see it, we can't sell it, we can't lose it.",
+      "howWeProtect": "How We Protect Your Privacy",
+      "howWeProtectSubtitle": "Privacy isn't an afterthought—it's baked into our architecture",
+      "features": {
+        "localStorage": {
+          "title": "Local-First Storage",
+          "description": "All your data is stored locally in your browser's IndexedDB. No server uploads by default."
+        },
+        "encryption": {
+          "title": "End-to-End Encryption",
+          "description": "When you enable cloud sync, your data is encrypted before leaving your device."
+        },
+        "zeroKnowledge": {
+          "title": "Zero Knowledge",
+          "description": "We literally cannot see your data. Even with cloud sync enabled, we only store encrypted blobs."
+        },
+        "noTracking": {
+          "title": "No Third-Party Analytics",
+          "description": "We don't use Google Analytics or any invasive tracking. Your usage stays private."
+        },
+        "yourControl": {
+          "title": "Your Device, Your Control",
+          "description": "Export your data anytime in standard formats. Delete everything with one click."
+        },
+        "gdpr": {
+          "title": "GDPR Compliant",
+          "description": "Built with European privacy standards in mind. Your rights are protected."
+        }
+      },
+      "whereDataLives": "Where Your Data Lives",
+      "yourDevice": "Your Device",
+      "yourDeviceDesc": "All data stored locally in IndexedDB",
+      "private100": "100% Private",
+      "cloudOptional": "Cloud (Optional)",
+      "cloudOptionalDesc": "Encrypted sync for premium users only",
+      "encrypted": "Encrypted",
+      "weDifferent": "We're Different",
+      "comparison": {
+        "us1": "Data stored on your device",
+        "them1": "Data stored on their servers",
+        "us2": "You control your data",
+        "them2": "They control your data",
+        "us3": "Zero tracking by default",
+        "them3": "Tracking for ads/analytics",
+        "us4": "Export anytime",
+        "them4": "Vendor lock-in",
+        "us5": "No data selling ever",
+        "them5": "May sell/share data"
+      },
+      "cta": {
+        "title": "Ready to Take Back Your Privacy?",
+        "subtitle": "Join thousands of users who value their data privacy. Start free today."
+      }
+    },
+    "worksOffline": {
+      "title": "Works Offline",
+      "subtitle": "No internet? No problem. All apps work fully offline with optional cloud sync. Your productivity doesn't depend on a connection.",
+      "metaDescription": "No internet? No problem. All apps work fully offline with optional cloud sync.",
+      "alwaysAvailable": "Always Available",
+      "alwaysAvailableSubtitle": "Built from the ground up to work offline, not as an afterthought",
+      "features": {
+        "trueOffline": {
+          "title": "True Offline Mode",
+          "description": "All core features work without any internet connection. Track expenses on a flight, log workouts in the mountains."
+        },
+        "instantResponse": {
+          "title": "Instant Response",
+          "description": "No network latency. Your data is right there on your device, ready in milliseconds."
+        },
+        "pwa": {
+          "title": "Progressive Web App",
+          "description": "Install on your home screen like a native app. Works seamlessly across all devices."
+        },
+        "smartSync": {
+          "title": "Smart Sync",
+          "description": "When you're back online, changes sync automatically. No manual intervention needed."
+        },
+        "cloudBackup": {
+          "title": "Optional Cloud Backup",
+          "description": "Premium users can enable cloud sync for cross-device access while keeping offline functionality."
+        },
+        "everywhere": {
+          "title": "Works Everywhere",
+          "description": "From remote beaches to subway tunnels—your apps work wherever you are."
+        }
+      },
+      "howItWorks": "How Offline Mode Works",
+      "steps": {
+        "step1": {
+          "title": "Data Stored Locally",
+          "description": "All your data is stored in IndexedDB, a powerful browser database that persists even when offline."
+        },
+        "step2": {
+          "title": "Service Worker Magic",
+          "description": "Our service worker caches the app so it loads instantly, even without network access."
+        },
+        "step3": {
+          "title": "Queue Changes",
+          "description": "When offline, any changes you make are queued and ready to sync when you reconnect."
+        },
+        "step4": {
+          "title": "Automatic Sync",
+          "description": "Back online? Changes sync automatically in the background. No manual steps required."
+        }
+      },
+      "perfectFor": "Perfect For",
+      "useCases": {
+        "traveling": { "title": "Traveling", "desc": "Track expenses during flights and in areas without coverage" },
+        "outdoor": { "title": "Outdoor Activities", "desc": "Log workouts in remote hiking trails or mountains" },
+        "commuting": { "title": "Commuting", "desc": "Use apps in subway tunnels with no signal" },
+        "international": { "title": "International Travel", "desc": "No need for expensive roaming data" },
+        "poorConnectivity": { "title": "Poor Connectivity", "desc": "Works perfectly in areas with spotty internet" },
+        "speed": { "title": "Speed Matters", "desc": "Zero latency for instant responsiveness" }
+      },
+      "cta": {
+        "title": "Never Depend on a Connection Again",
+        "subtitle": "Start using apps that respect your independence. Work anywhere, anytime."
+      }
+    },
+    "beautifullySimple": {
+      "title": "Beautifully Simple",
+      "subtitle": "No bloat, no complexity. Each app does one thing and does it exceptionally well. Design that gets out of your way.",
+      "metaDescription": "No bloat, no complexity. Each app does one thing and does it exceptionally well.",
+      "designPhilosophy": "Our Design Philosophy",
+      "designPhilosophySubtitle": "We believe the best tools are the ones you don't have to think about",
+      "features": {
+        "singlePurpose": {
+          "title": "Single Purpose Apps",
+          "description": "Each app is focused on doing one thing exceptionally well, rather than being mediocre at many things."
+        },
+        "cleanInterface": {
+          "title": "Clean Interface",
+          "description": "No cluttered dashboards or overwhelming options. Just what you need, when you need it."
+        },
+        "intuitiveDesign": {
+          "title": "Intuitive Design",
+          "description": "Start using any app immediately without tutorials or documentation. It just works."
+        },
+        "fastPerformance": {
+          "title": "Fast Performance",
+          "description": "Lightweight apps that load instantly and respond immediately to your interactions."
+        },
+        "consistentExperience": {
+          "title": "Consistent Experience",
+          "description": "All apps share a common design language, so learning one means you know them all."
+        },
+        "accessibleDesign": {
+          "title": "Accessible Design",
+          "description": "Built with accessibility in mind. Works great with screen readers and keyboard navigation."
+        }
+      },
+      "principles": "Design Principles",
+      "principlesList": {
+        "lessIsMore": { "title": "Less is More", "desc": "We remove features, not add them. Every element must earn its place." },
+        "focusOnTask": { "title": "Focus on Task", "desc": "The UI disappears when you're working. Your content takes center stage." },
+        "noLearningCurve": { "title": "No Learning Curve", "desc": "If you need a manual, we've failed. Apps should be immediately understandable." },
+        "respectfulDesign": { "title": "Respectful Design", "desc": "No dark patterns, no manipulation. We respect your time and attention." }
+      },
+      "cta": {
+        "title": "Experience Thoughtful Design",
+        "subtitle": "Try apps that respect your time and attention. Start free today."
+      }
+    },
+    "fairPricing": {
+      "title": "Fair Pricing",
+      "subtitle": "Pay what you can afford. Our prices adapt to your region's cost of living. No tricks, no hidden fees.",
+      "metaDescription": "Pay what you can afford. Our prices adapt to your region's cost of living.",
+      "howItWorks": "How Fair Pricing Works",
+      "howItWorksSubtitle": "We believe software should be accessible to everyone",
+      "features": {
+        "regionalPricing": {
+          "title": "Regional Pricing",
+          "description": "Prices are automatically adjusted based on your country's purchasing power parity."
+        },
+        "transparentTiers": {
+          "title": "Transparent Tiers",
+          "description": "Clear pricing with no hidden fees. You always know exactly what you're paying for."
+        },
+        "freeTier": {
+          "title": "Generous Free Tier",
+          "description": "Access to all apps with ads. No credit card required, no trials that expire."
+        },
+        "noUpselling": {
+          "title": "No Aggressive Upselling",
+          "description": "We won't spam you with upgrade prompts. Premium is there when you want it."
+        },
+        "lifetimeOption": {
+          "title": "Lifetime Option",
+          "description": "For those who prefer one-time payments, our Founding Member plan gives lifetime access."
+        },
+        "cancelAnytime": {
+          "title": "Cancel Anytime",
+          "description": "No long-term contracts. Cancel your subscription whenever you want, no questions asked."
+        }
+      },
+      "pricingTiers": "Pricing Tiers by Region",
+      "tiers": {
+        "high": { "title": "High Income", "countries": "US, UK, Germany, France, Switzerland", "multiplier": "1.0x" },
+        "medium": { "title": "Medium Income", "countries": "Portugal, Spain, Italy, Poland", "multiplier": "0.6x" },
+        "low": { "title": "Lower Income", "countries": "Brazil, Angola, Mozambique, India", "multiplier": "0.3x" }
+      },
+      "cta": {
+        "title": "Start at the Right Price for You",
+        "subtitle": "Get started today with pricing that respects your situation."
+      }
+    },
+    "openTransparent": {
+      "title": "Open & Transparent",
+      "subtitle": "We're clear about how our apps work and what they do with your data. No hidden agendas, no fine print surprises.",
+      "metaDescription": "We're clear about how our apps work and what they do with your data.",
+      "commitment": "Our Commitment to Transparency",
+      "commitmentSubtitle": "We believe you deserve to know exactly how things work",
+      "features": {
+        "clearPolicies": {
+          "title": "Clear Policies",
+          "description": "Our privacy policy and terms of service are written in plain language, not legal jargon."
+        },
+        "dataExplanation": {
+          "title": "Data Explanation",
+          "description": "We explain exactly what data we collect (minimal) and why we need it."
+        },
+        "noHiddenFees": {
+          "title": "No Hidden Fees",
+          "description": "The price you see is the price you pay. No surprise charges or automatic renewals without notice."
+        },
+        "openRoadmap": {
+          "title": "Open Roadmap",
+          "description": "Our development roadmap is public. See what we're working on and what's coming next."
+        },
+        "honestMarketing": {
+          "title": "Honest Marketing",
+          "description": "We don't exaggerate features or use manipulative tactics. What you see is what you get."
+        },
+        "responsiveFeedback": {
+          "title": "Responsive to Feedback",
+          "description": "We actively listen to user feedback and communicate openly about changes and decisions."
+        }
+      },
+      "whatWePromise": "What We Promise",
+      "promises": {
+        "noSelling": "We will never sell your data",
+        "noTracking": "We don't track you across the web",
+        "noAds": "Premium means ad-free forever",
+        "noPriceHikes": "No surprise price increases for existing users"
+      },
+      "cta": {
+        "title": "Join a Community Built on Trust",
+        "subtitle": "Start using apps from a company that respects you."
+      }
+    },
+    "sustainable": {
+      "title": "Sustainable",
+      "subtitle": "No VC funding, no growth hacks. Just sustainable software built to last. We're in this for the long term.",
+      "metaDescription": "No VC funding, no growth hacks. Just sustainable software built to last.",
+      "approach": "Our Sustainable Approach",
+      "approachSubtitle": "We're building software that will be here for decades, not quarters",
+      "features": {
+        "noVc": {
+          "title": "No VC Funding",
+          "description": "We're bootstrapped and profitable. We answer to users, not investors demanding growth at any cost."
+        },
+        "longTermView": {
+          "title": "Long-term View",
+          "description": "We make decisions for the next decade, not the next quarter. Sustainable growth over explosive scaling."
+        },
+        "profitableModel": {
+          "title": "Profitable Business Model",
+          "description": "We're not burning through investor money hoping to figure out monetization later."
+        },
+        "noBaitSwitch": {
+          "title": "No Bait and Switch",
+          "description": "We won't slash prices to get you in, then raise them once you're hooked. Prices stay fair."
+        },
+        "dataPortability": {
+          "title": "Data Portability",
+          "description": "Export your data anytime. Even if we shut down (we won't), your data is yours."
+        },
+        "minimalDependencies": {
+          "title": "Minimal Dependencies",
+          "description": "We don't rely on third-party services that might disappear. Your apps will keep working."
+        }
+      },
+      "whyMatters": "Why This Matters",
+      "whyList": {
+        "reliability": { "title": "Reliability", "desc": "Apps won't suddenly disappear because funding ran out" },
+        "stability": { "title": "Stability", "desc": "No radical pivots to chase the latest trend" },
+        "trust": { "title": "Trust", "desc": "We won't sell out to a company that doesn't share our values" },
+        "continuity": { "title": "Continuity", "desc": "The features you love will still be there next year" }
+      },
+      "cta": {
+        "title": "Choose Software Built to Last",
+        "subtitle": "Join users who value sustainable, ethical software."
+      }
+    }
+  },
   "errors": {
     "generic": "Algo deu errado. Por favor tente novamente.",
     "notFound": "Página não encontrada",

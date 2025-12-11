@@ -16,53 +16,63 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params: { locale } }: PageProps) {
-  const t = await getTranslations({ locale, namespace: 'meta' });
+  const t = await getTranslations({ locale, namespace: 'featuresPages.privacyFirst' });
   return {
-    title: 'Privacy First - Breath of Now',
-    description: 'Your data lives on your device. We can\'t see it, we can\'t sell it, we can\'t lose it.',
+    title: `${t('title')} - Breath of Now`,
+    description: t('metaDescription'),
   };
 }
 
-export default function PrivacyFirstPage({ params: { locale } }: PageProps) {
+export default async function PrivacyFirstPage({ params: { locale } }: PageProps) {
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'featuresPages.privacyFirst' });
+  const tCommon = await getTranslations({ locale, namespace: 'featuresPages.common' });
 
   const features = [
     {
       icon: Database,
-      title: 'Local-First Storage',
-      description: 'All your data is stored locally in your browser\'s IndexedDB. No server uploads by default.',
+      titleKey: 'features.localStorage.title',
+      descriptionKey: 'features.localStorage.description',
     },
     {
       icon: Lock,
-      title: 'End-to-End Encryption',
-      description: 'When you enable cloud sync, your data is encrypted before leaving your device.',
+      titleKey: 'features.encryption.title',
+      descriptionKey: 'features.encryption.description',
     },
     {
       icon: Eye,
-      title: 'Zero Knowledge',
-      description: 'We literally cannot see your data. Even with cloud sync enabled, we only store encrypted blobs.',
+      titleKey: 'features.zeroKnowledge.title',
+      descriptionKey: 'features.zeroKnowledge.description',
     },
     {
       icon: Server,
-      title: 'No Third-Party Analytics',
-      description: 'We don\'t use Google Analytics or any invasive tracking. Your usage stays private.',
+      titleKey: 'features.noTracking.title',
+      descriptionKey: 'features.noTracking.description',
     },
     {
       icon: Smartphone,
-      title: 'Your Device, Your Control',
-      description: 'Export your data anytime in standard formats. Delete everything with one click.',
+      titleKey: 'features.yourControl.title',
+      descriptionKey: 'features.yourControl.description',
     },
     {
       icon: Shield,
-      title: 'GDPR Compliant',
-      description: 'Built with European privacy standards in mind. Your rights are protected.',
+      titleKey: 'features.gdpr.title',
+      descriptionKey: 'features.gdpr.description',
     },
+  ];
+
+  const comparisonRows = [
+    { us: t('comparison.us1'), them: t('comparison.them1') },
+    { us: t('comparison.us2'), them: t('comparison.them2') },
+    { us: t('comparison.us3'), them: t('comparison.them3') },
+    { us: t('comparison.us4'), them: t('comparison.them4') },
+    { us: t('comparison.us5'), them: t('comparison.them5') },
   ];
 
   return (
     <>
       <Header locale={locale} />
-      
+
       <main className="min-h-screen pt-24 pb-20">
         {/* Hero Section */}
         <section className="relative py-20 overflow-hidden">
@@ -77,23 +87,22 @@ export default function PrivacyFirstPage({ params: { locale } }: PageProps) {
               </div>
 
               <h1 className="font-display text-display-lg md:text-display-xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">
-                Privacy First
+                {t('title')}
               </h1>
 
               <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 max-w-2xl mx-auto">
-                Your data lives on your device. We can&apos;t see it, we can&apos;t sell it, we can&apos;t lose it.
-                This isn&apos;t just a feature—it&apos;s our fundamental principle.
+                {t('subtitle')}
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link href={`/${locale}/auth/signup`}>
                   <Button variant="primary" size="lg" rightIcon={<ArrowRight className="w-5 h-5" />}>
-                    Get Started Free
+                    {tCommon('getStartedFree')}
                   </Button>
                 </Link>
                 <Link href="https://www.breathofnow.site/#apps">
                   <Button variant="outline" size="lg">
-                    Explore Apps
+                    {tCommon('exploreApps')}
                   </Button>
                 </Link>
               </div>
@@ -106,10 +115,10 @@ export default function PrivacyFirstPage({ params: { locale } }: PageProps) {
           <div className="container-app">
             <div className="text-center mb-16">
               <h2 className="font-display text-display-sm md:text-display-md font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                How We Protect Your Privacy
+                {t('howWeProtect')}
               </h2>
               <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-                Privacy isn&apos;t an afterthought—it&apos;s baked into our architecture
+                {t('howWeProtectSubtitle')}
               </p>
             </div>
 
@@ -123,10 +132,10 @@ export default function PrivacyFirstPage({ params: { locale } }: PageProps) {
                         <Icon className="w-6 h-6" />
                       </div>
                       <h3 className="font-display text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
-                        {feature.title}
+                        {t(feature.titleKey)}
                       </h3>
                       <p className="text-neutral-600 dark:text-neutral-400">
-                        {feature.description}
+                        {t(feature.descriptionKey)}
                       </p>
                     </CardContent>
                   </Card>
@@ -142,7 +151,7 @@ export default function PrivacyFirstPage({ params: { locale } }: PageProps) {
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="font-display text-display-sm font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                  Where Your Data Lives
+                  {t('whereDataLives')}
                 </h2>
               </div>
 
@@ -152,11 +161,11 @@ export default function PrivacyFirstPage({ params: { locale } }: PageProps) {
                     <div className="w-16 h-16 mx-auto rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-4">
                       <Smartphone className="w-8 h-8 text-green-600" />
                     </div>
-                    <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Your Device</h3>
+                    <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">{t('yourDevice')}</h3>
                     <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                      All data stored locally in IndexedDB
+                      {t('yourDeviceDesc')}
                     </p>
-                    <div className="mt-4 text-green-600 font-medium">100% Private</div>
+                    <div className="mt-4 text-green-600 font-medium">{t('private100')}</div>
                   </div>
 
                   <div className="flex items-center justify-center">
@@ -172,11 +181,11 @@ export default function PrivacyFirstPage({ params: { locale } }: PageProps) {
                     <div className="w-16 h-16 mx-auto rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4">
                       <Server className="w-8 h-8 text-blue-600" />
                     </div>
-                    <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Cloud (Optional)</h3>
+                    <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-2">{t('cloudOptional')}</h3>
                     <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                      Encrypted sync for premium users only
+                      {t('cloudOptionalDesc')}
                     </p>
-                    <div className="mt-4 text-blue-600 font-medium">Encrypted</div>
+                    <div className="mt-4 text-blue-600 font-medium">{t('encrypted')}</div>
                   </div>
                 </div>
               </div>
@@ -190,18 +199,12 @@ export default function PrivacyFirstPage({ params: { locale } }: PageProps) {
             <div className="max-w-3xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="font-display text-display-sm font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                  We&apos;re Different
+                  {t('weDifferent')}
                 </h2>
               </div>
 
               <div className="space-y-4">
-                {[
-                  { us: 'Data stored on your device', them: 'Data stored on their servers' },
-                  { us: 'You control your data', them: 'They control your data' },
-                  { us: 'Zero tracking by default', them: 'Tracking for ads/analytics' },
-                  { us: 'Export anytime', them: 'Vendor lock-in' },
-                  { us: 'No data selling ever', them: 'May sell/share data' },
-                ].map((row, index) => (
+                {comparisonRows.map((row, index) => (
                   <div key={index} className="grid grid-cols-2 gap-4">
                     <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl">
                       <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
@@ -222,14 +225,14 @@ export default function PrivacyFirstPage({ params: { locale } }: PageProps) {
           <div className="container-app">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="font-display text-display-sm md:text-display-md font-bold text-white mb-6">
-                Ready to Take Back Your Privacy?
+                {t('cta.title')}
               </h2>
               <p className="text-lg text-primary-100 mb-8">
-                Join thousands of users who value their data privacy. Start free today.
+                {t('cta.subtitle')}
               </p>
               <Link href={`/${locale}/auth/signup`}>
                 <Button variant="secondary" size="lg" className="bg-white text-primary-700 hover:bg-primary-50">
-                  Get Started Free
+                  {tCommon('getStartedFree')}
                 </Button>
               </Link>
             </div>
