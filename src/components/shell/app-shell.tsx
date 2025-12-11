@@ -57,11 +57,26 @@ interface AppShellProps {
 export function AppShell({ children, locale }: AppShellProps) {
   const t = useTranslations();
   const pathname = usePathname();
-  const { profile, isAuthenticated, signOut, hasAccessToApp } = useAuth();
-  
+  const { profile, isAuthenticated, isLoading: isAuthLoading, signOut, hasAccessToApp } = useAuth();
+
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
   const [isLangOpen, setIsLangOpen] = React.useState(false);
+
+  // Get the path for language switch - preserves current path with new locale
+  const getLocalizedPath = React.useCallback((newLocale: string) => {
+    // Check if pathname already has a locale prefix
+    const localePattern = new RegExp(`^/(${locales.join('|')})`);
+    const hasLocalePrefix = localePattern.test(pathname);
+
+    if (hasLocalePrefix) {
+      // Replace existing locale
+      return pathname.replace(localePattern, `/${newLocale}`);
+    } else {
+      // Add locale prefix (for default locale paths without prefix)
+      return `/${newLocale}${pathname}`;
+    }
+  }, [pathname]);
 
   // Get current active app from pathname
   const currentApp = React.useMemo(() => {
@@ -134,7 +149,7 @@ export function AppShell({ children, locale }: AppShellProps) {
                     {locales.map((loc) => (
                       <Link
                         key={loc}
-                        href={pathname.replace(`/${locale}`, `/${loc}`)}
+                        href={getLocalizedPath(loc)}
                         onClick={() => setIsLangOpen(false)}
                         className={cn(
                           'flex items-center gap-2 px-3 py-2 text-sm transition-colors',
@@ -153,7 +168,9 @@ export function AppShell({ children, locale }: AppShellProps) {
             </div>
 
             {/* User Menu */}
-            {isAuthenticated && profile ? (
+            {isAuthLoading ? (
+              <div className="w-8 h-8 bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-full" />
+            ) : isAuthenticated && profile ? (
               <div className="relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
