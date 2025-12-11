@@ -27,6 +27,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AppShell } from '@/components/shell';
 import { AdBanner } from '@/components/ads/ad-banner';
+import { ClientOnly } from '@/components/utils/client-only';
 import {
   APPS,
   PLANS,
@@ -67,7 +68,30 @@ const TIER_LABELS = {
   founding: 'Founding Member',
 };
 
+// Loading skeleton component for SSR and initial load
+function AccountLoadingSkeleton({ locale }: { locale: Locale }) {
+  return (
+    <AppShell locale={locale}>
+      <div className="p-6 max-w-4xl mx-auto">
+        <div className="animate-pulse space-y-6">
+          <div className="h-8 bg-neutral-200 rounded w-1/4" />
+          <div className="h-48 bg-neutral-200 rounded-xl" />
+          <div className="h-32 bg-neutral-200 rounded-xl" />
+        </div>
+      </div>
+    </AppShell>
+  );
+}
+
 export default function AccountPage({ params: { locale } }: PageProps) {
+  return (
+    <ClientOnly fallback={<AccountLoadingSkeleton locale={locale} />}>
+      <AccountPageContent locale={locale} />
+    </ClientOnly>
+  );
+}
+
+function AccountPageContent({ locale }: { locale: Locale }) {
   const t = useTranslations();
   const { profile, isAuthenticated, isLoading, hasAccessToApp, showAds } = useAuth();
   const [lastAppChange, setLastAppChange] = useState<Date | null>(null);
@@ -84,17 +108,7 @@ export default function AccountPage({ params: { locale } }: PageProps) {
   }, [profile?.tier]);
 
   if (isLoading) {
-    return (
-      <AppShell locale={locale}>
-        <div className="p-6 max-w-4xl mx-auto">
-          <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-neutral-200 rounded w-1/4" />
-            <div className="h-48 bg-neutral-200 rounded-xl" />
-            <div className="h-32 bg-neutral-200 rounded-xl" />
-          </div>
-        </div>
-      </AppShell>
-    );
+    return <AccountLoadingSkeleton locale={locale} />;
   }
 
   if (!isAuthenticated || !profile) {
