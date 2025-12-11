@@ -293,6 +293,7 @@ breathofnow/
 | **AdBanner** | top, bottom, inline | ✅ |
 | **Header** | com navegação mobile | ✅ |
 | **Footer** | 4 colunas + newsletter | ✅ |
+| **ClientOnly** | fallback | ✅ |
 
 ### Animações
 
