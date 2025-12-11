@@ -79,7 +79,7 @@ export default function SignInPage({ params: { locale } }: PageProps) {
 
     try {
       const supabase = createClient();
-      const { error: verifyError } = await supabase.auth.verifyOtp({
+      const { data, error: verifyError } = await supabase.auth.verifyOtp({
         email,
         token: otpCode,
         type: 'email',
@@ -87,9 +87,46 @@ export default function SignInPage({ params: { locale } }: PageProps) {
 
       if (verifyError) throw verifyError;
 
+      // After successful OTP verification, ensure profile exists
+      if (data.user) {
+        const { data: existingProfile } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('id', data.user.id)
+          .single();
+
+        // If no profile exists, create one
+        if (!existingProfile) {
+          const fullName = data.user.user_metadata?.full_name ||
+            data.user.user_metadata?.name ||
+            data.user.email?.split('@')[0] ||
+            'User';
+
+          // Check if this email should get premium access
+          const { data: premiumEmail } = await supabase
+            .from('premium_emails')
+            .select('tier')
+            .eq('email', data.user.email)
+            .single();
+
+          await supabase.from('profiles').insert({
+            id: data.user.id,
+            email: data.user.email,
+            full_name: fullName,
+            avatar_url: data.user.user_metadata?.avatar_url || null,
+            subscription_tier: premiumEmail?.tier || 'free',
+            is_founding_member: premiumEmail?.tier === 'founding',
+            selected_apps: [],
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          });
+        }
+      }
+
       // Redirect to account on success
       router.push('/account');
     } catch (err) {
+      console.error('OTP verification error:', err);
       setError(err instanceof Error ? err.message : t('otpError'));
     } finally {
       setIsVerifying(false);
@@ -144,9 +181,15 @@ export default function SignInPage({ params: { locale } }: PageProps) {
 
               {error && (
                 <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-700 dark:text-red-300 text-sm">
-                  {error}
+                  <p className="font-medium">Error:</p>
+                  <p>{error}</p>
                 </div>
               )}
+
+              {/* Debug info */}
+              <div className="mb-4 p-3 bg-blue-50 rounded text-xs font-mono">
+                <p>Debug: isVerifying={String(isVerifying)}, email={email}, codeLen={otpCode.length}</p>
+              </div>
 
               {/* OTP Code Input */}
               <form onSubmit={handleVerifyOtp} className="space-y-4">
