@@ -16,40 +16,48 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params: { locale } }: PageProps) {
+  const t = await getTranslations({ locale, namespace: 'featuresPages.openTransparent' });
   return {
-    title: 'Open & Transparent - Breath of Now',
-    description: 'We\'re clear about how our apps work and what they do with your data.',
+    title: `${t('title')} - Breath of Now`,
+    description: t('metaDescription'),
   };
 }
 
-export default function OpenTransparentPage({ params: { locale } }: PageProps) {
+export default async function OpenTransparentPage({ params: { locale } }: PageProps) {
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'featuresPages.openTransparent' });
+  const tCommon = await getTranslations({ locale, namespace: 'featuresPages.common' });
 
   const transparencyItems = [
     {
       icon: FileText,
-      title: 'Clear Privacy Policy',
-      description: 'Our privacy policy is written in plain language, not legal jargon. You\'ll actually understand what we do with your data.',
+      titleKey: 'features.clearPolicies.title',
+      descriptionKey: 'features.clearPolicies.description',
     },
     {
       icon: Eye,
-      title: 'No Hidden Data Collection',
-      description: 'We tell you exactly what data we collect and why. Spoiler: it\'s almost nothing.',
+      titleKey: 'features.dataExplanation.title',
+      descriptionKey: 'features.dataExplanation.description',
     },
     {
       icon: MessageSquare,
-      title: 'Direct Communication',
-      description: 'Have questions? Email us directly. You\'ll get a response from a real person, not a bot.',
+      titleKey: 'features.noHiddenFees.title',
+      descriptionKey: 'features.noHiddenFees.description',
     },
     {
       icon: Code,
-      title: 'Technical Transparency',
-      description: 'We explain how our technology works, from local storage to encryption to sync.',
+      titleKey: 'features.openRoadmap.title',
+      descriptionKey: 'features.openRoadmap.description',
     },
     {
       icon: BookOpen,
-      title: 'Changelog & Updates',
-      description: 'Every update is documented. You know exactly what changed and why.',
+      titleKey: 'features.honestMarketing.title',
+      descriptionKey: 'features.honestMarketing.description',
+    },
+    {
+      icon: Check,
+      titleKey: 'features.responsiveFeedback.title',
+      descriptionKey: 'features.responsiveFeedback.description',
     },
   ];
 
@@ -71,23 +79,22 @@ export default function OpenTransparentPage({ params: { locale } }: PageProps) {
               </div>
 
               <h1 className="font-display text-display-lg md:text-display-xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">
-                Open & Transparent
+                {t('title')}
               </h1>
 
               <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 max-w-2xl mx-auto">
-                We&apos;re clear about how our apps work and what they do with your data.
-                No surprises, no fine print, no hidden agendas.
+                {t('subtitle')}
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link href={`/${locale}/privacy`}>
                   <Button variant="primary" size="lg" rightIcon={<ArrowRight className="w-5 h-5" />}>
-                    Read Privacy Policy
+                    {tCommon('readPrivacyPolicy')}
                   </Button>
                 </Link>
                 <Link href="https://www.breathofnow.site/faq">
                   <Button variant="outline" size="lg">
-                    View FAQ
+                    {tCommon('viewFaq')}
                   </Button>
                 </Link>
               </div>
@@ -100,10 +107,10 @@ export default function OpenTransparentPage({ params: { locale } }: PageProps) {
           <div className="container-app">
             <div className="text-center mb-16">
               <h2 className="font-display text-display-sm md:text-display-md font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                Our Transparency Commitments
+                {t('commitment')}
               </h2>
               <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-                We believe trust is built through openness, not marketing speak
+                {t('commitmentSubtitle')}
               </p>
             </div>
 
@@ -117,10 +124,10 @@ export default function OpenTransparentPage({ params: { locale } }: PageProps) {
                         <Icon className="w-6 h-6" />
                       </div>
                       <h3 className="font-display text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
-                        {item.title}
+                        {t(item.titleKey)}
                       </h3>
                       <p className="text-neutral-600 dark:text-neutral-400">
-                        {item.description}
+                        {t(item.descriptionKey)}
                       </p>
                     </CardContent>
                   </Card>
@@ -130,101 +137,27 @@ export default function OpenTransparentPage({ params: { locale } }: PageProps) {
           </div>
         </section>
 
-        {/* What We Don't Do */}
+        {/* What We Promise */}
         <section className="py-20">
           <div className="container-app">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="font-display text-display-sm font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                  What We Don&apos;t Do
+                  {t('whatWePromise')}
                 </h2>
-                <p className="text-neutral-600 dark:text-neutral-400">
-                  Practices we&apos;ll never engage in
-                </p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
                 {[
-                  'Sell your data to third parties',
-                  'Use deceptive dark patterns',
-                  'Hide fees or surprise charges',
-                  'Make cancellation difficult',
-                  'Send spam or unwanted emails',
-                  'Track you across the web',
-                  'Use manipulative urgency tactics',
-                  'Bury important information in fine print',
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30">
-                    <span className="text-red-500 text-lg">✕</span>
-                    <span className="text-neutral-700 dark:text-neutral-300">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* What We Do */}
-        <section className="py-20 bg-white dark:bg-neutral-900">
-          <div className="container-app">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="font-display text-display-sm font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                  What We Do Instead
-                </h2>
-                <p className="text-neutral-600 dark:text-neutral-400">
-                  Our commitments to you
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4">
-                {[
-                  'Keep your data on your device by default',
-                  'Use clear, simple language everywhere',
-                  'Show prices upfront—no hidden fees',
-                  'Make cancellation a one-click process',
-                  'Only email when you ask us to',
-                  'Respect Do Not Track settings',
-                  'Let you decide at your own pace',
-                  'Explain everything in accessible terms',
+                  { key: 'promises.noSelling' },
+                  { key: 'promises.noTracking' },
+                  { key: 'promises.noAds' },
+                  { key: 'promises.noPriceHikes' },
                 ].map((item, index) => (
                   <div key={index} className="flex items-center gap-3 p-4 rounded-xl bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30">
                     <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-neutral-700 dark:text-neutral-300">{item}</span>
+                    <span className="text-neutral-700 dark:text-neutral-300">{t(item.key)}</span>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Resources */}
-        <section className="py-20">
-          <div className="container-app">
-            <div className="max-w-3xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="font-display text-display-sm font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                  Read More
-                </h2>
-              </div>
-
-              <div className="space-y-4">
-                {[
-                  { title: 'Privacy Policy', desc: 'How we handle your data', href: `/${locale}/privacy` },
-                  { title: 'Terms of Service', desc: 'Our terms and conditions', href: `/${locale}/terms` },
-                  { title: 'FAQ', desc: 'Common questions answered', href: 'https://www.breathofnow.site/faq' },
-                ].map((link, index) => (
-                  <Link
-                    key={index}
-                    href={link.href}
-                    className="flex items-center justify-between p-4 rounded-xl bg-neutral-50 dark:bg-neutral-800/50 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-                  >
-                    <div>
-                      <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">{link.title}</h3>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">{link.desc}</p>
-                    </div>
-                    <ExternalLink className="w-5 h-5 text-neutral-400" />
-                  </Link>
                 ))}
               </div>
             </div>
@@ -236,16 +169,16 @@ export default function OpenTransparentPage({ params: { locale } }: PageProps) {
           <div className="container-app">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="font-display text-display-sm md:text-display-md font-bold text-white mb-6">
-                Questions? Just Ask
+                {t('cta.title')}
               </h2>
               <p className="text-lg text-cyan-100 mb-8">
-                We&apos;re always happy to explain how things work. No question is too small.
+                {t('cta.subtitle')}
               </p>
-              <a href="mailto:support@breathofnow.site">
+              <Link href={`/${locale}/auth/signup`}>
                 <Button variant="secondary" size="lg" className="bg-white text-cyan-700 hover:bg-cyan-50">
-                  Contact Us
+                  {tCommon('getStartedFree')}
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
         </section>

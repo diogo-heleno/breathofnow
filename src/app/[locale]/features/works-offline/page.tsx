@@ -16,46 +16,48 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params: { locale } }: PageProps) {
-  const t = await getTranslations({ locale, namespace: 'meta' });
+  const t = await getTranslations({ locale, namespace: 'featuresPages.worksOffline' });
   return {
-    title: 'Works Offline - Breath of Now',
-    description: 'No internet? No problem. All apps work fully offline with optional cloud sync.',
+    title: `${t('title')} - Breath of Now`,
+    description: t('metaDescription'),
   };
 }
 
-export default function WorksOfflinePage({ params: { locale } }: PageProps) {
+export default async function WorksOfflinePage({ params: { locale } }: PageProps) {
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'featuresPages.worksOffline' });
+  const tCommon = await getTranslations({ locale, namespace: 'featuresPages.common' });
 
   const features = [
     {
       icon: WifiOff,
-      title: 'True Offline Mode',
-      description: 'All core features work without any internet connection. Track expenses on a flight, log workouts in the mountains.',
+      titleKey: 'features.trueOffline.title',
+      descriptionKey: 'features.trueOffline.description',
     },
     {
       icon: Zap,
-      title: 'Instant Response',
-      description: 'No network latency. Your data is right there on your device, ready in milliseconds.',
+      titleKey: 'features.instantResponse.title',
+      descriptionKey: 'features.instantResponse.description',
     },
     {
       icon: Download,
-      title: 'Progressive Web App',
-      description: 'Install on your home screen like a native app. Works seamlessly across all devices.',
+      titleKey: 'features.pwa.title',
+      descriptionKey: 'features.pwa.description',
     },
     {
       icon: RefreshCw,
-      title: 'Smart Sync',
-      description: 'When you\'re back online, changes sync automatically. No manual intervention needed.',
+      titleKey: 'features.smartSync.title',
+      descriptionKey: 'features.smartSync.description',
     },
     {
       icon: Cloud,
-      title: 'Optional Cloud Backup',
-      description: 'Premium users can enable cloud sync for cross-device access while keeping offline functionality.',
+      titleKey: 'features.cloudBackup.title',
+      descriptionKey: 'features.cloudBackup.description',
     },
     {
       icon: Smartphone,
-      title: 'Works Everywhere',
-      description: 'From remote beaches to subway tunnels—your apps work wherever you are.',
+      titleKey: 'features.everywhere.title',
+      descriptionKey: 'features.everywhere.description',
     },
   ];
 
@@ -77,23 +79,22 @@ export default function WorksOfflinePage({ params: { locale } }: PageProps) {
               </div>
 
               <h1 className="font-display text-display-lg md:text-display-xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">
-                Works Offline
+                {t('title')}
               </h1>
 
               <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 max-w-2xl mx-auto">
-                No internet? No problem. All apps work fully offline with optional cloud sync.
-                Your productivity doesn&apos;t depend on a connection.
+                {t('description')}
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link href={`/${locale}/auth/signup`}>
                   <Button variant="primary" size="lg" rightIcon={<ArrowRight className="w-5 h-5" />}>
-                    Get Started Free
+                    {tCommon('getStartedFree')}
                   </Button>
                 </Link>
                 <Link href="https://www.breathofnow.site/#apps">
                   <Button variant="outline" size="lg">
-                    Explore Apps
+                    {tCommon('exploreApps')}
                   </Button>
                 </Link>
               </div>
@@ -106,10 +107,10 @@ export default function WorksOfflinePage({ params: { locale } }: PageProps) {
           <div className="container-app">
             <div className="text-center mb-16">
               <h2 className="font-display text-display-sm md:text-display-md font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                Always Available
+                {t('alwaysAvailable.title')}
               </h2>
               <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-                Built from the ground up to work offline, not as an afterthought
+                {t('alwaysAvailable.subtitle')}
               </p>
             </div>
 
@@ -123,10 +124,10 @@ export default function WorksOfflinePage({ params: { locale } }: PageProps) {
                         <Icon className="w-6 h-6" />
                       </div>
                       <h3 className="font-display text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
-                        {feature.title}
+                        {t(feature.titleKey)}
                       </h3>
                       <p className="text-neutral-600 dark:text-neutral-400">
-                        {feature.description}
+                        {t(feature.descriptionKey)}
                       </p>
                     </CardContent>
                   </Card>
@@ -142,7 +143,7 @@ export default function WorksOfflinePage({ params: { locale } }: PageProps) {
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="font-display text-display-sm font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                  How Offline Mode Works
+                  {t('howItWorks.title')}
                 </h2>
               </div>
 
@@ -150,26 +151,26 @@ export default function WorksOfflinePage({ params: { locale } }: PageProps) {
                 {[
                   {
                     step: '1',
-                    title: 'Data Stored Locally',
-                    description: 'All your data is stored in IndexedDB, a powerful browser database that persists even when offline.',
+                    titleKey: 'howItWorks.steps.localStorage.title',
+                    descriptionKey: 'howItWorks.steps.localStorage.description',
                     icon: Download,
                   },
                   {
                     step: '2',
-                    title: 'Service Worker Magic',
-                    description: 'Our service worker caches the app so it loads instantly, even without network access.',
+                    titleKey: 'howItWorks.steps.serviceWorker.title',
+                    descriptionKey: 'howItWorks.steps.serviceWorker.description',
                     icon: Zap,
                   },
                   {
                     step: '3',
-                    title: 'Queue Changes',
-                    description: 'When offline, any changes you make are queued and ready to sync when you reconnect.',
+                    titleKey: 'howItWorks.steps.queueChanges.title',
+                    descriptionKey: 'howItWorks.steps.queueChanges.description',
                     icon: RefreshCw,
                   },
                   {
                     step: '4',
-                    title: 'Automatic Sync',
-                    description: 'Back online? Changes sync automatically in the background. No manual steps required.',
+                    titleKey: 'howItWorks.steps.autoSync.title',
+                    descriptionKey: 'howItWorks.steps.autoSync.description',
                     icon: Cloud,
                   },
                 ].map((item, index) => {
@@ -181,10 +182,10 @@ export default function WorksOfflinePage({ params: { locale } }: PageProps) {
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-lg text-neutral-900 dark:text-neutral-100 mb-1">
-                          {item.title}
+                          {t(item.titleKey)}
                         </h3>
                         <p className="text-neutral-600 dark:text-neutral-400">
-                          {item.description}
+                          {t(item.descriptionKey)}
                         </p>
                       </div>
                       <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-800">
@@ -204,24 +205,24 @@ export default function WorksOfflinePage({ params: { locale } }: PageProps) {
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="font-display text-display-sm font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-                  Perfect For
+                  {t('perfectFor.title')}
                 </h2>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 {[
-                  { emoji: '✈️', title: 'Traveling', desc: 'Track expenses during flights and in areas without coverage' },
-                  { emoji: '🏔️', title: 'Outdoor Activities', desc: 'Log workouts in remote hiking trails or mountains' },
-                  { emoji: '🚇', title: 'Commuting', desc: 'Use apps in subway tunnels with no signal' },
-                  { emoji: '💼', title: 'International Travel', desc: 'No need for expensive roaming data' },
-                  { emoji: '🏠', title: 'Poor Connectivity', desc: 'Works perfectly in areas with spotty internet' },
-                  { emoji: '⚡', title: 'Speed Matters', desc: 'Zero latency for instant responsiveness' },
+                  { emoji: '✈️', titleKey: 'perfectFor.useCases.traveling.title', descKey: 'perfectFor.useCases.traveling.description' },
+                  { emoji: '🏔️', titleKey: 'perfectFor.useCases.outdoor.title', descKey: 'perfectFor.useCases.outdoor.description' },
+                  { emoji: '🚇', titleKey: 'perfectFor.useCases.commuting.title', descKey: 'perfectFor.useCases.commuting.description' },
+                  { emoji: '💼', titleKey: 'perfectFor.useCases.international.title', descKey: 'perfectFor.useCases.international.description' },
+                  { emoji: '🏠', titleKey: 'perfectFor.useCases.poorConnectivity.title', descKey: 'perfectFor.useCases.poorConnectivity.description' },
+                  { emoji: '⚡', titleKey: 'perfectFor.useCases.speed.title', descKey: 'perfectFor.useCases.speed.description' },
                 ].map((item, index) => (
                   <div key={index} className="flex items-start gap-4 p-4 rounded-xl bg-neutral-50 dark:bg-neutral-800/50">
                     <span className="text-2xl">{item.emoji}</span>
                     <div>
-                      <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">{item.title}</h3>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">{item.desc}</p>
+                      <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">{t(item.titleKey)}</h3>
+                      <p className="text-sm text-neutral-600 dark:text-neutral-400">{t(item.descKey)}</p>
                     </div>
                   </div>
                 ))}
@@ -235,14 +236,14 @@ export default function WorksOfflinePage({ params: { locale } }: PageProps) {
           <div className="container-app">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="font-display text-display-sm md:text-display-md font-bold text-white mb-6">
-                Never Depend on a Connection Again
+                {t('cta.title')}
               </h2>
               <p className="text-lg text-blue-100 mb-8">
-                Start using apps that respect your independence. Work anywhere, anytime.
+                {t('cta.description')}
               </p>
               <Link href={`/${locale}/auth/signup`}>
                 <Button variant="secondary" size="lg" className="bg-white text-blue-700 hover:bg-blue-50">
-                  Get Started Free
+                  {tCommon('getStartedFree')}
                 </Button>
               </Link>
             </div>

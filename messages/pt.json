@@ -1201,6 +1201,312 @@
       "featuresOffline": "Todas as funcionalidades disponíveis offline"
     }
   },
+  "featuresPages": {
+    "common": {
+      "getStartedFree": "Começar Grátis",
+      "exploreApps": "Explorar Apps",
+      "viewPricing": "Ver Preços",
+      "readPrivacyPolicy": "Ler Política de Privacidade",
+      "viewFaq": "Ver FAQ"
+    },
+    "privacyFirst": {
+      "title": "Privacidade Primeiro",
+      "subtitle": "Os seus dados vivem no seu dispositivo. Não os podemos ver, não os podemos vender, não os podemos perder. Isto não é apenas uma funcionalidade—é o nosso princípio fundamental.",
+      "metaDescription": "Os seus dados vivem no seu dispositivo. Não os podemos ver, não os podemos vender, não os podemos perder.",
+      "howWeProtect": "Como Protegemos a Sua Privacidade",
+      "howWeProtectSubtitle": "A privacidade não é uma ideia de última hora—está incorporada na nossa arquitetura",
+      "features": {
+        "localStorage": {
+          "title": "Armazenamento Local-First",
+          "description": "Todos os seus dados são guardados localmente no IndexedDB do seu browser. Sem uploads para servidores por defeito."
+        },
+        "encryption": {
+          "title": "Encriptação Ponta-a-Ponta",
+          "description": "Quando activa a sincronização cloud, os seus dados são encriptados antes de saírem do seu dispositivo."
+        },
+        "zeroKnowledge": {
+          "title": "Zero Conhecimento",
+          "description": "Literalmente não conseguimos ver os seus dados. Mesmo com sincronização cloud activa, apenas guardamos blobs encriptados."
+        },
+        "noTracking": {
+          "title": "Sem Analytics de Terceiros",
+          "description": "Não usamos Google Analytics ou qualquer rastreamento invasivo. A sua utilização permanece privada."
+        },
+        "yourControl": {
+          "title": "O Seu Dispositivo, O Seu Controlo",
+          "description": "Exporte os seus dados a qualquer momento em formatos padrão. Elimine tudo com um clique."
+        },
+        "gdpr": {
+          "title": "Conformidade RGPD",
+          "description": "Construído com as normas de privacidade europeias em mente. Os seus direitos estão protegidos."
+        }
+      },
+      "whereDataLives": "Onde Vivem os Seus Dados",
+      "yourDevice": "O Seu Dispositivo",
+      "yourDeviceDesc": "Todos os dados guardados localmente em IndexedDB",
+      "private100": "100% Privado",
+      "cloudOptional": "Cloud (Opcional)",
+      "cloudOptionalDesc": "Sincronização encriptada apenas para utilizadores premium",
+      "encrypted": "Encriptado",
+      "weDifferent": "Somos Diferentes",
+      "comparison": {
+        "us1": "Dados guardados no seu dispositivo",
+        "them1": "Dados guardados nos servidores deles",
+        "us2": "Você controla os seus dados",
+        "them2": "Eles controlam os seus dados",
+        "us3": "Zero rastreamento por defeito",
+        "them3": "Rastreamento para anúncios/analytics",
+        "us4": "Exporte a qualquer momento",
+        "them4": "Dependência do fornecedor",
+        "us5": "Nunca vendemos dados",
+        "them5": "Podem vender/partilhar dados"
+      },
+      "cta": {
+        "title": "Pronto para Recuperar a Sua Privacidade?",
+        "subtitle": "Junte-se a milhares de utilizadores que valorizam a privacidade dos seus dados. Comece grátis hoje."
+      }
+    },
+    "worksOffline": {
+      "title": "Funciona Offline",
+      "subtitle": "Sem internet? Sem problema. Todas as apps funcionam totalmente offline com sincronização cloud opcional. A sua produtividade não depende de uma ligação.",
+      "metaDescription": "Sem internet? Sem problema. Todas as apps funcionam totalmente offline com sincronização cloud opcional.",
+      "alwaysAvailable": "Sempre Disponível",
+      "alwaysAvailableSubtitle": "Construído de raiz para funcionar offline, não como uma ideia de última hora",
+      "features": {
+        "trueOffline": {
+          "title": "Modo Offline Verdadeiro",
+          "description": "Todas as funcionalidades principais funcionam sem qualquer ligação à internet. Registe despesas num voo, acompanhe treinos nas montanhas."
+        },
+        "instantResponse": {
+          "title": "Resposta Instantânea",
+          "description": "Sem latência de rede. Os seus dados estão ali mesmo no seu dispositivo, prontos em milissegundos."
+        },
+        "pwa": {
+          "title": "Progressive Web App",
+          "description": "Instale no seu ecrã inicial como uma app nativa. Funciona perfeitamente em todos os dispositivos."
+        },
+        "smartSync": {
+          "title": "Sincronização Inteligente",
+          "description": "Quando voltar online, as alterações sincronizam automaticamente. Sem intervenção manual necessária."
+        },
+        "cloudBackup": {
+          "title": "Backup Cloud Opcional",
+          "description": "Utilizadores premium podem activar sincronização cloud para acesso multi-dispositivo mantendo funcionalidade offline."
+        },
+        "everywhere": {
+          "title": "Funciona em Todo o Lado",
+          "description": "De praias remotas a túneis de metro—as suas apps funcionam onde quer que esteja."
+        }
+      },
+      "howItWorks": "Como Funciona o Modo Offline",
+      "steps": {
+        "step1": {
+          "title": "Dados Guardados Localmente",
+          "description": "Todos os seus dados são guardados em IndexedDB, uma base de dados potente do browser que persiste mesmo quando offline."
+        },
+        "step2": {
+          "title": "Magia do Service Worker",
+          "description": "O nosso service worker guarda a app em cache para que carregue instantaneamente, mesmo sem acesso à rede."
+        },
+        "step3": {
+          "title": "Fila de Alterações",
+          "description": "Quando offline, quaisquer alterações que faça são guardadas em fila e prontas para sincronizar quando se reconectar."
+        },
+        "step4": {
+          "title": "Sincronização Automática",
+          "description": "De volta online? As alterações sincronizam automaticamente em segundo plano. Sem passos manuais necessários."
+        }
+      },
+      "perfectFor": "Perfeito Para",
+      "useCases": {
+        "traveling": { "title": "Viajar", "desc": "Registe despesas durante voos e em áreas sem cobertura" },
+        "outdoor": { "title": "Actividades ao Ar Livre", "desc": "Registe treinos em trilhos remotos ou montanhas" },
+        "commuting": { "title": "Deslocações", "desc": "Use apps em túneis de metro sem sinal" },
+        "international": { "title": "Viagens Internacionais", "desc": "Sem necessidade de dados de roaming caros" },
+        "poorConnectivity": { "title": "Conectividade Fraca", "desc": "Funciona perfeitamente em áreas com internet instável" },
+        "speed": { "title": "A Velocidade Importa", "desc": "Zero latência para resposta instantânea" }
+      },
+      "cta": {
+        "title": "Nunca Mais Dependa de uma Ligação",
+        "subtitle": "Comece a usar apps que respeitam a sua independência. Trabalhe em qualquer lugar, a qualquer hora."
+      }
+    },
+    "beautifullySimple": {
+      "title": "Belamente Simples",
+      "subtitle": "Sem excesso, sem complexidade. Cada app faz uma coisa e fá-la excepcionalmente bem. Design que se afasta do seu caminho.",
+      "metaDescription": "Sem excesso, sem complexidade. Cada app faz uma coisa e fá-la excepcionalmente bem.",
+      "designPhilosophy": "A Nossa Filosofia de Design",
+      "designPhilosophySubtitle": "Acreditamos que as melhores ferramentas são aquelas em que não precisa de pensar",
+      "features": {
+        "singlePurpose": {
+          "title": "Apps de Propósito Único",
+          "description": "Cada app é focada em fazer uma coisa excepcionalmente bem, em vez de ser medíocre em muitas coisas."
+        },
+        "cleanInterface": {
+          "title": "Interface Limpa",
+          "description": "Sem painéis confusos ou opções esmagadoras. Apenas o que precisa, quando precisa."
+        },
+        "intuitiveDesign": {
+          "title": "Design Intuitivo",
+          "description": "Comece a usar qualquer app imediatamente sem tutoriais ou documentação. Simplesmente funciona."
+        },
+        "fastPerformance": {
+          "title": "Performance Rápida",
+          "description": "Apps leves que carregam instantaneamente e respondem imediatamente às suas interacções."
+        },
+        "consistentExperience": {
+          "title": "Experiência Consistente",
+          "description": "Todas as apps partilham uma linguagem de design comum, por isso aprender uma significa que conhece todas."
+        },
+        "accessibleDesign": {
+          "title": "Design Acessível",
+          "description": "Construído com acessibilidade em mente. Funciona muito bem com leitores de ecrã e navegação por teclado."
+        }
+      },
+      "principles": "Princípios de Design",
+      "principlesList": {
+        "lessIsMore": { "title": "Menos é Mais", "desc": "Removemos funcionalidades, não as adicionamos. Cada elemento tem de merecer o seu lugar." },
+        "focusOnTask": { "title": "Foco na Tarefa", "desc": "A interface desaparece quando está a trabalhar. O seu conteúdo é o centro das atenções." },
+        "noLearningCurve": { "title": "Sem Curva de Aprendizagem", "desc": "Se precisa de um manual, falhámos. As apps devem ser imediatamente compreensíveis." },
+        "respectfulDesign": { "title": "Design Respeitoso", "desc": "Sem padrões obscuros, sem manipulação. Respeitamos o seu tempo e atenção." }
+      },
+      "cta": {
+        "title": "Experimente Design Pensado",
+        "subtitle": "Experimente apps que respeitam o seu tempo e atenção. Comece grátis hoje."
+      }
+    },
+    "fairPricing": {
+      "title": "Preços Justos",
+      "subtitle": "Pague o que pode. Os nossos preços adaptam-se ao custo de vida da sua região. Sem truques, sem taxas ocultas.",
+      "metaDescription": "Pague o que pode. Os nossos preços adaptam-se ao custo de vida da sua região.",
+      "howItWorks": "Como Funcionam os Preços Justos",
+      "howItWorksSubtitle": "Acreditamos que o software deve ser acessível a todos",
+      "features": {
+        "regionalPricing": {
+          "title": "Preços Regionais",
+          "description": "Os preços são automaticamente ajustados com base na paridade de poder de compra do seu país."
+        },
+        "transparentTiers": {
+          "title": "Níveis Transparentes",
+          "description": "Preços claros sem taxas ocultas. Sabe sempre exactamente o que está a pagar."
+        },
+        "freeTier": {
+          "title": "Nível Gratuito Generoso",
+          "description": "Acesso a todas as apps com anúncios. Sem cartão de crédito necessário, sem testes que expiram."
+        },
+        "noUpselling": {
+          "title": "Sem Upselling Agressivo",
+          "description": "Não o vamos bombardear com avisos de upgrade. O Premium está lá quando o quiser."
+        },
+        "lifetimeOption": {
+          "title": "Opção Vitalícia",
+          "description": "Para quem prefere pagamentos únicos, o nosso plano Membro Fundador dá acesso vitalício."
+        },
+        "cancelAnytime": {
+          "title": "Cancele Quando Quiser",
+          "description": "Sem contratos de longo prazo. Cancele a sua subscrição quando quiser, sem perguntas."
+        }
+      },
+      "pricingTiers": "Níveis de Preços por Região",
+      "tiers": {
+        "high": { "title": "Rendimento Alto", "countries": "EUA, Reino Unido, Alemanha, França, Suíça", "multiplier": "1.0x" },
+        "medium": { "title": "Rendimento Médio", "countries": "Portugal, Espanha, Itália, Polónia", "multiplier": "0.6x" },
+        "low": { "title": "Rendimento Mais Baixo", "countries": "Brasil, Angola, Moçambique, Índia", "multiplier": "0.3x" }
+      },
+      "cta": {
+        "title": "Comece ao Preço Certo Para Si",
+        "subtitle": "Comece hoje com preços que respeitam a sua situação."
+      }
+    },
+    "openTransparent": {
+      "title": "Aberto e Transparente",
+      "subtitle": "Somos claros sobre como as nossas apps funcionam e o que fazem com os seus dados. Sem agendas ocultas, sem surpresas nas letras pequenas.",
+      "metaDescription": "Somos claros sobre como as nossas apps funcionam e o que fazem com os seus dados.",
+      "commitment": "O Nosso Compromisso com a Transparência",
+      "commitmentSubtitle": "Acreditamos que merece saber exactamente como as coisas funcionam",
+      "features": {
+        "clearPolicies": {
+          "title": "Políticas Claras",
+          "description": "A nossa política de privacidade e termos de serviço são escritos em linguagem simples, não jargão legal."
+        },
+        "dataExplanation": {
+          "title": "Explicação de Dados",
+          "description": "Explicamos exactamente que dados recolhemos (mínimos) e porque precisamos deles."
+        },
+        "noHiddenFees": {
+          "title": "Sem Taxas Ocultas",
+          "description": "O preço que vê é o preço que paga. Sem cobranças surpresa ou renovações automáticas sem aviso."
+        },
+        "openRoadmap": {
+          "title": "Roadmap Aberto",
+          "description": "O nosso roadmap de desenvolvimento é público. Veja no que estamos a trabalhar e o que vem a seguir."
+        },
+        "honestMarketing": {
+          "title": "Marketing Honesto",
+          "description": "Não exageramos funcionalidades nem usamos tácticas manipulativas. O que vê é o que obtém."
+        },
+        "responsiveFeedback": {
+          "title": "Receptivos a Feedback",
+          "description": "Ouvimos activamente o feedback dos utilizadores e comunicamos abertamente sobre alterações e decisões."
+        }
+      },
+      "whatWePromise": "O Que Prometemos",
+      "promises": {
+        "noSelling": "Nunca venderemos os seus dados",
+        "noTracking": "Não o rastreamos pela web",
+        "noAds": "Premium significa sem anúncios para sempre",
+        "noPriceHikes": "Sem aumentos de preço surpresa para utilizadores existentes"
+      },
+      "cta": {
+        "title": "Junte-se a uma Comunidade Construída na Confiança",
+        "subtitle": "Comece a usar apps de uma empresa que o respeita."
+      }
+    },
+    "sustainable": {
+      "title": "Sustentável",
+      "subtitle": "Sem financiamento de VC, sem truques de crescimento. Apenas software sustentável construído para durar. Estamos nisto a longo prazo.",
+      "metaDescription": "Sem financiamento de VC, sem truques de crescimento. Apenas software sustentável construído para durar.",
+      "approach": "A Nossa Abordagem Sustentável",
+      "approachSubtitle": "Estamos a construir software que estará aqui por décadas, não trimestres",
+      "features": {
+        "noVc": {
+          "title": "Sem Financiamento de VC",
+          "description": "Somos bootstrapped e lucrativos. Respondemos aos utilizadores, não a investidores a exigir crescimento a qualquer custo."
+        },
+        "longTermView": {
+          "title": "Visão de Longo Prazo",
+          "description": "Tomamos decisões para a próxima década, não para o próximo trimestre. Crescimento sustentável sobre escala explosiva."
+        },
+        "profitableModel": {
+          "title": "Modelo de Negócio Lucrativo",
+          "description": "Não estamos a queimar dinheiro de investidores esperando descobrir a monetização mais tarde."
+        },
+        "noBaitSwitch": {
+          "title": "Sem Isca e Mudança",
+          "description": "Não vamos baixar preços para o atrair e depois aumentá-los quando estiver comprometido. Os preços mantêm-se justos."
+        },
+        "dataPortability": {
+          "title": "Portabilidade de Dados",
+          "description": "Exporte os seus dados a qualquer momento. Mesmo que fechemos (não vamos), os seus dados são seus."
+        },
+        "minimalDependencies": {
+          "title": "Dependências Mínimas",
+          "description": "Não dependemos de serviços de terceiros que possam desaparecer. As suas apps continuarão a funcionar."
+        }
+      },
+      "whyMatters": "Porque Isto Importa",
+      "whyList": {
+        "reliability": { "title": "Fiabilidade", "desc": "As apps não vão desaparecer de repente porque o financiamento acabou" },
+        "stability": { "title": "Estabilidade", "desc": "Sem pivots radicais para perseguir a última tendência" },
+        "trust": { "title": "Confiança", "desc": "Não nos venderemos a uma empresa que não partilhe os nossos valores" },
+        "continuity": { "title": "Continuidade", "desc": "As funcionalidades que adora ainda estarão lá no próximo ano" }
+      },
+      "cta": {
+        "title": "Escolha Software Construído para Durar",
+        "subtitle": "Junte-se a utilizadores que valorizam software sustentável e ético."
+      }
+    }
+  },
   "errors": {
     "generic": "Algo correu mal. Por favor tente novamente.",
     "notFound": "Página não encontrada",

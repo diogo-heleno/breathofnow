@@ -20,7 +20,7 @@ export function Header({ locale }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isLangOpen, setIsLangOpen] = React.useState(false);
-  const { isAuthenticated, profile } = useAuth();
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -109,7 +109,11 @@ export function Header({ locale }: HeaderProps) {
               )}
             </div>
 
-            {isAuthenticated ? (
+            {isAuthLoading ? (
+              <div className="flex items-center gap-2">
+                <div className="h-9 w-20 bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-lg" />
+              </div>
+            ) : isAuthenticated ? (
               <Link href="/account">
                 <Button variant="primary" size="sm" className="flex items-center gap-2">
                   <User className="w-4 h-4" />
@@ -185,7 +189,9 @@ export function Header({ locale }: HeaderProps) {
               <div className="h-px bg-neutral-200 dark:bg-neutral-800" />
               
               <div className="px-4 space-y-3">
-                {isAuthenticated ? (
+                {isAuthLoading ? (
+                  <div className="h-10 w-full bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-lg" />
+                ) : isAuthenticated ? (
                   <Link href="/account" onClick={() => setIsMenuOpen(false)}>
                     <Button variant="primary" className="w-full flex items-center justify-center gap-2">
                       <User className="w-4 h-4" />
