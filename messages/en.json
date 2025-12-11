@@ -66,7 +66,9 @@
     "language": "Language",
     "noData": "No data",
     "default": "Default",
-    "exit": "Exit"
+    "exit": "Exit",
+    "favorites": "Favorites",
+    "continue": "Continue"
   },
   "nav": {
     "apps": "Apps",
@@ -877,11 +879,12 @@
       "nextExercise": "Next Exercise",
       "finishWorkout": "Finish Workout",
       "cancelWorkout": "Cancel Workout",
-      "confirmCancel": "Are you sure you want to cancel this workout? Your progress will be lost.",
       "howDidYouFeel": "How did you feel?",
       "howWasWorkout": "How was the workout?",
       "sessionNotes": "Session notes (optional)",
       "saveSession": "Save Session",
+      "confirmCancel": "Exit workout?",
+      "cancelWorkoutWarning": "Your progress will not be saved.",
       "feelings": {
         "terrible": "Terrible",
         "bad": "Bad",

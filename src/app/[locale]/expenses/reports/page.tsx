@@ -221,13 +221,13 @@ export default function ReportsPage({
             <CardContent className="pt-6">
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
-                  <p className="text-xs text-neutral-500 mb-1">Total Expenses</p>
+                  <p className="text-xs text-neutral-500 mb-1">{t('totalExpenses')}</p>
                   <p className="text-lg font-semibold text-red-500">
                     {formatCurrency(totalExpenses)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-neutral-500 mb-1">Total Income</p>
+                  <p className="text-xs text-neutral-500 mb-1">{t('totalIncome')}</p>
                   <p className="text-lg font-semibold text-green-500">
                     {formatCurrency(
                       monthlyData.reduce((sum, d) => sum + d.income, 0)
@@ -235,7 +235,7 @@ export default function ReportsPage({
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-neutral-500 mb-1">Balance</p>
+                  <p className="text-xs text-neutral-500 mb-1">{t('balance')}</p>
                   <p
                     className={cn(
                       'text-lg font-semibold',

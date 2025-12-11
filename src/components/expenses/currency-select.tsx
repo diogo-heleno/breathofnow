@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Search, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CURRENCIES, getCurrencyInfo, type CurrencyCode } from '@/services/currency-service';
+import { useTranslations } from 'next-intl';
 
 interface CurrencySelectProps {
   value: string;
@@ -22,6 +23,8 @@ export function CurrencySelect({
   const [search, setSearch] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+  const t = useTranslations('expenseFlow.currency');
+  const tCommon = useTranslations('common');
 
   const currencies = Object.entries(CURRENCIES);
   const currentCurrency = getCurrencyInfo(value);
@@ -114,7 +117,7 @@ export function CurrencySelect({
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search currencies..."
+                placeholder={t('searchPlaceholder')}
                 className={cn(
                   'w-full pl-9 pr-3 py-2 text-sm',
                   'bg-neutral-50 dark:bg-neutral-800',
@@ -132,7 +135,7 @@ export function CurrencySelect({
             {favoriteCurrencies.length > 0 && (
               <div>
                 <div className="px-3 py-1.5 text-xs font-medium text-neutral-500 bg-neutral-50 dark:bg-neutral-800">
-                  Favorites
+                  {tCommon('favorites')}
                 </div>
                 {favoriteCurrencies.map(([code, info]) => (
                   <CurrencyOption
@@ -151,7 +154,7 @@ export function CurrencySelect({
               <div>
                 {favoriteCurrencies.length > 0 && (
                   <div className="px-3 py-1.5 text-xs font-medium text-neutral-500 bg-neutral-50 dark:bg-neutral-800">
-                    All Currencies
+                    {t('allCurrencies')}
                   </div>
                 )}
                 {otherCurrencies.map(([code, info]) => (
@@ -169,7 +172,7 @@ export function CurrencySelect({
             {/* No Results */}
             {filteredCurrencies.length === 0 && (
               <div className="px-3 py-4 text-center text-sm text-neutral-500">
-                No currencies found
+                {t('noResults')}
               </div>
             )}
           </div>

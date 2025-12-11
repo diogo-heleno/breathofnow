@@ -162,7 +162,7 @@ export function Header({ locale }: HeaderProps) {
               
               {/* Language selector mobile */}
               <div className="px-4">
-                <p className="text-xs font-medium text-neutral-500 mb-2">Language</p>
+                <p className="text-xs font-medium text-neutral-500 mb-2">{t('common.language')}</p>
                 <div className="flex flex-wrap gap-2">
                   {locales.map((loc) => (
                     <Link

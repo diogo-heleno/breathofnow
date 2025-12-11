@@ -514,10 +514,10 @@ export default function ImportPage({
               <table className="w-full text-sm">
                 <thead className="bg-neutral-50 dark:bg-neutral-800 sticky top-0">
                   <tr>
-                    <th className="px-3 py-2 text-left">Date</th>
-                    <th className="px-3 py-2 text-left">Description</th>
-                    <th className="px-3 py-2 text-right">Amount</th>
-                    <th className="px-3 py-2 text-center">Type</th>
+                    <th className="px-3 py-2 text-left">{t('columns.date')}</th>
+                    <th className="px-3 py-2 text-left">{t('columns.description')}</th>
+                    <th className="px-3 py-2 text-right">{t('columns.amount')}</th>
+                    <th className="px-3 py-2 text-center">{t('columns.type')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800">
