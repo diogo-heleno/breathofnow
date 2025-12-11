@@ -131,8 +131,13 @@ export default function SignUpPage({ params: { locale } }: PageProps) {
         }
       }
 
-      // Redirect to account on success
-      router.push('/account');
+      // Redirect to account on success - use app subdomain in production
+      const isProduction = typeof window !== 'undefined' && window.location.hostname.includes('breathofnow.site');
+      if (isProduction) {
+        window.location.href = `https://app.breathofnow.site/${locale}/account`;
+      } else {
+        router.push('/account');
+      }
     } catch (err) {
       console.error('OTP verification error:', err);
       setError(err instanceof Error ? err.message : t('otpError'));

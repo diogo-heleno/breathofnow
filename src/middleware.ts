@@ -106,9 +106,14 @@ export default async function middleware(request: NextRequest) {
     // Skip shared routes
     if (!isSharedRoute(pathWithoutLocale)) {
       if (subdomain === 'www' && isAppRoute(pathWithoutLocale)) {
-        // Redirect app routes from www to app subdomain
+        // Redirect app routes from www/root to app subdomain
         const appUrl = new URL(request.url);
-        appUrl.host = host.replace('www.', 'app.');
+        // Handle both www.domain and bare domain
+        if (host.startsWith('www.')) {
+          appUrl.host = host.replace('www.', 'app.');
+        } else {
+          appUrl.host = 'app.' + host;
+        }
         return NextResponse.redirect(appUrl);
       }
 
