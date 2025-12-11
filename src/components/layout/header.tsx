@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { Logo } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
 import { ConnectionIndicator } from '@/components/pwa/connection-indicator';
+import { ClientOnly } from '@/components/utils/client-only';
 import { useAuth } from '@/contexts/auth-context';
 import { locales, localeLabels, localeFlags, type Locale } from '@/i18n';
 
@@ -126,31 +127,40 @@ export function Header({ locale }: HeaderProps) {
               )}
             </div>
 
-            {isAuthLoading ? (
-              <div className="flex items-center gap-2">
-                <div className="h-9 w-20 bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-lg" />
-              </div>
-            ) : isAuthenticated ? (
-              <Link href="/account">
-                <Button variant="primary" size="sm" className="flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  {t('common.profile')}
-                </Button>
-              </Link>
-            ) : (
-              <>
-                <Link href="/auth/signin">
-                  <Button variant="ghost" size="sm">
-                    {t('common.signIn')}
+            {/* Auth Buttons - Wrapped in ClientOnly to prevent hydration mismatch */}
+            <ClientOnly
+              fallback={
+                <div className="flex items-center gap-2">
+                  <div className="h-9 w-20 bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-lg" />
+                </div>
+              }
+            >
+              {isAuthLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="h-9 w-20 bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-lg" />
+                </div>
+              ) : isAuthenticated ? (
+                <Link href="/account">
+                  <Button variant="primary" size="sm" className="flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    {t('common.profile')}
                   </Button>
                 </Link>
-                <Link href="/auth/signup">
-                  <Button variant="primary" size="sm">
-                    {t('common.getStarted')}
-                  </Button>
-                </Link>
-              </>
-            )}
+              ) : (
+                <>
+                  <Link href="/auth/signin">
+                    <Button variant="ghost" size="sm">
+                      {t('common.signIn')}
+                    </Button>
+                  </Link>
+                  <Link href="/auth/signup">
+                    <Button variant="primary" size="sm">
+                      {t('common.getStarted')}
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </ClientOnly>
           </div>
 
           {/* Mobile Menu Button */}
@@ -206,29 +216,36 @@ export function Header({ locale }: HeaderProps) {
               <div className="h-px bg-neutral-200 dark:bg-neutral-800" />
               
               <div className="px-4 space-y-3">
-                {isAuthLoading ? (
-                  <div className="h-10 w-full bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-lg" />
-                ) : isAuthenticated ? (
-                  <Link href="/account" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="primary" className="w-full flex items-center justify-center gap-2">
-                      <User className="w-4 h-4" />
-                      {t('common.profile')}
-                    </Button>
-                  </Link>
-                ) : (
-                  <>
-                    <Link href="/auth/signin" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="secondary" className="w-full">
-                        {t('common.signIn')}
+                {/* Mobile Auth - Wrapped in ClientOnly to prevent hydration mismatch */}
+                <ClientOnly
+                  fallback={
+                    <div className="h-10 w-full bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-lg" />
+                  }
+                >
+                  {isAuthLoading ? (
+                    <div className="h-10 w-full bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-lg" />
+                  ) : isAuthenticated ? (
+                    <Link href="/account" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="primary" className="w-full flex items-center justify-center gap-2">
+                        <User className="w-4 h-4" />
+                        {t('common.profile')}
                       </Button>
                     </Link>
-                    <Link href="/auth/signup" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="primary" className="w-full">
-                        {t('common.getStarted')}
-                      </Button>
-                    </Link>
-                  </>
-                )}
+                  ) : (
+                    <>
+                      <Link href="/auth/signin" onClick={() => setIsMenuOpen(false)}>
+                        <Button variant="secondary" className="w-full">
+                          {t('common.signIn')}
+                        </Button>
+                      </Link>
+                      <Link href="/auth/signup" onClick={() => setIsMenuOpen(false)}>
+                        <Button variant="primary" className="w-full">
+                          {t('common.getStarted')}
+                        </Button>
+                      </Link>
+                    </>
+                  )}
+                </ClientOnly>
               </div>
             </div>
           </div>
