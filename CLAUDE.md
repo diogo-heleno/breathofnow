@@ -1,5 +1,23 @@
 # Breath of Now - Claude Code Instructions
 
+## ⚠️ IMPORTANTE - Leitura Obrigatória
+
+Antes de iniciar QUALQUER tarefa, Claude Code DEVE ler:
+
+1. **`.claude/RULES.md`** - Regras obrigatórias (i18n, documentação, código)
+2. **`.claude/PROJECT.md`** - Contexto completo do projeto
+
+### Comandos disponíveis (`.claude/commands/`):
+
+- `build.md` - Build de produção
+- `commit.md` - Commit de alterações
+- `dev.md` - Servidor de desenvolvimento
+- `lint.md` - Verificação de código
+- `i18n-check.md` - Verificar texto hardcoded
+- `update-docs.md` - Atualizar documentação
+
+---
+
 ## Project Overview
 
 Breath of Now is a privacy-first ecosystem of micro-apps for mindful living, built by M21 Global, Lda.
