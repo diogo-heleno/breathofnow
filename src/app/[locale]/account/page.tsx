@@ -110,7 +110,7 @@ function AccountPageContent({ locale }: { locale: Locale }) {
       profileId: profile?.id?.slice(0, 8) + '...',
       profileEmail: profile?.email,
       profileTier: profile?.tier,
-      profileName: profile?.fullName,
+      profileName: profile?.name,
     };
     setDebugInfo(JSON.stringify(info, null, 2));
     console.log('Auth Debug:', info);
