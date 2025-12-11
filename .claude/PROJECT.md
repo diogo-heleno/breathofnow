@@ -426,7 +426,7 @@ chore(deps): update dependencies
 
 - [ ] Implementar dashboard principal (home)
 - [ ] Implementar sync engine com Supabase
-- [ ] Configurar subdomínios (www + app)
+- [x] Configurar subdomínios (www + app)
 - [ ] PWA com Service Worker
 
 ### Prioridade Média
