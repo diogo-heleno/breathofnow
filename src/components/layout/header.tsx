@@ -147,18 +147,11 @@ export function Header({ locale }: HeaderProps) {
                   </Button>
                 </Link>
               ) : (
-                <>
-                  <Link href="/auth/signin">
-                    <Button variant="ghost" size="sm">
-                      {t('common.signIn')}
-                    </Button>
-                  </Link>
-                  <Link href="/auth/signup">
-                    <Button variant="primary" size="sm">
-                      {t('common.getStarted')}
-                    </Button>
-                  </Link>
-                </>
+                <Link href="/auth/signin">
+                  <Button variant="primary" size="sm">
+                    {t('common.signIn')}
+                  </Button>
+                </Link>
               )}
             </ClientOnly>
           </div>
@@ -232,18 +225,11 @@ export function Header({ locale }: HeaderProps) {
                       </Button>
                     </Link>
                   ) : (
-                    <>
-                      <Link href="/auth/signin" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant="secondary" className="w-full">
-                          {t('common.signIn')}
-                        </Button>
-                      </Link>
-                      <Link href="/auth/signup" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant="primary" className="w-full">
-                          {t('common.getStarted')}
-                        </Button>
-                      </Link>
-                    </>
+                    <Link href="/auth/signin" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="primary" className="w-full">
+                        {t('common.signIn')}
+                      </Button>
+                    </Link>
                   )}
                 </ClientOnly>
               </div>
