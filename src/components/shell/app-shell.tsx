@@ -27,6 +27,7 @@ import { Logo } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ConnectionIndicator } from '@/components/pwa/connection-indicator';
+import { ClientOnly } from '@/components/utils/client-only';
 import { useAuth } from '@/contexts/auth-context';
 import { locales, localeLabels, localeFlags, type Locale } from '@/i18n';
 import { APPS, type AppId } from '@/types/pricing';
@@ -167,101 +168,107 @@ export function AppShell({ children, locale }: AppShellProps) {
               )}
             </div>
 
-            {/* User Menu */}
-            {isAuthLoading ? (
-              <div className="w-8 h-8 bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-full" />
-            ) : isAuthenticated && profile ? (
-              <div className="relative">
-                <button
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 p-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg"
-                >
-                  {profile.avatarUrl ? (
-                    <img
-                      src={profile.avatarUrl}
-                      alt={profile.name || 'User'}
-                      className="w-8 h-8 rounded-full"
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
-                      <User className="w-4 h-4 text-primary-600 dark:text-primary-400" />
-                    </div>
-                  )}
-                  <ChevronDown className="w-3 h-3 text-neutral-500 hidden sm:block" />
-                </button>
+            {/* User Menu - Wrapped in ClientOnly to prevent hydration mismatch */}
+            <ClientOnly
+              fallback={
+                <div className="w-8 h-8 bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-full" />
+              }
+            >
+              {isAuthLoading ? (
+                <div className="w-8 h-8 bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-full" />
+              ) : isAuthenticated && profile ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center gap-2 p-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg"
+                  >
+                    {profile.avatarUrl ? (
+                      <img
+                        src={profile.avatarUrl}
+                        alt={profile.name || 'User'}
+                        className="w-8 h-8 rounded-full"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
+                        <User className="w-4 h-4 text-primary-600 dark:text-primary-400" />
+                      </div>
+                    )}
+                    <ChevronDown className="w-3 h-3 text-neutral-500 hidden sm:block" />
+                  </button>
 
-                {isUserMenuOpen && (
-                  <>
-                    <div className="fixed inset-0 z-10" onClick={() => setIsUserMenuOpen(false)} />
-                    <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-neutral-900 rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800 py-2 z-20">
-                      {/* User Info */}
-                      <div className="px-4 py-3 border-b border-neutral-200 dark:border-neutral-800">
-                        <p className="font-medium text-neutral-900 dark:text-neutral-100 truncate">
-                          {profile.name || profile.email}
-                        </p>
-                        <p className="text-sm text-neutral-500 truncate">{profile.email}</p>
-                        {tierBadge && (
-                          <Badge variant={tierBadge.variant} className="mt-2">
-                            {profile.isFoundingMember && <Crown className="w-3 h-3 mr-1" />}
-                            {tierBadge.label}
-                          </Badge>
-                        )}
-                      </div>
-                      
-                      {/* Menu Items */}
-                      <div className="py-1">
-                        <Link
-                          href={`/${locale}/account`}
-                          onClick={() => setIsUserMenuOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                        >
-                          <User className="w-4 h-4" />
-                          {t('common.profile')}
-                        </Link>
-                        <Link
-                          href={`/${locale}/account/settings`}
-                          onClick={() => setIsUserMenuOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                        >
-                          <Settings className="w-4 h-4" />
-                          {t('common.settings')}
-                        </Link>
-                        {profile.tier === 'free' && (
+                  {isUserMenuOpen && (
+                    <>
+                      <div className="fixed inset-0 z-10" onClick={() => setIsUserMenuOpen(false)} />
+                      <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-neutral-900 rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800 py-2 z-20">
+                        {/* User Info */}
+                        <div className="px-4 py-3 border-b border-neutral-200 dark:border-neutral-800">
+                          <p className="font-medium text-neutral-900 dark:text-neutral-100 truncate">
+                            {profile.name || profile.email}
+                          </p>
+                          <p className="text-sm text-neutral-500 truncate">{profile.email}</p>
+                          {tierBadge && (
+                            <Badge variant={tierBadge.variant} className="mt-2">
+                              {profile.isFoundingMember && <Crown className="w-3 h-3 mr-1" />}
+                              {tierBadge.label}
+                            </Badge>
+                          )}
+                        </div>
+
+                        {/* Menu Items */}
+                        <div className="py-1">
                           <Link
-                            href={`/${locale}/pricing`}
+                            href={`/${locale}/account`}
                             onClick={() => setIsUserMenuOpen(false)}
-                            className="flex items-center gap-3 px-4 py-2 text-sm text-accent-600 dark:text-accent-400 hover:bg-accent-50 dark:hover:bg-accent-950"
+                            className="flex items-center gap-3 px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                           >
-                            <Sparkles className="w-4 h-4" />
-                            {t('common.upgrade')}
+                            <User className="w-4 h-4" />
+                            {t('common.profile')}
                           </Link>
-                        )}
+                          <Link
+                            href={`/${locale}/account/settings`}
+                            onClick={() => setIsUserMenuOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                          >
+                            <Settings className="w-4 h-4" />
+                            {t('common.settings')}
+                          </Link>
+                          {profile.tier === 'free' && (
+                            <Link
+                              href={`/${locale}/pricing`}
+                              onClick={() => setIsUserMenuOpen(false)}
+                              className="flex items-center gap-3 px-4 py-2 text-sm text-accent-600 dark:text-accent-400 hover:bg-accent-50 dark:hover:bg-accent-950"
+                            >
+                              <Sparkles className="w-4 h-4" />
+                              {t('common.upgrade')}
+                            </Link>
+                          )}
+                        </div>
+
+                        {/* Sign Out */}
+                        <div className="border-t border-neutral-200 dark:border-neutral-800 pt-1">
+                          <button
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              signOut();
+                            }}
+                            className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950"
+                          >
+                            <LogOut className="w-4 h-4" />
+                            {t('common.signOut')}
+                          </button>
+                        </div>
                       </div>
-                      
-                      {/* Sign Out */}
-                      <div className="border-t border-neutral-200 dark:border-neutral-800 pt-1">
-                        <button
-                          onClick={() => {
-                            setIsUserMenuOpen(false);
-                            signOut();
-                          }}
-                          className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950"
-                        >
-                          <LogOut className="w-4 h-4" />
-                          {t('common.signOut')}
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <Link href={`/${locale}/auth/signin`}>
-                <Button variant="primary" size="sm">
-                  {t('common.signIn')}
-                </Button>
-              </Link>
-            )}
+                    </>
+                  )}
+                </div>
+              ) : (
+                <Link href={`/${locale}/auth/signin`}>
+                  <Button variant="primary" size="sm">
+                    {t('common.signIn')}
+                  </Button>
+                </Link>
+              )}
+            </ClientOnly>
           </div>
         </div>
       </header>
