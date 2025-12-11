@@ -112,8 +112,8 @@ export default async function middleware(request: NextRequest) {
         return NextResponse.redirect(appUrl);
       }
 
-      if (subdomain === 'app' && isWebsiteRoute(pathWithoutLocale)) {
-        // Redirect website routes from app to www subdomain
+      if (subdomain === 'app' && isWebsiteRoute(pathWithoutLocale) && pathWithoutLocale !== '/') {
+        // Redirect website routes from app to www subdomain (except root, which goes to /account)
         const wwwUrl = new URL(request.url);
         wwwUrl.host = host.replace('app.', 'www.');
         return NextResponse.redirect(wwwUrl);
