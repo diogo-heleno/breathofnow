@@ -23,9 +23,9 @@
     "success": "Sucesso",
     "warning": "Aviso",
     "info": "Informação",
-    "free": "Grátis",
+    "free": "Gratuito",
     "premium": "Premium",
-    "upgrade": "Atualizar",
+    "upgrade": "Upgrade",
     "or": "ou",
     "and": "e",
     "yes": "Sim",
@@ -36,7 +36,7 @@
     "filter": "Filtrar",
     "sort": "Ordenar",
     "view": "Ver",
-    "download": "Descarregar",
+    "download": "Transferir",
     "share": "Partilhar",
     "copy": "Copiar",
     "copied": "Copiado!",
@@ -47,7 +47,7 @@
     "comingSoon": "Em Breve",
     "today": "Hoje",
     "yesterday": "Ontem",
-    "daysAgo": "Há {days} dias",
+    "daysAgo": "há {days} dias",
     "never": "Nunca",
     "total": "Total",
     "manage": "Gerir",
@@ -60,8 +60,8 @@
     "finish": "Terminar",
     "complete": "Completo",
     "incomplete": "Incompleto",
-    "active": "Ativo",
-    "inactive": "Inativo",
+    "active": "Activo",
+    "inactive": "Inactivo",
     "toggleMenu": "Alternar menu",
     "language": "Idioma",
     "noData": "Sem dados",
@@ -75,12 +75,12 @@
     "myApps": "As Minhas Apps",
     "otherApps": "Outras Apps",
     "locked": "Bloqueado",
-    "comingSoon": "Breve",
+    "comingSoon": "Em Breve",
     "pricing": "Preços",
     "about": "Sobre",
     "faq": "FAQ",
     "support": "Suporte",
-    "blog": "Blog"
+    "blog": "Blogue"
   },
   "footer": {
     "company": "Empresa",
@@ -96,63 +96,63 @@
     "documentation": "Documentação",
     "status": "Estado do Sistema",
     "newsletter": "Newsletter",
-    "newsletterText": "Receba atualizações sobre novas apps e funcionalidades",
+    "newsletterText": "Receba novidades sobre novas apps e funcionalidades",
     "subscribe": "Subscrever",
-    "emailPlaceholder": "o.seu@email.com",
+    "emailPlaceholder": "o-seu@email.com",
     "copyright": "© {year} Breath of Now. Uma marca da M21 Global, Lda.",
     "allRightsReserved": "Todos os direitos reservados."
   },
   "hero": {
-    "title": "Ferramentas simples para uma",
-    "titleHighlight": "vida consciente",
-    "subtitle": "Uma coleção de micro-apps cuidadosamente desenhadas para te ajudar a controlar despesas, investimentos, treinos, receitas e muito mais. Todos os teus dados ficam no teu dispositivo.",
+    "title": "Ferramentas simples para",
+    "titleHighlight": "uma vida consciente",
+    "subtitle": "Uma colecção de micro-apps cuidadosamente desenhadas para ajudá-lo a acompanhar despesas, investimentos, treinos, receitas e muito mais. Todos os seus dados ficam no seu dispositivo.",
     "cta": "Explorar Apps",
     "ctaSecondary": "Como funciona",
-    "trustedBy": "Utilizado por pessoas conscientes em todo o mundo",
+    "trustedBy": "Usado por pessoas conscientes em todo o mundo",
     "privacy": "100% Privado",
-    "privacyDesc": "Os teus dados nunca saem do teu dispositivo",
+    "privacyDesc": "Os seus dados nunca saem do seu dispositivo",
     "offline": "Funciona Offline",
-    "offlineDesc": "Sem necessidade de internet",
+    "offlineDesc": "Não precisa de internet",
     "fair": "Preços Justos",
-    "fairDesc": "Paga o que te faz sentido"
+    "fairDesc": "Pague o que sentir que é justo"
   },
   "apps": {
     "title": "As Nossas Apps",
-    "subtitle": "Cada app foi desenhada para fazer uma coisa excecionalmente bem",
+    "subtitle": "Cada app foi desenhada para fazer uma coisa excepcionalmente bem",
     "expenses": {
       "name": "ExpenseFlow",
-      "tagline": "Gestão consciente de dinheiro",
-      "description": "Controla as tuas despesas diárias com facilidade. Categoriza, analisa e compreende para onde vai o teu dinheiro.",
-      "features": ["Categorização inteligente", "Relatórios mensais", "Objetivos de orçamento", "Exportar para CSV"]
+      "tagline": "Gestão consciente do dinheiro",
+      "description": "Acompanhe as suas despesas diárias com facilidade. Categorize, analise e compreenda para onde vai o seu dinheiro.",
+      "features": ["Categorização inteligente", "Relatórios mensais", "Objectivos de orçamento", "Exportar para CSV"]
     },
     "investments": {
       "name": "InvestTrack",
-      "tagline": "O teu portfólio, à tua maneira",
-      "description": "Monitoriza os teus investimentos em ações, ETFs, cripto e mais. Calcula retornos reais com considerações fiscais.",
-      "features": ["Suporte multi-ativo", "Preços em tempo real", "Cálculos fiscais", "Simulador FIRE"]
+      "tagline": "O seu portfólio, à sua maneira",
+      "description": "Monitorize os seus investimentos em acções, ETFs, cripto e muito mais. Calcule retornos reais com considerações fiscais.",
+      "features": ["Suporte multi-activos", "Preços em tempo real", "Cálculos fiscais", "Simulador FIRE"]
     },
     "workouts": {
       "name": "FitLog",
       "tagline": "Cada repetição conta",
-      "description": "Regista os teus treinos, acompanha o progresso e alcança os teus objetivos fitness com visualizações bonitas.",
-      "features": ["Biblioteca de exercícios", "Seguimento de progresso", "Planos de treino", "Recordes pessoais"]
+      "description": "Registe os seus treinos, acompanhe o progresso e atinja os seus objectivos de fitness com visualizações elegantes.",
+      "features": ["Biblioteca de exercícios", "Acompanhamento de progresso", "Planos de treino", "Recordes pessoais"]
     },
     "strava": {
       "name": "StravaSync",
-      "tagline": "As tuas corridas, melhoradas",
-      "description": "Sincroniza as tuas atividades do Strava e obtém insights mais profundos sobre o teu treino com análises avançadas.",
-      "features": ["Integração Strava", "Carga de treino", "Tendências de performance", "Seguimento de objetivos"]
+      "tagline": "As suas corridas, melhoradas",
+      "description": "Sincronize as suas actividades do Strava e obtenha insights mais profundos sobre o seu treino com análises avançadas.",
+      "features": ["Integração Strava", "Carga de treino", "Tendências de performance", "Acompanhamento de objectivos"]
     },
     "recipes": {
       "name": "RecipeBox",
-      "tagline": "O teu livro de receitas digital",
-      "description": "Organiza as tuas receitas favoritas, planeia refeições e gera listas de compras sem esforço.",
+      "tagline": "O seu livro de receitas digital",
+      "description": "Organize as suas receitas favoritas, planeie refeições e gere listas de compras sem esforço.",
       "features": ["Importação de receitas", "Planeamento de refeições", "Listas de compras", "Informação nutricional"]
     },
     "labels": {
       "name": "LabelScan",
-      "tagline": "Sabe o que comes",
-      "description": "Digitaliza etiquetas alimentares, compreende ingredientes e faz escolhas informadas sobre o que consomes.",
+      "tagline": "Saiba o que come",
+      "description": "Digitalize rótulos de alimentos, compreenda ingredientes e tome decisões informadas sobre o que consome.",
       "features": ["Digitalização OCR", "Análise de ingredientes", "Alertas de alergénios", "Pontuações de saúde"]
     },
     "viewApp": "Saber Mais",
@@ -164,52 +164,74 @@
     }
   },
   "pricing": {
-    "title": "Começa a Tua Jornada Hoje",
-    "description": "Todas as nossas apps são grátis. Atualiza quando quiseres para mais funcionalidades e sincronização cloud.",
-    "free": { "cta": "Experimentar Grátis" },
+    "title": "Comece a Sua Jornada Hoje",
+    "description": "Todas as nossas apps são gratuitas. Faça upgrade quando quiser para mais funcionalidades e sincronização na cloud.",
+    "free": {
+      "cta": "Experimentar Grátis"
+    },
     "hero": {
       "badge": "Preços simples e transparentes",
-      "title": "Escolhe o teu plano",
-      "subtitle": "Começa grátis, atualiza quando precisares de mais. Sem taxas escondidas, cancela quando quiseres."
+      "title": "Escolha o seu plano",
+      "subtitle": "Comece grátis, faça upgrade quando precisar de mais. Sem taxas ocultas, cancele quando quiser."
     },
-    "billing": { "monthly": "Mensal", "yearly": "Anual", "save": "Poupa {percent}%" },
+    "billing": {
+      "monthly": "Mensal",
+      "yearly": "Anual",
+      "save": "Poupe {percent}%"
+    },
     "price": {
       "free": "Grátis",
       "month": "mês",
       "year": "ano",
       "lifetime": "único",
       "oneTime": "pagamento único",
-      "equivalent": "{price}/mês equivalente",
-      "savings": "Poupa {percent}% anualmente"
+      "equivalent": "equivalente a {price}/mês",
+      "savings": "Poupe {percent}% anualmente"
     },
-    "badge": { "mostPopular": "Mais Popular", "popular": "Popular", "limitedSpots": "{spots} lugares restantes" },
-    "cta": { "getStarted": "Começar", "subscribe": "Subscrever", "becomeFounder": "Tornar-me Fundador", "select": "Selecionar" },
-    "features": { "noCloudSync": "Sincronização cloud", "noPrioritySupport": "Suporte prioritário" },
+    "badge": {
+      "mostPopular": "Mais Popular",
+      "popular": "Popular",
+      "limitedSpots": "{spots} lugares restantes"
+    },
+    "cta": {
+      "getStarted": "Começar",
+      "subscribe": "Subscrever",
+      "becomeFounder": "Tornar-se Fundador",
+      "select": "Seleccionar"
+    },
+    "features": {
+      "noCloudSync": "Sincronização cloud",
+      "noPrioritySupport": "Suporte prioritário"
+    },
     "appSelector": {
-      "title": "Escolhe as tuas apps",
-      "selected": "selecionadas",
-      "chooseApps": "Escolhe apps:",
-      "status": { "available": "Disponível", "beta": "Beta", "comingSoon": "Em Breve" }
+      "title": "Escolha as suas apps",
+      "selected": "seleccionadas",
+      "chooseApps": "Escolher apps:",
+      "status": {
+        "available": "Disponível",
+        "beta": "Beta",
+        "comingSoon": "Em Breve"
+      }
     },
     "plans": {
       "free": {
-        "name": "Grátis",
+        "name": "Gratuito",
         "description": "Perfeito para experimentar uma app",
         "features": {
-          "oneApp": "1 app à tua escolha",
+          "oneApp": "1 app à sua escolha",
           "localStorage": "Apenas armazenamento local",
-          "ads": "Banners de anúncios",
+          "ads": "Banners publicitários",
           "communitySupport": "Suporte da comunidade",
-          "tryOtherApps": "Experimenta outras apps (dados expiram após 24h)",
-          "changeAppWeekly": "Muda de app uma vez por semana"
+          "tryOtherApps": "Experimente outras apps (dados expiram após 24h)",
+          "changeAppWeekly": "Mude de app uma vez por semana"
         },
         "cta": "Começar"
       },
       "starter": {
         "name": "Starter",
-        "description": "Foca-te no que mais importa",
+        "description": "Foque-se no que mais importa",
         "features": {
-          "twoApps": "2 apps à tua escolha",
+          "twoApps": "2 apps à sua escolha",
           "googleDrive": "Local + backup Google Drive",
           "noAds": "Experiência sem anúncios",
           "emailSupport": "Suporte por email"
@@ -218,12 +240,12 @@
       },
       "plus": {
         "name": "Plus",
-        "description": "Melhor valor para a maioria",
+        "description": "Melhor valor para a maioria dos utilizadores",
         "features": {
-          "fiveApps": "5 apps à tua escolha",
+          "fiveApps": "5 apps à sua escolha",
           "googleDrive": "Local + backup Google Drive",
           "noAds": "Experiência sem anúncios",
-          "priorityEmail": "Suporte por email prioritário"
+          "priorityEmail": "Suporte prioritário por email"
         },
         "cta": "Subscrever"
       },
@@ -232,9 +254,9 @@
         "description": "Tudo, ilimitado",
         "features": {
           "allApps": "Todas as apps incluídas",
-          "cloudSync": "Local + Google Drive + Cloud sync",
+          "cloudSync": "Local + Google Drive + sincronização Cloud",
           "noAds": "Experiência sem anúncios",
-          "prioritySupport": "Suporte por email prioritário",
+          "prioritySupport": "Suporte prioritário por email",
           "earlyAccess": "Acesso antecipado a novas funcionalidades"
         },
         "cta": "Subscrever"
@@ -245,210 +267,782 @@
         "features": {
           "lifetime": "Acesso vitalício a TODAS as apps",
           "futureVersions": "Todas as versões futuras incluídas (v2, v3...)",
-          "helpDevelop": "Ajuda-nos a desenvolver o ecossistema",
-          "whatsappSupport": "Suporte prioritário por WhatsApp",
+          "helpDevelop": "Ajude-nos a desenvolver o nosso ecossistema",
+          "whatsappSupport": "Suporte prioritário via WhatsApp",
           "qanda": "Q&A trimestral com o fundador",
-          "cloudSync": "Local + Google Drive + Cloud sync",
+          "cloudSync": "Local + Google Drive + sincronização Cloud",
           "noAds": "Experiência sem anúncios",
           "badge": "Badge exclusivo de Membro Fundador"
         },
-        "cta": "Tornar-me Fundador"
+        "cta": "Tornar-se Fundador"
       }
     },
-    "founding": { "title": "Torna-te Membro Fundador", "subtitle": "Junta-te ao nosso grupo exclusivo de apoiantes iniciais e obtém acesso vitalício a tudo" },
+    "founding": {
+      "title": "Torne-se um Membro Fundador",
+      "subtitle": "Junte-se ao nosso grupo exclusivo de apoiantes iniciais e obtenha acesso vitalício a tudo"
+    },
     "comparison": {
       "title": "Comparar planos",
       "feature": "Funcionalidade",
       "appsIncluded": "Apps incluídas",
       "localStorage": "Armazenamento local",
       "googleDrive": "Backup Google Drive",
-      "cloudSync": "Cloud sync",
+      "cloudSync": "Sincronização cloud",
       "noAds": "Sem anúncios",
       "prioritySupport": "Suporte prioritário",
       "earlyAccess": "Acesso antecipado"
     },
     "trust": {
-      "privacy": { "title": "Privacidade Primeiro", "description": "Os teus dados ficam no teu dispositivo a menos que escolhas sincronizar" },
-      "payment": { "title": "Pagamento Seguro", "description": "Todos os pagamentos processados de forma segura via Stripe" },
-      "cancel": { "title": "Cancela Quando Quiseres", "description": "Sem perguntas, sem compromissos de longo prazo" }
+      "privacy": {
+        "title": "Privacidade Primeiro",
+        "description": "Os seus dados ficam no seu dispositivo, a menos que escolha sincronizar"
+      },
+      "payment": {
+        "title": "Pagamento Seguro",
+        "description": "Todos os pagamentos processados de forma segura via Stripe"
+      },
+      "cancel": {
+        "title": "Cancele Quando Quiser",
+        "description": "Sem perguntas, sem compromissos de longo prazo"
+      }
     },
-    "faq": { "question": "Tens perguntas?", "link": "Consulta o nosso FAQ" }
+    "faq": {
+      "question": "Tem dúvidas?",
+      "link": "Consulte as nossas FAQ"
+    }
   },
   "features": {
     "title": "Porquê Breath of Now?",
     "subtitle": "Construído de forma diferente, de propósito",
-    "privacy": { "title": "Privacidade Primeiro", "description": "Os teus dados vivem no teu dispositivo. Não os podemos ver, vender ou perder." },
-    "offline": { "title": "Funciona Offline", "description": "Sem internet? Sem problema. Todas as apps funcionam totalmente offline com sincronização cloud opcional." },
-    "simple": { "title": "Lindamente Simples", "description": "Sem excesso, sem complexidade. Cada app faz uma coisa excecionalmente bem." },
-    "fair": { "title": "Preços Justos", "description": "Paga o que puderes. Os nossos preços adaptam-se ao custo de vida da tua região." },
-    "open": { "title": "Aberto e Transparente", "description": "Somos claros sobre como as nossas apps funcionam e o que fazem com os teus dados." },
-    "sustainable": { "title": "Sustentável", "description": "Sem financiamento VC, sem growth hacks. Apenas software sustentável construído para durar.", "noBaitAndSwitch": "Não baixamos preços para te atrair e depois os aumentamos." }
+    "privacy": {
+      "title": "Privacidade Primeiro",
+      "description": "Os seus dados vivem no seu dispositivo. Não os podemos ver, não os podemos vender, não os podemos perder."
+    },
+    "offline": {
+      "title": "Funciona Offline",
+      "description": "Sem internet? Sem problema. Todas as apps funcionam totalmente offline com sincronização cloud opcional."
+    },
+    "simple": {
+      "title": "Belamente Simples",
+      "description": "Sem excesso, sem complexidade. Cada app faz uma coisa e fá-la excepcionalmente bem."
+    },
+    "fair": {
+      "title": "Preços Justos",
+      "description": "Pague o que puder. Os nossos preços adaptam-se ao custo de vida da sua região."
+    },
+    "open": {
+      "title": "Aberto e Transparente",
+      "description": "Somos claros sobre como as nossas apps funcionam e o que fazem com os seus dados."
+    },
+    "sustainable": {
+      "title": "Sustentável",
+      "description": "Sem financiamento de capital de risco, sem truques de crescimento. Apenas software sustentável construído para durar.",
+      "noBaitAndSwitch": "Não vamos baixar preços para o atrair e depois aumentá-los quando estiver comprometido."
+    }
   },
   "faq": {
     "title": "Perguntas Frequentes",
-    "subtitle": "Tudo o que precisas de saber",
+    "subtitle": "Tudo o que precisa de saber",
     "items": [
-      { "question": "Onde são guardados os meus dados?", "answer": "Por defeito, todos os teus dados são guardados localmente no teu dispositivo usando o armazenamento do browser. Isto significa que os teus dados nunca saem do teu dispositivo a menos que atives explicitamente o backup cloud." },
-      { "question": "Posso usar as apps offline?", "answer": "Sim! Todas as nossas apps funcionam totalmente offline. Algumas funcionalidades como sincronizar dados do Strava ou obter preços atuais de ações requerem internet, mas a funcionalidade principal funciona sem ela." },
-      { "question": "O que acontece se limpar os dados do browser?", "answer": "Se limpares os dados do browser, os dados das apps serão eliminados. Recomendamos ativar o backup cloud ou exportar regularmente os teus dados para prevenir perda de dados." },
-      { "question": "Como funciona o Paga o Que Quiseres?", "answer": "Sugerimos um preço baseado no custo de vida da tua região, mas és livre de pagar mais ou menos. Se fores estudante ou enfrentares dificuldades financeiras, paga menos. Se puderes pagar mais, a tua contribuição extra ajuda-nos a continuar a construir." },
-      { "question": "Posso alternar entre grátis e pago?", "answer": "Sim! Podes atualizar para remover anúncios e desbloquear funcionalidades premium quando quiseres. Se cancelares a tua subscrição, manténs o acesso até ao fim do período de faturação, depois voltas ao tier grátis." },
-      { "question": "O que está incluído no plano Membro Fundador?", "answer": "O plano Membro Fundador (€599 único) dá-te acesso vitalício a TODAS as apps e TODAS as versões futuras para sempre. Também tens acesso antecipado a novas funcionalidades, o teu nome no Hall of Fame, sessões Q&A trimestrais com o fundador, pedidos de funcionalidades prioritários e suporte direto via Discord. É limitado aos primeiros 100 membros." },
-      { "question": "Têm uma app móvel?", "answer": "As nossas web apps são totalmente responsivas e funcionam muito bem em browsers móveis. Podes até instalá-las como PWAs (Progressive Web Apps) para uma experiência tipo app." },
-      { "question": "Como contacto o suporte?", "answer": "Podes contactar-nos em support@breathofnow.site ou através do formulário de contacto. Normalmente respondemos em 24-48 horas." }
+      {
+        "question": "Onde são guardados os meus dados?",
+        "answer": "Por defeito, todos os seus dados são guardados localmente no seu dispositivo usando o armazenamento do browser. Isto significa que os seus dados nunca saem do seu dispositivo a menos que active explicitamente o backup na cloud."
+      },
+      {
+        "question": "Posso usar as apps offline?",
+        "answer": "Sim! Todas as nossas apps funcionam totalmente offline. Algumas funcionalidades como sincronizar dados do Strava ou obter preços actuais de acções requerem internet, mas a funcionalidade principal funciona sem ela."
+      },
+      {
+        "question": "O que acontece se limpar os dados do browser?",
+        "answer": "Se limpar os dados do browser, os dados das apps serão eliminados. Recomendamos activar o backup na cloud ou exportar regularmente os seus dados para prevenir perda de dados."
+      },
+      {
+        "question": "Como funciona o Pague o Que Quiser?",
+        "answer": "Sugerimos um preço baseado no custo de vida da sua região, mas é livre de pagar mais ou menos. Se é estudante ou enfrenta dificuldades financeiras, sinta-se à vontade para pagar menos. Se pode pagar mais, a sua contribuição extra ajuda-nos a continuar a construir."
+      },
+      {
+        "question": "Posso alternar entre gratuito e pago?",
+        "answer": "Sim! Pode fazer upgrade para remover anúncios e desbloquear funcionalidades premium a qualquer momento. Se cancelar a sua subscrição, mantém o acesso até ao fim do período de facturação, depois volta ao nível gratuito."
+      },
+      {
+        "question": "O que está incluído no plano Membro Fundador?",
+        "answer": "O plano Membro Fundador (599€ único) dá-lhe acesso vitalício a TODAS as apps e TODAS as versões futuras para sempre. Também tem acesso antecipado a novas funcionalidades, o seu nome no nosso Hall da Fama, sessões trimestrais de Q&A com o fundador, pedidos de funcionalidades prioritários e suporte directo via Discord. Está limitado aos primeiros 100 membros."
+      },
+      {
+        "question": "Têm uma app móvel?",
+        "answer": "As nossas apps web são totalmente responsivas e funcionam muito bem em browsers móveis. Pode até instalá-las como PWAs (Progressive Web Apps) para uma experiência semelhante a uma app."
+      },
+      {
+        "question": "Como contacto o suporte?",
+        "answer": "Pode contactar-nos em support@breathofnow.site ou através do formulário de contacto. Normalmente respondemos dentro de 24-48 horas."
+      }
     ]
   },
   "auth": {
     "signInTitle": "Bem-vindo de volta",
-    "signInSubtitle": "Entra para aceder às tuas apps",
-    "signUpTitle": "Cria a tua conta",
-    "signUpSubtitle": "Começa a tua jornada para uma vida consciente",
-    "magicLinkTitle": "Verifica o teu email",
-    "magicLinkSubtitle": "Enviámos-te um link mágico para entrar",
+    "signInSubtitle": "Entre para aceder às suas apps",
+    "signUpTitle": "Crie a sua conta",
+    "signUpSubtitle": "Comece a sua jornada para uma vida consciente",
+    "magicLinkTitle": "Verifique o seu email",
+    "magicLinkSubtitle": "Enviámos-lhe um link mágico para entrar",
     "magicLinkSent": "Link mágico enviado para {email}",
-    "magicLinkDescription": "Clica no link no teu email para entrar. O link expira em 10 minutos.",
+    "magicLinkDescription": "Clique no link no seu email para entrar. O link expira em 10 minutos.",
     "sendMagicLink": "Enviar Link Mágico",
-    "orContinueWith": "Ou continua com",
-    "noAccount": "Não tens conta?",
-    "hasAccount": "Já tens conta?",
-    "forgotPassword": "Esqueceste a palavra-passe?",
+    "orContinueWith": "Ou continue com",
+    "noAccount": "Não tem uma conta?",
+    "hasAccount": "Já tem uma conta?",
+    "forgotPassword": "Esqueceu a palavra-passe?",
     "emailLabel": "Endereço de email",
-    "emailPlaceholder": "tu@exemplo.com",
-    "nameLabel": "O teu nome",
-    "namePlaceholder": "Insere o teu nome",
+    "emailPlaceholder": "voce@exemplo.com",
+    "nameLabel": "O seu nome",
+    "namePlaceholder": "Introduza o seu nome",
     "passwordLabel": "Palavra-passe",
-    "passwordPlaceholder": "Insere a tua palavra-passe",
+    "passwordPlaceholder": "Introduza a sua palavra-passe",
     "rememberMe": "Lembrar-me",
     "signIn": "Entrar",
     "signUp": "Registar",
     "createAccount": "Criar Conta",
-    "signUpBenefits": "O que recebes:",
-    "benefits": { "freeApps": "Acesso a todas as apps, totalmente grátis", "localData": "Os teus dados ficam no teu dispositivo", "noCredit": "Sem necessidade de cartão de crédito" },
-    "termsAgree": "Ao registares-te, concordas com os nossos",
+    "signUpBenefits": "O que obtém:",
+    "benefits": {
+      "freeApps": "Acesso a todas as apps, completamente grátis",
+      "localData": "Os seus dados ficam no seu dispositivo",
+      "noCredit": "Sem necessidade de cartão de crédito"
+    },
+    "termsAgree": "Ao registar-se, concorda com os nossos",
     "termsLink": "Termos de Serviço",
     "privacyLink": "Política de Privacidade",
-    "otpInstructions": "Ou insere o código de 6 dígitos que recebeste por email:",
+    "otpInstructions": "Ou introduza o código de 6 dígitos que recebeu por email:",
     "otpLabel": "Código de verificação",
     "otpPlaceholder": "000000",
     "verifyCode": "Verificar Código",
     "otpError": "Código inválido ou expirado",
-    "orClickLink": "Ou clica no link do email",
+    "orClickLink": "Ou clique no link do email",
     "resendCode": "Reenviar código",
     "resending": "A reenviar..."
   },
   "legal": {
-    "privacy": { "title": "Política de Privacidade", "lastUpdated": "Última atualização: {date}", "intro": "Na Breath of Now, acreditamos que a privacidade é um direito fundamental. Esta política explica como tratamos os teus dados." },
-    "terms": { "title": "Termos de Serviço", "lastUpdated": "Última atualização: {date}", "intro": "Ao usar as apps Breath of Now, concordas com estes termos." },
-    "cookies": { "title": "Política de Cookies", "lastUpdated": "Última atualização: {date}", "intro": "Usamos cookies mínimos para fornecer funcionalidade essencial." }
+    "privacy": {
+      "title": "Política de Privacidade",
+      "lastUpdated": "Última actualização: {date}",
+      "intro": "Na Breath of Now, acreditamos que a privacidade é um direito fundamental. Esta política explica como tratamos os seus dados."
+    },
+    "terms": {
+      "title": "Termos de Serviço",
+      "lastUpdated": "Última actualização: {date}",
+      "intro": "Ao usar as apps Breath of Now, concorda com estes termos."
+    },
+    "cookies": {
+      "title": "Política de Cookies",
+      "lastUpdated": "Última actualização: {date}",
+      "intro": "Usamos cookies mínimos para fornecer funcionalidade essencial."
+    }
   },
-  "ads": { "banner": "Publicidade", "supported": "Suportado por anúncios", "removeAds": "Remove anúncios com Premium" },
+  "ads": {
+    "banner": "Publicidade",
+    "supported": "Suportado por anúncios",
+    "removeAds": "Remova anúncios com Premium"
+  },
   "premium": {
     "locked": "Funcionalidade Premium",
-    "upgrade": "Atualizar",
+    "upgrade": "Upgrade",
     "viewPlans": "Ver Planos",
     "premium": "Premium",
     "premiumFeature": "Funcionalidade Premium",
     "startingAt": "A partir de {price}",
-    "features": { "cloudSync": "Sincronização cloud mantém os teus dados seguros em todos os dispositivos", "googleDrive": "Faz backup dos teus dados para o Google Drive", "prioritySupport": "Obtém suporte prioritário da nossa equipa", "noAds": "Desfruta de uma experiência sem anúncios" }
+    "features": {
+      "cloudSync": "A sincronização cloud mantém os seus dados seguros em todos os dispositivos",
+      "googleDrive": "Faça backup dos seus dados no Google Drive",
+      "prioritySupport": "Obtenha suporte prioritário da nossa equipa",
+      "noAds": "Desfrute de uma experiência sem anúncios"
+    }
   },
   "account": {
     "title": "Conta",
     "myAccount": "A Minha Conta",
     "settings": "Definições da Conta",
-    "signInToView": "Entra para ver a tua conta",
-    "signInDescription": "Cria uma conta ou entra para gerir a tua subscrição e definições.",
-    "profile": { "title": "Perfil", "displayName": "Nome de Exibição", "email": "Email", "emailHint": "O email não pode ser alterado", "user": "Utilizador", "namePlaceholder": "O teu nome", "saveChanges": "Guardar Alterações" },
+    "signInToView": "Entre para ver a sua conta",
+    "signInDescription": "Crie uma conta ou entre para gerir a sua subscrição e definições.",
+    "profile": {
+      "title": "Perfil",
+      "displayName": "Nome de Apresentação",
+      "email": "Email",
+      "emailHint": "O email não pode ser alterado",
+      "user": "Utilizador",
+      "namePlaceholder": "O seu nome",
+      "saveChanges": "Guardar Alterações"
+    },
     "subscription": {
       "title": "Subscrição",
-      "currentPlan": "Plano Atual",
+      "currentPlan": "Plano Actual",
       "lifetimeAccess": "Acesso vitalício",
-      "expiresOn": "Expira em {date}",
-      "renews": "Renova em {date}",
+      "expiresOn": "Expira a {date}",
+      "renews": "Renova a {date}",
       "appsIncluded": "{count} app incluída",
       "appsIncludedPlural": "{count} apps incluídas",
       "allAppsIncluded": "Todas as apps incluídas",
-      "upgrade": "Atualizar",
+      "upgrade": "Upgrade",
       "manage": "Gerir"
     },
-    "tiers": { "free": "Grátis", "starter": "Starter", "plus": "Plus", "pro": "Pro", "founding": "Membro Fundador" },
-    "features": { "cloudSync": "Cloud Sync", "googleDrive": "Google Drive", "adFree": "Sem Anúncios", "prioritySupport": "Suporte Prioritário", "earlyAccess": "Acesso Antecipado", "whatsappSupport": "Suporte WhatsApp" },
-    "appAccess": { "title": "Acesso às Apps", "selected": "{selected} / {max} selecionadas", "freeTierTitle": "Tier grátis: 1 app com dados permanentes", "freeTierDescription": "Podes experimentar outras apps, mas os dados serão eliminados após 24 horas.", "canChangeIn": "Podes mudar a tua app principal em {days} dias.", "trial24h": "Trial 24h", "active": "Ativa", "locked": "Bloqueada", "comingSoon": "Em Breve", "tipFree": "Atualiza para ter mais apps e remover anúncios.", "tipPaid": "Podes mudar as tuas apps selecionadas nas definições." },
-    "notifications": { "title": "Notificações", "budgetAlerts": "Alertas de Orçamento", "budgetAlertsDescription": "Recebe notificações quando estiveres perto dos limites de orçamento", "weeklySummary": "Resumo Semanal", "weeklySummaryDescription": "Recebe um resumo semanal das tuas atividades" },
-    "appearance": { "title": "Aparência", "theme": "Tema", "light": "Claro", "dark": "Escuro", "system": "Sistema" },
-    "regional": { "title": "Regional", "currency": "Moeda", "currencyDescription": "Moeda padrão para novas transações", "country": "País", "countryDescription": "Usado para cálculos de impostos" },
-    "dataManagement": { "title": "Gestão de Dados", "localStorage": "Armazenamento Local", "localStorageActive": "Ativo", "localStorageDescription": "Os teus dados são armazenados localmente neste dispositivo usando IndexedDB.", "cloudSyncTitle": "Cloud Sync", "cloudSyncEnabled": "Ativado", "cloudSyncDescription": "Os teus dados são sincronizados automaticamente em todos os teus dispositivos.", "exportAllData": "Exportar Todos os Dados", "exportData": "Exportar Dados", "exportDescription": "Descarrega todos os teus dados", "downloadAsJson": "Descarrega os teus dados como JSON", "export": "Exportar", "deleteLocalData": "Eliminar Dados Locais", "deleteLocalDescription": "Remove todos os dados deste dispositivo", "deleteData": "Eliminar Todos os Dados", "delete": "Eliminar", "deleteWarning": "Esta ação não pode ser revertida", "confirmDelete": "Tens a certeza de que queres eliminar todos os dados locais? Esta ação não pode ser revertida." },
-    "dangerZone": { "title": "Zona Perigosa", "deleteAccount": "Eliminar Conta", "deleteAccountDescription": "Elimina permanentemente a tua conta e todos os dados" },
+    "tiers": {
+      "free": "Gratuito",
+      "starter": "Starter",
+      "plus": "Plus",
+      "pro": "Pro",
+      "founding": "Membro Fundador"
+    },
+    "features": {
+      "cloudSync": "Sincronização Cloud",
+      "googleDrive": "Google Drive",
+      "adFree": "Sem Anúncios",
+      "prioritySupport": "Suporte Prioritário",
+      "earlyAccess": "Acesso Antecipado",
+      "whatsappSupport": "Suporte WhatsApp"
+    },
+    "appAccess": {
+      "title": "Acesso às Apps",
+      "selected": "{selected} / {max} seleccionadas",
+      "freeTierTitle": "Nível gratuito: 1 app com dados permanentes",
+      "freeTierDescription": "Pode experimentar outras apps, mas os seus dados serão eliminados após 24 horas.",
+      "canChangeIn": "Pode mudar a sua app principal em {days} dias.",
+      "trial24h": "Teste 24h",
+      "active": "Activo",
+      "locked": "Bloqueado",
+      "comingSoon": "Em Breve",
+      "tipFree": "Faça upgrade para obter mais apps e remover anúncios.",
+      "tipPaid": "Pode alterar as apps seleccionadas nas definições."
+    },
+    "notifications": {
+      "title": "Notificações",
+      "budgetAlerts": "Alertas de Orçamento",
+      "budgetAlertsDescription": "Receba notificações quando estiver perto dos limites do orçamento",
+      "weeklySummary": "Resumo Semanal",
+      "weeklySummaryDescription": "Receba um resumo semanal das suas actividades"
+    },
+    "appearance": {
+      "title": "Aparência",
+      "theme": "Tema",
+      "light": "Claro",
+      "dark": "Escuro",
+      "system": "Sistema"
+    },
+    "regional": {
+      "title": "Regional",
+      "currency": "Moeda",
+      "currencyDescription": "Moeda predefinida para novas transacções",
+      "country": "País",
+      "countryDescription": "Usado para cálculos fiscais"
+    },
+    "dataManagement": {
+      "title": "Gestão de Dados",
+      "localStorage": "Armazenamento Local",
+      "localStorageActive": "Activo",
+      "localStorageDescription": "Os seus dados são guardados localmente neste dispositivo usando IndexedDB.",
+      "cloudSyncTitle": "Sincronização Cloud",
+      "cloudSyncEnabled": "Activada",
+      "cloudSyncDescription": "Os seus dados são automaticamente sincronizados em todos os seus dispositivos.",
+      "exportAllData": "Exportar Todos os Dados",
+      "exportData": "Exportar Dados",
+      "exportDescription": "Transferir todos os seus dados",
+      "downloadAsJson": "Transferir os seus dados como JSON",
+      "export": "Exportar",
+      "deleteLocalData": "Eliminar Dados Locais",
+      "deleteLocalDescription": "Remover todos os dados deste dispositivo",
+      "deleteData": "Eliminar Todos os Dados",
+      "delete": "Eliminar",
+      "deleteWarning": "Esta acção não pode ser anulada",
+      "confirmDelete": "Tem a certeza de que quer eliminar todos os dados locais? Esta acção não pode ser anulada."
+    },
+    "dangerZone": {
+      "title": "Zona de Perigo",
+      "deleteAccount": "Eliminar Conta",
+      "deleteAccountDescription": "Eliminar permanentemente a sua conta e todos os dados"
+    },
     "version": "Breath of Now v{version}"
   },
   "expenseFlow": {
     "title": "ExpenseFlow",
-    "tagline": "Gestão consciente de dinheiro",
-    "nav": { "dashboard": "Painel", "dashboardShort": "Início", "transactions": "Transações", "transactionsShort": "Trans", "reports": "Relatórios", "reportsShort": "Relat", "categories": "Categorias", "categoriesShort": "Cats", "budgets": "Orçamentos", "budgetsShort": "Orçam", "settings": "Definições", "settingsShort": "Mais", "import": "Importar", "addTransaction": "Adicionar" },
-    "sync": { "syncing": "A sincronizar...", "synced": "Todas as alterações sincronizadas", "syncError": "Erro de sincronização", "offline": "Offline", "hasConflicts": "{count} conflitos para resolver", "lastSync": "Última sincronização", "never": "Nunca", "justNow": "Agora mesmo", "minutesAgo": "Há {minutes}m", "hoursAgo": "Há {hours}h", "syncNow": "Sincronizar agora", "clickToSync": "Clica para sincronizar", "signInToSync": "Entra para ativar sincronização cloud", "connection": "Ligação", "online": "Online", "authentication": "Autenticação", "authenticated": "Autenticado", "notAuthenticated": "Não autenticado", "conflicts": "Conflitos", "status": "Estado" },
-    "dashboard": { "title": "Painel", "thisMonth": "Este mês", "expenses": "Despesas", "income": "Receitas", "balance": "Saldo", "transactions": "Transações", "recentTransactions": "Transações Recentes", "viewAll": "Ver todas", "noTransactions": "Sem transações este mês", "addFirst": "Adiciona a tua primeira transação", "transaction": "Transação" },
-    "quickAdd": { "title": "Nova Transação", "titleExpense": "Nova Despesa", "titleIncome": "Nova Receita", "amount": "Montante", "amountPlaceholder": "0.00", "category": "Categoria", "selectCategory": "Seleciona categoria", "description": "Descrição", "descriptionPlaceholder": "Descrição opcional", "date": "Data", "today": "Hoje", "yesterday": "Ontem", "save": "Guardar", "saved": "Transação guardada!", "expense": "Despesa", "income": "Receita", "exchangeRate": "Taxa de câmbio", "equivalent": "Equivalente", "loadingRate": "A carregar taxa de câmbio...", "rateError": "Não foi possível carregar taxa de câmbio" },
-    "transactions": { "title": "Transações", "all": "Todas", "expenses": "Despesas", "income": "Receitas", "search": "Pesquisar transações...", "noResults": "Nenhuma transação encontrada", "delete": "Eliminar", "edit": "Editar", "confirmDelete": "Tens a certeza de que queres eliminar esta transação?" },
-    "categories": { "title": "Categorias", "expense": "Despesas", "income": "Receitas", "add": "Adicionar Categoria", "edit": "Editar Categoria", "name": "Nome", "icon": "Ícone", "color": "Cor", "default": { "food": "Alimentação", "transport": "Transportes", "home": "Casa", "health": "Saúde", "leisure": "Lazer", "shopping": "Compras", "education": "Educação", "otherExpense": "Outros", "salary": "Salário", "freelance": "Freelance", "investments": "Investimentos", "otherIncome": "Outros" } },
-    "budgets": { "title": "Orçamentos", "add": "Adicionar Orçamento", "edit": "Editar Orçamento", "monthly": "Mensal", "yearly": "Anual", "spent": "Gasto", "remaining": "Restante", "over": "Acima do orçamento" },
-    "reports": { "title": "Relatórios", "byCategory": "Por Categoria", "byMonth": "Por Mês", "trends": "Tendências" },
-    "settings": { "title": "Definições", "subscription": "Subscrição", "upgradeToUnlock": "Atualiza para desbloquear funcionalidades premium", "manageBilling": "Gerir Faturação", "cloudSync": "Cloud Sync", "baseCurrency": "Moeda Base", "baseCurrencyDescription": "Todas as transações serão convertidas para esta moeda nos relatórios", "currency": "Moeda Base", "currencyUpdated": "Moeda atualizada", "dateFormat": "Formato de Data", "firstDayOfWeek": "Primeiro Dia da Semana", "monday": "Segunda-feira", "sunday": "Domingo", "dataManagement": "Gestão de Dados", "exportData": "Exportar Dados", "exportDescription": "Descarrega todos os teus dados como JSON", "export": "Exportar Dados", "exporting": "A exportar...", "import": "Importar Dados", "importData": "Importar Dados", "importDescription": "Importa transações de CSV ou Excel", "exportSuccess": "Dados exportados com sucesso!", "importSuccess": "Dados importados com sucesso!", "deleteAllData": "Eliminar Todos os Dados", "deleteWarning": "Esta ação não pode ser revertida", "delete": "Eliminar", "signOut": "Sair", "confirmDelete": "Eliminar Todos os Dados?", "confirmDeleteMessage": "Isto irá eliminar permanentemente todas as tuas transações, categorias e orçamentos. Esta ação não pode ser revertida.", "cancel": "Cancelar", "confirmDeleteButton": "Sim, Eliminar Tudo", "deleting": "A eliminar..." },
-    "import": { "title": "Importar", "dragDrop": "Arrasta um ficheiro ou clica para selecionar", "supported": "CSV, Excel (.xlsx, .xls)", "mapping": "Mapeamento de Colunas", "preview": "Pré-visualização", "importing": "A importar...", "success": "{count} transações importadas com sucesso!", "dateColumn": "Coluna de Data *", "amountColumn": "Coluna de Montante *", "descriptionColumn": "Coluna de Descrição", "categoryColumn": "Coluna de Categoria", "invalidDate": "Data inválida", "invalidAmount": "Montante inválido", "unsupportedFormat": "Formato de ficheiro não suportado. Por favor usa CSV ou Excel (.xlsx, .xls)", "parseError": "Falha ao processar ficheiro Excel" },
-    "months": { "january": "Janeiro", "february": "Fevereiro", "march": "Março", "april": "Abril", "may": "Maio", "june": "Junho", "july": "Julho", "august": "Agosto", "september": "Setembro", "october": "Outubro", "november": "Novembro", "december": "Dezembro" },
-    "currencies": { "EUR": "Euro", "USD": "Dólar Americano", "GBP": "Libra Esterlina", "BRL": "Real Brasileiro", "CHF": "Franco Suíço", "JPY": "Iene Japonês", "AUD": "Dólar Australiano", "CAD": "Dólar Canadiano" }
+    "tagline": "Gestão consciente do dinheiro",
+    "nav": {
+      "dashboard": "Painel",
+      "dashboardShort": "Início",
+      "transactions": "Transacções",
+      "transactionsShort": "Trans",
+      "reports": "Relatórios",
+      "reportsShort": "Relat",
+      "categories": "Categorias",
+      "categoriesShort": "Cats",
+      "budgets": "Orçamentos",
+      "budgetsShort": "Orçam",
+      "settings": "Definições",
+      "settingsShort": "Mais",
+      "import": "Importar",
+      "addTransaction": "Adicionar"
+    },
+    "sync": {
+      "syncing": "A sincronizar...",
+      "synced": "Todas as alterações sincronizadas",
+      "syncError": "Erro de sincronização",
+      "offline": "Offline",
+      "hasConflicts": "{count} conflitos por resolver",
+      "lastSync": "Última sincronização",
+      "never": "Nunca",
+      "justNow": "Agora mesmo",
+      "minutesAgo": "há {minutes}m",
+      "hoursAgo": "há {hours}h",
+      "syncNow": "Sincronizar agora",
+      "clickToSync": "Clique para sincronizar",
+      "signInToSync": "Entre para activar sincronização cloud",
+      "connection": "Ligação",
+      "online": "Online",
+      "authentication": "Autenticação",
+      "authenticated": "Autenticado",
+      "notAuthenticated": "Não autenticado",
+      "conflicts": "Conflitos",
+      "status": "Estado"
+    },
+    "dashboard": {
+      "title": "Painel",
+      "thisMonth": "Este mês",
+      "expenses": "Despesas",
+      "income": "Receitas",
+      "balance": "Saldo",
+      "transactions": "Transacções",
+      "recentTransactions": "Transacções Recentes",
+      "viewAll": "Ver todas",
+      "noTransactions": "Sem transacções este mês",
+      "addFirst": "Adicione a sua primeira transacção",
+      "transaction": "Transacção"
+    },
+    "quickAdd": {
+      "title": "Nova Transacção",
+      "titleExpense": "Nova Despesa",
+      "titleIncome": "Nova Receita",
+      "amount": "Valor",
+      "amountPlaceholder": "0,00",
+      "category": "Categoria",
+      "selectCategory": "Seleccionar categoria",
+      "description": "Descrição",
+      "descriptionPlaceholder": "Descrição opcional",
+      "date": "Data",
+      "today": "Hoje",
+      "yesterday": "Ontem",
+      "save": "Guardar",
+      "saved": "Transacção guardada!",
+      "expense": "Despesa",
+      "income": "Receita",
+      "exchangeRate": "Taxa de câmbio",
+      "equivalent": "Equivalente",
+      "loadingRate": "A carregar taxa de câmbio...",
+      "rateError": "Não foi possível carregar a taxa de câmbio"
+    },
+    "transactions": {
+      "title": "Transacções",
+      "all": "Todas",
+      "expenses": "Despesas",
+      "income": "Receitas",
+      "search": "Pesquisar transacções...",
+      "noResults": "Nenhuma transacção encontrada",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "confirmDelete": "Tem a certeza de que quer eliminar esta transacção?"
+    },
+    "categories": {
+      "title": "Categorias",
+      "expense": "Despesas",
+      "income": "Receitas",
+      "add": "Adicionar Categoria",
+      "edit": "Editar Categoria",
+      "name": "Nome",
+      "icon": "Ícone",
+      "color": "Cor",
+      "default": {
+        "food": "Alimentação",
+        "transport": "Transportes",
+        "home": "Casa",
+        "health": "Saúde",
+        "leisure": "Lazer",
+        "shopping": "Compras",
+        "education": "Educação",
+        "otherExpense": "Outros",
+        "salary": "Salário",
+        "freelance": "Freelance",
+        "investments": "Investimentos",
+        "otherIncome": "Outros"
+      }
+    },
+    "budgets": {
+      "title": "Orçamentos",
+      "add": "Adicionar Orçamento",
+      "edit": "Editar Orçamento",
+      "monthly": "Mensal",
+      "yearly": "Anual",
+      "spent": "Gasto",
+      "remaining": "Restante",
+      "over": "Acima do orçamento"
+    },
+    "reports": {
+      "title": "Relatórios",
+      "byCategory": "Por Categoria",
+      "byMonth": "Por Mês",
+      "trends": "Tendências",
+      "totalExpenses": "Total de Despesas",
+      "totalIncome": "Total de Receitas",
+      "balance": "Saldo"
+    },
+    "settings": {
+      "title": "Definições",
+      "subscription": "Subscrição",
+      "upgradeToUnlock": "Faça upgrade para desbloquear funcionalidades premium",
+      "manageBilling": "Gerir Facturação",
+      "cloudSync": "Sincronização Cloud",
+      "baseCurrency": "Moeda Base",
+      "baseCurrencyDescription": "Todas as transacções serão convertidas para esta moeda nos relatórios",
+      "currency": "Moeda Base",
+      "currencyUpdated": "Moeda actualizada",
+      "dateFormat": "Formato de Data",
+      "firstDayOfWeek": "Primeiro Dia da Semana",
+      "monday": "Segunda-feira",
+      "sunday": "Domingo",
+      "dataManagement": "Gestão de Dados",
+      "exportData": "Exportar Dados",
+      "exportDescription": "Transferir todos os seus dados como JSON",
+      "export": "Exportar Dados",
+      "exporting": "A exportar...",
+      "import": "Importar Dados",
+      "importData": "Importar Dados",
+      "importDescription": "Importar transacções de CSV ou Excel",
+      "exportSuccess": "Dados exportados com sucesso!",
+      "importSuccess": "Dados importados com sucesso!",
+      "deleteAllData": "Eliminar Todos os Dados",
+      "deleteWarning": "Esta acção não pode ser anulada",
+      "delete": "Eliminar",
+      "signOut": "Terminar Sessão",
+      "confirmDelete": "Eliminar Todos os Dados?",
+      "confirmDeleteMessage": "Isto vai eliminar permanentemente todas as suas transacções, categorias e orçamentos. Esta acção não pode ser anulada.",
+      "cancel": "Cancelar",
+      "confirmDeleteButton": "Sim, Eliminar Tudo",
+      "deleting": "A eliminar..."
+    },
+    "import": {
+      "title": "Importar",
+      "dragDrop": "Arraste um ficheiro ou clique para seleccionar",
+      "supported": "CSV, Excel (.xlsx, .xls)",
+      "mapping": "Mapeamento de Colunas",
+      "preview": "Pré-visualização",
+      "importing": "A importar...",
+      "success": "{count} transacções importadas com sucesso!",
+      "dateColumn": "Coluna de Data *",
+      "amountColumn": "Coluna de Valor *",
+      "descriptionColumn": "Coluna de Descrição",
+      "categoryColumn": "Coluna de Categoria",
+      "invalidDate": "Data inválida",
+      "invalidAmount": "Valor inválido",
+      "unsupportedFormat": "Formato de ficheiro não suportado. Por favor use CSV ou Excel (.xlsx, .xls)",
+      "parseError": "Falha ao processar ficheiro Excel",
+      "columns": {
+        "date": "Data",
+        "description": "Descrição",
+        "amount": "Valor",
+        "type": "Tipo"
+      }
+    },
+    "months": {
+      "january": "Janeiro",
+      "february": "Fevereiro",
+      "march": "Março",
+      "april": "Abril",
+      "may": "Maio",
+      "june": "Junho",
+      "july": "Julho",
+      "august": "Agosto",
+      "september": "Setembro",
+      "october": "Outubro",
+      "november": "Novembro",
+      "december": "Dezembro"
+    },
+    "currencies": {
+      "EUR": "Euro",
+      "USD": "Dólar Americano",
+      "GBP": "Libra Esterlina",
+      "BRL": "Real Brasileiro",
+      "CHF": "Franco Suíço",
+      "JPY": "Iene Japonês",
+      "AUD": "Dólar Australiano",
+      "CAD": "Dólar Canadiano"
+    },
+    "currency": {
+      "searchPlaceholder": "Pesquisar moedas...",
+      "allCurrencies": "Todas as Moedas",
+      "noResults": "Nenhuma moeda encontrada"
+    }
   },
   "fitLog": {
     "title": "FitLog",
     "tagline": "Cada repetição conta",
-    "nav": { "home": "Início", "workouts": "Treinos", "history": "Histórico", "export": "Exportar", "plans": "Planos", "settings": "Definições" },
-    "dashboard": { "welcome": "Bem-vindo ao FitLog! 💪", "welcomeDescription": "Começa por criar ou importar um plano de treino personalizado.", "noPlan": "Nenhum plano ativo", "noPlanDescription": "Importa um plano de treino para começar", "importPlan": "Importar Plano", "thisWeek": "Esta Semana", "totalVolume": "Volume Total", "totalTime": "Tempo Total", "avgFeeling": "Sensação Média", "todayWorkout": "Treino de Hoje", "restDay": "Dia de Descanso", "restDayMessage": "Não tens treino agendado para hoje. Descansa e recupera! 🧘", "exercises": "{count} exercícios", "targetDuration": "~{minutes} min", "lastWorkout": "Último treino: há {days} dia", "lastWorkoutPlural": "Último treino: há {days} dias", "feltLike": "Sentiste-te {emoji}", "startWorkout": "Iniciar Treino", "activePlan": "Plano Ativo", "recentSessions": "Sessões Recentes", "viewAllHistory": "Ver todo o histórico", "noSessionsYet": "Ainda não tens treinos registados", "completedOf": "{completed} de {total} treinos concluídos", "recentWorkouts": "Últimos Treinos" },
-    "onboarding": { "createWithAI": "Criar Plano com IA", "personalizedQuestionnaire": "Questionário personalizado", "questionnaireDescription": "Responde a algumas perguntas e gera uma prompt perfeita para o ChatGPT ou Claude criar o teu plano de treino ideal.", "startQuestionnaire": "Começar Questionário", "or": "ou", "haveJSON": "Já tenho um JSON - Importar", "howItWorks": "Como funciona?", "step1Title": "Responde ao questionário", "step1Description": "Diz-nos os teus objetivos, disponibilidade e preferências", "step2Title": "Copia a prompt gerada", "step2Description": "Cola no ChatGPT ou Claude", "step3Title": "Importa o JSON", "step3Description": "Copia o plano gerado e importa na app", "step4Title": "Treina e regista", "step4Description": "Acompanha o progresso e ajusta semanalmente", "needHelp": "Precisa de ajuda para criar o plano?", "useSmartQuestionnaire": "Usar o questionário inteligente →", "adjustPlan": "Ajustar Plano", "newPlan": "Novo Plano" },
-    "workout": { "title": "Treino", "noWorkouts": "Sem treinos", "noWorkoutsDescription": "O teu plano de treino não tem treinos configurados para este período.", "neverDone": "Nunca realizado", "lastDone": "Último realizado", "notFound": "Treino não encontrado", "notFoundDescription": "Este treino não existe ou foi eliminado.", "details": "Detalhes do Treino", "targetDuration": "Duração Alvo", "warmup": "Aquecimento", "cooldown": "Arrefecimento", "exerciseList": "Exercícios", "weekWorkouts": "Treinos da Semana", "today": "Hoje", "lastSession": "Último", "noPlanActive": "Nenhum plano ativo", "noPlanActiveDescription": "Importa um plano de treino para ver os treinos disponíveis.", "noWorkoutsInPlan": "Sem treinos", "noWorkoutsInPlanDescription": "O plano atual não tem treinos definidos.", "back": "Voltar", "lastWorkout": "Último treino", "neverPerformed": "Nunca realizado", "warmupSection": "🔥 Aquecimento ({minutes} min)", "cardioSection": "🏃 Cardio Final ({minutes} min)", "cardioAlternatives": "Alternativas: {alternatives}", "restInfo": "Descanso: {seconds}s", "startSession": "Iniciar Treino" },
-    "session": { "title": "Sessão de Treino", "inProgress": "Em Progresso", "exercise": "Exercício", "set": "Série", "reps": "Repetições", "weight": "Peso", "rest": "Descanso", "notes": "Notas", "addSet": "Adicionar Série", "skipExercise": "Saltar", "nextExercise": "Próximo Exercício", "finishWorkout": "Terminar Treino", "cancelWorkout": "Cancelar Treino", "confirmCancel": "Tens a certeza de que queres cancelar este treino? O teu progresso será perdido.", "howDidYouFeel": "Como te sentiste?", "sessionNotes": "Notas da sessão (opcional)", "saveSession": "Guardar Sessão", "feelings": { "terrible": "Péssimo", "bad": "Mau", "okay": "Normal", "good": "Bom", "excellent": "Excelente" } },
-    "history": { "title": "Histórico", "noHistory": "Sem treinos registados", "noHistoryDescription": "Completa o teu primeiro treino para ver o histórico aqui.", "sessionNotFound": "Sessão não encontrada", "sessionNotFoundDescription": "Esta sessão não existe ou foi eliminada.", "filters": { "all": "Todos", "week": "Semana", "month": "Mês" }, "sessionDetails": "Detalhes da Sessão", "duration": "Duração", "feeling": "Sensação", "totalSets": "Total de Séries", "totalVolume": "Volume Total", "workoutHistory": "Histórico de Treinos", "workouts": "Treinos", "minutes": "Minutos", "volume": "Volume", "workout": "Treino", "todayLabel": "Hoje", "yesterdayLabel": "Ontem", "daysAgoLabel": "Há {days} dias", "back": "Voltar", "howYouFelt": "Como te sentiste", "notes": "Notas", "exercisesList": "Exercícios", "series": "séries", "skipped": "Pulada", "setNumber": "Série {number}", "setsCompleted": "{completed} séries completadas", "tonnesFormat": "{value} toneladas" },
-    "plans": { "title": "Planos de Treino", "noPlans": "Sem planos", "noPlanDescription": "Importa um plano de treino em formato JSON para começar.", "importPlan": "Importar Plano", "activePlan": "Ativo", "setActive": "Definir como Ativo", "deletePlan": "Eliminar Plano", "confirmDelete": "Tens a certeza de que queres eliminar este plano?", "new": "Novo", "tip": "💡 Dica", "tipDescription": "Podes ter múltiplos planos guardados e alternar entre eles. Apenas um plano pode estar ativo de cada vez. Os dados de treino de cada plano são mantidos separadamente.", "import": { "title": "Importar Plano", "description": "Carrega um ficheiro JSON com o teu plano de treino", "dragDrop": "Arrasta e larga ou clica para selecionar", "supported": "Apenas ficheiros JSON", "example": "Exemplo de formato", "importing": "A importar...", "success": "Plano importado com sucesso!", "error": "Falha ao importar plano" } },
-    "settings": { "title": "Definições do FitLog", "units": { "title": "Unidades", "weight": "Unidade de Peso", "kg": "Quilogramas (kg)", "lb": "Libras (lb)" }, "restTimer": { "title": "Temporizador de Descanso", "defaultDuration": "Duração Padrão", "sound": "Notificação Sonora", "vibration": "Vibração" }, "data": { "title": "Gestão de Dados", "exportData": "Exportar Dados", "exportDescription": "Descarrega todos os teus dados de treino", "clearData": "Limpar Todos os Dados", "clearDescription": "Elimina todos os dados de treino", "confirmClear": "Tens a certeza de que queres eliminar todos os dados do FitLog? Esta ação não pode ser revertida.", "clearAll": "Limpar Tudo" }, "featureInDevelopment": "Funcionalidade em desenvolvimento" },
-    "exercise": { "sets": "{count} séries", "reps": "{count} repetições", "rest": "{seconds}s descanso", "equipment": "Equipamento: {equipment}", "notes": "Notas" },
-    "days": { "sunday": "Domingo", "monday": "Segunda-feira", "tuesday": "Terça-feira", "wednesday": "Quarta-feira", "thursday": "Quinta-feira", "friday": "Sexta-feira", "saturday": "Sábado" },
-    "daysShort": { "sunday": "Dom", "monday": "Seg", "tuesday": "Ter", "wednesday": "Qua", "thursday": "Qui", "friday": "Sex", "saturday": "Sáb" },
+    "nav": {
+      "home": "Início",
+      "workouts": "Treinos",
+      "history": "Histórico",
+      "export": "Exportar",
+      "plans": "Planos",
+      "settings": "Definições"
+    },
+    "dashboard": {
+      "welcome": "Bem-vindo ao FitLog! 💪",
+      "welcomeDescription": "Comece por criar ou importar um plano de treino personalizado.",
+      "noPlan": "Sem plano activo",
+      "noPlanDescription": "Importe um plano de treino para começar",
+      "importPlan": "Importar Plano",
+      "thisWeek": "Esta Semana",
+      "totalVolume": "Volume Total",
+      "totalTime": "Tempo Total",
+      "avgFeeling": "Sensação Média",
+      "todayWorkout": "Treino de Hoje",
+      "restDay": "Dia de Descanso",
+      "restDayMessage": "Sem treino agendado para hoje. Descanse e recupere! 🧘",
+      "exercises": "{count} exercícios",
+      "targetDuration": "~{minutes} min",
+      "lastWorkout": "Último treino: há {days} dia",
+      "lastWorkoutPlural": "Último treino: há {days} dias",
+      "feltLike": "Sentiu-se {emoji}",
+      "startWorkout": "Iniciar Treino",
+      "activePlan": "Plano Activo",
+      "recentSessions": "Sessões Recentes",
+      "viewAllHistory": "Ver todo o histórico",
+      "noSessionsYet": "Ainda sem treinos registados",
+      "completedOf": "{completed} de {total} treinos completos",
+      "recentWorkouts": "Treinos Recentes"
+    },
+    "onboarding": {
+      "createWithAI": "Criar Plano com IA",
+      "personalizedQuestionnaire": "Questionário personalizado",
+      "questionnaireDescription": "Responda a algumas perguntas e gere um prompt perfeito para o ChatGPT ou Claude criar o seu plano de treino ideal.",
+      "startQuestionnaire": "Iniciar Questionário",
+      "or": "ou",
+      "haveJSON": "Já tenho um JSON - Importar",
+      "howItWorks": "Como funciona?",
+      "step1Title": "Responda ao questionário",
+      "step1Description": "Diga-nos os seus objectivos, disponibilidade e preferências",
+      "step2Title": "Copie o prompt gerado",
+      "step2Description": "Cole no ChatGPT ou Claude",
+      "step3Title": "Importe o JSON",
+      "step3Description": "Copie o plano gerado e importe-o na app",
+      "step4Title": "Treine e acompanhe",
+      "step4Description": "Acompanhe o seu progresso e ajuste semanalmente",
+      "needHelp": "Precisa de ajuda a criar o plano?",
+      "useSmartQuestionnaire": "Use o questionário inteligente →",
+      "adjustPlan": "Ajustar Plano",
+      "newPlan": "Novo Plano"
+    },
+    "workout": {
+      "title": "Treino",
+      "noWorkouts": "Sem treinos",
+      "noWorkoutsDescription": "O seu plano de treino não tem treinos configurados para este período.",
+      "neverDone": "Nunca feito",
+      "lastDone": "Última vez",
+      "notFound": "Treino não encontrado",
+      "notFoundDescription": "Este treino não existe ou foi eliminado.",
+      "details": "Detalhes do Treino",
+      "targetDuration": "Duração Alvo",
+      "warmup": "Aquecimento",
+      "cooldown": "Retorno à calma",
+      "exerciseList": "Exercícios",
+      "weekWorkouts": "Treinos da Semana",
+      "today": "Hoje",
+      "lastSession": "Último",
+      "noPlanActive": "Sem plano activo",
+      "noPlanActiveDescription": "Importe um plano de treino para ver os treinos disponíveis.",
+      "noWorkoutsInPlan": "Sem treinos",
+      "noWorkoutsInPlanDescription": "O plano actual não tem treinos definidos.",
+      "back": "Voltar",
+      "lastWorkout": "Último treino",
+      "neverPerformed": "Nunca realizado",
+      "warmupSection": "🔥 Aquecimento ({minutes} min)",
+      "cardioSection": "🏃 Cardio Final ({minutes} min)",
+      "cardioAlternatives": "Alternativas: {alternatives}",
+      "restInfo": "Descanso: {seconds}s",
+      "startSession": "Iniciar Treino"
+    },
+    "session": {
+      "title": "Sessão de Treino",
+      "inProgress": "Em Curso",
+      "exercise": "Exercício",
+      "set": "Série",
+      "reps": "Repetições",
+      "weight": "Peso",
+      "rest": "Descanso",
+      "restTime": "Tempo de Descanso",
+      "notes": "Notas",
+      "notesPlaceholder": "Adicionar uma nota...",
+      "addSet": "Adicionar Série",
+      "skipExercise": "Saltar",
+      "nextExercise": "Próximo Exercício",
+      "finishWorkout": "Terminar Treino",
+      "cancelWorkout": "Cancelar Treino",
+      "howDidYouFeel": "Como se sentiu?",
+      "howWasWorkout": "Como foi o treino?",
+      "sessionNotes": "Notas da sessão (opcional)",
+      "saveSession": "Guardar Sessão",
+      "confirmCancel": "Sair do treino?",
+      "cancelWorkoutWarning": "O seu progresso não será guardado.",
+      "feelings": {
+        "terrible": "Péssimo",
+        "bad": "Mau",
+        "okay": "Normal",
+        "good": "Bom",
+        "excellent": "Excelente"
+      }
+    },
+    "history": {
+      "title": "Histórico",
+      "noHistory": "Sem treinos registados",
+      "noHistoryDescription": "Complete o seu primeiro treino para ver o seu histórico aqui.",
+      "sessionNotFound": "Sessão não encontrada",
+      "sessionNotFoundDescription": "Esta sessão não existe ou foi eliminada.",
+      "filters": {
+        "all": "Todos",
+        "week": "Semana",
+        "month": "Mês"
+      },
+      "sessionDetails": "Detalhes da Sessão",
+      "duration": "Duração",
+      "feeling": "Sensação",
+      "totalSets": "Total de Séries",
+      "totalVolume": "Volume Total",
+      "workoutHistory": "Histórico de Treinos",
+      "workouts": "Treinos",
+      "minutes": "Minutos",
+      "volume": "Volume",
+      "workout": "Treino",
+      "todayLabel": "Hoje",
+      "yesterdayLabel": "Ontem",
+      "daysAgoLabel": "há {days} dias",
+      "back": "Voltar",
+      "howYouFelt": "Como se sentiu",
+      "notes": "Notas",
+      "exercisesList": "Exercícios",
+      "series": "séries",
+      "skipped": "Saltado",
+      "setNumber": "Série {number}",
+      "setsCompleted": "{completed} séries completas",
+      "tonnesFormat": "{value} toneladas"
+    },
+    "plans": {
+      "title": "Planos de Treino",
+      "noPlans": "Sem planos",
+      "noPlanDescription": "Importe um plano de treino em formato JSON para começar.",
+      "importPlan": "Importar Plano",
+      "activePlan": "Activo",
+      "setActive": "Definir como Activo",
+      "deletePlan": "Eliminar Plano",
+      "confirmDelete": "Tem a certeza de que quer eliminar este plano?",
+      "new": "Novo",
+      "tip": "💡 Dica",
+      "tipDescription": "Pode ter vários planos guardados e alternar entre eles. Apenas um plano pode estar activo de cada vez. Os dados de treino de cada plano são mantidos separadamente.",
+      "import": {
+        "title": "Importar Plano",
+        "description": "Carregue um ficheiro JSON com o seu plano de treino",
+        "dragDrop": "Arraste e largue ou clique para seleccionar",
+        "supported": "Apenas ficheiros JSON",
+        "example": "Formato de exemplo",
+        "importing": "A importar...",
+        "success": "Plano importado com sucesso!",
+        "error": "Falha ao importar plano"
+      }
+    },
+    "settings": {
+      "title": "Definições FitLog",
+      "timer": "Cronómetro",
+      "units": {
+        "title": "Unidades",
+        "weight": "Unidade de Peso",
+        "kg": "Quilogramas (kg)",
+        "lb": "Libras (lb)"
+      },
+      "restTimer": {
+        "title": "Cronómetro de Descanso",
+        "defaultDuration": "Duração Predefinida",
+        "sound": "Notificação Sonora",
+        "soundDescription": "Quando o cronómetro termina",
+        "vibration": "Vibração",
+        "showDuringWorkout": "Mostrar durante o treino"
+      },
+      "data": {
+        "title": "Gestão de Dados",
+        "exportData": "Exportar Dados",
+        "exportDescription": "Transferir todos os seus dados",
+        "clearData": "Limpar Todos os Dados",
+        "clearDescription": "Eliminar todos os dados de treino",
+        "confirmClear": "Tem a certeza de que quer eliminar todos os dados do FitLog? Esta acção não pode ser anulada.",
+        "clearAll": "Limpar Tudo"
+      },
+      "about": "Sobre",
+      "featureInDevelopment": "Funcionalidade em desenvolvimento"
+    },
+    "exercise": {
+      "sets": "{count} séries",
+      "reps": "{count} repetições",
+      "rest": "{seconds}s descanso",
+      "equipment": "Equipamento: {equipment}",
+      "notes": "Notas"
+    },
+    "days": {
+      "sunday": "Domingo",
+      "monday": "Segunda-feira",
+      "tuesday": "Terça-feira",
+      "wednesday": "Quarta-feira",
+      "thursday": "Quinta-feira",
+      "friday": "Sexta-feira",
+      "saturday": "Sábado"
+    },
+    "daysShort": {
+      "sunday": "Dom",
+      "monday": "Seg",
+      "tuesday": "Ter",
+      "wednesday": "Qua",
+      "thursday": "Qui",
+      "friday": "Sex",
+      "saturday": "Sáb"
+    },
     "questionnaire": {
-      "title": "Criar o Teu Plano",
-      "description": "Responde a algumas perguntas para gerar um plano de treino personalizado",
-      "exampleFormat": "Exemplo de formato JSON",
-      "llmPrompt": "Prompt para o LLM",
+      "title": "Criar o Seu Plano",
+      "description": "Responda a algumas perguntas para gerar um plano de treino personalizado",
+      "exampleFormat": "Formato JSON de exemplo",
+      "llmPrompt": "Prompt para LLM",
       "howToUse": "Como usar",
       "steps": {
-        "copyPrompt": "Copia o prompt acima",
-        "openAI": "Abre o ChatGPT ou Claude",
-        "pastePrompt": "Cola o prompt e envia",
-        "copyJSON": "Copia o JSON gerado",
-        "returnAndImport": "Volta à app e importa o plano"
+        "copyPrompt": "Copie o prompt acima",
+        "openAI": "Abra o ChatGPT ou Claude",
+        "pastePrompt": "Cole o prompt e envie",
+        "copyJSON": "Copie o JSON gerado",
+        "returnAndImport": "Volte à app e importe o plano"
       },
       "backToQuestionnaire": "Voltar ao questionário",
-      "namePlaceholder": "Como te chamas?",
-      "experiencePlaceholder": "Ex: Treinei musculação há 2 anos, parei durante 1 ano...",
-      "injuriesPlaceholder": "Ex: Hérnia discal L5-S1, tendinite no ombro direito...",
-      "avoidExercisesPlaceholder": "Ex: Agachamento profundo, extensão de pernas...",
-      "favoriteExercisesPlaceholder": "Ex: Hip thrust, deadlift, pull-ups...",
-      "otherAvoidPlaceholder": "Ex: Burpees, lunges...",
+      "namePlaceholder": "Qual é o seu nome?",
+      "experiencePlaceholder": "Ex.: Treinei musculação durante 2 anos, parei 1 ano...",
+      "injuriesPlaceholder": "Ex.: Hérnia discal L5-S1, tendinite no ombro direito...",
+      "avoidExercisesPlaceholder": "Ex.: Agachamento profundo, extensão de pernas...",
+      "favoriteExercisesPlaceholder": "Ex.: Hip thrust, peso morto, elevações...",
+      "otherAvoidPlaceholder": "Ex.: Burpees, lunges...",
       "copyPrompt": "Copiar Prompt",
       "promptGenerated": "Prompt gerado com sucesso!",
-      "promptInstructions": "Copia o prompt abaixo e cola no ChatGPT ou Claude. Depois de gerar o plano, copia o JSON e importa na página \"Importar Plano\".",
+      "promptInstructions": "Copie o prompt abaixo e cole no ChatGPT ou Claude. Depois de gerar o plano, copie o JSON e importe na página \"Importar Plano\".",
       "characters": "caracteres",
       "nextSteps": "Próximos passos:",
       "stepOf": "Passo {current} de {total}",
       "generatePrompt": "Gerar Prompt",
-      "fillRequired": "Preenche os campos obrigatórios para continuar",
+      "fillRequired": "Preencha os campos obrigatórios para continuar",
       "stepTitles": {
-        "personal": "Sobre Ti",
-        "goals": "Objetivos",
+        "personal": "Sobre Si",
+        "goals": "Objectivos",
         "schedule": "Disponibilidade",
         "equipment": "Equipamento",
         "health": "Saúde",
         "preferences": "Preferências"
       },
       "personal": {
-        "title": "Conta-nos sobre ti",
-        "subtitle": "Informação básica para personalizar o teu plano.",
+        "title": "Fale-nos sobre si",
+        "subtitle": "Informações básicas para personalizar o seu plano.",
         "name": "Nome",
         "weight": "Peso (kg)",
         "height": "Altura (cm)",
@@ -464,10 +1058,10 @@
         "advancedDesc": "> 2 anos"
       },
       "goals": {
-        "title": "Quais são os teus objetivos?",
-        "subtitle": "Seleciona um ou mais objetivos principais.",
-        "mainGoals": "Objetivos principais",
-        "targetAreas": "Zonas do corpo prioritárias (opcional)",
+        "title": "Quais são os seus objectivos?",
+        "subtitle": "Seleccione um ou mais objectivos principais.",
+        "mainGoals": "Objectivos principais",
+        "targetAreas": "Áreas do corpo alvo (opcional)",
         "strength": "Ganhar força",
         "muscle": "Ganhar massa muscular",
         "fatLoss": "Perder gordura",
@@ -488,12 +1082,12 @@
         "fullBody": "Corpo inteiro"
       },
       "schedule": {
-        "title": "Qual a tua disponibilidade?",
-        "subtitle": "Define quantos dias e quanto tempo podes treinar.",
+        "title": "Qual é a sua disponibilidade?",
+        "subtitle": "Defina quantos dias e quanto tempo pode treinar.",
         "daysPerWeek": "Quantos dias por semana?",
         "whichDays": "Quais dias?",
-        "selectAtLeast": "(seleciona pelo menos {count})",
-        "sessionDuration": "Duração de cada sessão",
+        "selectAtLeast": "(seleccione pelo menos {count})",
+        "sessionDuration": "Duração da sessão",
         "preferredTime": "Horário preferido (opcional)",
         "morning": "Manhã",
         "afternoon": "Tarde",
@@ -501,8 +1095,8 @@
         "flexible": "Flexível"
       },
       "equipment": {
-        "title": "Onde vais treinar?",
-        "subtitle": "Seleciona o teu local e equipamento disponível.",
+        "title": "Onde vai treinar?",
+        "subtitle": "Seleccione o local e equipamento disponível.",
         "locationType": "Tipo de local",
         "availableEquipment": "Equipamento disponível (opcional)",
         "fullGym": "Ginásio completo",
@@ -511,7 +1105,7 @@
         "homeBasicDesc": "Poucos halteres, tapete",
         "homeAdvanced": "Casa - equipado",
         "homeAdvancedDesc": "Barra, banco, vários pesos",
-        "outdoor": "Ao ar livre",
+        "outdoor": "Ar livre",
         "outdoorDesc": "Parque, calistenia",
         "barbells": "Barras",
         "dumbbells": "Halteres",
@@ -520,10 +1114,10 @@
         "machines": "Máquinas",
         "bench": "Banco",
         "squatRack": "Rack de agachamento",
-        "pullUpBar": "Barra de pull-ups",
-        "resistanceBands": "Elásticos",
+        "pullUpBar": "Barra de elevações",
+        "resistanceBands": "Bandas elásticas",
         "trx": "TRX/Suspensão",
-        "cardioMachines": "Máquinas cardio",
+        "cardioMachines": "Máquinas de cardio",
         "bodyweight": "Apenas peso corporal"
       },
       "health": {
@@ -539,36 +1133,87 @@
         "diabetes": "Diabetes",
         "pregnancy": "Gravidez/Pós-parto",
         "heartCondition": "Condição cardíaca",
-        "none": "Nenhuma"
+        "none": "Nenhum"
       },
       "preferences": {
         "title": "Preferências pessoais",
-        "subtitle": "Ajuda-nos a criar um plano que vais gostar de seguir.",
+        "subtitle": "Ajude-nos a criar um plano que goste de seguir.",
         "favoriteExercises": "Exercícios favoritos",
-        "dislikedExercises": "Exercícios que não gostas",
-        "cardioRelation": "Qual a tua relação com cardio?",
+        "dislikedExercises": "Exercícios que não gosta",
+        "cardioRelation": "Qual é a sua relação com cardio?",
         "love": "Adoro",
         "tolerate": "Tolero",
-        "hate": "Odeio",
-        "tip": "Quanto mais informação forneceres, mais personalizado será o teu plano de treino!"
+        "hate": "Detesto",
+        "tip": "Quanto mais informação fornecer, mais personalizado será o seu plano de treino!"
+      }
+    },
+    "export": {
+      "title": "Exportar para IA",
+      "howToUse": "Como usar",
+      "steps": {
+        "generatePrompt": "Gere o prompt",
+        "generateDescription": "Escolha se quer criar um novo plano ou ajustar o actual",
+        "pasteInAI": "Cole no ChatGPT ou Claude",
+        "pasteDescription": "Abra o seu assistente de IA favorito e cole o prompt gerado",
+        "copyJSON": "Copie o JSON",
+        "copyDescription": "Quando a IA gerar o plano, copie a resposta JSON",
+        "import": "Importe",
+        "importDescription": "Vá à página \"Importar Plano\" e cole o JSON"
       }
     }
   },
   "pwa": {
-    "install": { "title": "Instalar App", "description": "Instala Breath of Now para a melhor experiência", "button": "Instalar", "dismiss": "Dispensar" },
-    "offline": { "title": "Estás offline", "description": "Algumas funcionalidades podem estar limitadas", "pageNotCached": "Esta página não está disponível offline", "goBack": "Voltar" },
-    "uncachedPage": { "backOnline": "De volta online!", "redirecting": "A redirecionar para a página solicitada...", "youAreOffline": "Estás offline", "pageNotLoaded": "A página que tentaste aceder ainda não foi carregada enquanto estavas online.", "requestedPage": "Página solicitada:", "tip": "As páginas que visitares enquanto estiveres online ficarão disponíveis offline automaticamente.", "tryAgain": "Tentar novamente", "continueHome": "Continuar na Homepage", "close": "Fechar" },
-    "update": { "title": "Atualização disponível", "description": "Uma nova versão está disponível", "button": "Atualizar" },
+    "install": {
+      "title": "Instalar App",
+      "description": "Instale a Breath of Now para a melhor experiência",
+      "button": "Instalar",
+      "dismiss": "Dispensar"
+    },
+    "offline": {
+      "title": "Está offline",
+      "description": "Algumas funcionalidades podem estar limitadas",
+      "pageNotCached": "Esta página não está disponível offline",
+      "goBack": "Voltar"
+    },
+    "uncachedPage": {
+      "backOnline": "De volta online!",
+      "redirecting": "A redirecionar para a página solicitada...",
+      "youAreOffline": "Está offline",
+      "pageNotLoaded": "A página que tentou aceder não foi carregada enquanto estava online.",
+      "requestedPage": "Página solicitada:",
+      "tip": "As páginas que visitar enquanto está online ficarão disponíveis offline automaticamente.",
+      "tryAgain": "Tentar novamente",
+      "continueHome": "Continuar para a Página Inicial",
+      "close": "Fechar"
+    },
+    "update": {
+      "title": "Actualização disponível",
+      "description": "Uma nova versão está disponível",
+      "button": "Actualizar"
+    },
     "status": {
       "online": "Online",
       "offline": "Offline",
       "backOnline": "De volta online",
-      "updateAvailable": "Atualização disponível",
+      "updateAvailable": "Actualização disponível",
       "connectionStatus": "Estado da Ligação",
-      "dataSafe": "Os teus dados estão seguros localmente",
+      "dataSafe": "Os seus dados estão seguros localmente",
       "featuresOffline": "Todas as funcionalidades disponíveis offline"
     }
   },
-  "errors": { "generic": "Algo correu mal. Por favor tenta novamente.", "notFound": "Página não encontrada", "notFoundDescription": "A página que procuras não existe ou foi movida.", "goHome": "Ir para Início", "unauthorized": "Precisas de entrar para aceder a esta página", "forbidden": "Não tens permissão para aceder a esta página", "exportFailed": "Falha na exportação", "deleteFailed": "Falha na eliminação", "loadFailed": "Falha ao carregar dados" },
-  "meta": { "title": "Breath of Now - Ferramentas simples para uma vida consciente", "description": "Uma coleção de micro-apps privacy-first para despesas, investimentos, treinos, receitas e mais. Os teus dados ficam no teu dispositivo." }
+  "errors": {
+    "generic": "Algo correu mal. Por favor tente novamente.",
+    "notFound": "Página não encontrada",
+    "notFoundDescription": "A página que procura não existe ou foi movida.",
+    "goHome": "Ir para Início",
+    "unauthorized": "Precisa de entrar para aceder a esta página",
+    "forbidden": "Não tem permissão para aceder a esta página",
+    "exportFailed": "Falha na exportação",
+    "deleteFailed": "Falha ao eliminar",
+    "loadFailed": "Falha ao carregar dados"
+  },
+  "meta": {
+    "title": "Breath of Now - Ferramentas simples para uma vida consciente",
+    "description": "Uma colecção de micro-apps com privacidade em primeiro lugar para despesas, investimentos, treinos, receitas e muito mais. Os seus dados ficam no seu dispositivo."
+  }
 }
