@@ -196,6 +196,22 @@ export default async function middleware(request: NextRequest) {
       ...(cookieDomain && { domain: cookieDomain }),
     });
 
+    // Ensure NEXT_LOCALE cookie is set with cross-subdomain domain
+    if (cookieDomain) {
+      const localeFromPath = pathname.match(/^\/(en|pt|pt-BR|es|fr)/)?.[1];
+      const existingLocale = request.cookies.get('NEXT_LOCALE')?.value;
+
+      if (localeFromPath && localeFromPath !== existingLocale) {
+        intlResponse.cookies.set('NEXT_LOCALE', localeFromPath, {
+          httpOnly: false,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 60 * 60 * 24 * 365, // 1 year
+          domain: cookieDomain,
+        });
+      }
+    }
+
     return intlResponse;
   }
 
@@ -210,6 +226,23 @@ export default async function middleware(request: NextRequest) {
     maxAge: 60 * 60 * 24 * 30, // 30 days
     ...(cookieDomain && { domain: cookieDomain }),
   });
+
+  // Ensure NEXT_LOCALE cookie is set with cross-subdomain domain
+  // This persists locale preference between www and app subdomains
+  if (cookieDomain) {
+    const localeFromPath = pathname.match(/^\/(en|pt|pt-BR|es|fr)/)?.[1];
+    const existingLocale = request.cookies.get('NEXT_LOCALE')?.value;
+
+    if (localeFromPath && localeFromPath !== existingLocale) {
+      response.cookies.set('NEXT_LOCALE', localeFromPath, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 365, // 1 year
+        domain: cookieDomain,
+      });
+    }
+  }
 
   return response;
 }

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Menu, X, ChevronDown, Globe, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -17,10 +18,26 @@ interface HeaderProps {
 
 export function Header({ locale }: HeaderProps) {
   const t = useTranslations();
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isLangOpen, setIsLangOpen] = React.useState(false);
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+
+  // Get the path for language switch - preserves current path with new locale
+  const getLocalizedPath = React.useCallback((newLocale: string) => {
+    // Check if pathname already has a locale prefix
+    const localePattern = new RegExp(`^/(${locales.join('|')})`);
+    const hasLocalePrefix = localePattern.test(pathname);
+
+    if (hasLocalePrefix) {
+      // Replace existing locale
+      return pathname.replace(localePattern, `/${newLocale}`);
+    } else {
+      // Add locale prefix (for default locale paths without prefix)
+      return `/${newLocale}${pathname}`;
+    }
+  }, [pathname]);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -91,7 +108,7 @@ export function Header({ locale }: HeaderProps) {
                     {locales.map((loc) => (
                       <Link
                         key={loc}
-                        href={`/${loc}`}
+                        href={getLocalizedPath(loc)}
                         onClick={() => setIsLangOpen(false)}
                         className={cn(
                           'flex items-center gap-3 px-4 py-2 text-sm transition-colors',
@@ -171,7 +188,7 @@ export function Header({ locale }: HeaderProps) {
                   {locales.map((loc) => (
                     <Link
                       key={loc}
-                      href={`/${loc}`}
+                      href={getLocalizedPath(loc)}
                       onClick={() => setIsMenuOpen(false)}
                       className={cn(
                         'px-3 py-1.5 text-sm rounded-lg transition-colors',
