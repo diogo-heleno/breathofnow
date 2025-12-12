@@ -103,13 +103,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Fetch user profile from Supabase
   const fetchProfile = useCallback(async (userId: string): Promise<UserProfile | null> => {
-    console.log('[fetchProfile] Starting fetch for userId:', userId);
+    console.log('[fetchProfile] Fetching profile for userId:', userId);
     try {
       const supabase = createClient();
-
-      // Debug: Check if we have an active session
-      const { data: sessionData } = await supabase.auth.getSession();
-      console.log('[fetchProfile] Current session:', sessionData?.session?.user?.id);
 
       const { data, error } = await supabase
         .from('profiles')
@@ -117,10 +113,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq('id', userId)
         .single();
 
-      console.log('[fetchProfile] Result:', { data, error });
-
       if (error) {
-        console.error('[fetchProfile] Error fetching profile:', error);
+        console.error('[fetchProfile] Error:', error.message);
+        return null;
+      }
+
+      if (!data) {
+        console.log('[fetchProfile] No profile found');
         return null;
       }
 
@@ -136,7 +135,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         createdAt: data.created_at,
       };
 
-      console.log('[fetchProfile] Profile loaded:', userProfile);
+      console.log('[fetchProfile] Success:', userProfile.email, userProfile.tier);
 
       // Cache the profile for offline use
       setStoredData(STORAGE_KEYS.PROFILE, userProfile);
