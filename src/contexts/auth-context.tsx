@@ -101,17 +101,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [setAppUser, setShowAds]);
 
-  // Fetch user profile from Supabase
+  // Fetch user profile from Supabase with timeout
   const fetchProfile = useCallback(async (userId: string): Promise<UserProfile | null> => {
     console.log('[fetchProfile] Fetching profile for userId:', userId);
+
+    // Create a timeout promise
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error('Profile fetch timeout after 10s')), 10000);
+    });
+
     try {
       const supabase = createClient();
+      console.log('[fetchProfile] Supabase client created, making query...');
 
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
+      // Race between the query and timeout
+      const { data, error } = await Promise.race([
+        supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', userId)
+          .single(),
+        timeoutPromise
+      ]) as { data: Record<string, unknown> | null; error: { message: string } | null };
+
+      console.log('[fetchProfile] Query completed:', { hasData: !!data, hasError: !!error });
 
       if (error) {
         console.error('[fetchProfile] Error:', error.message);
@@ -124,15 +137,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       const userProfile: UserProfile = {
-        id: data.id,
-        email: data.email,
-        name: data.full_name || data.name,
-        avatarUrl: data.avatar_url,
-        tier: data.subscription_tier || 'free',
-        tierExpiresAt: data.subscription_expires_at,
-        selectedApps: data.selected_apps || [],
-        isFoundingMember: data.is_founding_member || false,
-        createdAt: data.created_at,
+        id: data.id as string,
+        email: data.email as string,
+        name: (data.full_name || data.name) as string | undefined,
+        avatarUrl: data.avatar_url as string | undefined,
+        tier: (data.subscription_tier || 'free') as SubscriptionTier,
+        tierExpiresAt: data.subscription_expires_at as string | undefined,
+        selectedApps: (data.selected_apps || []) as string[],
+        isFoundingMember: (data.is_founding_member || false) as boolean,
+        createdAt: data.created_at as string,
       };
 
       console.log('[fetchProfile] Success:', userProfile.email, userProfile.tier);
@@ -143,7 +156,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       return userProfile;
     } catch (error) {
-      console.error('[fetchProfile] Exception:', error);
+      console.error('[fetchProfile] Exception:', error instanceof Error ? error.message : error);
       return null;
     }
   }, []);
