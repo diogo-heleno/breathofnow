@@ -23,6 +23,7 @@ export interface UserProfile {
   tier: SubscriptionTier;
   tierExpiresAt?: string;
   selectedApps?: string[]; // For starter/plus tiers
+  lastAppChange?: string; // Last time user changed their selected app
   isFoundingMember: boolean;
   createdAt: string;
 }
@@ -138,6 +139,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         tier: (data.subscription_tier || 'free') as SubscriptionTier,
         tierExpiresAt: data.subscription_expires_at as string | undefined,
         selectedApps: (data.selected_apps || []) as string[],
+        lastAppChange: data.last_app_change as string | undefined,
         isFoundingMember: (data.is_founding_member || false) as boolean,
         createdAt: data.created_at as string,
       };
@@ -249,28 +251,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const supabase = createClient();
 
-    // Get initial session
+    // Get initial session with OPTIMISTIC LOADING
     const initAuth = async () => {
-      try {
-        // First, try to load cached profile for instant UI
-        const cachedProfile = getStoredData<UserProfile>(STORAGE_KEYS.PROFILE);
-        const cachedUser = getStoredData<Partial<User>>(STORAGE_KEYS.USER);
+      // 1. IMMEDIATELY show cached data if available (Optimistic UI)
+      const cachedProfile = getStoredData<UserProfile>(STORAGE_KEYS.PROFILE);
+      const cachedUser = getStoredData<Partial<User>>(STORAGE_KEYS.USER);
 
-        // If we have cached data and are offline, use it immediately
-        if (!navigator.onLine && cachedProfile && cachedUser) {
-          setProfile(cachedProfile);
-          setUser(cachedUser as User);
+      if (cachedProfile && cachedUser) {
+        // Show UI immediately with cached data
+        setProfile(cachedProfile);
+        setUser(cachedUser as User);
+        updateAppState(cachedProfile);
+        setIsLoading(false); // UI renders NOW!
+
+        // If offline, we're done - use cached data
+        if (!navigator.onLine) {
           setIsOfflineMode(true);
-          updateAppState(cachedProfile);
-          setIsLoading(false);
           return;
         }
+      }
 
-        // Try to get session from Supabase
+      // 2. UPDATE in background (doesn't block UI)
+      try {
         const { data: { session: initialSession } } = await supabase.auth.getSession();
 
         if (initialSession?.user) {
-          setUser(initialSession.user);
+          // Update user if different from cache
+          if (!cachedUser || cachedUser.id !== initialSession.user.id) {
+            setUser(initialSession.user);
+          }
           setSession(initialSession);
           setIsOfflineMode(false);
 
@@ -281,37 +290,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             user_metadata: initialSession.user.user_metadata,
           });
 
-          const userProfile = await fetchProfile(initialSession.user.id);
-          if (userProfile) {
-            setProfile(userProfile);
-            updateAppState(userProfile);
+          // Fetch fresh profile in background
+          const freshProfile = await fetchProfile(initialSession.user.id);
+
+          if (freshProfile) {
+            // Only update if data changed (avoids unnecessary re-renders)
+            if (JSON.stringify(freshProfile) !== JSON.stringify(cachedProfile)) {
+              setProfile(freshProfile);
+              updateAppState(freshProfile);
+            }
           } else if (cachedProfile && cachedProfile.id === initialSession.user.id) {
-            // Fallback to cached profile if fetch fails
+            // Keep cached profile if fetch fails
             setProfile(cachedProfile);
             updateAppState(cachedProfile);
           }
         } else if (cachedProfile && cachedUser) {
-          // No active session but we have cached data - user was previously logged in
-          // They'll need to re-authenticate for cloud features, but local features work
-          setProfile(cachedProfile);
-          setUser(cachedUser as User);
+          // No active session but we have cached data
           setIsOfflineMode(true);
-          updateAppState(cachedProfile);
+        } else {
+          // No session and no cache - user is not logged in
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Error initializing auth:', error);
 
-        // On error, try to use cached data
-        const cachedProfile = getStoredData<UserProfile>(STORAGE_KEYS.PROFILE);
-        const cachedUser = getStoredData<Partial<User>>(STORAGE_KEYS.USER);
-
+        // On error, use cached data if available (already set above)
         if (cachedProfile && cachedUser) {
-          setProfile(cachedProfile);
-          setUser(cachedUser as User);
           setIsOfflineMode(true);
-          updateAppState(cachedProfile);
         }
       } finally {
+        // Ensure loading is false even if no cache was available
         setIsLoading(false);
       }
     };

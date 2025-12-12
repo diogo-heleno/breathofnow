@@ -68,7 +68,8 @@
     "default": "Predefinido",
     "exit": "Sair",
     "favorites": "Favoritos",
-    "continue": "Continuar"
+    "continue": "Continuar",
+    "tip": "Dica"
   },
   "nav": {
     "apps": "Apps",
@@ -510,6 +511,42 @@
       "comingSoon": "Em Breve",
       "tipFree": "Faça upgrade para obter mais apps e remover anúncios.",
       "tipPaid": "Pode alterar as apps seleccionadas nas definições."
+    },
+    "apps": {
+      "title": "Acesso às Apps",
+      "selected": "seleccionadas",
+      "comingSoon": "Em Breve",
+      "freeTierTitle": "Nível gratuito: 1 app com dados permanentes",
+      "freeTierDescription": "Pode experimentar outras apps, mas os seus dados serão eliminados após 24-72 horas.",
+      "slotsAvailable": "Tem {available} slot(s) de app disponíveis de {total}. Seleccione as suas apps abaixo.",
+      "selectFirstApp": "Seleccione a sua primeira app abaixo para começar!",
+      "upgradeForMore": "Faça upgrade para obter mais apps com dados permanentes e remover anúncios.",
+      "testingDataWarning": "Dados serão eliminados em 24-72h",
+      "canChangeIn": "Pode mudar em {days} dias",
+      "status": {
+        "available": "Disponível",
+        "selected": "Seleccionada",
+        "testing": "Apenas Teste",
+        "locked": "Bloqueada"
+      },
+      "actions": {
+        "select": "Seleccionar",
+        "deselect": "Desseleccionar",
+        "makePrimary": "Tornar Principal",
+        "upgrade": "Upgrade"
+      },
+      "modal": {
+        "selectTitle": "Seleccionar App",
+        "changeTitle": "Mudar App Principal",
+        "deselectTitle": "Desseleccionar App",
+        "selectDescription": "Está prestes a seleccionar {appName} como uma das suas apps permanentes.",
+        "selectDescriptionFree": "Está a seleccionar {appName} como a sua app principal. Os seus dados para esta app serão armazenados permanentemente.",
+        "changeDescription": "Está a mudar a sua app principal de {oldApp} para {newApp}.",
+        "deselectDescription": "Está prestes a desseleccionar {appName}.",
+        "selectWarningFree": "Outras apps estarão disponíveis para teste, mas os seus dados serão eliminados após 24-72 horas.",
+        "changeWarning": "Os seus dados em {oldApp} serão eliminados dentro de 24-72 horas após a mudança. Certifique-se de exportar quaisquer dados importantes primeiro.",
+        "deselectWarning": "Os seus dados em {appName} serão eliminados dentro de 24-72 horas. Certifique-se de exportar quaisquer dados importantes primeiro."
+      }
     },
     "notifications": {
       "title": "Notificações",

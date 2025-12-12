@@ -68,7 +68,8 @@
     "default": "Default",
     "exit": "Exit",
     "favorites": "Favorites",
-    "continue": "Continue"
+    "continue": "Continue",
+    "tip": "Tip"
   },
   "nav": {
     "apps": "Apps",
@@ -510,6 +511,42 @@
       "comingSoon": "Coming Soon",
       "tipFree": "Upgrade to get more apps and remove ads.",
       "tipPaid": "You can change your selected apps in settings."
+    },
+    "apps": {
+      "title": "App Access",
+      "selected": "selected",
+      "comingSoon": "Coming Soon",
+      "freeTierTitle": "Free tier: 1 app with permanent data",
+      "freeTierDescription": "You can try other apps, but their data will be deleted after 24-72 hours.",
+      "slotsAvailable": "You have {available} app slot(s) available out of {total}. Select your apps below.",
+      "selectFirstApp": "Select your first app below to get started!",
+      "upgradeForMore": "Upgrade to get more apps with permanent data and remove ads.",
+      "testingDataWarning": "Data will be deleted in 24-72h",
+      "canChangeIn": "You can change in {days} days",
+      "status": {
+        "available": "Available",
+        "selected": "Selected",
+        "testing": "Testing Only",
+        "locked": "Locked"
+      },
+      "actions": {
+        "select": "Select",
+        "deselect": "Deselect",
+        "makePrimary": "Make Primary",
+        "upgrade": "Upgrade"
+      },
+      "modal": {
+        "selectTitle": "Select App",
+        "changeTitle": "Change Primary App",
+        "deselectTitle": "Deselect App",
+        "selectDescription": "You are about to select {appName} as one of your permanent apps.",
+        "selectDescriptionFree": "You are selecting {appName} as your primary app. Your data for this app will be stored permanently.",
+        "changeDescription": "You are changing your primary app from {oldApp} to {newApp}.",
+        "deselectDescription": "You are about to deselect {appName}.",
+        "selectWarningFree": "Other apps will be available for testing, but their data will be deleted after 24-72 hours.",
+        "changeWarning": "Your data in {oldApp} will be deleted within 24-72 hours after switching. Make sure to export any important data first.",
+        "deselectWarning": "Your data in {appName} will be deleted within 24-72 hours. Make sure to export any important data first."
+      }
     },
     "notifications": {
       "title": "Notifications",
