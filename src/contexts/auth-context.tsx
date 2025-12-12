@@ -139,7 +139,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         tier: (data.subscription_tier || 'free') as SubscriptionTier,
         tierExpiresAt: data.subscription_expires_at as string | undefined,
         selectedApps: (data.selected_apps || []) as string[],
-        lastAppChange: data.last_app_change as string | undefined,
+        lastAppChange: data.apps_selected_at as string | undefined,
         isFoundingMember: (data.is_founding_member || false) as boolean,
         createdAt: data.created_at as string,
       };

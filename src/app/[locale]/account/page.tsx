@@ -149,14 +149,20 @@ function AccountPageContent({ locale }: { locale: Locale }) {
     setModalOpen(true);
   }, []);
 
+  // Error state for showing errors to user
+  const [error, setError] = useState<string | null>(null);
+
   // Confirm selection
   const handleConfirmSelection = useCallback(async () => {
     if (!selectedApp || !profile) return;
 
     setIsSubmitting(true);
+    setError(null);
 
     try {
       const action = modalType === 'change' ? 'make-primary' : modalType;
+
+      console.log('Sending request to select app:', { appId: selectedApp.id, action });
 
       const response = await fetch('/api/profile/select-apps', {
         method: 'POST',
@@ -167,17 +173,23 @@ function AccountPageContent({ locale }: { locale: Locale }) {
         }),
       });
 
-      if (response.ok) {
+      const data = await response.json();
+      console.log('Response from API:', data);
+
+      if (response.ok && data.success) {
         // Refresh profile to get updated data
         await refreshProfile();
         setModalOpen(false);
+        setSelectedApp(null);
       } else {
-        const data = await response.json();
-        console.error('Error selecting app:', data.error);
-        // Could show a toast here
+        const errorMessage = data.error || 'Failed to select app';
+        console.error('Error selecting app:', errorMessage);
+        setError(errorMessage);
       }
-    } catch (error) {
-      console.error('Error selecting app:', error);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Network error';
+      console.error('Error selecting app:', err);
+      setError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -512,13 +524,17 @@ function AccountPageContent({ locale }: { locale: Locale }) {
       {selectedApp && (
         <AppSelectionModal
           isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
+          onClose={() => {
+            setModalOpen(false);
+            setError(null);
+          }}
           onConfirm={handleConfirmSelection}
           type={modalType}
           app={selectedApp}
           currentApp={currentPrimaryApp || undefined}
           tier={profile.tier}
           isLoading={isSubmitting}
+          error={error}
         />
       )}
     </AppShell>

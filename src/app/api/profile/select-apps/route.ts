@@ -10,7 +10,7 @@ interface SelectAppsRequest {
 interface ProfileData {
   subscription_tier: PlanTier | null;
   selected_apps: string[] | null;
-  last_app_change: string | null;
+  apps_selected_at: string | null;
 }
 
 // Days required between app changes for free tier
@@ -21,12 +21,16 @@ export async function POST(request: Request) {
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
+    console.log('[select-apps] Auth check:', { userId: user?.id, authError: authError?.message });
+
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized', details: authError?.message }, { status: 401 });
     }
 
     const body = await request.json() as SelectAppsRequest;
     const { appId, action } = body;
+
+    console.log('[select-apps] Request:', { appId, action, userId: user.id });
 
     if (!appId || !action) {
       return NextResponse.json(
@@ -38,13 +42,15 @@ export async function POST(request: Request) {
     // Get current profile
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('subscription_tier, selected_apps, last_app_change')
+      .select('subscription_tier, selected_apps, apps_selected_at')
       .eq('id', user.id)
-      .single() as { data: ProfileData | null; error: { message: string } | null };
+      .single() as { data: ProfileData | null; error: { message: string; code?: string } | null };
+
+    console.log('[select-apps] Profile fetch:', { profile, error: profileError });
 
     if (profileError || !profile) {
       return NextResponse.json(
-        { error: 'Profile not found' },
+        { error: 'Profile not found', details: profileError?.message },
         { status: 404 }
       );
     }
@@ -87,18 +93,23 @@ export async function POST(request: Request) {
 
       // For free tier on first selection, record the change date
       if (tier === 'free' && currentApps.length === 0) {
-        updateData.last_app_change = new Date().toISOString();
+        updateData.apps_selected_at = new Date().toISOString();
       }
 
-      const { error: updateError } = await supabase
+      console.log('[select-apps] Updating profile with:', updateData);
+
+      const { error: updateError, data: updateResult } = await supabase
         .from('profiles')
         .update(updateData)
-        .eq('id', user.id);
+        .eq('id', user.id)
+        .select();
+
+      console.log('[select-apps] Update result:', { updateResult, updateError });
 
       if (updateError) {
-        console.error('Error updating profile:', updateError);
+        console.error('[select-apps] Error updating profile:', updateError);
         return NextResponse.json(
-          { error: 'Failed to update profile' },
+          { error: 'Failed to update profile', details: updateError.message },
           { status: 500 }
         );
       }
@@ -170,8 +181,8 @@ export async function POST(request: Request) {
       }
 
       // Check if user can change (once per 30 days)
-      if (profile.last_app_change && currentApps.length > 0) {
-        const lastChange = new Date(profile.last_app_change);
+      if (profile.apps_selected_at && currentApps.length > 0) {
+        const lastChange = new Date(profile.apps_selected_at);
         const now = new Date();
         const daysSinceChange = Math.floor(
           (now.getTime() - lastChange.getTime()) / (1000 * 60 * 60 * 24)
@@ -194,7 +205,7 @@ export async function POST(request: Request) {
         .from('profiles')
         .update({
           selected_apps: [appId],
-          last_app_change: new Date().toISOString(),
+          apps_selected_at: new Date().toISOString(),
         })
         .eq('id', user.id);
 
@@ -235,7 +246,7 @@ export async function GET() {
 
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('subscription_tier, selected_apps, last_app_change')
+      .select('subscription_tier, selected_apps, apps_selected_at')
       .eq('id', user.id)
       .single() as { data: ProfileData | null; error: { message: string } | null };
 
@@ -253,8 +264,8 @@ export async function GET() {
     let daysUntilChange = 0;
     let canChange = true;
 
-    if (tier === 'free' && profile.last_app_change && profile.selected_apps && profile.selected_apps.length > 0) {
-      const lastChange = new Date(profile.last_app_change);
+    if (tier === 'free' && profile.apps_selected_at && profile.selected_apps && profile.selected_apps.length > 0) {
+      const lastChange = new Date(profile.apps_selected_at);
       const now = new Date();
       const daysSinceChange = Math.floor(
         (now.getTime() - lastChange.getTime()) / (1000 * 60 * 60 * 24)
@@ -270,7 +281,7 @@ export async function GET() {
       tier,
       selectedApps: profile.selected_apps || [],
       maxApps,
-      lastAppChange: profile.last_app_change,
+      lastAppChange: profile.apps_selected_at,
       canChange,
       daysUntilChange,
     });
