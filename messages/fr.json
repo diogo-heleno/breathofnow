@@ -68,7 +68,8 @@
     "default": "Par défaut",
     "exit": "Quitter",
     "favorites": "Favoris",
-    "continue": "Continuer"
+    "continue": "Continuer",
+    "tip": "Conseil"
   },
   "nav": {
     "apps": "Apps",

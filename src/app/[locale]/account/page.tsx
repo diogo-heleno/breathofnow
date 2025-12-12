@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import {
@@ -16,9 +16,6 @@ import {
   Check,
   X,
   ChevronRight,
-  Clock,
-  AlertTriangle,
-  Lock,
   Info,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
@@ -28,17 +25,24 @@ import { Badge } from '@/components/ui/badge';
 import { AppShell } from '@/components/shell';
 import { AdBanner } from '@/components/ads/ad-banner';
 import { ClientOnly } from '@/components/utils/client-only';
+import { AppCard, getAppSelectionStatus } from '@/components/account/app-card';
+import { AppSelectionModal } from '@/components/account/app-selection-modal';
 import {
   APPS,
-  PLANS,
   getPlanById,
   getMaxAppsForTier,
-  canChangeSelectedApp,
-  daysUntilNextAppChange,
+  getAppById,
   type AppId,
   type PlanTier,
+  type App,
 } from '@/types/pricing';
 import { type Locale } from '@/i18n';
+
+// Helper function to calculate days since a date
+function getDaysSinceChange(date: Date): number {
+  const now = new Date();
+  return Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+}
 
 interface PageProps {
   params: { locale: Locale };
@@ -93,18 +97,91 @@ export default function AccountPage({ params: { locale } }: PageProps) {
 
 function AccountPageContent({ locale }: { locale: Locale }) {
   const t = useTranslations();
-  const { profile, isAuthenticated, isLoading, hasAccessToApp, showAds } = useAuth();
-  const [lastAppChange, setLastAppChange] = useState<Date | null>(null);
+  const { profile, isAuthenticated, isLoading, showAds, refreshProfile } = useAuth();
 
-  // Load last app change date for free tier users
-  useEffect(() => {
-    if (profile?.tier === 'free') {
-      const storedDate = localStorage.getItem('bon_last_app_change');
-      if (storedDate) {
-        setLastAppChange(new Date(storedDate));
+  // Modal state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<'select' | 'change' | 'deselect'>('select');
+  const [selectedApp, setSelectedApp] = useState<App | null>(null);
+  const [currentPrimaryApp, setCurrentPrimaryApp] = useState<App | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Calculate days until change from profile
+  const lastAppChange = profile?.lastAppChange ? new Date(profile.lastAppChange) : null;
+  const canChange = profile?.tier === 'free'
+    ? (!lastAppChange || !profile?.selectedApps?.length || getDaysSinceChange(lastAppChange) >= 30)
+    : true;
+  const daysUntilChange = lastAppChange && profile?.selectedApps?.length
+    ? Math.max(0, 30 - getDaysSinceChange(lastAppChange))
+    : 0;
+
+  // Handle app selection
+  const handleSelectApp = useCallback((appId: AppId) => {
+    const app = getAppById(appId);
+    if (!app) return;
+
+    setSelectedApp(app);
+    setModalType('select');
+    setModalOpen(true);
+  }, []);
+
+  // Handle make primary (for free tier changing app)
+  const handleMakePrimary = useCallback((appId: AppId) => {
+    const app = getAppById(appId);
+    if (!app || !profile?.selectedApps?.length) return;
+
+    const currentAppId = profile.selectedApps[0] as AppId;
+    const currentApp = getAppById(currentAppId);
+
+    setSelectedApp(app);
+    setCurrentPrimaryApp(currentApp || null);
+    setModalType('change');
+    setModalOpen(true);
+  }, [profile?.selectedApps]);
+
+  // Handle deselect (for paid tiers)
+  const handleDeselectApp = useCallback((appId: AppId) => {
+    const app = getAppById(appId);
+    if (!app) return;
+
+    setSelectedApp(app);
+    setModalType('deselect');
+    setModalOpen(true);
+  }, []);
+
+  // Confirm selection
+  const handleConfirmSelection = useCallback(async () => {
+    if (!selectedApp || !profile) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const action = modalType === 'change' ? 'make-primary' : modalType;
+
+      const response = await fetch('/api/profile/select-apps', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          appId: selectedApp.id,
+          action,
+        }),
+      });
+
+      if (response.ok) {
+        // Refresh profile to get updated data
+        await refreshProfile();
+        setModalOpen(false);
+      } else {
+        const data = await response.json();
+        console.error('Error selecting app:', data.error);
+        // Could show a toast here
       }
+    } catch (error) {
+      console.error('Error selecting app:', error);
+    } finally {
+      setIsSubmitting(false);
     }
-  }, [profile?.tier]);
+  }, [selectedApp, modalType, profile, refreshProfile]);
 
   if (isLoading) {
     return (
@@ -147,10 +224,6 @@ function AccountPageContent({ locale }: { locale: Locale }) {
   const plan = getPlanById(profile.tier);
   const maxApps = getMaxAppsForTier(profile.tier);
   const selectedAppsCount = profile.selectedApps?.length ?? 0;
-
-  // For free tier, check if user can change app
-  const canChangeApp = canChangeSelectedApp(profile.tier, lastAppChange);
-  const daysUntilChange = daysUntilNextAppChange(lastAppChange);
 
   return (
     <AppShell locale={locale}>
@@ -291,114 +364,94 @@ function AccountPageContent({ locale }: { locale: Locale }) {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-neutral-900">App Access</h3>
+              <h3 className="text-lg font-semibold text-neutral-900">{t('account.apps.title')}</h3>
               {maxApps !== 'all' && (
                 <span className="text-sm text-neutral-500">
-                  {selectedAppsCount} / {maxApps} selected
+                  {selectedAppsCount} / {maxApps} {t('account.apps.selected')}
                 </span>
               )}
             </div>
 
-            {/* Free tier warning about app switching */}
+            {/* Tier-specific info banners */}
             {profile.tier === 'free' && (
               <div className="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-xl">
                 <div className="flex items-start gap-3">
                   <Info className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-sm text-amber-800 font-medium">
-                      Free tier: 1 app with permanent data
+                      {t('account.apps.freeTierTitle')}
                     </p>
                     <p className="text-sm text-amber-700 mt-1">
-                      You can try other apps, but their data will be deleted after 24 hours.
-                      {!canChangeApp && (
-                        <span className="block mt-1">
-                          <Clock className="w-3.5 h-3.5 inline mr-1" />
-                          You can change your main app in {daysUntilChange} days.
-                        </span>
-                      )}
+                      {t('account.apps.freeTierDescription')}
                     </p>
                   </div>
                 </div>
               </div>
             )}
-            
-            <div className="space-y-2">
-              {APPS.filter(app => app.status !== 'coming-soon').map((app) => {
-                const hasAccess = hasAccessToApp(app.id);
-                const isSelected = profile.selectedApps?.includes(app.id);
-                const isTrialApp = profile.tier === 'free' && !isSelected;
-                
-                return (
-                  <div
-                    key={app.id}
-                    className="flex items-center justify-between p-3 rounded-lg hover:bg-neutral-50 transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center"
-                        style={{ backgroundColor: `${app.color}20` }}
-                      >
-                        <span style={{ color: app.color }} className="font-medium">
-                          {app.name.charAt(0)}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="font-medium text-neutral-900">{app.name}</p>
-                        <p className="text-xs text-neutral-500">{app.description}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-2">
-                      {app.status === 'beta' && (
-                        <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                          Beta
-                        </Badge>
-                      )}
-                      
-                      {hasAccess || maxApps === 'all' ? (
-                        isTrialApp ? (
-                          <Badge variant="warning" className="bg-amber-100 text-amber-700">
-                            <Clock className="w-3 h-3 mr-1" />
-                            24h Trial
-                          </Badge>
-                        ) : (
-                          <Badge variant="success" className="bg-green-100 text-green-700">
-                            <Check className="w-3 h-3 mr-1" />
-                            Active
-                          </Badge>
-                        )
-                      ) : (
-                        <Badge variant="outline" className="text-neutral-500">
-                          <Lock className="w-3 h-3 mr-1" />
-                          Locked
-                        </Badge>
-                      )}
-                    </div>
+
+            {(profile.tier === 'starter' || profile.tier === 'plus') && selectedAppsCount < (maxApps as number) && (
+              <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                <div className="flex items-start gap-3">
+                  <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-blue-800">
+                      {t('account.apps.slotsAvailable', {
+                        available: (maxApps as number) - selectedAppsCount,
+                        total: maxApps
+                      })}
+                    </p>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* Available Apps */}
+            <div className="space-y-3">
+              {APPS.filter(app => app.status !== 'coming-soon').map((app) => {
+                const status = getAppSelectionStatus(
+                  app.id,
+                  profile.tier,
+                  profile.selectedApps || [],
+                  maxApps
+                );
+
+                return (
+                  <AppCard
+                    key={app.id}
+                    app={app}
+                    status={status}
+                    tier={profile.tier}
+                    onSelect={handleSelectApp}
+                    onDeselect={handleDeselectApp}
+                    onMakePrimary={handleMakePrimary}
+                    canChange={canChange}
+                    daysUntilChange={daysUntilChange}
+                    isLoading={isSubmitting}
+                  />
                 );
               })}
 
               {/* Coming Soon Apps */}
               <div className="mt-4 pt-4 border-t border-neutral-200">
-                <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-2">
-                  Coming Soon
+                <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-3">
+                  {t('account.apps.comingSoon')}
                 </p>
                 {APPS.filter(app => app.status === 'coming-soon').map((app) => (
                   <div
                     key={app.id}
-                    className="flex items-center justify-between p-3 rounded-lg opacity-60"
+                    className="flex items-center justify-between p-3 rounded-lg opacity-60 mb-2"
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center"
-                        style={{ backgroundColor: `${app.color}20` }}
+                        className="w-10 h-10 rounded-lg flex items-center justify-center"
+                        style={{ backgroundColor: `${app.color}15` }}
                       >
                         <span style={{ color: app.color }} className="font-medium">
                           {app.name.charAt(0)}
                         </span>
                       </div>
                       <div>
-                        <p className="font-medium text-neutral-900">{app.name}</p>
+                        <p className="font-medium text-neutral-700">{app.name}</p>
                         <p className="text-xs text-neutral-500">{app.description}</p>
                       </div>
                     </div>
@@ -410,18 +463,18 @@ function AccountPageContent({ locale }: { locale: Locale }) {
               </div>
             </div>
 
-            {(profile.tier === 'free' || profile.tier === 'starter' || profile.tier === 'plus') && (
+            {profile.tier === 'free' && selectedAppsCount === 0 && (
               <div className="mt-4 p-4 bg-primary-50 rounded-xl">
                 <p className="text-sm text-primary-800">
-                  {profile.tier === 'free' ? (
-                    <>
-                      <strong>Tip:</strong> Upgrade to get more apps and remove ads.
-                    </>
-                  ) : (
-                    <>
-                      <strong>Tip:</strong> You can change your selected apps in settings.
-                    </>
-                  )}
+                  <strong>{t('common.tip')}:</strong> {t('account.apps.selectFirstApp')}
+                </p>
+              </div>
+            )}
+
+            {profile.tier === 'free' && selectedAppsCount > 0 && (
+              <div className="mt-4 p-4 bg-primary-50 rounded-xl">
+                <p className="text-sm text-primary-800">
+                  <strong>{t('common.tip')}:</strong> {t('account.apps.upgradeForMore')}
                 </p>
               </div>
             )}
@@ -431,18 +484,18 @@ function AccountPageContent({ locale }: { locale: Locale }) {
         {/* Danger Zone */}
         <Card className="border-red-200">
           <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-red-700 mb-4">Danger Zone</h3>
-            
+            <h3 className="text-lg font-semibold text-red-700 mb-4">{t('account.dangerZone.title')}</h3>
+
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-neutral-900">Delete Account</p>
+                  <p className="font-medium text-neutral-900">{t('account.dangerZone.deleteAccount')}</p>
                   <p className="text-sm text-neutral-500">
-                    Permanently delete your account and all data
+                    {t('account.dangerZone.deleteAccountDescription')}
                   </p>
                 </div>
                 <Button variant="danger" size="sm">
-                  Delete Account
+                  {t('account.dangerZone.deleteAccount')}
                 </Button>
               </div>
             </div>
@@ -454,6 +507,20 @@ function AccountPageContent({ locale }: { locale: Locale }) {
           <AdBanner position="bottom" slot="account-bottom" />
         )}
       </div>
+
+      {/* App Selection Modal */}
+      {selectedApp && (
+        <AppSelectionModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          onConfirm={handleConfirmSelection}
+          type={modalType}
+          app={selectedApp}
+          currentApp={currentPrimaryApp || undefined}
+          tier={profile.tier}
+          isLoading={isSubmitting}
+        />
+      )}
     </AppShell>
   );
 }
