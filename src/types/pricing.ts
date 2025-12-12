@@ -89,7 +89,7 @@ export const APPS: App[] = [
     description: 'Your portfolio, your way',
     descriptionKey: 'apps.investTrack.description',
     icon: 'TrendingUp',
-    status: 'beta',
+    status: 'coming-soon',
     color: '#3b82f6',
   },
   {

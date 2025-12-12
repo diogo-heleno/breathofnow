@@ -62,7 +62,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
       icon: TrendingUp,
       color: 'text-blue-600',
       bgColor: 'bg-blue-100 dark:bg-blue-900/30',
-      status: 'beta' as const,
+      status: 'coming-soon' as const,
       appRoute: '/investments',
     },
     {
@@ -78,7 +78,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
       icon: Activity,
       color: 'text-red-600',
       bgColor: 'bg-red-100 dark:bg-red-900/30',
-      status: 'comingSoon' as const,
+      status: 'coming-soon' as const,
       appRoute: '/strava',
     },
     {
@@ -86,7 +86,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
       icon: ChefHat,
       color: 'text-amber-600',
       bgColor: 'bg-amber-100 dark:bg-amber-900/30',
-      status: 'comingSoon' as const,
+      status: 'coming-soon' as const,
       appRoute: '/recipes',
     },
     {
@@ -94,7 +94,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
       icon: ScanLine,
       color: 'text-purple-600',
       bgColor: 'bg-purple-100 dark:bg-purple-900/30',
-      status: 'comingSoon' as const,
+      status: 'coming-soon' as const,
       appRoute: '/labels',
     },
   ];
@@ -111,8 +111,15 @@ export default function HomePage({ params: { locale } }: PageProps) {
   const statusColors = {
     available: 'success',
     beta: 'warning',
-    comingSoon: 'secondary',
+    'coming-soon': 'secondary',
   } as const;
+
+  // Map status values to translation keys
+  const statusTranslationKeys: Record<string, string> = {
+    available: 'available',
+    beta: 'beta',
+    'coming-soon': 'comingSoon',
+  };
 
   return (
     <>
@@ -210,7 +217,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
                           <Icon className={`w-6 h-6 ${app.color}`} />
                         </div>
                         <Badge variant={statusColors[app.status]}>
-                          {t(`apps.status.${app.status}`)}
+                          {t(`apps.status.${statusTranslationKeys[app.status] || app.status}`)}
                         </Badge>
                       </div>
                       
