@@ -13,8 +13,8 @@
 | App | Estado | Descrição |
 |-----|--------|-----------|
 | **ExpenseFlow** | ✅ Disponível | Gestão de despesas |
-| **InvestTrack** | 🧪 Beta | Tracking de investimentos |
-| **FitLog** | 🔜 Em breve | Registo de fitness/treinos |
+| **InvestTrack** | 🔜 Em breve | Tracking de investimentos |
+| **FitLog** | ✅ Disponível | Registo de fitness/treinos |
 | **StravaSync** | 🔜 Em breve | Integração com Strava |
 | **RecipeBox** | 🔜 Em breve | Gestão de receitas |
 | **LabelScan** | 🔜 Em breve | Scanner de etiquetas/produtos |
