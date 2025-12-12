@@ -68,10 +68,10 @@ const TIER_LABELS = {
   founding: 'Founding Member',
 };
 
-// Loading skeleton component for SSR and initial load
-function AccountLoadingSkeleton({ locale }: { locale: Locale }) {
+// Simple loading skeleton - NO AppShell to avoid hydration issues
+function AccountLoadingSkeleton() {
   return (
-    <AppShell locale={locale}>
+    <div className="min-h-screen bg-warm-50">
       <div className="p-6 max-w-4xl mx-auto">
         <div className="animate-pulse space-y-6">
           <div className="h-8 bg-neutral-200 rounded w-1/4" />
@@ -79,13 +79,13 @@ function AccountLoadingSkeleton({ locale }: { locale: Locale }) {
           <div className="h-32 bg-neutral-200 rounded-xl" />
         </div>
       </div>
-    </AppShell>
+    </div>
   );
 }
 
 export default function AccountPage({ params: { locale } }: PageProps) {
   return (
-    <ClientOnly fallback={<AccountLoadingSkeleton locale={locale} />}>
+    <ClientOnly fallback={<AccountLoadingSkeleton />}>
       <AccountPageContent locale={locale} />
     </ClientOnly>
   );
