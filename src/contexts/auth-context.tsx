@@ -103,16 +103,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Fetch user profile from Supabase with timeout
   const fetchProfile = useCallback(async (userId: string): Promise<UserProfile | null> => {
-    console.log('[fetchProfile] Fetching profile for userId:', userId);
-
-    // Create a timeout promise
+    // Create a timeout promise to prevent infinite hanging
     const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('Profile fetch timeout after 10s')), 10000);
+      setTimeout(() => reject(new Error('Profile fetch timeout')), 10000);
     });
 
     try {
       const supabase = createClient();
-      console.log('[fetchProfile] Supabase client created, making query...');
 
       // Race between the query and timeout
       const { data, error } = await Promise.race([
@@ -124,15 +121,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         timeoutPromise
       ]) as { data: Record<string, unknown> | null; error: { message: string } | null };
 
-      console.log('[fetchProfile] Query completed:', { hasData: !!data, hasError: !!error });
-
       if (error) {
-        console.error('[fetchProfile] Error:', error.message);
+        console.error('Error fetching profile:', error.message);
         return null;
       }
 
       if (!data) {
-        console.log('[fetchProfile] No profile found');
         return null;
       }
 
@@ -148,15 +142,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         createdAt: data.created_at as string,
       };
 
-      console.log('[fetchProfile] Success:', userProfile.email, userProfile.tier);
-
       // Cache the profile for offline use
       setStoredData(STORAGE_KEYS.PROFILE, userProfile);
       setStoredData(STORAGE_KEYS.LAST_SYNC, new Date().toISOString());
 
       return userProfile;
     } catch (error) {
-      console.error('[fetchProfile] Exception:', error instanceof Error ? error.message : error);
+      console.error('Error fetching profile:', error instanceof Error ? error.message : error);
       return null;
     }
   }, []);
@@ -259,16 +251,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Get initial session
     const initAuth = async () => {
-      console.log('[Auth] Initializing auth...');
       try {
         // First, try to load cached profile for instant UI
         const cachedProfile = getStoredData<UserProfile>(STORAGE_KEYS.PROFILE);
         const cachedUser = getStoredData<Partial<User>>(STORAGE_KEYS.USER);
-        console.log('[Auth] Cached data:', { hasProfile: !!cachedProfile, hasUser: !!cachedUser, isOnline: navigator.onLine });
 
         // If we have cached data and are offline, use it immediately
         if (!navigator.onLine && cachedProfile && cachedUser) {
-          console.log('[Auth] Using cached data (offline)');
           setProfile(cachedProfile);
           setUser(cachedUser as User);
           setIsOfflineMode(true);
@@ -278,12 +267,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
 
         // Try to get session from Supabase
-        console.log('[Auth] Calling getSession...');
-        const { data: { session: initialSession }, error: sessionError } = await supabase.auth.getSession();
-        console.log('[Auth] getSession result:', { hasSession: !!initialSession, userId: initialSession?.user?.id, error: sessionError?.message });
+        const { data: { session: initialSession } } = await supabase.auth.getSession();
 
         if (initialSession?.user) {
-          console.log('[Auth] Session found, setting user...');
           setUser(initialSession.user);
           setSession(initialSession);
           setIsOfflineMode(false);
@@ -295,44 +281,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             user_metadata: initialSession.user.user_metadata,
           });
 
-          console.log('[Auth] Fetching profile...');
           const userProfile = await fetchProfile(initialSession.user.id);
-          console.log('[Auth] Profile result:', { hasProfile: !!userProfile, tier: userProfile?.tier });
           if (userProfile) {
             setProfile(userProfile);
             updateAppState(userProfile);
           } else if (cachedProfile && cachedProfile.id === initialSession.user.id) {
             // Fallback to cached profile if fetch fails
-            console.log('[Auth] Using cached profile as fallback');
             setProfile(cachedProfile);
             updateAppState(cachedProfile);
           }
         } else if (cachedProfile && cachedUser) {
           // No active session but we have cached data - user was previously logged in
-          console.log('[Auth] No session, using cached data');
+          // They'll need to re-authenticate for cloud features, but local features work
           setProfile(cachedProfile);
           setUser(cachedUser as User);
           setIsOfflineMode(true);
           updateAppState(cachedProfile);
-        } else {
-          console.log('[Auth] No session and no cached data');
         }
       } catch (error) {
-        console.error('[Auth] Error initializing auth:', error);
+        console.error('Error initializing auth:', error);
 
         // On error, try to use cached data
         const cachedProfile = getStoredData<UserProfile>(STORAGE_KEYS.PROFILE);
         const cachedUser = getStoredData<Partial<User>>(STORAGE_KEYS.USER);
 
         if (cachedProfile && cachedUser) {
-          console.log('[Auth] Using cached data after error');
           setProfile(cachedProfile);
           setUser(cachedUser as User);
           setIsOfflineMode(true);
           updateAppState(cachedProfile);
         }
       } finally {
-        console.log('[Auth] Initialization complete, setting isLoading to false');
         setIsLoading(false);
       }
     };
@@ -342,8 +321,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, newSession) => {
-        console.log('Auth state changed:', event);
-
         if (event === 'SIGNED_IN' && newSession?.user) {
           setUser(newSession.user);
           setSession(newSession);
