@@ -470,7 +470,46 @@ breathofnow.site        A       76.76.21.21
 
 ---
 
-## 16. ExpenseFlow - Implementação Concluída
+## 16. Documentação Supabase
+
+### Ficheiros de Referência
+
+| Ficheiro | Descrição |
+|----------|-----------|
+| **supabase-schema.md** | Schema completo da base de dados |
+| **claude-code-guide.md** | Guia de uso com Claude Code |
+| **supabase/migrations/** | Migrações SQL versionadas |
+
+### Regra de Ouro
+
+> **SEMPRE consultar `.claude/supabase-schema.md` antes de escrever código que aceda à base de dados.**
+
+### Nomes de Colunas Comuns
+
+⚠️ **Atenção:** Supabase usa `snake_case`, TypeScript usa `camelCase`
+
+| ❌ TypeScript (errado na DB) | ✅ Supabase (correto) |
+|------------------------------|---------------------|
+| `lastAppChange` | `apps_selected_at` |
+| `subscriptionTier` | `subscription_tier` |
+| `isFoundingMember` | `is_founding_member` |
+| `fullName` | `full_name` |
+
+### Workflow de Mudanças
+
+1. **Fazer mudanças no Dashboard:** SQL Editor → `ALTER TABLE`
+2. **Documentar:** Actualizar `.claude/supabase-schema.md`
+3. **Criar migração:** Adicionar ficheiro em `supabase/migrations/`
+4. **Commit:** GitHub com todas as alterações
+
+### Ver Também
+
+- [Supabase Schema Documentation](.claude/supabase-schema.md)
+- [Claude Code Guide](.claude/claude-code-guide.md)
+
+---
+
+## 17. ExpenseFlow - Implementação Concluída
 
 ### Funcionalidades Phase 1 (MVP)
 
