@@ -21,12 +21,16 @@ export async function POST(request: Request) {
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
+    console.log('[select-apps] Auth check:', { userId: user?.id, authError: authError?.message });
+
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized', details: authError?.message }, { status: 401 });
     }
 
     const body = await request.json() as SelectAppsRequest;
     const { appId, action } = body;
+
+    console.log('[select-apps] Request:', { appId, action, userId: user.id });
 
     if (!appId || !action) {
       return NextResponse.json(
@@ -40,11 +44,13 @@ export async function POST(request: Request) {
       .from('profiles')
       .select('subscription_tier, selected_apps, last_app_change')
       .eq('id', user.id)
-      .single() as { data: ProfileData | null; error: { message: string } | null };
+      .single() as { data: ProfileData | null; error: { message: string; code?: string } | null };
+
+    console.log('[select-apps] Profile fetch:', { profile, error: profileError });
 
     if (profileError || !profile) {
       return NextResponse.json(
-        { error: 'Profile not found' },
+        { error: 'Profile not found', details: profileError?.message },
         { status: 404 }
       );
     }
@@ -90,15 +96,20 @@ export async function POST(request: Request) {
         updateData.last_app_change = new Date().toISOString();
       }
 
-      const { error: updateError } = await supabase
+      console.log('[select-apps] Updating profile with:', updateData);
+
+      const { error: updateError, data: updateResult } = await supabase
         .from('profiles')
         .update(updateData)
-        .eq('id', user.id);
+        .eq('id', user.id)
+        .select();
+
+      console.log('[select-apps] Update result:', { updateResult, updateError });
 
       if (updateError) {
-        console.error('Error updating profile:', updateError);
+        console.error('[select-apps] Error updating profile:', updateError);
         return NextResponse.json(
-          { error: 'Failed to update profile' },
+          { error: 'Failed to update profile', details: updateError.message },
           { status: 500 }
         );
       }
