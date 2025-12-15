@@ -240,7 +240,7 @@ export default async function PrivacyFirstPage({ params: { locale } }: PageProps
         </section>
       </main>
 
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

@@ -166,7 +166,7 @@ export default async function FairPricingPage({ params: { locale } }: PageProps)
         </section>
       </main>
 
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

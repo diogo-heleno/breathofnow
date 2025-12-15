@@ -323,7 +323,7 @@ export default function HomePage({ params: { locale } }: PageProps) {
         </section>
       </main>
 
-      <Footer />
+      <Footer locale={locale} />
       <AdBanner position="bottom" slot="homepage-footer" />
     </>
   );

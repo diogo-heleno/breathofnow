@@ -66,7 +66,7 @@ export function Header({ locale }: HeaderProps) {
       <div className="container-app">
         <nav className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link href="/" className="relative z-10">
+          <Link href={`/${locale}`} className="relative z-10">
             <Logo size="md" />
           </Link>
 
@@ -140,14 +140,14 @@ export function Header({ locale }: HeaderProps) {
                   <div className="h-9 w-20 bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-lg" />
                 </div>
               ) : isAuthenticated ? (
-                <Link href="/account">
+                <Link href={`/${locale}/account`}>
                   <Button variant="primary" size="sm" className="flex items-center gap-2">
                     <User className="w-4 h-4" />
                     {t('common.profile')}
                   </Button>
                 </Link>
               ) : (
-                <Link href="/auth/signin">
+                <Link href={`/${locale}/auth/signin`}>
                   <Button variant="primary" size="sm">
                     {t('common.signIn')}
                   </Button>
@@ -218,14 +218,14 @@ export function Header({ locale }: HeaderProps) {
                   {isAuthLoading ? (
                     <div className="h-10 w-full bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-lg" />
                   ) : isAuthenticated ? (
-                    <Link href="/account" onClick={() => setIsMenuOpen(false)}>
+                    <Link href={`/${locale}/account`} onClick={() => setIsMenuOpen(false)}>
                       <Button variant="primary" className="w-full flex items-center justify-center gap-2">
                         <User className="w-4 h-4" />
                         {t('common.profile')}
                       </Button>
                     </Link>
                   ) : (
-                    <Link href="/auth/signin" onClick={() => setIsMenuOpen(false)}>
+                    <Link href={`/${locale}/auth/signin`} onClick={() => setIsMenuOpen(false)}>
                       <Button variant="primary" className="w-full">
                         {t('common.signIn')}
                       </Button>

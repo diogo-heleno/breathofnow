@@ -90,7 +90,7 @@ export default function PrivacyPage({ params: { locale } }: PageProps) {
         </article>
       </main>
 
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

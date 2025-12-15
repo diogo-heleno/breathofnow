@@ -97,7 +97,7 @@ export default function FAQPage({ params: { locale } }: PageProps) {
         </div>
       </main>
 
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }
