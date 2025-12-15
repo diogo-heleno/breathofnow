@@ -338,7 +338,7 @@ export function AppShell({ children, locale }: AppShellProps) {
 
                     {app.status === 'beta' && (
                       <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                        Beta
+                        {t('nav.beta')}
                       </Badge>
                     )}
                   </Link>
@@ -391,12 +391,12 @@ export function AppShell({ children, locale }: AppShellProps) {
                     <div className="flex items-center gap-1">
                       {!hasAccess && !isComingSoon && (
                         <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                          {t('nav.locked')}
+                          {t('nav.testOnly')}
                         </Badge>
                       )}
                       {app.status === 'beta' && (
                         <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                          Beta
+                          {t('nav.beta')}
                         </Badge>
                       )}
                       {isComingSoon && (
