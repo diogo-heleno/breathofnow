@@ -1,13 +1,13 @@
 # 🏁 Prompt de Fecho - Claude Code
 
-Use este prompt no final de cada sessão de trabalho para garantir que toda a documentação fica atualizada.
+Use este prompt no final de cada sessão de trabalho para garantir que toda a documentação fica atualizada e a qualidade do código está verificada.
 
 ---
 
 ## Prompt Completo
 
 ```
-Claude Code: Terminamos o trabalho por hoje. Antes de fecharmos a sessão, preciso que faças uma auditoria completa e actualizes toda a documentação necessária.
+Claude Code: Terminamos o trabalho por hoje. Antes de fecharmos a sessão, preciso que faças uma auditoria completa usando o skill code-review (.claude/skills/code-review/SKILL.md) e actualizes toda a documentação necessária.
 
 Por favor, executa os seguintes passos:
 
@@ -21,7 +21,17 @@ Revê todas as alterações que fizemos hoje e identifica:
 - Foram criados novos componentes ou pages?
 - Mudou alguma convenção de código?
 
-## 2. ATUALIZAÇÃO DE DOCUMENTAÇÃO
+## 2. VERIFICAÇÃO DE QUALIDADE (Skill: code-review)
+
+Aplica o skill code-review para verificar:
+- [ ] Sem tipos `any` no código novo
+- [ ] Sem texto hardcoded (i18n compliance)
+- [ ] Dados do utilizador usam Dexie, não Supabase directo
+- [ ] Sem console.log de debug esquecidos
+- [ ] Error handling em operações async
+- [ ] Convenções de nomenclatura respeitadas
+
+## 3. ATUALIZAÇÃO DE DOCUMENTAÇÃO
 
 Com base nas mudanças, actualiza os seguintes ficheiros:
 
@@ -57,13 +67,16 @@ Com base nas mudanças, actualiza os seguintes ficheiros:
 
 ## 3. VERIFICAÇÃO FINAL
 
-Antes de terminar, confirma:
+Antes de terminar, confirma (usando os skills):
 - [ ] Todos os ficheiros de código têm comentários adequados?
 - [ ] Não há TODOs ou FIXMEs esquecidos?
 - [ ] Não há console.logs de debug esquecidos?
 - [ ] Todos os componentes têm PropTypes/Types adequados?
 - [ ] Não há imports não utilizados?
 - [ ] Não há variáveis declaradas mas não usadas?
+- [ ] Texto hardcoded? (skill: i18n-enforcer)
+- [ ] Dados a ir directo para Supabase? (skill: local-first)
+- [ ] Tipos `any` no código? (skill: code-review)
 
 ## 4. RESUMO PARA COMMIT
 
@@ -305,5 +318,17 @@ fi
 
 ---
 
+## Skills Usados no Fecho
+
+O CLOSE-PROMPT utiliza automaticamente estes skills:
+
+| Skill | Verificação |
+|-------|-------------|
+| `code-review` | Qualidade geral, tipos, error handling |
+| `i18n-enforcer` | Texto hardcoded |
+| `local-first` | Arquitectura de dados |
+
+---
+
 **Criado:** 12 Dezembro 2024  
-**Última atualização:** 12 Dezembro 2024
+**Última atualização:** 15 Dezembro 2024 (integração com Skills)
