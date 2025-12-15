@@ -539,7 +539,14 @@
       "noResults": "Ninguna transacción encontrada",
       "delete": "Eliminar",
       "edit": "Editar",
-      "confirmDelete": "¿Estás seguro de que quieres eliminar esta transacción?"
+      "confirmDelete": "¿Estás seguro de que quieres eliminar esta transacción?",
+      "today": "Hoy",
+      "yesterday": "Ayer",
+      "type": "Tipo",
+      "category": "Categoría",
+      "clearFilters": "Limpiar filtros",
+      "loading": "Cargando...",
+      "cancel": "Cancelar"
     },
     "categories": {
       "title": "Categorías",
@@ -548,8 +555,15 @@
       "add": "Añadir Categoría",
       "edit": "Editar Categoría",
       "name": "Nombre",
+      "namePlaceholder": "Nombre de la categoría",
       "icon": "Icono",
       "color": "Color",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "empty": "Aún sin categorías",
+      "defaultLabel": "Predeterminada",
+      "confirmDelete": "¿Eliminar \"{name}\"?",
+      "delete": "Eliminar",
       "default": {
         "food": "Alimentación",
         "transport": "Transporte",
@@ -568,11 +582,22 @@
     "budgets": {
       "title": "Presupuestos",
       "add": "Añadir Presupuesto",
+      "edit": "Editar Presupuesto",
       "monthly": "Mensual",
       "yearly": "Anual",
       "spent": "Gastado",
       "remaining": "Restante",
-      "over": "Excedido"
+      "over": "Excedido",
+      "category": "Categoría",
+      "totalAllExpenses": "Total (todos los gastos)",
+      "amount": "Cantidad",
+      "period": "Período",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "empty": "Aún sin presupuestos",
+      "createFirst": "Crear tu primer presupuesto",
+      "confirmDelete": "¿Eliminar este presupuesto?",
+      "delete": "Eliminar"
     },
     "reports": {
       "title": "Informes",

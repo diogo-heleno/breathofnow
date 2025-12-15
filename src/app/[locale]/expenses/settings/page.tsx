@@ -126,7 +126,7 @@ export default function SettingsPage({
 
       {/* Success Toast */}
       {showSuccess && (
-        <div className="fixed top-4 right-4 z-50 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-fade-in">
+        <div className="fixed top-4 right-4 z-50 bg-success text-white px-4 py-2 rounded-xl shadow-soft-lg flex items-center gap-2 animate-fade-in">
           <Check className="w-4 h-4" />
           {showSuccess}
         </div>
@@ -318,7 +318,7 @@ export default function SettingsPage({
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white dark:bg-neutral-800 rounded-xl p-6 max-w-md mx-4 shadow-xl">
+          <div className="bg-white dark:bg-neutral-800 rounded-2xl p-6 max-w-md mx-4 shadow-soft-xl">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                 <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
