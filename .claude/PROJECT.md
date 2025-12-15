@@ -1,6 +1,6 @@
 # Documento de Projeto - Breath of Now
 
-> Última atualização: Dezembro 2024
+> Última atualização: 15 Dezembro 2024
 
 ---
 
@@ -133,6 +133,13 @@ breathofnow/
 - 🇧🇷 Português Brasil (pt-BR)
 - 🇪🇸 Español (es)
 - 🇫🇷 Français (fr)
+
+### Persistência de Locale
+
+- Cookie `NEXT_LOCALE` persiste preferência do utilizador
+- Funciona cross-subdomain (www ↔ app) via `.breathofnow.site`
+- Default: `en` (inglês)
+- Locale é preservado em todos os links internos
 
 ### Preços Regionais
 
@@ -296,9 +303,11 @@ breathofnow/
 | **PriceSlider** | PWYW com min/max | ✅ |
 | **Logo** | sm, md, lg | ✅ |
 | **AdBanner** | top, bottom, inline | ✅ |
-| **Header** | com navegação mobile | ✅ |
-| **Footer** | 4 colunas + newsletter | ✅ |
+| **Header** | com navegação mobile, locale-aware | ✅ |
+| **Footer** | 4 colunas + newsletter, locale prop | ✅ |
 | **ClientOnly** | fallback | ✅ |
+| **AppShell** | sidebar com apps, locale-aware | ✅ |
+| **UnifiedAppHeader** | header para apps | ✅ |
 
 ### Animações
 
