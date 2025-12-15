@@ -214,13 +214,13 @@ export default function BudgetsPage({
         <Card>
           <CardHeader>
             <CardTitle className="text-base">
-              {editingBudget ? 'Edit Budget' : t('add')}
+              {editingBudget ? t('edit') : t('add')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-2">
-                Category
+                {t('category')}
               </label>
               <select
                 value={formCategoryId}
@@ -234,7 +234,7 @@ export default function BudgetsPage({
                   'focus:outline-none focus:ring-2 focus:ring-primary-500'
                 )}
               >
-                <option value="">Total (all expenses)</option>
+                <option value="">{t('totalAllExpenses')}</option>
                 {availableCategories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {getCategoryDisplayName(cat)}
@@ -245,7 +245,7 @@ export default function BudgetsPage({
 
             <div>
               <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-2">
-                Amount ({baseCurrency})
+                {t('amount')} ({baseCurrency})
               </label>
               <Input
                 type="number"
@@ -259,7 +259,7 @@ export default function BudgetsPage({
 
             <div>
               <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-2">
-                Period
+                {t('period')}
               </label>
               <div className="flex gap-2">
                 <button
@@ -289,14 +289,14 @@ export default function BudgetsPage({
 
             <div className="flex gap-3 pt-2">
               <Button variant="ghost" onClick={handleCancel} className="flex-1">
-                Cancel
+                {t('cancel')}
               </Button>
               <Button
                 onClick={handleSave}
                 disabled={!formAmount || parseFloat(formAmount) <= 0}
                 className="flex-1"
               >
-                Save
+                {t('save')}
               </Button>
             </div>
           </CardContent>
@@ -309,10 +309,10 @@ export default function BudgetsPage({
           <CardContent className="py-12 text-center">
             <Target className="w-12 h-12 mx-auto text-neutral-400 mb-4" />
             <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-              No budgets set yet
+              {t('empty')}
             </p>
             <Button onClick={handleStartAdd} leftIcon={<Plus className="h-4 w-4" />}>
-              Create your first budget
+              {t('createFirst')}
             </Button>
           </CardContent>
         </Card>
@@ -338,14 +338,14 @@ export default function BudgetsPage({
           <Card className="mx-4 max-w-sm w-full">
             <CardContent className="pt-6 text-center">
               <p className="text-neutral-900 dark:text-neutral-100 mb-6">
-                Delete this budget?
+                {t('confirmDelete')}
               </p>
               <div className="flex gap-3 justify-center">
                 <Button variant="ghost" onClick={() => setDeleteConfirm(null)}>
-                  Cancel
+                  {t('cancel')}
                 </Button>
                 <Button variant="danger" onClick={() => handleDelete(deleteConfirm)}>
-                  Delete
+                  {t('delete')}
                 </Button>
               </div>
             </CardContent>

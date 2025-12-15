@@ -164,8 +164,8 @@ export default function QuickAddPage({
   if (showSuccess) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] animate-fade-in">
-        <div className="w-20 h-20 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-4">
-          <Check className="w-10 h-10 text-green-600 dark:text-green-400" />
+        <div className="w-20 h-20 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mb-4">
+          <Check className="w-10 h-10 text-primary-600 dark:text-primary-400" />
         </div>
         <p className="text-lg font-medium text-neutral-900 dark:text-neutral-100">
           {t('quickAdd.saved')}
@@ -185,7 +185,7 @@ export default function QuickAddPage({
               className={cn(
                 'flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all',
                 quickAddType === 'expense'
-                  ? 'bg-red-500 text-white shadow-sm'
+                  ? 'bg-accent-500 text-white shadow-soft-sm'
                   : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100'
               )}
             >
@@ -196,7 +196,7 @@ export default function QuickAddPage({
               className={cn(
                 'flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all',
                 quickAddType === 'income'
-                  ? 'bg-green-500 text-white shadow-sm'
+                  ? 'bg-primary-500 text-white shadow-soft-sm'
                   : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100'
               )}
             >
@@ -234,8 +234,8 @@ export default function QuickAddPage({
                 'bg-transparent border-2 rounded-xl',
                 'focus:outline-none focus:ring-0',
                 quickAddType === 'expense'
-                  ? 'border-red-200 dark:border-red-800 focus:border-red-500 text-red-600 dark:text-red-400'
-                  : 'border-green-200 dark:border-green-800 focus:border-green-500 text-green-600 dark:text-green-400'
+                  ? 'border-accent-200 dark:border-accent-800 focus:border-accent-500 text-accent-600 dark:text-accent-400'
+                  : 'border-primary-200 dark:border-primary-800 focus:border-primary-500 text-primary-600 dark:text-primary-400'
               )}
               autoFocus
             />
@@ -334,11 +334,9 @@ export default function QuickAddPage({
         onClick={handleSave}
         disabled={!amount || parseFloat(amount) <= 0 || isSaving}
         isLoading={isSaving}
-        className={cn(
-          'w-full',
-          quickAddType === 'expense' ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'
-        )}
+        variant={quickAddType === 'expense' ? 'accent' : 'primary'}
         size="lg"
+        className="w-full"
       >
         {t('quickAdd.save')}
       </Button>

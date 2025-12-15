@@ -682,7 +682,14 @@
       "noResults": "Nenhuma transação encontrada",
       "delete": "Excluir",
       "edit": "Editar",
-      "confirmDelete": "Tem certeza de que quer excluir esta transação?"
+      "confirmDelete": "Tem certeza de que quer excluir esta transação?",
+      "today": "Hoje",
+      "yesterday": "Ontem",
+      "type": "Tipo",
+      "category": "Categoria",
+      "clearFilters": "Limpar filtros",
+      "loading": "Carregando...",
+      "cancel": "Cancelar"
     },
     "categories": {
       "title": "Categorias",
@@ -691,8 +698,15 @@
       "add": "Adicionar Categoria",
       "edit": "Editar Categoria",
       "name": "Nome",
+      "namePlaceholder": "Nome da categoria",
       "icon": "Ícone",
       "color": "Cor",
+      "cancel": "Cancelar",
+      "save": "Salvar",
+      "empty": "Ainda sem categorias",
+      "defaultLabel": "Padrão",
+      "confirmDelete": "Excluir \"{name}\"?",
+      "delete": "Excluir",
       "default": {
         "food": "Alimentação",
         "transport": "Transporte",
@@ -716,7 +730,17 @@
       "yearly": "Anual",
       "spent": "Gasto",
       "remaining": "Restante",
-      "over": "Acima do orçamento"
+      "over": "Acima do orçamento",
+      "category": "Categoria",
+      "totalAllExpenses": "Total (todas as despesas)",
+      "amount": "Valor",
+      "period": "Período",
+      "cancel": "Cancelar",
+      "save": "Salvar",
+      "empty": "Ainda sem orçamentos definidos",
+      "createFirst": "Criar seu primeiro orçamento",
+      "confirmDelete": "Excluir este orçamento?",
+      "delete": "Excluir"
     },
     "reports": {
       "title": "Relatórios",

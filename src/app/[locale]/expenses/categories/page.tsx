@@ -180,7 +180,7 @@ export default function CategoriesPage({
               <Input
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
-                placeholder="Category name"
+                placeholder={t('namePlaceholder')}
                 autoFocus
               />
             </div>
@@ -206,14 +206,14 @@ export default function CategoriesPage({
 
             <div className="flex gap-3 pt-2">
               <Button variant="ghost" onClick={handleCancel} className="flex-1">
-                Cancel
+                {t('cancel')}
               </Button>
               <Button
                 onClick={handleSave}
                 disabled={!formName.trim()}
                 className="flex-1"
               >
-                Save
+                {t('save')}
               </Button>
             </div>
           </CardContent>
@@ -225,7 +225,7 @@ export default function CategoriesPage({
         <CardContent className="divide-y divide-neutral-100 dark:divide-neutral-800">
           {filteredCategories.length === 0 ? (
             <div className="py-8 text-center text-neutral-500">
-              No categories yet
+              {t('empty')}
             </div>
           ) : (
             filteredCategories.map((category) => (
@@ -244,7 +244,7 @@ export default function CategoriesPage({
                     {getCategoryDisplayName(category)}
                   </p>
                   {category.isDefault && (
-                    <span className="text-xs text-neutral-500">Default</span>
+                    <span className="text-xs text-neutral-500">{t('defaultLabel')}</span>
                   )}
                 </div>
                 <div className="flex gap-1">
@@ -278,14 +278,14 @@ export default function CategoriesPage({
           <Card className="mx-4 max-w-sm w-full">
             <CardContent className="pt-6 text-center">
               <p className="text-neutral-900 dark:text-neutral-100 mb-6">
-                Delete &quot;{deleteConfirm.name}&quot;?
+                {t('confirmDelete', { name: deleteConfirm.name })}
               </p>
               <div className="flex gap-3 justify-center">
                 <Button variant="ghost" onClick={() => setDeleteConfirm(null)}>
-                  Cancel
+                  {t('cancel')}
                 </Button>
                 <Button variant="danger" onClick={() => handleDelete(deleteConfirm)}>
-                  Delete
+                  {t('delete')}
                 </Button>
               </div>
             </CardContent>

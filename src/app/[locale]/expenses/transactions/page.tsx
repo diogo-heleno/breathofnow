@@ -115,10 +115,10 @@ export default function TransactionsPage({
     yesterday.setDate(yesterday.getDate() - 1);
 
     if (dateStr === today.toISOString().split('T')[0]) {
-      return 'Today';
+      return t('today');
     }
     if (dateStr === yesterday.toISOString().split('T')[0]) {
-      return 'Yesterday';
+      return t('yesterday');
     }
 
     return new Intl.DateTimeFormat(locale, {
@@ -207,7 +207,7 @@ export default function TransactionsPage({
           <CardContent className="space-y-4">
             {/* Type Filter */}
             <div>
-              <p className="text-xs font-medium text-neutral-500 mb-2">Type</p>
+              <p className="text-xs font-medium text-neutral-500 mb-2">{t('type')}</p>
               <div className="flex gap-2">
                 {(['all', 'expense', 'income'] as const).map((type) => (
                   <button
@@ -228,7 +228,7 @@ export default function TransactionsPage({
 
             {/* Category Filter */}
             <div>
-              <p className="text-xs font-medium text-neutral-500 mb-2">Category</p>
+              <p className="text-xs font-medium text-neutral-500 mb-2">{t('category')}</p>
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setFilterCategoryId(null)}
@@ -276,7 +276,7 @@ export default function TransactionsPage({
                   setSearchQuery('');
                 }}
               >
-                Clear filters
+                {t('clearFilters')}
               </Button>
             )}
           </CardContent>
@@ -285,7 +285,7 @@ export default function TransactionsPage({
 
       {/* Transactions List */}
       {isLoading ? (
-        <div className="py-12 text-center text-neutral-500">Loading...</div>
+        <div className="py-12 text-center text-neutral-500">{t('loading')}</div>
       ) : filteredTransactions.length === 0 ? (
         <div className="py-12 text-center text-neutral-500">{t('noResults')}</div>
       ) : (
@@ -336,7 +336,7 @@ export default function TransactionsPage({
               </p>
               <div className="flex gap-3 justify-center">
                 <Button variant="ghost" onClick={() => setDeleteConfirm(null)}>
-                  Cancel
+                  {t('cancel')}
                 </Button>
                 <Button variant="danger" onClick={() => handleDelete(deleteConfirm)}>
                   {t('delete')}

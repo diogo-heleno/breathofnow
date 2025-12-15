@@ -138,7 +138,7 @@ export default function ExpenseDashboard({
         {/* Expenses */}
         <Card padding="sm">
           <CardContent>
-            <div className="flex items-center gap-2 text-red-500 mb-2">
+            <div className="flex items-center gap-2 text-accent-500 mb-2">
               <TrendingDown className="h-4 w-4" />
               <span className="text-xs font-medium">{t('dashboard.expenses')}</span>
             </div>
@@ -151,7 +151,7 @@ export default function ExpenseDashboard({
         {/* Income */}
         <Card padding="sm">
           <CardContent>
-            <div className="flex items-center gap-2 text-green-500 mb-2">
+            <div className="flex items-center gap-2 text-primary-500 mb-2">
               <TrendingUp className="h-4 w-4" />
               <span className="text-xs font-medium">{t('dashboard.income')}</span>
             </div>
@@ -172,8 +172,8 @@ export default function ExpenseDashboard({
               className={cn(
                 'text-xl font-semibold',
                 (monthSummary?.balance ?? 0) >= 0
-                  ? 'text-green-600 dark:text-green-400'
-                  : 'text-red-600 dark:text-red-400'
+                  ? 'text-primary-600 dark:text-primary-400'
+                  : 'text-accent-600 dark:text-accent-400'
               )}
             >
               {isLoading ? '...' : formatCurrency(monthSummary?.balance ?? 0)}
@@ -275,8 +275,8 @@ export default function ExpenseDashboard({
                       className={cn(
                         'font-semibold',
                         transaction.type === 'expense'
-                          ? 'text-red-600 dark:text-red-400'
-                          : 'text-green-600 dark:text-green-400'
+                          ? 'text-accent-600 dark:text-accent-400'
+                          : 'text-primary-600 dark:text-primary-400'
                       )}
                     >
                       {transaction.type === 'expense' ? '-' : '+'}
