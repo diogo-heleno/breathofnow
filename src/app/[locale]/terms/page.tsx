@@ -131,7 +131,7 @@ export default function TermsPage({ params: { locale } }: PageProps) {
         </article>
       </main>
 
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

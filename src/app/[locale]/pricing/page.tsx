@@ -288,7 +288,7 @@ export default function PricingPage({ params: { locale } }: PageProps) {
         </div>
       </main>
 
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

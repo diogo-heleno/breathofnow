@@ -88,9 +88,10 @@ export default async function middleware(request: NextRequest) {
   // This catches magic links that redirect to wrong URL (e.g., homepage with ?code=)
   const code = request.nextUrl.searchParams.get('code');
   if (code && !pathWithoutLocale.startsWith('/auth/callback')) {
-    // Extract locale from pathname if present
+    // Extract locale from pathname if present, fallback to cookie or defaultLocale (en)
     const localeMatch = pathname.match(/^\/(en|pt|pt-BR|es|fr)/);
-    const locale = localeMatch ? localeMatch[1] : 'pt';
+    const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
+    const locale = localeMatch ? localeMatch[1] : (cookieLocale || defaultLocale);
 
     // Redirect to app subdomain callback route
     const isProduction = host.includes('breathofnow.site');
@@ -201,20 +202,19 @@ export default async function middleware(request: NextRequest) {
       ...(cookieDomain && { domain: cookieDomain }),
     });
 
-    // Ensure NEXT_LOCALE cookie is set with cross-subdomain domain
-    if (cookieDomain) {
-      const localeFromPath = pathname.match(/^\/(en|pt|pt-BR|es|fr)/)?.[1];
-      const existingLocale = request.cookies.get('NEXT_LOCALE')?.value;
+    // Ensure NEXT_LOCALE cookie is set to persist locale preference
+    const localeFromPath = pathname.match(/^\/(en|pt|pt-BR|es|fr)/)?.[1];
+    const existingLocale = request.cookies.get('NEXT_LOCALE')?.value;
+    const currentLocale = localeFromPath || defaultLocale;
 
-      if (localeFromPath && localeFromPath !== existingLocale) {
-        intlResponse.cookies.set('NEXT_LOCALE', localeFromPath, {
-          httpOnly: false,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          maxAge: 60 * 60 * 24 * 365, // 1 year
-          domain: cookieDomain,
-        });
-      }
+    if (currentLocale !== existingLocale) {
+      intlResponse.cookies.set('NEXT_LOCALE', currentLocale, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 365, // 1 year
+        ...(cookieDomain && { domain: cookieDomain }),
+      });
     }
 
     return intlResponse;
@@ -232,21 +232,23 @@ export default async function middleware(request: NextRequest) {
     ...(cookieDomain && { domain: cookieDomain }),
   });
 
-  // Ensure NEXT_LOCALE cookie is set with cross-subdomain domain
-  // This persists locale preference between www and app subdomains
-  if (cookieDomain) {
-    const localeFromPath = pathname.match(/^\/(en|pt|pt-BR|es|fr)/)?.[1];
-    const existingLocale = request.cookies.get('NEXT_LOCALE')?.value;
+  // Ensure NEXT_LOCALE cookie is set to persist locale preference
+  // This works across www and app subdomains when cookieDomain is set
+  const localeFromPath = pathname.match(/^\/(en|pt|pt-BR|es|fr)/)?.[1];
+  const existingLocale = request.cookies.get('NEXT_LOCALE')?.value;
 
-    if (localeFromPath && localeFromPath !== existingLocale) {
-      response.cookies.set('NEXT_LOCALE', localeFromPath, {
-        httpOnly: false,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 60 * 60 * 24 * 365, // 1 year
-        domain: cookieDomain,
-      });
-    }
+  // Determine the current locale: from path, or default if path has no locale prefix
+  const currentLocale = localeFromPath || defaultLocale;
+
+  // Update cookie if locale changed or doesn't exist
+  if (currentLocale !== existingLocale) {
+    response.cookies.set('NEXT_LOCALE', currentLocale, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+      ...(cookieDomain && { domain: cookieDomain }),
+    });
   }
 
   return response;

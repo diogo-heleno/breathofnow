@@ -7,8 +7,13 @@ import { Logo } from '@/components/brand/logo';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Mail, ExternalLink } from 'lucide-react';
+import { type Locale } from '@/i18n';
 
-export function Footer() {
+interface FooterProps {
+  locale: Locale;
+}
+
+export function Footer({ locale }: FooterProps) {
   const t = useTranslations();
   const currentYear = new Date().getFullYear();
 
@@ -35,7 +40,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Brand & Newsletter */}
           <div className="lg:col-span-2 space-y-6">
-            <Logo size="md" />
+            <Link href={`/${locale}`}>
+              <Logo size="md" />
+            </Link>
             <p className="text-neutral-600 dark:text-neutral-400 max-w-sm">
               {t('common.tagline')}
             </p>

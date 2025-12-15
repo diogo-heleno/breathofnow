@@ -184,7 +184,7 @@ export default async function BeautifullySimplePage({ params: { locale } }: Page
         </section>
       </main>
 
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

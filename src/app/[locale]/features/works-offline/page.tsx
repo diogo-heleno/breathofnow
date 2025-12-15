@@ -251,7 +251,7 @@ export default async function WorksOfflinePage({ params: { locale } }: PageProps
         </section>
       </main>
 
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

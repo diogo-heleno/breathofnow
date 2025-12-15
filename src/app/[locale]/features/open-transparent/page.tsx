@@ -184,7 +184,7 @@ export default async function OpenTransparentPage({ params: { locale } }: PagePr
         </section>
       </main>
 
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }
