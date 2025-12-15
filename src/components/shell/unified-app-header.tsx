@@ -394,17 +394,17 @@ export function UnifiedAppHeader({
                         <div className="flex items-center gap-1">
                           {!hasAccess && !isComingSoon && (
                             <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                              Locked
+                              {t('nav.testOnly')}
                             </Badge>
                           )}
                           {app.status === 'beta' && (
                             <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                              Beta
+                              {t('nav.beta')}
                             </Badge>
                           )}
                           {isComingSoon && (
                             <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                              Soon
+                              {t('nav.comingSoon')}
                             </Badge>
                           )}
                         </div>
