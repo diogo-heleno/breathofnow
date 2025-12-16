@@ -130,9 +130,9 @@ export function UnifiedAppHeader({
               {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
             
-            <Link href={`/${locale}`} className="flex items-center gap-2">
+            <a href={`https://www.breathofnow.site/${locale}`} className="flex items-center gap-2">
               <Logo size="sm" />
-            </Link>
+            </a>
           </div>
 
           {/* Right: Connection + Lang + Auth */}
@@ -316,9 +316,9 @@ export function UnifiedAppHeader({
             <div className="flex flex-col h-full">
               {/* Sidebar Header */}
               <div className="flex items-center justify-between h-14 px-4 border-b border-neutral-200 dark:border-neutral-800">
-                <Link href={`/${locale}`} onClick={() => setIsSidebarOpen(false)}>
+                <a href={`https://www.breathofnow.site/${locale}`}>
                   <Logo size="sm" />
-                </Link>
+                </a>
                 <button
                   onClick={() => setIsSidebarOpen(false)}
                   className="p-2 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg"
@@ -330,9 +330,8 @@ export function UnifiedAppHeader({
               {/* Navigation */}
               <nav className="flex-1 p-4 overflow-y-auto">
                 {/* Home Link */}
-                <Link
-                  href={`/${locale}`}
-                  onClick={() => setIsSidebarOpen(false)}
+                <a
+                  href={`https://www.breathofnow.site/${locale}`}
                   className={cn(
                     'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors mb-4',
                     !currentApp
@@ -342,7 +341,7 @@ export function UnifiedAppHeader({
                 >
                   <Home className="w-5 h-5" />
                   {t('common.home')}
-                </Link>
+                </a>
 
                 {/* Apps Section */}
                 <div className="mb-2">

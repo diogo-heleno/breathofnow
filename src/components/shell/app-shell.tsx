@@ -122,9 +122,9 @@ export function AppShell({ children, locale }: AppShellProps) {
               {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
             
-            <Link href={`/${locale}`} className="flex items-center gap-2">
+            <a href={`https://www.breathofnow.site/${locale}`} className="flex items-center gap-2">
               <Logo size="sm" />
-            </Link>
+            </a>
           </div>
 
           {/* Right: Connection + Lang + User */}
@@ -283,8 +283,8 @@ export function AppShell({ children, locale }: AppShellProps) {
         >
           <nav className="flex flex-col h-full p-4">
             {/* Home Link */}
-            <Link
-              href={`/${locale}`}
+            <a
+              href={`https://www.breathofnow.site/${locale}`}
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors mb-2',
                 !currentApp
@@ -294,7 +294,7 @@ export function AppShell({ children, locale }: AppShellProps) {
             >
               <Home className="w-5 h-5" />
               {t('common.home')}
-            </Link>
+            </a>
 
             {/* My Apps Section - Apps user has access to */}
             <div className="mt-4 mb-2">
