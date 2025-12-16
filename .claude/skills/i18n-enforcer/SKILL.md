@@ -53,8 +53,7 @@ Localização: `/messages/{locale}.json`
 
 Locales suportados:
 - `en.json` - English (primário)
-- `pt.json` - Português (Portugal)
-- `pt-BR.json` - Português (Brasil)
+- `pt.json` - Português
 - `es.json` - Español
 - `fr.json` - Français
 
@@ -125,7 +124,7 @@ Antes de completar qualquer tarefa, verifica:
 
 - [ ] Nenhuma string hardcoded em JSX/TSX
 - [ ] Todo o texto usa hook `useTranslations()`
-- [ ] Keys de tradução adicionadas a TODOS os 5 ficheiros de locale
+- [ ] Keys de tradução adicionadas a TODOS os 4 ficheiros de locale
 - [ ] Namespace corresponde ao nome do componente/página
 - [ ] Valores dinâmicos usam interpolação adequada
 - [ ] Pluralização tratada onde necessário
@@ -249,7 +248,7 @@ export function NewComponent() {
   }
 }
 
-// Repetir para pt-BR.json, es.json, fr.json
+// Repetir para es.json, fr.json
 ```
 
 ### Passo 3: Verificar

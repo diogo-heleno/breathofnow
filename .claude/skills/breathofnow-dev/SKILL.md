@@ -52,8 +52,8 @@ breathofnow/
 │   ├── supabase-schema.md       # Schema da BD
 │   ├── INIT-PROMPT.md           # Prompt de inicialização
 │   └── CLOSE-PROMPT.md          # Prompt de fecho
-├── messages/                    # Ficheiros de tradução (5 idiomas)
-│   ├── en.json, pt.json, pt-BR.json, es.json, fr.json
+├── messages/                    # Ficheiros de tradução (4 idiomas)
+│   ├── en.json, pt.json, es.json, fr.json
 ├── src/
 │   ├── app/[locale]/            # Páginas localizadas
 │   │   ├── expenses/            # ExpenseFlow
@@ -154,8 +154,7 @@ Em `@/components/ui/`:
 | Código | Idioma | Prioridade |
 |--------|--------|------------|
 | en | English | Primary |
-| pt | Português (Portugal) | Alta |
-| pt-BR | Português (Brasil) | Alta |
+| pt | Português | Alta |
 | es | Español | Média |
 | fr | Français | Média |
 

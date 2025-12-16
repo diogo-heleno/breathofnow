@@ -64,7 +64,7 @@ npm run lint
 - `src/lib/db/` - Dexie.js local database
 - `src/lib/supabase/` - Supabase client (auth & sync)
 - `src/stores/` - Zustand state management
-- `messages/` - Translation files (en, pt, pt-BR, es, fr)
+- `messages/` - Translation files (en, pt, es, fr)
 
 ---
 
@@ -78,7 +78,7 @@ npm run lint
 - Write commit messages following conventional commits: `feat:`, `fix:`, `docs:`, `chore:`
 - Place new UI components in `src/components/ui/`
 - Place new pages in `src/app/[locale]/`
-- Add translations to all 5 language files in `messages/`
+- Add translations to all 4 language files in `messages/`
 
 ---
 
@@ -151,7 +151,7 @@ export function MyComponent() {
 }
 ```
 
-Supported locales: `en`, `pt`, `pt-BR`, `es`, `fr`
+Supported locales: `en`, `pt`, `es`, `fr`
 
 ---
 

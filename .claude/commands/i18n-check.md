@@ -100,7 +100,6 @@ Total de ocorrências: XX
 Ficheiros de tradução a atualizar:
 - messages/en.json
 - messages/pt.json
-- messages/pt-BR.json
 - messages/es.json
 - messages/fr.json
 
@@ -123,7 +122,6 @@ Namespace: fitlog.session
     "exit": {
       "en": "Exit",
       "pt": "Sair",
-      "pt-BR": "Sair",
       "es": "Salir",
       "fr": "Quitter"
     }
@@ -132,14 +130,12 @@ Namespace: fitlog.session
     "sets": {
       "en": "Sets",
       "pt": "Séries",
-      "pt-BR": "Séries",
       "es": "Series",
       "fr": "Séries"
     },
     "restTime": {
       "en": "Rest Time",
       "pt": "Tempo de Descanso",
-      "pt-BR": "Tempo de Descanso",
       "es": "Tiempo de Descanso",
       "fr": "Temps de Repos"
     }

@@ -12,7 +12,7 @@ import {
 } from '@react-email/components';
 import * as React from 'react';
 
-type Locale = 'en' | 'pt' | 'pt-BR' | 'es' | 'fr';
+type Locale = 'en' | 'pt' | 'es' | 'fr';
 
 interface AuthOtpEmailProps {
   otpCode: string;
@@ -68,22 +68,6 @@ const translations: Record<Locale, {
     ignoreMessage: 'Se não solicitou este email, pode ignorá-lo com segurança.',
     footer: '© 2024 M21 Global, Lda. Todos os direitos reservados.',
     securityNotice: 'Por sua segurança, nunca partilhe este código com ninguém.',
-  },
-  'pt-BR': {
-    preview: 'Seu código de verificação para Breath of Now',
-    signInTitle: 'Entrar no Breath of Now',
-    signUpTitle: 'Bem-vindo ao Breath of Now',
-    greeting: 'Olá',
-    signInDescription: 'Use o código abaixo para entrar na sua conta:',
-    signUpDescription: 'Use o código abaixo para completar seu cadastro:',
-    codeLabel: 'Seu código de verificação',
-    orClickLink: 'Ou clique no botão abaixo:',
-    signInButton: 'Entrar',
-    signUpButton: 'Completar Cadastro',
-    expiresIn: 'Este código expira em 10 minutos.',
-    ignoreMessage: 'Se você não solicitou este email, pode ignorá-lo com segurança.',
-    footer: '© 2024 M21 Global, Lda. Todos os direitos reservados.',
-    securityNotice: 'Por sua segurança, nunca compartilhe este código com ninguém.',
   },
   es: {
     preview: 'Tu código de verificación para Breath of Now',

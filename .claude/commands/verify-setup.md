@@ -51,7 +51,6 @@ ls -la messages/
 Ficheiros esperados:
 - [ ] `messages/en.json`
 - [ ] `messages/pt.json`
-- [ ] `messages/pt-BR.json`
 - [ ] `messages/es.json`
 - [ ] `messages/fr.json`
 
@@ -100,7 +99,6 @@ RULES.md:
 messages/
 ├── en.json           ✅ Existe
 ├── pt.json           ✅ Existe
-├── pt-BR.json        ✅ Existe
 ├── es.json           ✅ Existe
 └── fr.json           ✅ Existe
 

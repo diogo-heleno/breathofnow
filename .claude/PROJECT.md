@@ -69,10 +69,9 @@
 
 ```
 breathofnow/
-├── messages/                    # Ficheiros de tradução (5 idiomas)
+├── messages/                    # Ficheiros de tradução (4 idiomas)
 │   ├── en.json
 │   ├── pt.json
-│   ├── pt-BR.json
 │   ├── es.json
 │   └── fr.json
 ├── src/
@@ -130,7 +129,6 @@ breathofnow/
 
 - 🇬🇧 English (en)
 - 🇵🇹 Português (pt)
-- 🇧🇷 Português Brasil (pt-BR)
 - 🇪🇸 Español (es)
 - 🇫🇷 Français (fr)
 
