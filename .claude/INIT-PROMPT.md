@@ -14,6 +14,7 @@ ANTES de começares qualquer tarefa, por favor:
 1. Lê os seguintes documentos de referência na ordem indicada:
    - .claude/PROJECT.md (visão geral do projeto)
    - .claude/RULES.md (regras de desenvolvimento)
+   - .claude/TODO.md (próximos passos pendentes)
    - .claude/supabase-schema.md (schema da base de dados)
    - .claude/claude-code-guide.md (guia de boas práticas)
 
