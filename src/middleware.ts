@@ -89,7 +89,7 @@ export default async function middleware(request: NextRequest) {
   const code = request.nextUrl.searchParams.get('code');
   if (code && !pathWithoutLocale.startsWith('/auth/callback')) {
     // Extract locale from pathname if present, fallback to cookie or defaultLocale (en)
-    const localeMatch = pathname.match(/^\/(en|pt|pt-BR|es|fr)/);
+    const localeMatch = pathname.match(/^\/(en|pt|es|fr)/);
     const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
     const locale = localeMatch ? localeMatch[1] : (cookieLocale || defaultLocale);
 
@@ -203,7 +203,7 @@ export default async function middleware(request: NextRequest) {
     });
 
     // Ensure NEXT_LOCALE cookie is set to persist locale preference
-    const localeFromPath = pathname.match(/^\/(en|pt|pt-BR|es|fr)/)?.[1];
+    const localeFromPath = pathname.match(/^\/(en|pt|es|fr)/)?.[1];
     const existingLocale = request.cookies.get('NEXT_LOCALE')?.value;
     const currentLocale = localeFromPath || defaultLocale;
 
@@ -234,7 +234,7 @@ export default async function middleware(request: NextRequest) {
 
   // Ensure NEXT_LOCALE cookie is set to persist locale preference
   // This works across www and app subdomains when cookieDomain is set
-  const localeFromPath = pathname.match(/^\/(en|pt|pt-BR|es|fr)/)?.[1];
+  const localeFromPath = pathname.match(/^\/(en|pt|es|fr)/)?.[1];
   const existingLocale = request.cookies.get('NEXT_LOCALE')?.value;
 
   // Determine the current locale: from path, or default if path has no locale prefix

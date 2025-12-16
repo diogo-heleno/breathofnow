@@ -154,8 +154,7 @@ Our custom email template (`src/emails/auth-otp.tsx`) includes:
 
 ### Multi-language Support
 - English (en)
-- Portuguese - Portugal (pt)
-- Portuguese - Brazil (pt-BR)
+- Portuguese (pt)
 - Spanish (es)
 - French (fr)
 

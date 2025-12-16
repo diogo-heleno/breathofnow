@@ -29,7 +29,7 @@ ANTES de começares qualquer tarefa, por favor:
    - Arquitetura local-first (IndexedDB é source of truth)
    - Convenções de nomenclatura (snake_case na DB, camelCase no TS)
    - Estrutura de pastas
-   - Sistema de internacionalização (5 idiomas - ZERO texto hardcoded)
+   - Sistema de internacionalização (4 idiomas - ZERO texto hardcoded)
 
 4. Verifica se tens acesso aos ficheiros críticos:
    - src/lib/db/index.ts (Dexie database)
@@ -110,7 +110,7 @@ Claude Code: Vou trabalhar com internacionalização.
 
 ANTES de começares:
 1. Lê o skill i18n-enforcer (.claude/skills/i18n-enforcer/SKILL.md)
-2. Verifica os 5 idiomas: en, pt, pt-BR, es, fr
+2. Verifica os 4 idiomas: en, pt, es, fr
 3. NUNCA hardcodes texto - sempre usa traduções
 4. Estrutura dos namespaces: common, nav, apps, pricing, etc.
 
@@ -172,7 +172,7 @@ Principais pontos que retive:
 - Next.js 14 com App Router
 - IndexedDB (Dexie) é a source of truth
 - Supabase para auth e sync opcional (premium)
-- 5 idiomas (en, pt, pt-BR, es, fr)
+- 4 idiomas (en, pt, es, fr)
 - ZERO texto hardcoded
 - Snake_case na DB, camelCase no TypeScript
 

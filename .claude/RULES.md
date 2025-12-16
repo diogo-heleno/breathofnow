@@ -48,8 +48,7 @@ const t = useTranslations('namespace');
 ### Idiomas suportados (TODOS devem ser atualizados):
 
 - 🇬🇧 `en.json` - English
-- 🇵🇹 `pt.json` - Português (Portugal)
-- 🇧🇷 `pt-BR.json` - Português (Brasil)
+- 🇵🇹 `pt.json` - Português
 - 🇪🇸 `es.json` - Español
 - 🇫🇷 `fr.json` - Français
 
@@ -67,7 +66,7 @@ grep -rn --include="*.tsx" '"[A-Z][a-zA-Z ]\{10,\}"' src/
 
 - [ ] Zero texto hardcoded em componentes/páginas
 - [ ] Todas as strings novas adicionadas a `messages/*.json`
-- [ ] TODOS os 5 ficheiros de idioma atualizados
+- [ ] TODOS os 4 ficheiros de idioma atualizados
 - [ ] Namespace apropriado usado (ex: `expenses.`, `fitlog.`, `common.`)
 
 ---
@@ -199,7 +198,7 @@ Antes de considerar uma tarefa completa, verificar:
 ### i18n
 
 - [ ] Zero texto hardcoded
-- [ ] Todos os 5 idiomas atualizados
+- [ ] Todos os 4 idiomas atualizados
 - [ ] Namespaces consistentes
 
 ### Documentação

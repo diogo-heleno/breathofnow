@@ -41,7 +41,7 @@
 - **Backup seguro** via Supabase (opcional, para utilizadores autenticados)
 - **Partilha familiar** através de sync cloud
 - **Acessibilidade global** com preços regionais "Pay What You Want"
-- **Localização completa** em 5 idiomas (PT, PT-BR, EN, ES, FR)
+- **Localização completa** em 4 idiomas (PT, EN, ES, FR)
 
 ### 1.2 Proposta de Valor
 
@@ -53,7 +53,7 @@
 | Dados financeiros em servidores externos | 100% local + sync opcional no Supabase |
 | Partilha familiar complicada | Family groups via Supabase |
 | Apps caras para mercados emergentes | Pay What You Want com preços regionais |
-| Apps só em inglês | Localização nativa em 5 idiomas |
+| Apps só em inglês | Localização nativa em 4 idiomas |
 
 ### 1.3 Target Audience
 
@@ -121,7 +121,6 @@ breathofnow/
 ├── messages/                           # Traduções (adicionar chaves expenses.*)
 │   ├── en.json
 │   ├── pt.json
-│   ├── pt-BR.json
 │   ├── es.json
 │   └── fr.json
 ├── src/
@@ -538,7 +537,7 @@ CREATE POLICY "Users CRUD own" ON expense_budgets FOR ALL USING (auth.uid() = us
 | Categorias default | 8 expense + 4 income |
 | Dashboard | Resumo do mês, gráfico simples |
 | Offline-first | Funciona 100% sem internet |
-| i18n | PT, PT-BR, EN mínimo |
+| i18n | PT, EN mínimo |
 
 ### 7.2 Core (P1)
 
@@ -941,7 +940,7 @@ Responde com JSON:
 | 6 | Export JSON |
 | 7 | Categorias custom |
 | 7 | Orçamentos básicos |
-| 8 | PT-BR locale |
+| 8 | ES, FR locales |
 | 8 | PWA manifest |
 
 **Entregável:** Pronto para beta testers

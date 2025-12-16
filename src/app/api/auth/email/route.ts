@@ -3,9 +3,9 @@ import { getResendClient, EMAIL_FROM } from '@/lib/resend/client';
 import { AuthOtpEmail } from '@/emails/auth-otp';
 import { render } from '@react-email/components';
 
-type Locale = 'en' | 'pt' | 'pt-BR' | 'es' | 'fr';
+type Locale = 'en' | 'pt' | 'es' | 'fr';
 
-const validLocales: Locale[] = ['en', 'pt', 'pt-BR', 'es', 'fr'];
+const validLocales: Locale[] = ['en', 'pt', 'es', 'fr'];
 
 function isValidLocale(locale: string): locale is Locale {
   return validLocales.includes(locale as Locale);
@@ -34,10 +34,6 @@ function getSubjectByLocale(locale: Locale, type: 'signin' | 'signup'): string {
     pt: {
       signin: 'Iniciar sessão em Breath of Now',
       signup: 'Bem-vindo ao Breath of Now - Verifique o seu email',
-    },
-    'pt-BR': {
-      signin: 'Entrar no Breath of Now',
-      signup: 'Bem-vindo ao Breath of Now - Verifique seu email',
     },
     es: {
       signin: 'Iniciar sesión en Breath of Now',
