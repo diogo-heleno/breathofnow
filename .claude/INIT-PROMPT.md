@@ -198,5 +198,5 @@ Qual é a tarefa?
 
 ---
 
-**Criado:** 12 Dezembro 2024  
-**Última atualização:** 15 Dezembro 2024 (adicionados Skills)
+**Criado:** 12 Dezembro 2024
+**Última atualização:** 16 Dezembro 2024 (removido pt-BR locale)
