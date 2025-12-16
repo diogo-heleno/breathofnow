@@ -1,6 +1,6 @@
 # Documento de Projeto - Breath of Now
 
-> Última atualização: 15 Dezembro 2024
+> Última atualização: 16 Dezembro 2024
 
 ---
 
