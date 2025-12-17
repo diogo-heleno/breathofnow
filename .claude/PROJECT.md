@@ -1,6 +1,6 @@
 # Documento de Projeto - Breath of Now
 
-> Última atualização: 16 Dezembro 2024
+> Última atualização: 17 Dezembro 2024
 
 ---
 
@@ -97,10 +97,18 @@ breathofnow/
 │   │   │   └── footer.tsx
 │   │   ├── brand/
 │   │   │   └── logo.tsx
+│   │   ├── pwa/
+│   │   │   ├── offline-indicator.tsx  # Indicador de cache no header
+│   │   │   ├── cache-status-panel.tsx # Painel de gestão de cache
+│   │   │   └── index.ts
 │   │   └── ads/
 │   │       └── ad-banner.tsx
 │   ├── lib/
 │   │   ├── db/index.ts          # Dexie database setup
+│   │   ├── pwa/
+│   │   │   ├── cache-config.ts  # Configuração de páginas cacheáveis
+│   │   │   ├── cache-manager.ts # Lógica de gestão de cache
+│   │   │   └── index.ts         # Exports
 │   │   ├── supabase/
 │   │   │   ├── client.ts        # Cliente browser
 │   │   │   └── server.ts        # Cliente server
@@ -109,6 +117,7 @@ breathofnow/
 │   │   ├── use-mounted.ts       # Hook para client-side mount detection
 │   │   ├── use-premium.ts       # Hook para premium features
 │   │   ├── use-service-worker.ts # Hook para PWA service worker
+│   │   ├── use-cache-status.ts  # Hook para gestão de cache PWA
 │   │   └── use-sync.ts          # Hook para sincronização
 │   ├── stores/
 │   │   └── app-store.ts         # Zustand stores
@@ -306,6 +315,8 @@ breathofnow/
 | **ClientOnly** | fallback | ✅ |
 | **AppShell** | sidebar com apps, locale-aware | ✅ |
 | **UnifiedAppHeader** | header para apps | ✅ |
+| **OfflineIndicator** | indicador de cache no header | ✅ |
+| **CacheStatusPanel** | painel de gestão de cache | ✅ |
 
 ### Animações
 
@@ -345,6 +356,7 @@ breathofnow/
 | Features - Open Transparent | `/[locale]/features/open-transparent` | ✅ |
 | Features - Sustainable | `/[locale]/features/sustainable` | ✅ |
 | Account | `/[locale]/account` | ✅ |
+| Offline | `/[locale]/offline` | ✅ |
 
 ---
 
@@ -434,7 +446,7 @@ chore(deps): update dependencies
 - [ ] Implementar dashboard principal (home)
 - [ ] Implementar sync engine com Supabase
 - [x] Configurar subdomínios (www + app)
-- [ ] PWA com Service Worker
+- [x] PWA com Service Worker e Cache Management
 
 ### Prioridade Média
 
@@ -559,6 +571,55 @@ Tabelas:
 - `expense_settings`
 - `exchange_rates`
 - `import_mappings`
+
+---
+
+---
+
+## 18. PWA Cache Management (Implementado)
+
+### Funcionalidades
+
+- ✅ Indicador de cache no header (OfflineIndicator)
+- ✅ Painel de gestão de cache (CacheStatusPanel)
+- ✅ Download individual de páginas
+- ✅ Download de todas as páginas
+- ✅ Limpeza de cache
+- ✅ Service Worker com precaching
+- ✅ Traduções em 4 idiomas
+
+### Estrutura de Ficheiros PWA
+
+```
+src/
+├── lib/pwa/
+│   ├── cache-config.ts      # Configuração de páginas cacheáveis
+│   ├── cache-manager.ts     # Lógica de gestão de cache
+│   └── index.ts
+├── hooks/
+│   └── use-cache-status.ts  # Hook reactivo para estado do cache
+├── components/pwa/
+│   ├── offline-indicator.tsx # Indicador no header
+│   ├── cache-status-panel.tsx # Painel completo
+│   └── index.ts
+└── public/
+    └── sw.js                # Service Worker
+```
+
+### Prioridades de Cache
+
+| Prioridade | Páginas | Exemplo |
+|------------|---------|---------|
+| **Critical** | Core app pages | Dashboard, Homepage |
+| **High** | Feature pages | Add, Transactions |
+| **Medium** | Secondary pages | Reports, Categories |
+| **Low** | Static pages | Features, FAQ |
+
+### Bugs Conhecidos
+
+- ⚠️ Página fica em branco em modo offline (a investigar)
+- ⚠️ Indicador não aparece na homepage (layout diferente)
+- ⚠️ Nomes de páginas mostram nameKey em vez de título traduzido
 
 ---
 

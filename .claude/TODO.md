@@ -139,7 +139,31 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 - Logo e Home no app shell redirecionam para `www.breathofnow.site`
 - PWA Cache Management implementado - indicador no header + painel de gestão
 - Lint tem warnings de React hooks que precisam ser corrigidos
-- **Próxima tarefa**: Corrigir warnings de React hooks
+
+### Bugs a Corrigir (Prioridade)
+1. 🐛 **Página em branco offline** - Crítico para PWA
+2. 🔧 **OfflineIndicator na homepage** - Header diferente
+3. 🔧 **Nomes de páginas no cache panel** - UX
+
+### Ficheiros Criados Hoje (17 Dez 2024)
+- `src/lib/pwa/cache-config.ts`
+- `src/lib/pwa/cache-manager.ts`
+- `src/hooks/use-cache-status.ts`
+- `src/components/pwa/offline-indicator.tsx`
+- `src/components/pwa/cache-status-panel.tsx`
+
+### Ficheiros Modificados Hoje
+- `src/middleware.ts` (handle missing Supabase env)
+- `src/components/shell/unified-app-header.tsx` (OfflineIndicator)
+- `src/components/shell/app-shell.tsx` (OfflineIndicator)
+- `src/components/layout/header.tsx` (OfflineIndicator)
+- `public/sw.js` (precaching e message handlers)
+- `messages/*.json` (traduções PWA)
+
+### Próxima Tarefa Sugerida
+1. Corrigir warnings de React hooks (lint)
+2. Investigar bug de página em branco offline
+3. Adicionar OfflineIndicator à homepage
 
 ---
 
