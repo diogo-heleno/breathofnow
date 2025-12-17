@@ -821,6 +821,50 @@
   "pwa": {
     "install": { "title": "Installer l'App", "description": "Installez Breath of Now pour la meilleure expérience", "button": "Installer", "dismiss": "Ignorer" },
     "offline": { "title": "Vous êtes hors ligne", "description": "Certaines fonctionnalités peuvent être limitées", "pageNotCached": "Cette page n'est pas disponible hors ligne", "goBack": "Retour" },
+    "offlineStatus": {
+      "tooltip": "État de disponibilité hors ligne",
+      "ready": "Prêt hors ligne",
+      "available": "hors ligne",
+      "offline": "Mode hors ligne"
+    },
+    "cachePanel": {
+      "title": "Contenu Hors Ligne",
+      "progress": "{cached} sur {total} pages enregistrées",
+      "downloading": "Téléchargement...",
+      "downloadEssential": "Télécharger l'Essentiel",
+      "downloadAll": "Tout Télécharger",
+      "clearCache": "Effacer les données hors ligne",
+      "refresh": "Actualiser",
+      "offlineWarning": "Vous êtes hors ligne. Connectez-vous pour télécharger des pages.",
+      "downloadPage": "Télécharger {page}",
+      "priority": {
+        "critical": "Essentiel",
+        "high": "Recommandé",
+        "medium": "Optionnel",
+        "low": "Extra"
+      }
+    },
+    "pages": {
+      "home": "Accueil",
+      "expenses": "ExpenseFlow",
+      "expensesAdd": "Ajouter une Dépense",
+      "transactions": "Transactions",
+      "categories": "Catégories",
+      "reports": "Rapports",
+      "expensesSettings": "Paramètres des Dépenses",
+      "expensesImport": "Importer des Données",
+      "fitlog": "FitLog",
+      "fitlogHistory": "Historique des Entraînements",
+      "account": "Compte",
+      "pricing": "Tarifs",
+      "faq": "FAQ",
+      "privacy": "Politique de Confidentialité",
+      "terms": "Conditions d'Utilisation",
+      "featurePrivacy": "Confidentialité d'Abord",
+      "featureOffline": "Fonctionne Hors Ligne",
+      "featureSimple": "Magnifiquement Simple",
+      "featurePricing": "Prix Équitables"
+    },
     "status": {
       "online": "En ligne",
       "offline": "Hors ligne",
