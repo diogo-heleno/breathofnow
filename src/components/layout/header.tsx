@@ -8,7 +8,8 @@ import { Menu, X, ChevronDown, Globe, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
-import { ConnectionIndicator } from '@/components/pwa/connection-indicator';
+import { OfflineIndicator } from '@/components/pwa/offline-indicator';
+import { CacheStatusPanel } from '@/components/pwa/cache-status-panel';
 import { ClientOnly } from '@/components/utils/client-only';
 import { useAuth } from '@/contexts/auth-context';
 import { locales, localeLabels, localeFlags, type Locale } from '@/i18n';
@@ -23,6 +24,7 @@ export function Header({ locale }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isLangOpen, setIsLangOpen] = React.useState(false);
+  const [isCachePanelOpen, setIsCachePanelOpen] = React.useState(false);
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   // Get the path for language switch - preserves current path with new locale
@@ -85,8 +87,13 @@ export function Header({ locale }: HeaderProps) {
 
           {/* Right side */}
           <div className="hidden md:flex items-center gap-4">
-            {/* Connection Indicator */}
-            <ConnectionIndicator />
+            {/* Offline/Cache Indicator */}
+            <ClientOnly>
+              <OfflineIndicator
+                showPercentage
+                onClick={() => setIsCachePanelOpen(true)}
+              />
+            </ClientOnly>
             
             {/* Language Selector */}
             <div className="relative">
@@ -237,6 +244,21 @@ export function Header({ locale }: HeaderProps) {
           </div>
         )}
       </div>
+
+      {/* Cache Status Panel Modal */}
+      {isCachePanelOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/50 z-[60]"
+            onClick={() => setIsCachePanelOpen(false)}
+          />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] w-full max-w-md max-h-[90vh] overflow-auto">
+            <CacheStatusPanel
+              onClose={() => setIsCachePanelOpen(false)}
+            />
+          </div>
+        </>
+      )}
     </header>
   );
 }
