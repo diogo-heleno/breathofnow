@@ -139,9 +139,15 @@ export function UnifiedAppHeader({
 
           {/* Right: Cache Status + Lang + Auth */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Offline/Cache Indicator */}
+            {/* Offline/Cache Indicator - visible on all screen sizes */}
             <ClientOnly>
               <OfflineIndicator
+                showPercentage={false}
+                className="sm:hidden"
+                onClick={() => setIsCachePanelOpen(true)}
+              />
+              <OfflineIndicator
+                showPercentage
                 className="hidden sm:flex"
                 onClick={() => setIsCachePanelOpen(true)}
               />

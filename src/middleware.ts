@@ -136,6 +136,26 @@ export default async function middleware(request: NextRequest) {
 
   // Check authentication for protected routes
   if (isProtectedRoute(pathWithoutLocale)) {
+    // Skip auth check if Supabase is not configured (development without env vars)
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      // In development without Supabase, allow access to protected routes
+      const response = intlMiddleware(request);
+
+      // Store country in a cookie for client-side access
+      response.cookies.set('user-country', country, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        ...(cookieDomain && { domain: cookieDomain }),
+      });
+
+      return response;
+    }
+
     // Create Supabase client for middleware
     let response = NextResponse.next({
       request: {
@@ -144,8 +164,8 @@ export default async function middleware(request: NextRequest) {
     });
 
     const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      supabaseUrl,
+      supabaseKey,
       {
         cookies: {
           get(name: string) {
