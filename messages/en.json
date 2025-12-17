@@ -1237,6 +1237,50 @@
       "pageNotCached": "This page is not available offline",
       "goBack": "Go back"
     },
+    "offlineStatus": {
+      "tooltip": "Offline availability status",
+      "ready": "Ready offline",
+      "available": "offline",
+      "offline": "Offline mode"
+    },
+    "cachePanel": {
+      "title": "Offline Content",
+      "progress": "{cached} of {total} pages saved",
+      "downloading": "Downloading...",
+      "downloadEssential": "Download Essential",
+      "downloadAll": "Download All",
+      "clearCache": "Clear offline data",
+      "refresh": "Refresh",
+      "offlineWarning": "You are offline. Connect to download pages.",
+      "downloadPage": "Download {page}",
+      "priority": {
+        "critical": "Essential",
+        "high": "Recommended",
+        "medium": "Optional",
+        "low": "Extra"
+      }
+    },
+    "pages": {
+      "home": "Home",
+      "expenses": "ExpenseFlow",
+      "expensesAdd": "Add Expense",
+      "transactions": "Transactions",
+      "categories": "Categories",
+      "reports": "Reports",
+      "expensesSettings": "Expense Settings",
+      "expensesImport": "Import Data",
+      "fitlog": "FitLog",
+      "fitlogHistory": "Workout History",
+      "account": "Account",
+      "pricing": "Pricing",
+      "faq": "FAQ",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "featurePrivacy": "Privacy First",
+      "featureOffline": "Works Offline",
+      "featureSimple": "Beautifully Simple",
+      "featurePricing": "Fair Pricing"
+    },
     "uncachedPage": {
       "backOnline": "Back online!",
       "redirecting": "Redirecting to the requested page...",

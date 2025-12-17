@@ -821,6 +821,50 @@
   "pwa": {
     "install": { "title": "Instalar App", "description": "Instala Breath of Now para la mejor experiencia", "button": "Instalar", "dismiss": "Descartar" },
     "offline": { "title": "Estás sin conexión", "description": "Algunas funcionalidades pueden estar limitadas", "pageNotCached": "Esta página no está disponible sin conexión", "goBack": "Volver" },
+    "offlineStatus": {
+      "tooltip": "Estado de disponibilidad sin conexión",
+      "ready": "Listo sin conexión",
+      "available": "sin conexión",
+      "offline": "Modo sin conexión"
+    },
+    "cachePanel": {
+      "title": "Contenido Sin Conexión",
+      "progress": "{cached} de {total} páginas guardadas",
+      "downloading": "Descargando...",
+      "downloadEssential": "Descargar Esenciales",
+      "downloadAll": "Descargar Todo",
+      "clearCache": "Borrar datos sin conexión",
+      "refresh": "Actualizar",
+      "offlineWarning": "Estás sin conexión. Conéctate para descargar páginas.",
+      "downloadPage": "Descargar {page}",
+      "priority": {
+        "critical": "Esencial",
+        "high": "Recomendado",
+        "medium": "Opcional",
+        "low": "Extra"
+      }
+    },
+    "pages": {
+      "home": "Inicio",
+      "expenses": "ExpenseFlow",
+      "expensesAdd": "Añadir Gasto",
+      "transactions": "Transacciones",
+      "categories": "Categorías",
+      "reports": "Informes",
+      "expensesSettings": "Configuración de Gastos",
+      "expensesImport": "Importar Datos",
+      "fitlog": "FitLog",
+      "fitlogHistory": "Historial de Entrenamientos",
+      "account": "Cuenta",
+      "pricing": "Precios",
+      "faq": "FAQ",
+      "privacy": "Política de Privacidad",
+      "terms": "Términos de Servicio",
+      "featurePrivacy": "Privacidad Primero",
+      "featureOffline": "Funciona Sin Conexión",
+      "featureSimple": "Bellamente Simple",
+      "featurePricing": "Precios Justos"
+    },
     "status": {
       "online": "En línea",
       "offline": "Sin conexión",

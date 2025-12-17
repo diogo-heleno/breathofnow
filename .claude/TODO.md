@@ -8,149 +8,22 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 
 ## 🔴 Prioridade MÁXIMA
 
-### 🎯 PWA Cache Management System
+### ✅ ~~PWA Cache Management System~~ (CONCLUÍDO)
 
-> 📄 **Documentação completa:** `.claude/docs/pwa-cache-management.md`
+> ✅ Implementado em 17 Dezembro 2024
 
-**Objetivo:** Implementar sistema que permite ao utilizador ver e controlar que conteúdo está disponível offline.
-
-#### Funcionalidades a Implementar
-
-1. **Cache Status Indicator** (Header/Settings)
-   - Mostrar percentagem de conteúdo cached: "75% disponível offline"
-   - Ícone clicável que abre painel de detalhes
-   - Atualizar em tempo real quando cache muda
-
-2. **Cache Details Panel/Page** (`/[locale]/settings/offline` ou modal)
-   - Lista de páginas com estado de cache:
-     - ✅ Cached (com tamanho aproximado)
-     - ⬜ Não cached (com botão "Descarregar")
-   - Agrupamento por categoria:
-     - **Core** (sempre cached): App Shell, Dashboard
-     - **Apps**: ExpenseFlow, FitLog, etc.
-     - **Páginas Estáticas**: FAQ, Terms, Privacy
-   - Botões de ação:
-     - "Descarregar Tudo"
-     - "Limpar Cache"
-     - "Atualizar Cache"
-
-3. **Precaching Inteligente**
-   - **Automático na instalação:** App shell + assets críticos
-   - **Prioritário:** Dashboard, ExpenseFlow (se selecionado)
-   - **On-demand:** Páginas secundárias quando utilizador clica
-
-4. **Service Worker Enhancements**
-   - Implementar precache manifest com lista de URLs
-   - API para verificar estado do cache (`caches.has()`, `caches.keys()`)
-   - Comunicação SW ↔ React via `postMessage`
-   - Background sync para downloads
-
-#### Estrutura Técnica
-
-```
-src/
-├── lib/
-│   └── pwa/
-│       ├── cache-manager.ts      # Lógica de gestão de cache
-│       ├── precache-manifest.ts  # Lista de URLs para precache
-│       └── sw-communication.ts   # postMessage helpers
-├── hooks/
-│   └── use-cache-status.ts       # Hook para estado do cache
-├── components/
-│   └── pwa/
-│       ├── cache-indicator.tsx   # Indicador no header
-│       ├── cache-panel.tsx       # Painel de detalhes
-│       └── cache-progress.tsx    # Barra de progresso
-└── app/[locale]/
-    └── settings/
-        └── offline/
-            └── page.tsx          # Página dedicada (opcional)
-```
-
-#### Páginas a Incluir no Precache
-
-| Prioridade | Páginas | Quando Cachear |
-|------------|---------|----------------|
-| **1 - Crítico** | App Shell, `/dashboard` | Instalação |
-| **2 - Apps Core** | `/expenses/*`, `/fitlog/*` | Instalação (se selecionadas) |
-| **3 - Estáticas** | `/faq`, `/terms`, `/privacy` | On-demand |
-| **4 - Outras** | `/pricing`, `/features/*` | On-demand |
-
-#### UI Mockup (Cache Panel)
-
-```
-┌─────────────────────────────────────────┐
-│  📱 Conteúdo Offline                    │
-│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ │
-│  ████████████░░░░ 75% disponível        │
-│                                         │
-│  CORE (sempre disponível)               │
-│  ✅ App Shell                    120KB  │
-│  ✅ Dashboard                     45KB  │
-│                                         │
-│  APPS                                   │
-│  ✅ ExpenseFlow (5 páginas)      180KB  │
-│  ⬜ FitLog              [Descarregar]   │
-│                                         │
-│  PÁGINAS                                │
-│  ✅ FAQ                           12KB  │
-│  ⬜ Privacy             [Descarregar]   │
-│  ⬜ Terms               [Descarregar]   │
-│                                         │
-│  [🔄 Atualizar]  [📥 Descarregar Tudo]  │
-│                                         │
-│  Último update: há 2 horas              │
-│  Espaço usado: 357KB                    │
-└─────────────────────────────────────────┘
-```
-
-#### Considerações i18n
-
-Todas as strings devem usar traduções. Namespace sugerido: `pwa.cache`
-
-```json
-{
-  "pwa": {
-    "cache": {
-      "title": "Offline Content",
-      "available": "{percent}% available offline",
-      "downloadAll": "Download All",
-      "clearCache": "Clear Cache",
-      "refresh": "Refresh",
-      "cached": "Cached",
-      "notCached": "Not cached",
-      "download": "Download",
-      "lastUpdate": "Last update: {time}",
-      "spaceUsed": "Space used: {size}",
-      "categories": {
-        "core": "Core (always available)",
-        "apps": "Apps",
-        "pages": "Pages"
-      }
-    }
-  }
-}
-```
-
-#### Dependências
-
-- Verificar se `next-pwa` já está configurado
-- Se não, instalar e configurar primeiro
-- Pode precisar de `workbox-window` para comunicação com SW
-
-#### Critérios de Aceitação
-
-- [ ] Indicador de cache visível no header ou settings
-- [ ] Painel mostra lista de páginas com estado
-- [ ] Utilizador pode descarregar páginas individuais
-- [ ] Utilizador pode descarregar tudo de uma vez
-- [ ] Precache automático das páginas críticas na instalação
-- [ ] Funciona 100% offline após cache
-- [ ] Traduções em 4 idiomas (en, pt, es, fr)
-- [ ] Sem texto hardcoded
-- [ ] TypeScript sem erros
+**Sistema implementado que permite ao utilizador ver e controlar conteúdo offline:**
+- `src/lib/pwa/cache-config.ts` - Configuração de páginas com prioridades
+- `src/lib/pwa/cache-manager.ts` - Lógica de gestão de cache
+- `src/hooks/use-cache-status.ts` - Hook reactivo para estado do cache
+- `src/components/pwa/offline-indicator.tsx` - Indicador no header
+- `src/components/pwa/cache-status-panel.tsx` - Painel completo de gestão
+- Service Worker actualizado com precaching e message handlers
+- Traduções em 4 idiomas (en, pt, es, fr)
 
 ---
+
+### 🎯 PRÓXIMA TAREFA: Corrigir React Hooks Warnings
 
 - [ ] **Corrigir warnings de React hooks** (dependencies)
   - `src/app/[locale]/expenses/add/page.tsx:78` - useEffect missing dependency
@@ -205,6 +78,11 @@ Todas as strings devem usar traduções. Namespace sugerido: `pwa.cache`
 
 ## Concluído Recentemente
 
+- [x] ~~PWA Cache Management System~~ (17 Dezembro 2024)
+  - Cache status indicator no header
+  - Painel de gestão com download/clear
+  - Service Worker com precaching
+  - Traduções em 4 idiomas
 - [x] ~~Criar CRUD de ExpenseFlow~~ (Dezembro 2024)
 - [x] ~~Dashboard de visualizações/gráficos ExpenseFlow~~ (Dezembro 2024)
 - [x] ~~Export de dados JSON~~ (Dezembro 2024)
@@ -219,9 +97,9 @@ Todas as strings devem usar traduções. Namespace sugerido: `pwa.cache`
 
 - O projeto agora suporta **4 idiomas**: en, pt, es, fr
 - Logo e Home no app shell redirecionam para `www.breathofnow.site`
-- Todos os testes TypeScript passam (`npx tsc --noEmit`)
-- Lint tem apenas warnings pré-existentes (hooks dependencies)
-- **PWA Cache Management** é a nova prioridade máxima
+- PWA Cache Management implementado - indicador no header + painel de gestão
+- Lint tem warnings de React hooks que precisam ser corrigidos
+- **Próxima tarefa**: Corrigir warnings de React hooks
 
 ---
 

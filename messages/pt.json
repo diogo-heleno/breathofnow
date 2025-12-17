@@ -1237,6 +1237,50 @@
       "pageNotCached": "Esta página não está disponível offline",
       "goBack": "Voltar"
     },
+    "offlineStatus": {
+      "tooltip": "Estado de disponibilidade offline",
+      "ready": "Pronto offline",
+      "available": "offline",
+      "offline": "Modo offline"
+    },
+    "cachePanel": {
+      "title": "Conteúdo Offline",
+      "progress": "{cached} de {total} páginas guardadas",
+      "downloading": "A transferir...",
+      "downloadEssential": "Transferir Essenciais",
+      "downloadAll": "Transferir Tudo",
+      "clearCache": "Limpar dados offline",
+      "refresh": "Atualizar",
+      "offlineWarning": "Está offline. Ligue-se para transferir páginas.",
+      "downloadPage": "Transferir {page}",
+      "priority": {
+        "critical": "Essencial",
+        "high": "Recomendado",
+        "medium": "Opcional",
+        "low": "Extra"
+      }
+    },
+    "pages": {
+      "home": "Início",
+      "expenses": "ExpenseFlow",
+      "expensesAdd": "Adicionar Despesa",
+      "transactions": "Transações",
+      "categories": "Categorias",
+      "reports": "Relatórios",
+      "expensesSettings": "Definições de Despesas",
+      "expensesImport": "Importar Dados",
+      "fitlog": "FitLog",
+      "fitlogHistory": "Histórico de Treinos",
+      "account": "Conta",
+      "pricing": "Preços",
+      "faq": "FAQ",
+      "privacy": "Política de Privacidade",
+      "terms": "Termos de Serviço",
+      "featurePrivacy": "Privacidade Primeiro",
+      "featureOffline": "Funciona Offline",
+      "featureSimple": "Belamente Simples",
+      "featurePricing": "Preços Justos"
+    },
     "uncachedPage": {
       "backOnline": "De volta online!",
       "redirecting": "A redirecionar para a página solicitada...",
