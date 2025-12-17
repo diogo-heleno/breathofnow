@@ -26,7 +26,8 @@ import { cn } from '@/lib/utils';
 import { Logo } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ConnectionIndicator } from '@/components/pwa/connection-indicator';
+import { OfflineIndicator } from '@/components/pwa/offline-indicator';
+import { CacheStatusPanel } from '@/components/pwa/cache-status-panel';
 import { ClientOnly } from '@/components/utils/client-only';
 import { useAuth } from '@/contexts/auth-context';
 import { locales, localeLabels, localeFlags, type Locale } from '@/i18n';
@@ -63,6 +64,7 @@ export function AppShell({ children, locale }: AppShellProps) {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
   const [isLangOpen, setIsLangOpen] = React.useState(false);
+  const [isCachePanelOpen, setIsCachePanelOpen] = React.useState(false);
 
   // Get the path for language switch - preserves current path with new locale
   const getLocalizedPath = React.useCallback((newLocale: string) => {
@@ -127,10 +129,21 @@ export function AppShell({ children, locale }: AppShellProps) {
             </a>
           </div>
 
-          {/* Right: Connection + Lang + User */}
+          {/* Right: Cache Status + Lang + User */}
           <div className="flex items-center gap-2">
-            {/* Connection Indicator */}
-            <ConnectionIndicator className="hidden sm:flex" />
+            {/* Offline/Cache Indicator - visible on all screen sizes */}
+            <ClientOnly>
+              <OfflineIndicator
+                showPercentage={false}
+                className="sm:hidden"
+                onClick={() => setIsCachePanelOpen(true)}
+              />
+              <OfflineIndicator
+                showPercentage
+                className="hidden sm:flex"
+                onClick={() => setIsCachePanelOpen(true)}
+              />
+            </ClientOnly>
             
             {/* Language Selector */}
             <div className="relative">
@@ -410,9 +423,18 @@ export function AppShell({ children, locale }: AppShellProps) {
               })}
             </div>
 
-            {/* Bottom section - Connection status on mobile */}
+            {/* Bottom section - Cache status on mobile */}
             <div className="pt-4 border-t border-neutral-200 dark:border-neutral-800 lg:hidden">
-              <ConnectionIndicator showLabel className="px-3 py-2" />
+              <ClientOnly>
+                <OfflineIndicator
+                  showPercentage
+                  onClick={() => {
+                    setIsSidebarOpen(false);
+                    setIsCachePanelOpen(true);
+                  }}
+                  className="w-full justify-center"
+                />
+              </ClientOnly>
             </div>
           </nav>
         </aside>
@@ -430,6 +452,21 @@ export function AppShell({ children, locale }: AppShellProps) {
           {children}
         </main>
       </div>
+
+      {/* Cache Status Panel Modal */}
+      {isCachePanelOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/50 z-50"
+            onClick={() => setIsCachePanelOpen(false)}
+          />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md max-h-[90vh] overflow-auto">
+            <CacheStatusPanel
+              onClose={() => setIsCachePanelOpen(false)}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }
