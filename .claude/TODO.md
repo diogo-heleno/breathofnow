@@ -33,6 +33,15 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
     - Menu mobile da homepage
   - Garantir consistência visual com o resto do site
 
+### 🔧 Melhorar nomes das páginas no Cache Panel
+
+- [ ] **Mostrar títulos legíveis no painel de gestão de cache**
+  - Actualmente mostra `nameKey` (chave i18n) em vez do título traduzido
+  - Ficheiros a alterar:
+    - `src/lib/pwa/cache-config.ts` - Adicionar títulos/descrições às páginas
+    - `src/components/pwa/cache-status-panel.tsx` - Usar traduções ou títulos
+  - Cada página deve mostrar nome amigável (ex: "Dashboard", "Transações", etc.)
+
 ---
 
 ### 🎯 PRÓXIMA TAREFA: Corrigir React Hooks Warnings
