@@ -42,6 +42,25 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
     - `src/components/pwa/cache-status-panel.tsx` - Usar traduções ou títulos
   - Cada página deve mostrar nome amigável (ex: "Dashboard", "Transações", etc.)
 
+### 🐛 BUG: Página fica em branco em modo offline
+
+- [ ] **Investigar página em branco quando offline (modo avião)**
+  - Comportamento reportado:
+    - Página parece carregar inicialmente
+    - Algo aparece brevemente
+    - Depois fica completamente em branco
+    - Refresh mostra conteúdo mas volta a ficar em branco
+  - Possíveis causas a investigar:
+    - Service Worker não está a servir assets cached corretamente
+    - JavaScript error quando offline (verificar console)
+    - Hydration mismatch quando offline
+    - Componentes que dependem de network requests falhando
+    - Next.js RSC (React Server Components) a falhar offline
+  - Ficheiros a verificar:
+    - `public/sw.js` - Lógica do Service Worker
+    - `src/app/[locale]/offline/page.tsx` - Página de fallback offline
+    - Componentes com `useEffect` que fazem fetch
+
 ---
 
 ### 🎯 PRÓXIMA TAREFA: Corrigir React Hooks Warnings
