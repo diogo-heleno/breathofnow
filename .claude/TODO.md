@@ -23,6 +23,18 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 
 ---
 
+### 🔧 Adicionar OfflineIndicator à Homepage
+
+- [ ] **Adicionar indicador de cache à homepage** (`www.breathofnow.site`)
+  - O header e menu da homepage são diferentes do resto do site
+  - Actualmente só aparece nas páginas de apps (expenses, etc.)
+  - Componentes a alterar:
+    - Header da landing page (verificar se é diferente de `header.tsx`)
+    - Menu mobile da homepage
+  - Garantir consistência visual com o resto do site
+
+---
+
 ### 🎯 PRÓXIMA TAREFA: Corrigir React Hooks Warnings
 
 - [ ] **Corrigir warnings de React hooks** (dependencies)
