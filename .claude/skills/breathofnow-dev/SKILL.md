@@ -5,14 +5,15 @@ description: Master skill for Breath of Now development. Provides comprehensive 
 
 # Breath of Now Development Skill
 
-Este é o skill master para desenvolvimento do ecossistema Breath of Now - uma coleção privacy-first de micro-apps para vida consciente.
+Este é o skill master para desenvolvimento do ecossistema Breath of Now - uma plataforma privacy-first e offline-first de micro-apps para vida consciente.
 
 ## Visão Geral
 
 **Breath of Now** é um ecossistema de micro-apps sob **M21 Global, Lda**.
 
 ### Filosofia Core
-- **Privacy First**: Todos os dados locais por defeito
+- **Offline First**: Browser é a fonte de verdade - funciona 100% sem internet
+- **Privacy First**: Dados nunca saem do dispositivo sem consentimento
 - **Conscious Minimalism**: Apps simples e focadas
 - **Data Sovereignty**: Utilizadores são donos dos dados
 - **Acessibilidade**: Preços regionais, múltiplos idiomas
@@ -23,7 +24,7 @@ Este é o skill master para desenvolvimento do ecossistema Breath of Now - uma c
 |-----|--------|-----------|
 | ExpenseFlow | ✅ Live | Gestão de despesas |
 | FitLog | ✅ Live | Registo de treinos |
-| InvestTrack | 🔜 Em breve | Tracking de investimentos |
+| InvestTrack | 🧪 Beta | Tracking de investimentos |
 | RecipeBox | 🔜 Em breve | Gestão de receitas |
 | LabelScan | 🔜 Em breve | Scanner de etiquetas |
 
@@ -38,6 +39,7 @@ Este é o skill master para desenvolvimento do ecossistema Breath of Now - uma c
 | Local DB | Dexie.js (IndexedDB) |
 | Backend | Supabase (auth + sync opcional) |
 | i18n | next-intl |
+| PWA | next-pwa (Workbox) |
 | Hosting | Vercel |
 
 ## Estrutura de Pastas
@@ -49,57 +51,57 @@ breathofnow/
 │   ├── commands/                # Comandos slash
 │   ├── PROJECT.md               # Visão geral
 │   ├── RULES.md                 # Regras de código
-│   ├── supabase-schema.md       # Schema da BD
-│   ├── INIT-PROMPT.md           # Prompt de inicialização
-│   └── CLOSE-PROMPT.md          # Prompt de fecho
+│   └── supabase-schema.md       # Schema da BD
 ├── messages/                    # Ficheiros de tradução (4 idiomas)
-│   ├── en.json, pt.json, es.json, fr.json
 ├── src/
 │   ├── app/[locale]/            # Páginas localizadas
-│   │   ├── expenses/            # ExpenseFlow
-│   │   ├── fitlog/              # FitLog
-│   │   ├── account/             # Conta do utilizador
-│   │   └── auth/                # Autenticação
 │   ├── components/
 │   │   ├── ui/                  # Design system
-│   │   ├── expenses/            # Componentes ExpenseFlow
-│   │   ├── fitlog/              # Componentes FitLog
 │   │   ├── shell/               # App shell unificado
 │   │   └── layout/              # Header, Footer
 │   ├── lib/
+│   │   ├── storage/             # NEW: Storage API unificada
+│   │   ├── subscription/        # NEW: Gestão de tiers
 │   │   ├── db/                  # Dexie database
 │   │   ├── supabase/            # Clientes Supabase
 │   │   └── sync/                # Sync engine
+│   ├── hooks/                   # Custom hooks (incl. useSubscription)
 │   ├── stores/                  # Zustand stores
-│   └── hooks/                   # Custom hooks
-└── docs/                        # Documentação adicional
+│   └── types/                   # TypeScript types
+└── docs/
+    └── ARCHITECTURE.md          # Arquitetura detalhada
 ```
 
 ## Princípios de Desenvolvimento
 
-### Princípio 1: Não Criar Mais Apps - Melhorar o que Temos
-
-Foco em:
-- Melhorias de infraestrutura
-- Bug fixes
-- Optimização de performance
-- Refinamento de UX
-
-### Princípio 2: Local-First Sempre
+### Princípio 1: Usar Storage API (NEW)
 
 ```typescript
-// ✅ CORRECTO: Ler de IndexedDB
-const expenses = await db.expenses.toArray();
+// ✅ CORRECTO: Usar Storage API
+import { storage, NAMESPACES } from '@/lib/storage';
+const expenses = await storage.getAll(NAMESPACES.EXPENSES);
 
-// ❌ ERRADO: Ler de Supabase
-const { data } = await supabase.from('expenses').select('*');
+// ❌ ERRADO: Acesso direto ao Dexie
+import { db } from '@/lib/db';
+const expenses = await db.expenseTransactions.toArray();
+```
+
+### Princípio 2: Usar Hooks de Subscription (NEW)
+
+```typescript
+// ✅ CORRECTO: Usar hook
+import { useSubscription } from '@/hooks';
+const { tier, isPro, checkAppAccess } = useSubscription();
+
+// ❌ ERRADO: Verificação manual
+const isPro = user?.tier === 'pro';
 ```
 
 ### Princípio 3: Zero Texto Hardcoded
 
 ```typescript
 // ✅ CORRECTO
-const t = useTranslations('Component');
+const t = useTranslations('namespace');
 <h1>{t('title')}</h1>
 
 // ❌ ERRADO
@@ -109,25 +111,22 @@ const t = useTranslations('Component');
 ### Princípio 4: TypeScript Strict Mode
 
 ```typescript
-// ✅ CORRECTO: Tipos explícitos
-interface Props {
-  expense: Expense;
-  onDelete: (id: string) => void;
-}
+// ✅ CORRECTO: Tipos de @/types
+import type { AppId, User } from '@/types';
 
 // ❌ ERRADO: any types
 const handleClick = (data: any) => { ... }
 ```
 
-### Princípio 5: Convenções de Nomenclatura
+## Sistema de Tiers (Simplificado v4)
 
-| Tipo | Convenção | Exemplo |
-|------|-----------|---------|
-| Ficheiros | kebab-case | `expense-chart.tsx` |
-| Componentes | PascalCase | `ExpenseChart` |
-| Funções | camelCase | `handleClick` |
-| DB Columns | snake_case | `apps_selected_at` |
-| TypeScript | camelCase | `appsSelectedAt` |
+| | Free | Pro |
+|---|---|---|
+| **Preço** | €0 | €4.99/mês |
+| **Apps** | 2 apps | Todas |
+| **Storage local** | ✅ | ✅ |
+| **Cloud sync** | ❌ | ✅ |
+| **Ads** | Sim | Não |
 
 ## Design System
 
@@ -145,9 +144,35 @@ const handleClick = (data: any) => { ... }
 Em `@/components/ui/`:
 - Button, Input, Card, Badge, PriceSlider
 
-### Animações
-- `animate-fade-in`, `animate-breathe`, `animate-float`
-- `animate-scale-in`, `animate-slide-in-right`
+## APIs Disponíveis
+
+### Storage API
+
+```typescript
+import { storage, NAMESPACES } from '@/lib/storage';
+
+storage.get(namespace, key)      // Obter item
+storage.set(namespace, key, val) // Guardar item
+storage.delete(namespace, key)   // Apagar item
+storage.getAll(namespace)        // Obter todos
+storage.query(namespace, filter) // Query com filtro
+storage.clear(namespace)         // Limpar namespace
+```
+
+### Subscription Hook
+
+```typescript
+import { useSubscription } from '@/hooks';
+
+const {
+  tier,           // 'free' | 'pro'
+  isPro,          // boolean
+  canSync,        // boolean
+  showAds,        // boolean
+  selectedApps,   // AppId[]
+  checkAppAccess, // (appId) => boolean
+} = useSubscription();
+```
 
 ## Idiomas Suportados
 
@@ -158,47 +183,25 @@ Em `@/components/ui/`:
 | es | Español | Média |
 | fr | Français | Média |
 
-## Tiers de Monetização
-
-| Tier | Preço | Funcionalidades |
-|------|-------|-----------------|
-| Free | €0 | Todas as apps, com anúncios |
-| Supporter | €1.99-5/mês | Sem anúncios, cloud sync |
-| Founding Member | €599 lifetime | Tudo + lugares limitados |
-
-## Skills Relacionados
-
-Este skill funciona com:
-- `frontend-design`: Guidelines de UI/UX
-- `i18n-enforcer`: Enforcement de traduções
-- `local-first`: Arquitectura de dados
-- `code-review`: Garantia de qualidade
-
 ## Comandos Rápidos
 
 ```bash
-# Desenvolvimento
-npm run dev
-
-# Type check
-npx tsc --noEmit
-
-# Lint
-npm run lint
-
-# Build
-npm run build
+npm run dev       # Desenvolvimento
+npx tsc --noEmit  # Type check
+npm run lint      # Lint
+npm run build     # Build
 ```
 
-## Ficheiros Críticos para Consulta
+## Ficheiros Críticos
 
 - `.claude/PROJECT.md` - Visão geral detalhada
-- `.claude/RULES.md` - Regras de código
-- `.claude/supabase-schema.md` - Schema da BD (SEMPRE consultar antes de queries)
+- `.claude/RULES.md` - Regras de código (incluindo Storage API)
+- `docs/ARCHITECTURE.md` - Arquitetura v4
+- `.claude/supabase-schema.md` - Schema da BD
 
 ## Domínio
 
-- **Main**: breathofnow.site
+- **Website**: www.breathofnow.site
 - **App**: app.breathofnow.site
 
 ---

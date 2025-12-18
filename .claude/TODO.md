@@ -1,6 +1,6 @@
 # TODO - Breath of Now
 
-> Última atualização: 18 Dezembro 2024 (Sessão 2)
+> Última atualização: 18 Dezembro 2024 (Arquitetura v4)
 
 Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code deve ler este ficheiro no início de cada sessão.
 
@@ -8,182 +8,146 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 
 ## 🔴 Prioridade MÁXIMA
 
-### ✅ ~~PWA Cache Management System~~ (CONCLUÍDO)
+### ✅ Arquitetura v4 - Simplificação (CONCLUÍDO)
 
-> ✅ Implementado em 17 Dezembro 2024
+> ✅ Implementado em 18 Dezembro 2024
 
-**Sistema implementado que permite ao utilizador ver e controlar conteúdo offline:**
-- `src/lib/pwa/cache-config.ts` - Configuração de páginas com prioridades
-- `src/lib/pwa/cache-manager.ts` - Lógica de gestão de cache
-- `src/hooks/use-cache-status.ts` - Hook reactivo para estado do cache
-- `src/components/pwa/offline-indicator.tsx` - Indicador no header
-- `src/components/pwa/cache-status-panel.tsx` - Painel completo de gestão
-- Service Worker actualizado com precaching e message handlers
-- Traduções em 4 idiomas (en, pt, es, fr)
+**Novos módulos criados:**
+- `src/lib/storage/index.ts` - Storage API unificada
+- `src/lib/subscription/index.ts` - Gestão de tiers (Free vs Pro)
+- `src/hooks/use-subscription.ts` - Hook de subscription
+- `src/types/common.ts` - Tipos comuns partilhados
+- `docs/ARCHITECTURE.md` - Documento de arquitetura
 
----
-
-### 🔧 Adicionar OfflineIndicator à Homepage
-
-- [ ] **Adicionar indicador de cache à homepage** (`www.breathofnow.site`)
-  - O header e menu da homepage são diferentes do resto do site
-  - Actualmente só aparece nas páginas de apps (expenses, etc.)
-  - Componentes a alterar:
-    - Header da landing page (verificar se é diferente de `header.tsx`)
-    - Menu mobile da homepage
-  - Garantir consistência visual com o resto do site
-
-### ✅ ~~Melhorar nomes das páginas no Cache Panel~~ (CORRIGIDO)
-
-> ✅ Corrigido em 18 Dezembro 2024
-
-**Causa raiz:** Os `nameKey` em `cache-config.ts` tinham prefixo `pwa.` redundante (ex: `pwa.pages.home`), mas o componente já usava `useTranslations('pwa')`.
-
-**Solução:** Removido prefixo `pwa.` de todos os nameKeys em `cache-config.ts`. Agora mostra nomes traduzidos correctamente (ex: "Home", "ExpenseFlow", "Transações", etc.) em todos os 4 idiomas.
-
-### ✅ ~~BUG: Página fica em branco em modo offline~~ (CORRIGIDO)
-
-> ✅ Corrigido em 18 Dezembro 2024 (v5 → v6 → v7)
-
-**Causa raiz REAL:** Páginas com `'use client'` não geram HTML estático no build.
-O SW tentava pre-cache de páginas que não existiam, falhando silenciosamente.
-
-**Solução implementada em `public/sw.js` v7 (Runtime Cache Strategy):**
-- STATIC_PAGES (server-rendered): Pre-cache no install
-- CLIENT_PAGES (client-side): Runtime cache no primeiro visit
-- Cache Warmup: Botão "Preparar para Offline" visita todas as páginas
-- Aggressive runtime caching para ALL HTML responses
-- `Response.redirect()` para RSC requests offline
-- Localized offline HTML fallback (en/pt/es/fr)
-- Low cache coverage warning UI (<30%)
-- Progress bar durante warmup
+**Ficheiros atualizados:**
+- `CLAUDE.md` - Instruções atualizadas
+- `.claude/PROJECT.md` - Documentação do projeto
+- `.claude/RULES.md` - Novas regras (Storage API, Subscription hooks)
+- `src/hooks/index.ts` - Exports de hooks
+- `src/types/index.ts` - Exports de tipos
 
 ---
 
-### 🎯 PRÓXIMA TAREFA: Corrigir React Hooks Warnings
+### 🎯 PRÓXIMA TAREFA: Migrar código existente para Storage API
 
-- [ ] **Corrigir warnings de React hooks** (dependencies)
-  - `src/app/[locale]/expenses/add/page.tsx:78` - useEffect missing dependency
-  - `src/app/[locale]/expenses/import/page.tsx:83,90` - useCallback missing dependency
-  - `src/app/[locale]/expenses/page.tsx:119` - useMemo missing dependency
+- [ ] **Atualizar ExpenseFlow** para usar Storage API
+  - Substituir chamadas diretas ao Dexie por `storage.get/set/getAll`
+  - Testar que tudo continua a funcionar
+  
+- [ ] **Atualizar FitLog** para usar Storage API
+  - Mesmo processo
 
-- [ ] **Implementar dashboard principal** (`/[locale]/dashboard`)
-  - Página central com acesso a todas as apps
+- [ ] **Implementar seleção de apps** para tier Free
+  - Interface para escolher 2 apps
+  - Persistir escolha em localStorage + Supabase (se autenticado)
+  - Verificar acesso em cada app com `checkAppAccess()`
+
+---
+
+## 🟡 Prioridade Alta
+
+### Corrigir React Hooks Warnings
+
+- [ ] `src/app/[locale]/expenses/add/page.tsx:78` - useEffect missing dependency
+- [ ] `src/app/[locale]/expenses/import/page.tsx:83,90` - useCallback missing dependency
+- [ ] `src/app/[locale]/expenses/page.tsx:119` - useMemo missing dependency
+
+### Implementar Dashboard Principal
+
+- [ ] **Criar `/[locale]/dashboard`**
   - Cards de resumo por app
-  - Quick actions
+  - Acesso rápido às apps selecionadas
+  - Status de sync (para Pro)
+
+### Adicionar OfflineIndicator à Homepage
+
+- [ ] O header da landing page é diferente
+- [ ] Garantir consistência visual
 
 ---
 
-## Prioridade Média
+## 🟢 Prioridade Média
 
-- [ ] **Sistema de sync engine com Supabase**
-  - Sync bidireccional Dexie ↔ Supabase
-  - Conflict resolution (last-write-wins)
-  - Sync status indicators
-  - Background sync
+### Sistema de Sync Engine
 
-- [ ] **Import de dados (JSON/CSV)**
-  - Wizard de mapeamento de colunas
-  - Preview antes de importar
-  - Detecção de duplicados
+- [ ] Completar sync bidireccional Dexie ↔ Supabase
+- [ ] Conflict resolution (last-write-wins)
+- [ ] Sync status indicators no header
+- [ ] Background sync
 
-- [ ] **Budgets/Orçamentos no ExpenseFlow**
-  - Definir limites por categoria
-  - Alertas de aproximação ao limite
-  - Visualização de progresso
+### Import de Dados
 
----
+- [ ] Wizard de mapeamento de colunas
+- [ ] Preview antes de importar
+- [ ] Detecção de duplicados
 
-## Prioridade Baixa
+### Budgets no ExpenseFlow
 
-- [ ] **InvestTrack completo**
-  - CRUD de investimentos
-  - Tracking de cotações
-  - Gráficos de performance
-
-- [ ] **RecipeBox app**
-  - Gestão de receitas
-  - Ingredientes e passos
-  - Categorização
-
-- [ ] **Integração Strava API** (StravaSync)
-  - OAuth com Strava
-  - Sync de atividades
-  - Dashboard de métricas
+- [ ] Definir limites por categoria
+- [ ] Alertas de aproximação ao limite
+- [ ] Visualização de progresso
 
 ---
 
-## Concluído Recentemente
+## 🔵 Prioridade Baixa
 
-- [x] ~~Migração para next-pwa com Workbox~~ (18 Dezembro 2024 - Sessão 2)
-  - Substituído Service Worker manual por next-pwa
-  - Configuração Workbox com runtime caching strategies
-  - Página offline simplificada com traduções inline
-  - Hook use-service-worker simplificado
-  - Ficheiros gerados adicionados ao .gitignore
-  - Fallback configurado para /en/offline
+- [ ] **InvestTrack completo** - CRUD, cotações, gráficos
+- [ ] **RecipeBox app** - Gestão de receitas
+- [ ] **Integração Strava** - OAuth, sync atividades
+
+---
+
+## ✅ Concluído Recentemente
+
+- [x] ~~Arquitetura v4 - Storage API, Subscription, tipos~~ (18 Dezembro 2024)
+- [x] ~~Migração para next-pwa com Workbox~~ (18 Dezembro 2024)
 - [x] ~~Runtime Cache Strategy (v7)~~ (18 Dezembro 2024)
-  - Service Worker v7 com runtime cache para client-side pages
-  - STATIC_PAGES vs CLIENT_PAGES separation
-  - Cache Warmup component com progress bar
-  - Aggressive runtime caching no primeiro visit
-  - Warmup translations em 4 idiomas
-- [x] ~~Comprehensive offline system rewrite (v6)~~ (18 Dezembro 2024)
-  - Service Worker v6 com install error handling (>50% threshold)
-  - Response.redirect() para RSC offline (não 503)
-  - Trailing slash URL matching
-  - /offline em CRITICAL_PATHS
-  - Retry logic (3 retries, exponential backoff)
-  - Localized offline HTML (en/pt/es/fr)
-  - Low cache coverage warning (<30%)
-- [x] ~~Fix offline blank page bug~~ (18 Dezembro 2024)
-  - Service Worker v5 com RSC handling
-  - OfflineNavigationHandler força full-page nav
-  - Error boundary para erros offline
-- [x] ~~Nomes de páginas no Cache Panel~~ (18 Dezembro 2024)
-  - Removido prefixo `pwa.` redundante dos nameKeys
 - [x] ~~PWA Cache Management System~~ (17 Dezembro 2024)
-  - Cache status indicator no header
-  - Painel de gestão com download/clear
-  - Service Worker com precaching
-  - Traduções em 4 idiomas
-- [x] ~~Criar CRUD de ExpenseFlow~~ (Dezembro 2024)
-- [x] ~~Dashboard de visualizações/gráficos ExpenseFlow~~ (Dezembro 2024)
-- [x] ~~Export de dados JSON~~ (Dezembro 2024)
-- [x] ~~Configurar RLS no Supabase ExpenseFlow~~ (Dezembro 2024)
-- [x] ~~Configurar subdomínios www + app~~ (Dezembro 2024)
-- [x] ~~Remover locale pt-BR~~ (16 Dezembro 2024)
-- [x] ~~Redirecionar logo/Home para www.breathofnow.site~~ (16 Dezembro 2024)
+- [x] ~~ExpenseFlow MVP completo~~ (Dezembro 2024)
+- [x] ~~FitLog funcional~~ (Dezembro 2024)
 
 ---
 
 ## Notas para Próxima Sessão
 
-- O projeto agora suporta **4 idiomas**: en, pt, es, fr
-- Logo e Home no app shell redirecionam para `www.breathofnow.site`
-- **PWA migrado para next-pwa** - Service Worker gerado automaticamente
-- Lint tem warnings de React hooks que precisam ser corrigidos (pré-existentes)
+### Arquitetura v4 (Novos Módulos)
 
-### Bugs a Corrigir (Prioridade)
-1. ✅ ~~Página em branco offline~~ - Corrigido com next-pwa
-2. 🔧 **OfflineIndicator na homepage** - Header diferente
-3. 🔄 **Testar offline após deploy** - Verificar que next-pwa funciona
+```typescript
+// Storage API
+import { storage, NAMESPACES } from '@/lib/storage';
+await storage.set(NAMESPACES.EXPENSES, key, data);
 
-### Ficheiros Modificados (18 Dez 2024 - Sessão 2)
-- `package.json` - Adicionado next-pwa
-- `next.config.mjs` - Configuração PWA com Workbox
-- `public/sw.js` - **REMOVIDO** (agora gerado por next-pwa)
-- `.gitignore` - Padrões para ficheiros PWA gerados
-- `public/manifest.json` - Adicionado prefer_related_applications
-- `src/app/[locale]/offline/page.tsx` - Simplificado com traduções inline
-- `src/hooks/use-service-worker.ts` - Simplificado (registo automático)
+// Subscription Hook
+import { useSubscription } from '@/hooks';
+const { tier, isPro, checkAppAccess } = useSubscription();
 
-### Próxima Tarefa Sugerida
-1. Testar offline após deploy com nova configuração next-pwa
-2. Corrigir warnings de React hooks (lint)
-3. Adicionar OfflineIndicator à homepage (layout diferente)
-4. Implementar dashboard principal
+// Tipos
+import type { AppId, User } from '@/types';
+```
+
+### Regras Importantes
+
+1. **USAR Storage API** em vez de Dexie direto
+2. **USAR hooks de subscription** para verificações de tier
+3. **IMPORTAR tipos** de `@/types` quando disponíveis
+
+### Ficheiros Novos/Modificados (18 Dez 2024)
+
+**Novos:**
+- `src/lib/storage/index.ts`
+- `src/lib/subscription/index.ts`
+- `src/hooks/use-subscription.ts`
+- `src/types/common.ts`
+- `docs/ARCHITECTURE.md`
+
+**Atualizados:**
+- `CLAUDE.md`
+- `.claude/PROJECT.md`
+- `.claude/RULES.md`
+- `.claude/TODO.md`
+- `src/hooks/index.ts`
+- `src/types/index.ts`
 
 ---
 
-> Actualizar este ficheiro no final de cada sessão de trabalho.
+> Atualizar este ficheiro no final de cada sessão de trabalho.

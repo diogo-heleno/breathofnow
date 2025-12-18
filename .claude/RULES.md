@@ -11,6 +11,7 @@ Antes de iniciar QUALQUER tarefa, Claude Code DEVE:
 1. Ler `.claude/RULES.md` (este ficheiro) para regras obrigatórias
 2. Ler `.claude/PROJECT.md` para contexto completo do projeto
 3. Ler `CLAUDE.md` para instruções técnicas específicas
+4. Ler `docs/ARCHITECTURE.md` para arquitetura v4
 
 ---
 
@@ -71,7 +72,67 @@ grep -rn --include="*.tsx" '"[A-Z][a-zA-Z ]\{10,\}"' src/
 
 ---
 
-## 📝 Regra #2: Atualização de Documentação
+## 💾 Regra #2: Usar Storage API (NEW)
+
+### SEMPRE usar a abstração Storage API para dados
+
+```tsx
+// ❌ PROIBIDO - Acesso direto ao Dexie
+import { db } from '@/lib/db';
+await db.expenseTransactions.add(data);
+
+// ✅ CORRETO - Usar Storage API
+import { storage, NAMESPACES } from '@/lib/storage';
+await storage.set(NAMESPACES.EXPENSES, key, data);
+```
+
+### Namespaces disponíveis:
+
+- `NAMESPACES.EXPENSES` - ExpenseFlow
+- `NAMESPACES.EXPENSE_CATEGORIES` - Categorias
+- `NAMESPACES.INVESTMENTS` - InvestTrack
+- `NAMESPACES.WORKOUTS` - FitLog
+- `NAMESPACES.RECIPES` - RecipeBox
+- `NAMESPACES.PREFERENCES` - Preferências
+
+### Métodos da Storage API:
+
+```typescript
+storage.get<T>(namespace, key)      // Obter item
+storage.set<T>(namespace, key, val) // Guardar item
+storage.delete(namespace, key)      // Apagar item
+storage.getAll<T>(namespace)        // Obter todos
+storage.query<T>(namespace, filter) // Query com filtro
+storage.clear(namespace)            // Limpar namespace
+storage.count(namespace)            // Contar items
+```
+
+---
+
+## 🎫 Regra #3: Usar Hooks de Subscription (NEW)
+
+### Para verificar tier/premium:
+
+```tsx
+// ❌ PROIBIDO - Verificação manual
+const isPro = user?.tier === 'pro';
+
+// ✅ CORRETO - Usar hook
+import { useSubscription } from '@/hooks';
+
+const { tier, isPro, canSync, showAds, checkAppAccess } = useSubscription();
+```
+
+### Hooks disponíveis:
+
+- `useSubscription()` - Estado completo de subscription
+- `useShowAds()` - Verificar se deve mostrar ads
+- `useCanSync()` - Verificar se pode sincronizar
+- `useAppAccess(appId)` - Verificar acesso a app específica
+
+---
+
+## 📝 Regra #4: Atualização de Documentação
 
 Quando Claude Code fizer alterações significativas ao projeto:
 
@@ -82,23 +143,6 @@ Quando Claude Code fizer alterações significativas ao projeto:
 3. **MOSTRAR** exatamente o que será adicionado/modificado
 4. **AGUARDAR** confirmação explícita ("OK") do utilizador
 5. **SÓ ENTÃO** fazer a alteração
-
-### Formato de proposta:
-
-```
-📝 PROPOSTA DE ATUALIZAÇÃO - PROJECT.md
-
-Secção: [nome da secção]
-Tipo: [Adição | Modificação | Remoção]
-Razão: [porque esta atualização é necessária]
-
-Conteúdo proposto:
----
-[conteúdo markdown formatado]
----
-
-Confirmas esta alteração? (OK/Não)
-```
 
 ### Alterações que requerem atualização de documentação:
 
@@ -113,13 +157,13 @@ Confirmas esta alteração? (OK/Não)
 
 ---
 
-## 🔧 Regra #3: Convenções de Código
+## 🔧 Regra #5: Convenções de Código
 
 ### TypeScript
 
 - **Strict mode** sempre ativo
 - **NUNCA** usar tipo `any` - usar tipos específicos ou `unknown`
-- Interfaces para objetos, types para unions
+- Importar tipos de `@/types` quando disponíveis
 - Componentes funcionais com hooks
 
 ### Styling
@@ -133,8 +177,9 @@ Confirmas esta alteração? (OK/Não)
 ```tsx
 // Usar path aliases
 import { Button } from '@/components/ui';
-import { db } from '@/lib/db';
-import { useExpenseStore } from '@/stores/expense-store';
+import { storage } from '@/lib/storage';
+import { useSubscription } from '@/hooks';
+import type { AppId, User } from '@/types';
 
 // NUNCA usar paths relativos longos
 import { Button } from '../../../components/ui/button'; // ❌
@@ -150,13 +195,11 @@ fix(sync): resolve conflict in offline merge
 docs(readme): update installation steps
 chore(deps): update dependencies
 refactor(auth): simplify login flow
-style(ui): adjust button padding
-test(expenses): add unit tests for calculations
 ```
 
 ---
 
-## 📁 Regra #4: Estrutura de Ficheiros
+## 📁 Regra #6: Estrutura de Ficheiros
 
 ### Localizações obrigatórias:
 
@@ -167,11 +210,11 @@ test(expenses): add unit tests for calculations
 | Componentes de App | `src/components/[app-name]/` |
 | Layout components | `src/components/layout/` |
 | Stores (Zustand) | `src/stores/` |
+| Hooks | `src/hooks/` |
 | Lib/Utils | `src/lib/` |
 | Tipos | `src/types/` |
 | Traduções | `messages/` |
 | Documentação | `docs/` ou `.claude/` |
-| Assets públicos | `public/` |
 
 ### Regras de nomenclatura:
 
@@ -184,7 +227,7 @@ test(expenses): add unit tests for calculations
 
 ---
 
-## ✅ Regra #5: Checklist de Verificação
+## ✅ Regra #7: Checklist de Verificação
 
 Antes de considerar uma tarefa completa, verificar:
 
@@ -201,11 +244,15 @@ Antes de considerar uma tarefa completa, verificar:
 - [ ] Todos os 4 idiomas atualizados
 - [ ] Namespaces consistentes
 
+### Storage & Subscription
+
+- [ ] Storage API usada (não Dexie direto)
+- [ ] Hooks de subscription usados para verificações de tier
+
 ### Documentação
 
 - [ ] `.claude/PROJECT.md` atualizado (se necessário, com aprovação)
 - [ ] Comentários de código onde necessário
-- [ ] README atualizado para novas funcionalidades major
 
 ### Git
 
@@ -226,7 +273,9 @@ As seguintes ações são **PROIBIDAS**:
 5. ❌ Criar páginas fora de `[locale]/`
 6. ❌ Usar inline styles em vez de Tailwind
 7. ❌ Ignorar erros de TypeScript ou ESLint
+8. ❌ Usar Dexie diretamente em vez de Storage API (NEW)
+9. ❌ Verificar tier manualmente em vez de usar hooks (NEW)
 
 ---
 
-> Última atualização: Dezembro 2024
+> Última atualização: Dezembro 2024 (v4)

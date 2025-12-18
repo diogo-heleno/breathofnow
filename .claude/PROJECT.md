@@ -1,27 +1,33 @@
 # Documento de Projeto - Breath of Now
 
-> Última atualização: 18 Dezembro 2024 (Sessão 2 - PWA next-pwa)
+> Última atualização: 18 Dezembro 2024 (Arquitetura v4 - Simplificação)
 
 ---
 
 ## 1. Visão Geral do Projeto
 
-**Breath of Now** é um ecossistema privacy-first de micro-apps para vida consciente, uma marca da **M21 Global, Lda**.
+**Breath of Now** é uma plataforma-ecossistema privacy-first e offline-first de micro-apps para vida consciente, uma marca da **M21 Global, Lda**.
+
+### Princípios Fundamentais
+
+1. **Offline-First**: O browser é a fonte de verdade - a app funciona 100% sem internet
+2. **Privacy-First**: Dados nunca saem do dispositivo sem consentimento explícito
+3. **Platform vs Apps**: Infraestrutura única partilhada por todas as micro-apps
 
 ### Apps do Ecossistema
 
 | App | Estado | Descrição |
 |-----|--------|-----------|
 | **ExpenseFlow** | ✅ Disponível | Gestão de despesas |
-| **InvestTrack** | 🔜 Em breve | Tracking de investimentos |
 | **FitLog** | ✅ Disponível | Registo de fitness/treinos |
+| **InvestTrack** | 🧪 Beta | Tracking de investimentos |
 | **StravaSync** | 🔜 Em breve | Integração com Strava |
 | **RecipeBox** | 🔜 Em breve | Gestão de receitas |
 | **LabelScan** | 🔜 Em breve | Scanner de etiquetas/produtos |
 
 ---
 
-## 2. Stack Tecnológico (Implementado)
+## 2. Stack Tecnológico
 
 | Camada | Tecnologia | Versão |
 |--------|------------|--------|
@@ -40,7 +46,7 @@
 
 ---
 
-## 3. Arquitetura Local-First (Implementada)
+## 3. Arquitetura Local-First
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -53,10 +59,14 @@
 │         └────────┬───────┘                       │
 │                  ▼                               │
 │         ┌───────────────┐                        │
-│         │  Sync Engine  │  (a implementar)       │
+│         │  Storage API  │  (NEW - abstração)     │
+│         └───────┬───────┘                        │
+│                  │                               │
+│         ┌───────┴───────┐                        │
+│         │  Sync Engine  │  (Pro only)            │
 │         └───────┬───────┘                        │
 └─────────────────┼───────────────────────────────┘
-                  │ (quando online + autenticado)
+                  │ (quando online + Pro)
                   ▼
          ┌───────────────┐
          │   Supabase    │
@@ -64,9 +74,28 @@
          └───────────────┘
 ```
 
+### Storage API (Nova Abstração)
+
+Interface unificada para todas as apps em `src/lib/storage/`:
+
+```typescript
+import { storage, NAMESPACES } from '@/lib/storage';
+
+// Guardar transação
+await storage.set(NAMESPACES.EXPENSES, 'tx_123', data);
+
+// Obter todas as transações
+const transactions = await storage.getAll(NAMESPACES.EXPENSES);
+
+// Query com filtro
+const filtered = await storage.query(NAMESPACES.EXPENSES, 
+  tx => tx.amount > 100
+);
+```
+
 ---
 
-## 4. Estrutura de Pastas (Atual)
+## 4. Estrutura de Pastas
 
 ```
 breathofnow/
@@ -77,78 +106,103 @@ breathofnow/
 │   └── fr.json
 ├── src/
 │   ├── app/[locale]/            # Páginas localizadas (App Router)
-│   │   ├── layout.tsx           # Layout raiz com i18n
+│   │   ├── layout.tsx           # Layout raiz
 │   │   ├── page.tsx             # Homepage
-│   │   ├── pricing/page.tsx     # Página de preços
-│   │   ├── faq/page.tsx         # FAQ
-│   │   ├── auth/signin/page.tsx # Autenticação
-│   │   ├── privacy/page.tsx     # Política de privacidade
-│   │   ├── terms/page.tsx       # Termos de serviço
-│   │   └── globals.css          # Estilos globais
+│   │   ├── pricing/             # Preços
+│   │   ├── faq/                 # FAQ
+│   │   ├── auth/                # Autenticação
+│   │   ├── account/             # Conta/Seleção de apps
+│   │   ├── expenses/            # ExpenseFlow
+│   │   ├── fitlog/              # FitLog
+│   │   └── offline/             # Página offline
 │   ├── components/
 │   │   ├── ui/                  # Design system
-│   │   │   ├── button.tsx
-│   │   │   ├── input.tsx
-│   │   │   ├── card.tsx
-│   │   │   ├── badge.tsx
-│   │   │   ├── price-slider.tsx
-│   │   │   └── index.ts
-│   │   ├── layout/
-│   │   │   ├── header.tsx
-│   │   │   └── footer.tsx
-│   │   ├── brand/
-│   │   │   └── logo.tsx
-│   │   ├── pwa/
-│   │   │   ├── offline-indicator.tsx       # Indicador de cache no header
-│   │   │   ├── cache-status-panel.tsx      # Painel de gestão de cache
-│   │   │   ├── offline-navigation-handler.tsx # Handler para navegação offline
-│   │   │   └── index.ts
-│   │   └── ads/
-│   │       └── ad-banner.tsx
+│   │   ├── layout/              # Header, Footer
+│   │   ├── shell/               # App shell unificado
+│   │   ├── pwa/                 # Componentes PWA
+│   │   └── [app]/               # Componentes específicos de cada app
 │   ├── lib/
-│   │   ├── db/index.ts          # Dexie database setup
-│   │   ├── pwa/
-│   │   │   ├── cache-config.ts  # Configuração de páginas cacheáveis
-│   │   │   ├── cache-manager.ts # Lógica de gestão de cache
-│   │   │   └── index.ts         # Exports
-│   │   ├── supabase/
-│   │   │   ├── client.ts        # Cliente browser
-│   │   │   └── server.ts        # Cliente server
+│   │   ├── storage/             # NEW: Storage API unificada
+│   │   │   └── index.ts
+│   │   ├── subscription/        # NEW: Gestão de tiers
+│   │   │   └── index.ts
+│   │   ├── db/                  # Dexie database setup
+│   │   ├── sync/                # Sync engine
+│   │   ├── supabase/            # Cliente Supabase
+│   │   ├── pwa/                 # Cache management
 │   │   └── utils.ts
 │   ├── hooks/
-│   │   ├── use-mounted.ts       # Hook para client-side mount detection
-│   │   ├── use-premium.ts       # Hook para premium features
-│   │   ├── use-service-worker.ts # Hook para PWA service worker
-│   │   ├── use-cache-status.ts  # Hook para gestão de cache PWA
-│   │   └── use-sync.ts          # Hook para sincronização
-│   ├── stores/
-│   │   └── app-store.ts         # Zustand stores
-│   ├── i18n.ts                  # Configuração i18n
-│   └── middleware.ts            # Locale + geo detection
-├── tailwind.config.ts           # Design tokens
-├── next.config.mjs              # Next.js config
-├── tsconfig.json
-├── .env.example
-└── README.md
+│   │   ├── index.ts             # Exports
+│   │   ├── use-subscription.ts  # NEW: Hook de subscription
+│   │   ├── use-sync.ts
+│   │   ├── use-premium.ts
+│   │   ├── use-cache-status.ts
+│   │   └── use-service-worker.ts
+│   ├── stores/                  # Zustand stores
+│   ├── types/
+│   │   ├── index.ts             # Exports
+│   │   ├── common.ts            # NEW: Tipos comuns
+│   │   ├── pricing.ts
+│   │   └── fitlog.ts
+│   ├── i18n.ts
+│   └── middleware.ts
+├── docs/
+│   ├── ARCHITECTURE.md          # NEW: Documento de arquitetura
+│   └── supabase/                # Schemas SQL
+├── .claude/                     # Documentação Claude Code
+├── tailwind.config.ts
+├── next.config.mjs
+└── CLAUDE.md
 ```
 
 ---
 
-## 5. Internacionalização (Implementada)
+## 5. Sistema de Tiers (Simplificado v4)
+
+### Apenas 2 Tiers: Free vs Pro
+
+| | Free | Pro |
+|---|---|---|
+| **Preço** | €0 | €4.99/mês |
+| **Apps** | 2 apps à escolha | Todas as apps |
+| **Storage local** | ✅ Ilimitado | ✅ Ilimitado |
+| **Cloud sync** | ❌ | ✅ |
+| **Multi-device** | ❌ | ✅ |
+| **Ads** | Sim | Não |
+
+**Regra simples:** Free funciona 100% offline. Pro adiciona sync e remove ads.
+
+### Gestão de Subscription
+
+```typescript
+import { useSubscription } from '@/hooks';
+
+const { 
+  tier,           // 'free' | 'pro'
+  isPro,          // boolean
+  canSync,        // boolean
+  showAds,        // boolean
+  maxApps,        // number (2 para free, Infinity para pro)
+  selectedApps,   // AppId[]
+  checkAppAccess, // (appId) => boolean
+} = useSubscription();
+```
+
+---
+
+## 6. Internacionalização
 
 ### Idiomas Suportados
 
-- 🇬🇧 English (en)
+- 🇬🇧 English (en) - default/fallback
 - 🇵🇹 Português (pt)
 - 🇪🇸 Español (es)
 - 🇫🇷 Français (fr)
 
 ### Persistência de Locale
 
-- Cookie `NEXT_LOCALE` persiste preferência do utilizador
+- Cookie `NEXT_LOCALE` persiste preferência
 - Funciona cross-subdomain (www ↔ app) via `.breathofnow.site`
-- Default: `en` (inglês)
-- Locale é preservado em todos os links internos
 
 ### Preços Regionais
 
@@ -160,516 +214,195 @@ breathofnow/
 
 ---
 
-## 6. Modelo de Monetização (3 Tiers)
-
-| Tier | Preço | Funcionalidades |
-|------|-------|-----------------|
-| **Free** | €0 | Todas as apps, com anúncios |
-| **Supporter** | €1.99-5/mês | Todas as apps, sem anúncios, sync cloud |
-| **Founding Member** | €599 lifetime | Tudo incluído + lugares limitados |
-
-### Objetivos de Receita
-
-- **MAU Target**: 10,000 utilizadores
-- **Conversão**: 3% (300 pagantes)
-- **Receita Mensal Target**: €3,000
-  - Anúncios: €200-400/mês
-  - Subscriptions: €1,500-2,000/mês
-  - Lifetime: €800-1,000/mês
-
----
-
 ## 7. Schema da Base de Dados Local (Dexie)
 
-### UserPreferences
+### Namespaces
+
+```
+BreathOfNowDB/
+├── preferences/           # Preferências do utilizador
+├── expenseTransactions/   # ExpenseFlow - transações
+├── expenseCategories/     # ExpenseFlow - categorias
+├── expenseBudgets/        # ExpenseFlow - orçamentos
+├── investments/           # InvestTrack
+├── workouts/              # FitLog
+├── recipes/               # RecipeBox
+└── exchangeRates/         # Taxas de câmbio
+```
+
+### Tipos Base
 
 ```typescript
-{
+interface BaseEntity {
   id?: number;
-  theme: 'light' | 'dark' | 'system';
-  locale: string;
-  currency: string;
-  country: string;
-  isPremium: boolean;
-  premiumUntil?: Date;
-  showAds: boolean;
   createdAt: Date;
   updatedAt: Date;
+}
+
+interface SyncableEntity extends BaseEntity {
   syncedAt?: Date;
-}
-```
-
-### Expense (ExpenseFlow)
-
-```typescript
-{
-  amount: number;
-  currency: string;
-  category: string;
-  description?: string;
-  date: Date;
-  tags?: string[];
-  isRecurring?: boolean;
-  recurringPeriod?: 'daily' | 'weekly' | 'monthly' | 'yearly';
-}
-```
-
-### Investment (InvestTrack)
-
-```typescript
-{
-  symbol: string;
-  name: string;
-  type: 'stock' | 'etf' | 'crypto' | 'bond' | 'other';
-  quantity: number;
-  averagePrice: number;
-  currency: string;
-  broker?: string;
-  notes?: string;
-}
-```
-
-### Workout (FitLog)
-
-```typescript
-{
-  name: string;
-  type: string;
-  duration: number; // minutos
-  calories?: number;
-  exercises?: WorkoutExercise[];
-  notes?: string;
-  date: Date;
-}
-```
-
-### Recipe (RecipeBox)
-
-```typescript
-{
-  title: string;
-  description?: string;
-  ingredients: RecipeIngredient[];
-  instructions: string[];
-  servings: number;
-  prepTime?: number;
-  cookTime?: number;
-  tags?: string[];
-  imageUrl?: string;
-  sourceUrl?: string;
-  isFavorite?: boolean;
+  syncStatus: 'pending' | 'synced' | 'conflict';
+  deletedAt?: Date;  // soft delete
 }
 ```
 
 ---
 
-## 8. Autenticação (Implementada)
+## 8. Autenticação
 
-### Métodos
+### Métodos Suportados
 
 - ✅ Magic Link (OTP via email)
 - ✅ OAuth Google
 - ✅ OAuth GitHub
 
-### Modelo User
+### Auth Flow
 
-```typescript
-{
-  id: string;
-  email: string;
-  name?: string;
-  avatarUrl?: string;
-  isPremium: boolean;
-  premiumUntil?: string;
-}
+```
+Utilizador visita breathofnow.site
+         │
+    ┌────┴────┐
+    ▼         ▼
+ Sem conta   Com conta
+ (anónimo)   (login)
+    │         │
+    ▼         ▼
+ Usa apps    Verifica tier
+ 100% local  (Free/Pro)
+    │         │
+    │    ┌────┴────┐
+    │    ▼         ▼
+    │  Free      Pro
+    │  2 apps    Todas apps
+    │  local     + sync
+    │    │         │
+    └────┴─────────┘
+              │
+              ▼
+    Dados sempre em IndexedDB
+    (sync adicional se Pro)
 ```
 
 ---
 
-## 9. Design System (Implementado)
+## 9. Design System
 
 ### Paleta de Cores
 
-- **Primary** (Warm Sage Green): `#5a7d5a` - calma, respiração, natureza
-- **Secondary** (Warm Sand): `#b19373` - terra, grounding
-- **Accent** (Soft Terracotta): `#df7459` - energia, warmth
+- **Primary** (Warm Sage Green): `#5a7d5a`
+- **Secondary** (Warm Sand): `#b19373`
+- **Accent** (Soft Terracotta): `#df7459`
 - **Neutrals**: Escala 50-950 de cinzas quentes
 
 ### Tipografia
 
-- **Display**: Fraunces (serif elegante para títulos)
-- **Body**: Source Sans 3 (sans-serif legível)
-- **Mono**: JetBrains Mono (código/números)
+- **Display**: Fraunces (serif)
+- **Body**: Source Sans 3 (sans-serif)
+- **Mono**: JetBrains Mono
 
 ### Componentes UI
 
-| Componente | Variantes | Estado |
-|------------|-----------|--------|
-| **Button** | primary, secondary, outline, ghost, accent, danger | ✅ |
-| **Input** | com label, erro, hint, ícones | ✅ |
-| **Card** | default, interactive, glass | ✅ |
-| **Badge** | primary, secondary, accent, success, warning, error, outline | ✅ |
-| **PriceSlider** | PWYW com min/max | ✅ |
-| **Logo** | sm, md, lg | ✅ |
-| **AdBanner** | top, bottom, inline | ✅ |
-| **Header** | com navegação mobile, locale-aware | ✅ |
-| **Footer** | 4 colunas + newsletter, locale prop | ✅ |
-| **ClientOnly** | fallback | ✅ |
-| **AppShell** | sidebar com apps, locale-aware | ✅ |
-| **UnifiedAppHeader** | header para apps | ✅ |
-| **OfflineIndicator** | indicador de cache no header | ✅ |
-| **CacheStatusPanel** | painel de gestão de cache | ✅ |
-
-### Animações
-
-- `fade-in`, `fade-in-up`, `fade-in-down`
-- `scale-in`, `slide-in-right`, `slide-in-left`
-- `float`, `pulse-soft`, `shimmer`, `breathe`
-
-### Sombras
-
-- `shadow-soft-sm/md/lg/xl`
-- `shadow-glow`, `shadow-glow-accent`
-- `shadow-inner-soft`
+| Componente | Localização |
+|------------|-------------|
+| Button | `@/components/ui/button` |
+| Input | `@/components/ui/input` |
+| Card | `@/components/ui/card` |
+| Badge | `@/components/ui/badge` |
 
 ---
 
-## 10. Páginas Implementadas
+## 10. Sync Engine
 
-| Página | Rota | Estado |
-|--------|------|--------|
-| Homepage | `/[locale]` | ✅ |
-| Pricing | `/[locale]/pricing` | ✅ |
-| FAQ | `/[locale]/faq` | ✅ |
-| Sign In | `/[locale]/auth/signin` | ✅ |
-| Privacy | `/[locale]/privacy` | ✅ |
-| Terms | `/[locale]/terms` | ✅ |
-| Dashboard | `/[locale]/dashboard` | 🔜 |
-| ExpenseFlow Dashboard | `/[locale]/expenses` | ✅ |
-| ExpenseFlow Add | `/[locale]/expenses/add` | ✅ |
-| ExpenseFlow Transactions | `/[locale]/expenses/transactions` | ✅ |
-| ExpenseFlow Categories | `/[locale]/expenses/categories` | ✅ |
-| ExpenseFlow Settings | `/[locale]/expenses/settings` | ✅ |
-| ExpenseFlow Reports | `/[locale]/expenses/reports` | ✅ |
-| Features - Privacy First | `/[locale]/features/privacy-first` | ✅ |
-| Features - Works Offline | `/[locale]/features/works-offline` | ✅ |
-| Features - Beautifully Simple | `/[locale]/features/beautifully-simple` | ✅ |
-| Features - Fair Pricing | `/[locale]/features/fair-pricing` | ✅ |
-| Features - Open Transparent | `/[locale]/features/open-transparent` | ✅ |
-| Features - Sustainable | `/[locale]/features/sustainable` | ✅ |
-| Account | `/[locale]/account` | ✅ |
-| Offline | `/[locale]/offline` | ✅ |
-| Error Boundary | `/[locale]/error` | ✅ |
-
----
-
-## 11. State Management (Zustand)
-
-### AppStore
+### Princípio: Last-Write-Wins
 
 ```typescript
-{
-  user: User | null;
-  theme: 'light' | 'dark' | 'system';
-  country: string;
-  currency: string;
-  priceTier: 'high' | 'medium' | 'low';
-  isSidebarOpen: boolean;
-  showAds: boolean;
-  activeApp: string | null;
+interface SyncableItem {
+  id: string;
+  updatedAt: number;      // timestamp
+  deletedAt?: number;     // soft delete
+  syncedAt?: number;      // última sync
 }
 ```
 
-### PricingStore
+### Quando Faz Sync
 
-```typescript
-{
-  suggestedMonthly: number;
-  suggestedLifetime: number;
-  customMonthly: number | null;
-  customLifetime: number | null;
-  getEffectiveMonthly(): number;
-  getEffectiveLifetime(): number;
-}
-```
+- Ao abrir a app (se online e Pro)
+- Após cada operação (debounced, 5 segundos)
+- Manualmente (pull-to-refresh)
 
----
+### Indicador Visual
 
-## 12. Variáveis de Ambiente
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-NEXT_PUBLIC_SITE_URL=
-NEXT_PUBLIC_GA_MEASUREMENT_ID= (opcional)
-NEXT_PUBLIC_ADSENSE_CLIENT_ID= (opcional)
-```
+- ✓ synced
+- ↻ syncing
+- ⚠ offline
 
 ---
 
-## 13. Convenções de Código
-
-### Commits
-
-```
-feat(expenses): add recurring transaction support
-fix(sync): resolve conflict in offline merge
-docs(readme): update installation steps
-chore(deps): update dependencies
-```
-
-### Nomenclatura
-
-- **Ficheiros**: kebab-case (`price-slider.tsx`)
-- **Componentes**: PascalCase (`PriceSlider`)
-- **Funções/variáveis**: camelCase (`handleClick`)
-- **Tabelas DB**: snake_case, plural (`expense_transactions`)
-- **Colunas DB**: snake_case (`created_at`)
-
-### TypeScript
-
-- Strict mode sempre ativo
-- Componentes funcionais com hooks
-- Path aliases para imports limpos (`@/components`, `@/lib`)
-
----
-
-## 14. Próximos Passos
-
-### Concluído
-
-- [x] Criar CRUD de ExpenseFlow (transações)
-- [x] Dashboard de visualizações/gráficos (ExpenseFlow)
-- [x] Export de dados (JSON)
-- [x] Configurar RLS no Supabase (ExpenseFlow)
-- [x] Schema Supabase para ExpenseFlow
-
-### Prioridade Alta
-
-- [ ] Implementar dashboard principal (home)
-- [ ] Implementar sync engine com Supabase
-- [x] Configurar subdomínios (www + app)
-- [x] PWA com Service Worker e Cache Management
-
-### Prioridade Média
-
-- [ ] Import de dados (JSON/CSV)
-- [ ] Sistema de notificações
-- [ ] Budgets/Orçamentos no ExpenseFlow
-
-### Prioridade Baixa
-
-- [ ] InvestTrack completo
-- [ ] FitLog app
-- [ ] RecipeBox app
-- [ ] Integração Strava API
-
----
-
-## 15. Domínios e Infraestrutura
-
-### Estrutura de Domínios
-
-| Domínio | Propósito | Configuração |
-|---------|-----------|--------------|
-| **www.breathofnow.site** | Website/Landing Page | Vercel + DNS CNAME |
-| **app.breathofnow.site** | Aplicações (ExpenseFlow, etc.) | Vercel + DNS CNAME |
-| **API** | Backend/Auth | Supabase (managed) |
-
-### Configuração Vercel
-
-1. Adicionar ambos os domínios no projeto Vercel
-2. Configurar redirects no `next.config.mjs` se necessário
-3. Usar `NEXT_PUBLIC_SITE_URL` para o domínio principal
-
-### Configuração DNS
-
-```
-www.breathofnow.site    CNAME   cname.vercel-dns.com
-app.breathofnow.site    CNAME   cname.vercel-dns.com
-breathofnow.site        A       76.76.21.21
-```
-
----
-
-## 16. Documentação Supabase
-
-### Ficheiros de Referência
-
-| Ficheiro | Descrição |
-|----------|-----------|
-| **supabase-schema.md** | Schema completo da base de dados |
-| **claude-code-guide.md** | Guia de uso com Claude Code |
-| **supabase/migrations/** | Migrações SQL versionadas |
-
-### Regra de Ouro
-
-> **SEMPRE consultar `.claude/supabase-schema.md` antes de escrever código que aceda à base de dados.**
-
-### Nomes de Colunas Comuns
-
-⚠️ **Atenção:** Supabase usa `snake_case`, TypeScript usa `camelCase`
-
-| ❌ TypeScript (errado na DB) | ✅ Supabase (correto) |
-|------------------------------|---------------------|
-| `lastAppChange` | `apps_selected_at` |
-| `subscriptionTier` | `subscription_tier` |
-| `isFoundingMember` | `is_founding_member` |
-| `fullName` | `full_name` |
-
-### Workflow de Mudanças
-
-1. **Fazer mudanças no Dashboard:** SQL Editor → `ALTER TABLE`
-2. **Documentar:** Actualizar `.claude/supabase-schema.md`
-3. **Criar migração:** Adicionar ficheiro em `supabase/migrations/`
-4. **Commit:** GitHub com todas as alterações
-
-### Ver Também
-
-- [Supabase Schema Documentation](.claude/supabase-schema.md)
-- [Claude Code Guide](.claude/claude-code-guide.md)
-
----
-
-## 17. ExpenseFlow - Implementação Concluída
-
-### Funcionalidades Phase 1 (MVP)
-
-- ✅ Dashboard com resumo mensal
-- ✅ Quick Add (despesas/rendimentos)
-- ✅ Lista de transações com filtros e pesquisa
-- ✅ Gráfico de pizza por categoria
-- ✅ Gestão de categorias (CRUD)
-- ✅ Página de configurações (moeda base, export)
-- ✅ Relatórios anuais
-
-### Estrutura de Ficheiros ExpenseFlow
-
-```
-src/
-├── app/[locale]/expenses/
-│   ├── layout.tsx          # Layout com navegação
-│   ├── page.tsx            # Dashboard
-│   ├── add/page.tsx        # Quick Add
-│   ├── transactions/page.tsx
-│   ├── categories/page.tsx
-│   ├── settings/page.tsx
-│   └── reports/page.tsx
-├── components/expenses/
-│   ├── expense-pie-chart.tsx
-│   ├── transaction-item.tsx
-│   └── edit-transaction-modal.tsx
-└── stores/
-    └── expense-store.ts    # Zustand store
-```
-
-### Schema Supabase
-
-Ficheiro SQL: `docs/supabase/expenseflow-schema.sql`
-
-Tabelas:
-- `expense_categories`
-- `expense_transactions`
-- `expense_budgets`
-- `expense_settings`
-- `exchange_rates`
-- `import_mappings`
-
----
-
----
-
-## 18. PWA com next-pwa (Implementado)
-
-### Migração para next-pwa (18 Dezembro 2024)
-
-Substituído Service Worker manual por **next-pwa** com Workbox para melhor integração com Next.js App Router.
+## 11. PWA
 
 ### Funcionalidades
 
-- ✅ **next-pwa** com Workbox para pre-caching automático
-- ✅ Runtime caching com estratégias configuráveis
-- ✅ Fallback para página offline (/en/offline)
-- ✅ Página offline com traduções inline (4 idiomas)
-- ✅ Hook simplificado `use-service-worker.ts`
-- ✅ Indicador de cache no header (OfflineIndicator)
-- ✅ Painel de gestão de cache (CacheStatusPanel)
-- ✅ Error Boundary para erros offline
-
-### Configuração next-pwa (next.config.mjs)
-
-```javascript
-runtimeCaching: [
-  // Navegação - NetworkFirst
-  { urlPattern: ({ request }) => request.mode === 'navigate', handler: 'NetworkFirst' },
-  // Static assets - CacheFirst
-  { urlPattern: /^\/_next\/static\/.*/, handler: 'CacheFirst' },
-  // Data requests - NetworkFirst
-  { urlPattern: /^\/_next\/data\/.*/, handler: 'NetworkFirst' },
-  // Images - CacheFirst
-  { urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|avif|ico)$/, handler: 'CacheFirst' },
-  // Google Fonts - StaleWhileRevalidate / CacheFirst
-  ...
-]
-```
-
-### Estrutura de Ficheiros PWA
-
-```
-src/
-├── app/[locale]/
-│   ├── offline/page.tsx         # Página offline com traduções inline
-│   └── error.tsx                # Error boundary
-├── hooks/
-│   └── use-service-worker.ts    # Hook simplificado (next-pwa gere registo)
-├── components/pwa/
-│   ├── offline-indicator.tsx    # Indicador no header
-│   ├── cache-status-panel.tsx   # Painel de gestão
-│   └── index.ts
-├── next.config.mjs              # Configuração PWA com Workbox
-└── public/
-    ├── sw.js                    # Gerado automaticamente por next-pwa
-    ├── workbox-*.js             # Bibliotecas Workbox (geradas)
-    └── manifest.json            # PWA manifest
-```
+- ✅ next-pwa com Workbox
+- ✅ Runtime caching configurável
+- ✅ Fallback para página offline
+- ✅ Hook `use-service-worker`
+- ✅ Indicadores de cache
 
 ### Estratégias de Cache
 
-| Tipo de Recurso | Estratégia | Duração |
-|-----------------|------------|---------|
-| Páginas (navegação) | NetworkFirst | 7 dias |
-| Static assets (_next/static) | CacheFirst | 30 dias |
-| Data requests (_next/data) | NetworkFirst | 1 dia |
-| Imagens | CacheFirst | 30 dias |
-| CSS/JS | StaleWhileRevalidate | 7 dias |
-| Google Fonts CSS | StaleWhileRevalidate | - |
-| Google Fonts WOFF | CacheFirst | 1 ano |
-| API calls | NetworkFirst | 5 min |
-
-### Ficheiros Gerados (em .gitignore)
-
-```
-public/sw.js
-public/sw.js.map
-public/workbox-*.js
-public/workbox-*.js.map
-public/fallback-*.js
-public/fallback-*.js.map
-```
-
-### Componentes PWA
-
-| Componente | Descrição |
-|------------|-----------|
-| `OfflineIndicator` | Indicador de cache no header |
-| `CacheStatusPanel` | Painel completo de gestão |
-| `use-service-worker` | Hook para status online/offline |
-
-### Bugs Conhecidos
-
-- ⚠️ Indicador não aparece na homepage (layout diferente)
-- 🔄 Testar offline após deploy com nova configuração
+| Recurso | Estratégia |
+|---------|------------|
+| Páginas | NetworkFirst |
+| Static assets | CacheFirst |
+| Imagens | CacheFirst |
+| API calls | NetworkFirst |
 
 ---
 
-> Este documento reflete o estado atual do projeto. Atualizar conforme o desenvolvimento avança.
+## 12. Domínios
+
+| Domínio | Propósito |
+|---------|-----------|
+| **www.breathofnow.site** | Website/Landing |
+| **app.breathofnow.site** | Aplicações |
+| **API** | Supabase (managed) |
+
+---
+
+## 13. Próximos Passos
+
+### Concluído ✅
+
+- [x] ExpenseFlow MVP completo
+- [x] FitLog funcional
+- [x] PWA com next-pwa
+- [x] Storage API unificada
+- [x] Sistema de tiers simplificado
+- [x] Documentação de arquitetura v4
+
+### Em Progresso 🔄
+
+- [ ] Implementar sync engine completo
+- [ ] Seleção de apps para tier Free
+- [ ] Dashboard principal
+
+### Futuro 🔜
+
+- [ ] InvestTrack completo
+- [ ] RecipeBox
+- [ ] Integração Strava
+
+---
+
+## 14. Referências
+
+| Documento | Descrição |
+|-----------|-----------|
+| `CLAUDE.md` | Instruções para Claude Code |
+| `.claude/RULES.md` | Regras obrigatórias |
+| `docs/ARCHITECTURE.md` | Arquitetura detalhada |
+| `.claude/supabase-schema.md` | Schema Supabase |
+
+---
+
+> Este documento reflete o estado atual do projeto após a simplificação v4.
