@@ -81,7 +81,7 @@ Antes de terminar, confirma (usando os skills):
 ## 4. RESUMO PARA COMMIT
 
 Gera uma mensagem de commit seguindo o formato:
-```
+```` ``` ``
 tipo(scope): descrição curta
 
 - Mudança 1
@@ -89,7 +89,7 @@ tipo(scope): descrição curta
 - Mudança 3
 
 Files changed: [lista de ficheiros principais]
-```
+```` ``` ``
 
 Tipos: feat, fix, docs, style, refactor, test, chore
 
