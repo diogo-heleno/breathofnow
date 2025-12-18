@@ -1,16 +1,60 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
-import { WifiOff, Home, RefreshCw, HardDrive, CheckCircle, Wallet, Dumbbell, TrendingUp } from 'lucide-react';
+import { WifiOff, Home, RefreshCw, HardDrive, CheckCircle, Wallet, Dumbbell, TrendingUp, AlertCircle } from 'lucide-react';
 import { useServiceWorker } from '@/hooks/use-service-worker';
+
+interface CachedApp {
+  id: string;
+  name: string;
+  path: string;
+  icon: React.ReactNode;
+  iconBg: string;
+  isCached: boolean;
+}
 
 export default function OfflinePage() {
   const params = useParams();
   const locale = (params?.locale as string) || 'en';
   const { isOnline } = useServiceWorker();
   const [isRetrying, setIsRetrying] = useState(false);
+  const [cachedPages, setCachedPages] = useState<string[]>([]);
+  const [isCheckingCache, setIsCheckingCache] = useState(true);
+
+  // Check which pages are cached
+  const checkCachedPages = useCallback(async () => {
+    if (!('caches' in window)) {
+      setIsCheckingCache(false);
+      return;
+    }
+
+    try {
+      const cacheNames = await caches.keys();
+      const allUrls: string[] = [];
+      
+      for (const cacheName of cacheNames) {
+        if (cacheName.startsWith('breathofnow-')) {
+          const cache = await caches.open(cacheName);
+          const keys = await cache.keys();
+          keys.forEach(req => {
+            const url = new URL(req.url);
+            allUrls.push(url.pathname);
+          });
+        }
+      }
+      
+      setCachedPages(allUrls);
+    } catch (error) {
+      console.error('Error checking cache:', error);
+    } finally {
+      setIsCheckingCache(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    checkCachedPages();
+  }, [checkCachedPages]);
 
   // Redirect when back online
   useEffect(() => {
@@ -28,6 +72,51 @@ export default function OfflinePage() {
       window.location.reload();
     }, 500);
   };
+
+  // Navigate to app - use window.location to let SW handle from cache
+  const navigateToApp = useCallback((path: string) => {
+    // Use direct navigation so the SW can serve from cache
+    window.location.href = path;
+  }, []);
+
+  // Check if a specific page is cached
+  const isPageCached = useCallback((path: string): boolean => {
+    // Check various path formats
+    const variations = [
+      path,
+      path.endsWith('/') ? path.slice(0, -1) : path + '/',
+      `${window.location.origin}${path}`,
+    ];
+    return variations.some(v => cachedPages.some(cached => cached === v || cached.startsWith(v)));
+  }, [cachedPages]);
+
+  // Define available apps
+  const apps: CachedApp[] = [
+    {
+      id: 'expenses',
+      name: 'Expenses',
+      path: `/${locale}/expenses`,
+      icon: <Wallet className="w-5 h-5 text-green-600" />,
+      iconBg: 'bg-green-100',
+      isCached: isPageCached(`/${locale}/expenses`),
+    },
+    {
+      id: 'fitlog',
+      name: 'FitLog',
+      path: `/${locale}/fitlog`,
+      icon: <Dumbbell className="w-5 h-5 text-orange-600" />,
+      iconBg: 'bg-orange-100',
+      isCached: isPageCached(`/${locale}/fitlog`),
+    },
+    {
+      id: 'investments',
+      name: 'Invest',
+      path: `/${locale}/investments`,
+      icon: <TrendingUp className="w-5 h-5 text-blue-600" />,
+      iconBg: 'bg-blue-100',
+      isCached: isPageCached(`/${locale}/investments`),
+    },
+  ];
 
   // If we're back online, show transition message
   if (isOnline) {
@@ -110,35 +199,43 @@ export default function OfflinePage() {
         {/* Quick Access to Cached Apps */}
         <div className="mb-6">
           <p className="text-sm font-medium text-warm-700 mb-3">Continue where you left off:</p>
-          <div className="grid grid-cols-3 gap-3">
-            <Link
-              href={`/${locale}/expenses`}
-              className="flex flex-col items-center gap-2 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                <Wallet className="w-5 h-5 text-green-600" />
-              </div>
-              <span className="text-xs font-medium text-warm-700">Expenses</span>
-            </Link>
-            <Link
-              href={`/${locale}/fitlog`}
-              className="flex flex-col items-center gap-2 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
-                <Dumbbell className="w-5 h-5 text-orange-600" />
-              </div>
-              <span className="text-xs font-medium text-warm-700">FitLog</span>
-            </Link>
-            <Link
-              href={`/${locale}/investments`}
-              className="flex flex-col items-center gap-2 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-blue-600" />
-              </div>
-              <span className="text-xs font-medium text-warm-700">Invest</span>
-            </Link>
-          </div>
+          
+          {isCheckingCache ? (
+            <div className="flex justify-center py-4">
+              <div className="w-6 h-6 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-3">
+              {apps.map((app) => (
+                <button
+                  key={app.id}
+                  onClick={() => navigateToApp(app.path)}
+                  className={`flex flex-col items-center gap-2 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-all relative ${
+                    app.isCached 
+                      ? 'cursor-pointer hover:scale-105' 
+                      : 'opacity-60 cursor-pointer'
+                  }`}
+                >
+                  <div className={`w-10 h-10 rounded-full ${app.iconBg} flex items-center justify-center`}>
+                    {app.icon}
+                  </div>
+                  <span className="text-xs font-medium text-warm-700">{app.name}</span>
+                  {!app.isCached && (
+                    <div className="absolute -top-1 -right-1">
+                      <AlertCircle className="w-4 h-4 text-amber-500" />
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+          
+          {!isCheckingCache && apps.some(app => !app.isCached) && (
+            <p className="mt-3 text-xs text-warm-500">
+              <AlertCircle className="w-3 h-3 inline mr-1" />
+              Apps with ⚠️ may need internet access to load the first time
+            </p>
+          )}
         </div>
 
         {/* Action Buttons */}
@@ -161,13 +258,13 @@ export default function OfflinePage() {
             )}
           </button>
 
-          <Link
-            href={`/${locale}`}
+          <button
+            onClick={() => navigateToApp(`/${locale}`)}
             className="w-full px-6 py-3 bg-warm-200 hover:bg-warm-300 text-warm-800 font-medium rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
           >
             <Home className="w-5 h-5" />
             Go to Home
-          </Link>
+          </button>
         </div>
 
         {/* PWA Tip */}
