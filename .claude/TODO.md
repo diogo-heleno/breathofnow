@@ -1,6 +1,6 @@
 # TODO - Breath of Now
 
-> Última atualização: 17 Dezembro 2024
+> Última atualização: 18 Dezembro 2024
 
 Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code deve ler este ficheiro no início de cada sessão.
 
@@ -33,14 +33,13 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
     - Menu mobile da homepage
   - Garantir consistência visual com o resto do site
 
-### 🔧 Melhorar nomes das páginas no Cache Panel
+### ✅ ~~Melhorar nomes das páginas no Cache Panel~~ (CORRIGIDO)
 
-- [ ] **Mostrar títulos legíveis no painel de gestão de cache**
-  - Actualmente mostra `nameKey` (chave i18n) em vez do título traduzido
-  - Ficheiros a alterar:
-    - `src/lib/pwa/cache-config.ts` - Adicionar títulos/descrições às páginas
-    - `src/components/pwa/cache-status-panel.tsx` - Usar traduções ou títulos
-  - Cada página deve mostrar nome amigável (ex: "Dashboard", "Transações", etc.)
+> ✅ Corrigido em 18 Dezembro 2024
+
+**Causa raiz:** Os `nameKey` em `cache-config.ts` tinham prefixo `pwa.` redundante (ex: `pwa.pages.home`), mas o componente já usava `useTranslations('pwa')`.
+
+**Solução:** Removido prefixo `pwa.` de todos os nameKeys em `cache-config.ts`. Agora mostra nomes traduzidos correctamente (ex: "Home", "ExpenseFlow", "Transações", etc.) em todos os 4 idiomas.
 
 ### ✅ ~~BUG: Página fica em branco em modo offline~~ (CORRIGIDO)
 
@@ -112,6 +111,8 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 
 ## Concluído Recentemente
 
+- [x] ~~Nomes de páginas no Cache Panel~~ (18 Dezembro 2024)
+  - Removido prefixo `pwa.` redundante dos nameKeys
 - [x] ~~PWA Cache Management System~~ (17 Dezembro 2024)
   - Cache status indicator no header
   - Painel de gestão com download/clear
@@ -135,9 +136,9 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 - Lint tem warnings de React hooks que precisam ser corrigidos
 
 ### Bugs a Corrigir (Prioridade)
-1. 🐛 **Página em branco offline** - Crítico para PWA
+1. ~~🐛 **Página em branco offline**~~ ✅ Corrigido
 2. 🔧 **OfflineIndicator na homepage** - Header diferente
-3. 🔧 **Nomes de páginas no cache panel** - UX
+3. ~~🔧 **Nomes de páginas no cache panel**~~ ✅ Corrigido
 
 ### Ficheiros Criados Hoje (17 Dez 2024)
 - `src/lib/pwa/cache-config.ts`
