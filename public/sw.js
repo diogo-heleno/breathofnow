@@ -1,7 +1,7 @@
 // Service Worker para Breath of Now
-// Versão: 3.0.0 - PWA Cache Management
+// Versão: 4.0.0 - Fixed offline support for Next.js App Router
 
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v4';
 const CACHE_NAME = `breathofnow-pages-${CACHE_VERSION}`;
 const STATIC_CACHE_NAME = `breathofnow-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE_NAME = `breathofnow-runtime-${CACHE_VERSION}`;
@@ -9,12 +9,11 @@ const RUNTIME_CACHE_NAME = `breathofnow-runtime-${CACHE_VERSION}`;
 // Supported locales
 const LOCALES = ['en', 'pt', 'es', 'fr'];
 
-// Critical assets for offline functionality
+// Static assets that must be cached for offline
 const STATIC_ASSETS = [
   '/manifest.json',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
-  '/offline'
 ];
 
 // Critical pages to precache (without locale - will be expanded)
@@ -22,7 +21,7 @@ const CRITICAL_PATHS = [
   '',  // Home
   '/expenses',
   '/expenses/add',
-  '/fitlog'
+  '/offline'
 ];
 
 // Generate localized paths
@@ -39,9 +38,27 @@ function getLocalizedPaths(paths) {
 // All critical pages with locales
 const CRITICAL_PAGES = getLocalizedPaths(CRITICAL_PATHS);
 
+// Check if request is for a Next.js static asset (JS/CSS chunks)
+function isNextStaticAsset(url) {
+  return url.pathname.startsWith('/_next/static/');
+}
+
+// Check if request is for an RSC payload (React Server Components)
+function isRSCRequest(request) {
+  return request.headers.get('RSC') === '1' ||
+         request.headers.get('Next-Router-State-Tree') !== null ||
+         request.url.includes('_rsc=');
+}
+
+// Check if request is for a page (HTML)
+function isPageRequest(request) {
+  const accept = request.headers.get('accept') || '';
+  return accept.includes('text/html');
+}
+
 // Installation: cache critical assets
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing service worker v3...');
+  console.log('[SW] Installing service worker v4...');
 
   event.waitUntil(
     Promise.all([
@@ -55,9 +72,14 @@ self.addEventListener('install', (event) => {
       // Cache critical pages
       caches.open(CACHE_NAME).then((cache) => {
         console.log('[SW] Caching critical pages');
-        return cache.addAll(CRITICAL_PAGES).catch((error) => {
-          console.warn('[SW] Some critical pages failed to cache:', error);
-        });
+        // Cache pages one by one to avoid all failing if one fails
+        return Promise.allSettled(
+          CRITICAL_PAGES.map(page =>
+            cache.add(page).catch(err => {
+              console.warn(`[SW] Failed to cache ${page}:`, err);
+            })
+          )
+        );
       })
     ]).then(() => self.skipWaiting())
   );
@@ -65,7 +87,7 @@ self.addEventListener('install', (event) => {
 
 // Activation: clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating service worker v3...');
+  console.log('[SW] Activating service worker v4...');
 
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -87,7 +109,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch strategy: Network First with Cache Fallback
+// Fetch handler with different strategies based on request type
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
@@ -97,7 +119,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Skip external requests (APIs, etc)
+  // Skip external requests
   if (url.origin !== self.location.origin) {
     return;
   }
@@ -107,70 +129,248 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Strategy: Network First, Cache Fallback
-  event.respondWith(
-    fetch(request)
-      .then((response) => {
-        // Only cache successful responses
-        if (response && response.status === 200) {
-          const responseClone = response.clone();
-
-          // Determine which cache to use
-          const isPage = request.headers.get('accept')?.includes('text/html');
-          const cacheName = isPage ? CACHE_NAME : RUNTIME_CACHE_NAME;
-
-          caches.open(cacheName).then((cache) => {
-            cache.put(request, responseClone);
-          });
-        }
-
-        return response;
-      })
-      .catch(async () => {
-        // Network failed, try cache
-        const cachedResponse = await caches.match(request);
-
+  // Strategy 1: Cache First for Next.js static assets (JS/CSS chunks)
+  if (isNextStaticAsset(url)) {
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
         if (cachedResponse) {
-          console.log('[SW] Serving from cache:', request.url);
           return cachedResponse;
         }
 
-        // If it's a page request, try to serve offline page
-        if (request.headers.get('accept')?.includes('text/html')) {
-          // Try locale-specific offline page
+        return fetch(request).then((response) => {
+          if (response && response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(RUNTIME_CACHE_NAME).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
+          return response;
+        }).catch(() => {
+          // Return empty response for missing chunks to prevent crashes
+          console.warn('[SW] Failed to fetch static asset:', url.pathname);
+          return new Response('', { status: 503 });
+        });
+      })
+    );
+    return;
+  }
+
+  // Strategy 2: Network First with HTML fallback for RSC requests
+  if (isRSCRequest(request)) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(RUNTIME_CACHE_NAME).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
+          return response;
+        })
+        .catch(async () => {
+          // Try to return cached RSC response
+          const cachedResponse = await caches.match(request);
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+
+          // For RSC requests that fail, return an empty RSC payload
+          // This prevents the page from crashing
+          console.warn('[SW] RSC request failed, returning empty payload:', url.pathname);
+          return new Response('', {
+            status: 200,
+            headers: { 'Content-Type': 'text/x-component' }
+          });
+        })
+    );
+    return;
+  }
+
+  // Strategy 3: Network First with Cache Fallback for HTML pages
+  if (isPageRequest(request)) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
+          return response;
+        })
+        .catch(async () => {
+          console.log('[SW] Network failed for page, trying cache:', url.pathname);
+
+          // Try exact match first
+          const cachedResponse = await caches.match(request);
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+
+          // Try without query string
+          const urlWithoutQuery = new URL(url);
+          urlWithoutQuery.search = '';
+          const cachedWithoutQuery = await caches.match(urlWithoutQuery.toString());
+          if (cachedWithoutQuery) {
+            return cachedWithoutQuery;
+          }
+
+          // Get locale from URL
           const pathParts = url.pathname.split('/');
           const locale = LOCALES.includes(pathParts[1]) ? pathParts[1] : 'en';
 
-          const offlinePage = await caches.match(`/${locale}/offline`) ||
-                              await caches.match('/offline');
-
+          // Try locale-specific offline page
+          const offlinePage = await caches.match(`/${locale}/offline`);
           if (offlinePage) {
             return offlinePage;
           }
 
-          // Fallback to home page
-          const homePage = await caches.match(`/${locale}`);
-          if (homePage) {
-            return homePage;
+          // Try any cached offline page
+          for (const loc of LOCALES) {
+            const page = await caches.match(`/${loc}/offline`);
+            if (page) {
+              return page;
+            }
           }
+
+          // Last resort: return basic offline HTML
+          return new Response(getOfflineHTML(locale), {
+            status: 503,
+            headers: { 'Content-Type': 'text/html' }
+          });
+        })
+    );
+    return;
+  }
+
+  // Strategy 4: Network First for other requests (images, fonts, etc.)
+  event.respondWith(
+    fetch(request)
+      .then((response) => {
+        if (response && response.status === 200) {
+          const responseClone = response.clone();
+          caches.open(RUNTIME_CACHE_NAME).then((cache) => {
+            cache.put(request, responseClone);
+          });
+        }
+        return response;
+      })
+      .catch(async () => {
+        const cachedResponse = await caches.match(request);
+        if (cachedResponse) {
+          return cachedResponse;
         }
 
-        // Return a basic offline response
-        return new Response('Offline - Resource not available', {
-          status: 503,
-          statusText: 'Service Unavailable',
-          headers: new Headers({
-            'Content-Type': 'text/plain'
-          })
-        });
+        return new Response('', { status: 503 });
       })
   );
 });
 
-// Background sync (when back online)
+// Generate basic offline HTML fallback
+function getOfflineHTML(locale = 'en') {
+  return `<!DOCTYPE html>
+<html lang="${locale}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - Breath of Now</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #f5f5f0 0%, #e8e4d9 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 400px;
+      text-align: center;
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: #fef3c7;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon svg {
+      width: 40px;
+      height: 40px;
+      color: #f59e0b;
+    }
+    h1 {
+      font-size: 24px;
+      color: #1f2937;
+      margin-bottom: 12px;
+    }
+    p {
+      color: #6b7280;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    button {
+      background: #5a7d5a;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #4a6d4a;
+    }
+    .status {
+      margin-top: 20px;
+      padding: 12px;
+      background: #f0fdf4;
+      border-radius: 8px;
+      color: #166534;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3m8.293 8.293l1.414 1.414" />
+      </svg>
+    </div>
+    <h1>You're Offline</h1>
+    <p>Don't worry! Your data is safely stored on your device. The app will reconnect automatically when you're back online.</p>
+    <button onclick="window.location.reload()">Try Again</button>
+    <div class="status">
+      ✓ Your data is safe locally<br>
+      ✓ Changes will sync when online
+    </div>
+  </div>
+  <script>
+    // Auto-reload when back online
+    window.addEventListener('online', () => {
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>`;
+}
+
+// Background sync
 self.addEventListener('sync', (event) => {
   console.log('[SW] Background sync triggered:', event.tag);
-
   if (event.tag === 'sync-data') {
     event.waitUntil(syncDataWithServer());
   }
@@ -179,7 +379,6 @@ self.addEventListener('sync', (event) => {
 async function syncDataWithServer() {
   try {
     console.log('[SW] Syncing data with server...');
-    // TODO: Implement data sync with Supabase
     return Promise.resolve();
   } catch (error) {
     console.error('[SW] Sync failed:', error);
@@ -208,12 +407,16 @@ self.addEventListener('message', (event) => {
       handleClearCache(event);
       break;
 
+    case 'CACHE_ASSETS':
+      handleCacheAssets(event);
+      break;
+
     default:
       break;
   }
 });
 
-// Cache a specific page
+// Cache a specific page and its assets
 async function handleCachePage(event, payload) {
   const { url } = payload || {};
 
@@ -227,7 +430,26 @@ async function handleCachePage(event, payload) {
     const response = await fetch(url);
 
     if (response.ok) {
-      await cache.put(url, response);
+      await cache.put(url, response.clone());
+
+      // Also cache any JS/CSS from the response
+      const text = await response.text();
+      const assetUrls = extractAssetUrls(text);
+
+      const runtimeCache = await caches.open(RUNTIME_CACHE_NAME);
+      await Promise.allSettled(
+        assetUrls.map(async (assetUrl) => {
+          try {
+            const assetResponse = await fetch(assetUrl);
+            if (assetResponse.ok) {
+              await runtimeCache.put(assetUrl, assetResponse);
+            }
+          } catch (e) {
+            // Ignore individual asset failures
+          }
+        })
+      );
+
       event.ports[0]?.postMessage({ success: true });
     } else {
       event.ports[0]?.postMessage({ success: false, error: `HTTP ${response.status}` });
@@ -237,12 +459,38 @@ async function handleCachePage(event, payload) {
   }
 }
 
+// Extract JS/CSS URLs from HTML
+function extractAssetUrls(html) {
+  const urls = [];
+
+  // Match script src
+  const scriptMatches = html.matchAll(/src="(\/_next\/static\/[^"]+)"/g);
+  for (const match of scriptMatches) {
+    urls.push(match[1]);
+  }
+
+  // Match link href
+  const linkMatches = html.matchAll(/href="(\/_next\/static\/[^"]+)"/g);
+  for (const match of linkMatches) {
+    urls.push(match[1]);
+  }
+
+  return urls;
+}
+
 // Get list of cached URLs
 async function handleGetCacheStatus(event) {
   try {
-    const cache = await caches.open(CACHE_NAME);
-    const keys = await cache.keys();
-    const cachedUrls = keys.map(k => k.url);
+    const pageCache = await caches.open(CACHE_NAME);
+    const pageKeys = await pageCache.keys();
+
+    const runtimeCache = await caches.open(RUNTIME_CACHE_NAME);
+    const runtimeKeys = await runtimeCache.keys();
+
+    const cachedUrls = [
+      ...pageKeys.map(k => k.url),
+      ...runtimeKeys.map(k => k.url)
+    ];
 
     event.ports[0]?.postMessage({ success: true, cachedUrls });
   } catch (error) {
@@ -254,9 +502,44 @@ async function handleGetCacheStatus(event) {
 async function handleClearCache(event) {
   try {
     await caches.delete(CACHE_NAME);
+    await caches.delete(RUNTIME_CACHE_NAME);
+
     // Re-create cache with critical pages
     const cache = await caches.open(CACHE_NAME);
-    await cache.addAll(CRITICAL_PAGES);
+    await Promise.allSettled(
+      CRITICAL_PAGES.map(page =>
+        cache.add(page).catch(err => {
+          console.warn(`[SW] Failed to re-cache ${page}:`, err);
+        })
+      )
+    );
+
+    event.ports[0]?.postMessage({ success: true });
+  } catch (error) {
+    event.ports[0]?.postMessage({ success: false, error: error.message });
+  }
+}
+
+// Cache current page assets
+async function handleCacheAssets(event) {
+  try {
+    const clients = await self.clients.matchAll({ type: 'window' });
+    const runtimeCache = await caches.open(RUNTIME_CACHE_NAME);
+
+    // Get all cached requests and refresh them
+    const keys = await runtimeCache.keys();
+    await Promise.allSettled(
+      keys.map(async (request) => {
+        try {
+          const response = await fetch(request);
+          if (response.ok) {
+            await runtimeCache.put(request, response);
+          }
+        } catch (e) {
+          // Keep existing cached version
+        }
+      })
+    );
 
     event.ports[0]?.postMessage({ success: true });
   } catch (error) {
