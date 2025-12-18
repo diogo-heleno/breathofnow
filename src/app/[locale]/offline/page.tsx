@@ -1,70 +1,91 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { WifiOff, Home, RefreshCw, HardDrive, CheckCircle, Wallet, Dumbbell, TrendingUp, AlertCircle } from 'lucide-react';
-import { useServiceWorker } from '@/hooks/use-service-worker';
+import { WifiOff, RefreshCw, Home, HardDrive, CheckCircle } from 'lucide-react';
 
-interface CachedApp {
-  id: string;
-  name: string;
-  path: string;
-  icon: React.ReactNode;
-  iconBg: string;
-  isCached: boolean;
-}
+// Inline translations for offline reliability
+const messages = {
+  en: {
+    title: "You're Offline",
+    description: "Don't worry! Your data is safely stored on your device. Connect to the internet to access all features.",
+    retry: "Try Again",
+    home: "Go to Home",
+    tip: "Tip: Your expenses and workouts are saved locally and will sync when you're back online.",
+    reconnecting: "Reconnecting...",
+    backOnline: "Back Online!",
+    dataIsSafe: "Your data is safe locally",
+    autoSync: "Changes will sync when online",
+    allFeatures: "All features available offline",
+  },
+  pt: {
+    title: "Estás Offline",
+    description: "Não te preocupes! Os teus dados estão guardados em segurança no teu dispositivo. Liga-te à internet para aceder a todas as funcionalidades.",
+    retry: "Tentar Novamente",
+    home: "Ir para Início",
+    tip: "Dica: As tuas despesas e treinos estão guardados localmente e serão sincronizados quando voltares online.",
+    reconnecting: "A reconectar...",
+    backOnline: "De Volta Online!",
+    dataIsSafe: "Os teus dados estão seguros localmente",
+    autoSync: "Alterações serão sincronizadas quando online",
+    allFeatures: "Todas as funcionalidades disponíveis offline",
+  },
+  es: {
+    title: "Estás Sin Conexión",
+    description: "¡No te preocupes! Tus datos están guardados de forma segura en tu dispositivo. Conéctate a internet para acceder a todas las funciones.",
+    retry: "Intentar de Nuevo",
+    home: "Ir al Inicio",
+    tip: "Consejo: Tus gastos y entrenamientos están guardados localmente y se sincronizarán cuando vuelvas a estar online.",
+    reconnecting: "Reconectando...",
+    backOnline: "¡De Vuelta Online!",
+    dataIsSafe: "Tus datos están seguros localmente",
+    autoSync: "Los cambios se sincronizarán cuando estés online",
+    allFeatures: "Todas las funciones disponibles offline",
+  },
+  fr: {
+    title: "Vous êtes Hors Ligne",
+    description: "Ne vous inquiétez pas ! Vos données sont stockées en toute sécurité sur votre appareil. Connectez-vous à internet pour accéder à toutes les fonctionnalités.",
+    retry: "Réessayer",
+    home: "Aller à l'Accueil",
+    tip: "Astuce : Vos dépenses et entraînements sont sauvegardés localement et seront synchronisés lorsque vous serez de nouveau en ligne.",
+    reconnecting: "Reconnexion...",
+    backOnline: "De Retour en Ligne !",
+    dataIsSafe: "Vos données sont en sécurité localement",
+    autoSync: "Les modifications seront synchronisées en ligne",
+    allFeatures: "Toutes les fonctionnalités disponibles hors ligne",
+  },
+};
 
 export default function OfflinePage() {
   const params = useParams();
   const locale = (params?.locale as string) || 'en';
-  const { isOnline } = useServiceWorker();
+  const t = messages[locale as keyof typeof messages] || messages.en;
+
+  const [isOnline, setIsOnline] = useState(false);
   const [isRetrying, setIsRetrying] = useState(false);
-  const [cachedPages, setCachedPages] = useState<string[]>([]);
-  const [isCheckingCache, setIsCheckingCache] = useState(true);
-
-  // Check which pages are cached
-  const checkCachedPages = useCallback(async () => {
-    if (!('caches' in window)) {
-      setIsCheckingCache(false);
-      return;
-    }
-
-    try {
-      const cacheNames = await caches.keys();
-      const allUrls: string[] = [];
-      
-      for (const cacheName of cacheNames) {
-        if (cacheName.startsWith('breathofnow-')) {
-          const cache = await caches.open(cacheName);
-          const keys = await cache.keys();
-          keys.forEach(req => {
-            const url = new URL(req.url);
-            allUrls.push(url.pathname);
-          });
-        }
-      }
-      
-      setCachedPages(allUrls);
-    } catch (error) {
-      console.error('Error checking cache:', error);
-    } finally {
-      setIsCheckingCache(false);
-    }
-  }, []);
 
   useEffect(() => {
-    checkCachedPages();
-  }, [checkCachedPages]);
+    // Check initial online status
+    setIsOnline(navigator.onLine);
 
-  // Redirect when back online
-  useEffect(() => {
-    if (isOnline) {
-      const timer = setTimeout(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      // Redirect to home when back online
+      setTimeout(() => {
         window.location.href = `/${locale}`;
       }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [isOnline, locale]);
+    };
+
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, [locale]);
 
   const handleRetry = () => {
     setIsRetrying(true);
@@ -73,52 +94,7 @@ export default function OfflinePage() {
     }, 500);
   };
 
-  // Navigate to app - use window.location to let SW handle from cache
-  const navigateToApp = useCallback((path: string) => {
-    // Use direct navigation so the SW can serve from cache
-    window.location.href = path;
-  }, []);
-
-  // Check if a specific page is cached
-  const isPageCached = useCallback((path: string): boolean => {
-    // Check various path formats
-    const variations = [
-      path,
-      path.endsWith('/') ? path.slice(0, -1) : path + '/',
-      `${window.location.origin}${path}`,
-    ];
-    return variations.some(v => cachedPages.some(cached => cached === v || cached.startsWith(v)));
-  }, [cachedPages]);
-
-  // Define available apps
-  const apps: CachedApp[] = [
-    {
-      id: 'expenses',
-      name: 'Expenses',
-      path: `/${locale}/expenses`,
-      icon: <Wallet className="w-5 h-5 text-green-600" />,
-      iconBg: 'bg-green-100',
-      isCached: isPageCached(`/${locale}/expenses`),
-    },
-    {
-      id: 'fitlog',
-      name: 'FitLog',
-      path: `/${locale}/fitlog`,
-      icon: <Dumbbell className="w-5 h-5 text-orange-600" />,
-      iconBg: 'bg-orange-100',
-      isCached: isPageCached(`/${locale}/fitlog`),
-    },
-    {
-      id: 'investments',
-      name: 'Invest',
-      path: `/${locale}/investments`,
-      icon: <TrendingUp className="w-5 h-5 text-blue-600" />,
-      iconBg: 'bg-blue-100',
-      isCached: isPageCached(`/${locale}/investments`),
-    },
-  ];
-
-  // If we're back online, show transition message
+  // Reconnecting state
   if (isOnline) {
     return (
       <div className="min-h-screen bg-warm-50 flex items-center justify-center p-6">
@@ -129,11 +105,9 @@ export default function OfflinePage() {
             </div>
           </div>
           <h1 className="font-display text-3xl font-bold text-warm-900 mb-4">
-            Back Online! 🎉
+            {t.backOnline} 🎉
           </h1>
-          <p className="text-warm-600 mb-4">
-            Reconnecting you to Breath of Now...
-          </p>
+          <p className="text-warm-600 mb-4">{t.reconnecting}</p>
           <div className="flex justify-center">
             <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
           </div>
@@ -154,15 +128,11 @@ export default function OfflinePage() {
 
         {/* Title */}
         <h1 className="font-display text-3xl md:text-4xl font-bold text-warm-900 mb-4">
-          You&apos;re Offline
+          {t.title}
         </h1>
 
         {/* Description */}
-        <p className="text-warm-600 mb-8 leading-relaxed">
-          Don&apos;t worry! Your data is safely stored locally. You can continue using
-          <span className="font-semibold text-primary-600"> Breath of Now </span>
-          offline. Any changes will sync automatically when you&apos;re back online.
-        </p>
+        <p className="text-warm-600 mb-8 leading-relaxed">{t.description}</p>
 
         {/* Status Card */}
         <div className="bg-white rounded-xl shadow-soft-md p-6 mb-6 text-left">
@@ -179,63 +149,21 @@ export default function OfflinePage() {
               <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
                 <HardDrive className="w-4 h-4 text-green-600" />
               </div>
-              <span>Your data is safe locally</span>
+              <span>{t.dataIsSafe}</span>
             </div>
             <div className="flex items-center gap-3 text-sm text-warm-600">
               <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
                 <CheckCircle className="w-4 h-4 text-green-600" />
               </div>
-              <span>All features available offline</span>
+              <span>{t.allFeatures}</span>
             </div>
             <div className="flex items-center gap-3 text-sm text-warm-600">
               <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
                 <RefreshCw className="w-4 h-4 text-green-600" />
               </div>
-              <span>Auto-sync when back online</span>
+              <span>{t.autoSync}</span>
             </div>
           </div>
-        </div>
-
-        {/* Quick Access to Cached Apps */}
-        <div className="mb-6">
-          <p className="text-sm font-medium text-warm-700 mb-3">Continue where you left off:</p>
-          
-          {isCheckingCache ? (
-            <div className="flex justify-center py-4">
-              <div className="w-6 h-6 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
-            </div>
-          ) : (
-            <div className="grid grid-cols-3 gap-3">
-              {apps.map((app) => (
-                <button
-                  key={app.id}
-                  onClick={() => navigateToApp(app.path)}
-                  className={`flex flex-col items-center gap-2 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-all relative ${
-                    app.isCached 
-                      ? 'cursor-pointer hover:scale-105' 
-                      : 'opacity-60 cursor-pointer'
-                  }`}
-                >
-                  <div className={`w-10 h-10 rounded-full ${app.iconBg} flex items-center justify-center`}>
-                    {app.icon}
-                  </div>
-                  <span className="text-xs font-medium text-warm-700">{app.name}</span>
-                  {!app.isCached && (
-                    <div className="absolute -top-1 -right-1">
-                      <AlertCircle className="w-4 h-4 text-amber-500" />
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          )}
-          
-          {!isCheckingCache && apps.some(app => !app.isCached) && (
-            <p className="mt-3 text-xs text-warm-500">
-              <AlertCircle className="w-3 h-3 inline mr-1" />
-              Apps with ⚠️ may need internet access to load the first time
-            </p>
-          )}
         </div>
 
         {/* Action Buttons */}
@@ -248,29 +176,27 @@ export default function OfflinePage() {
             {isRetrying ? (
               <>
                 <RefreshCw className="w-5 h-5 animate-spin" />
-                Checking connection...
+                {t.reconnecting}
               </>
             ) : (
               <>
                 <RefreshCw className="w-5 h-5" />
-                Try Again
+                {t.retry}
               </>
             )}
           </button>
 
           <button
-            onClick={() => navigateToApp(`/${locale}`)}
+            onClick={() => (window.location.href = `/${locale}`)}
             className="w-full px-6 py-3 bg-warm-200 hover:bg-warm-300 text-warm-800 font-medium rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
           >
             <Home className="w-5 h-5" />
-            Go to Home
+            {t.home}
           </button>
         </div>
 
-        {/* PWA Tip */}
-        <p className="mt-6 text-sm text-warm-500">
-          💡 Tip: Install this app on your device for the best offline experience
-        </p>
+        {/* Tip */}
+        <p className="mt-6 text-sm text-warm-500">💡 {t.tip}</p>
       </div>
     </div>
   );
