@@ -1262,6 +1262,14 @@
         "low": "Extra"
       }
     },
+    "warmup": {
+      "title": "Prepare for Offline",
+      "description": "Visit all app pages to enable complete offline access",
+      "start": "Prepare App for Offline",
+      "inProgress": "Preparing pages...",
+      "complete": "Pages ready for offline!",
+      "stats": "{success} pages cached, {failed} failed"
+    },
     "pages": {
       "home": "Home",
       "expenses": "ExpenseFlow",

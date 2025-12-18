@@ -846,6 +846,14 @@
         "low": "Extra"
       }
     },
+    "warmup": {
+      "title": "Préparer pour Hors Ligne",
+      "description": "Visitez toutes les pages pour activer l'accès hors ligne complet",
+      "start": "Préparer l'App pour Hors Ligne",
+      "inProgress": "Préparation des pages...",
+      "complete": "Pages prêtes pour hors ligne !",
+      "stats": "{success} pages mises en cache, {failed} échouées"
+    },
     "pages": {
       "home": "Accueil",
       "expenses": "ExpenseFlow",

@@ -846,6 +846,14 @@
         "low": "Extra"
       }
     },
+    "warmup": {
+      "title": "Preparar para Sin Conexión",
+      "description": "Visita todas las páginas para habilitar el acceso offline completo",
+      "start": "Preparar App para Offline",
+      "inProgress": "Preparando páginas...",
+      "complete": "¡Páginas listas para offline!",
+      "stats": "{success} páginas guardadas, {failed} fallaron"
+    },
     "pages": {
       "home": "Inicio",
       "expenses": "ExpenseFlow",

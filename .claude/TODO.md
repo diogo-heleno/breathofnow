@@ -43,20 +43,20 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 
 ### ✅ ~~BUG: Página fica em branco em modo offline~~ (CORRIGIDO)
 
-> ✅ Corrigido em 18 Dezembro 2024 (v5 → v6)
+> ✅ Corrigido em 18 Dezembro 2024 (v5 → v6 → v7)
 
-**Causa raiz:** Next.js App Router usa React Server Components (RSC) que fazem requests separados. Estes requests falhavam offline causando página em branco.
+**Causa raiz REAL:** Páginas com `'use client'` não geram HTML estático no build.
+O SW tentava pre-cache de páginas que não existiam, falhando silenciosamente.
 
-**Solução implementada em `public/sw.js` v6:**
-- Install com error handling - abort se >50% páginas falham
-- `Response.redirect()` para RSC requests offline (não 503)
-- URL matching com/sem trailing slash para cache hits
-- `/offline` em CRITICAL_PATHS para todos os locales
-- Retry logic (3 retries, exponential backoff)
+**Solução implementada em `public/sw.js` v7 (Runtime Cache Strategy):**
+- STATIC_PAGES (server-rendered): Pre-cache no install
+- CLIENT_PAGES (client-side): Runtime cache no primeiro visit
+- Cache Warmup: Botão "Preparar para Offline" visita todas as páginas
+- Aggressive runtime caching para ALL HTML responses
+- `Response.redirect()` para RSC requests offline
 - Localized offline HTML fallback (en/pt/es/fr)
 - Low cache coverage warning UI (<30%)
-- `OfflineNavigationHandler` intercepta links quando offline
-- `error.tsx` captura erros e mostra página amigável
+- Progress bar durante warmup
 
 ---
 
@@ -115,6 +115,12 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 
 ## Concluído Recentemente
 
+- [x] ~~Runtime Cache Strategy (v7)~~ (18 Dezembro 2024)
+  - Service Worker v7 com runtime cache para client-side pages
+  - STATIC_PAGES vs CLIENT_PAGES separation
+  - Cache Warmup component com progress bar
+  - Aggressive runtime caching no primeiro visit
+  - Warmup translations em 4 idiomas
 - [x] ~~Comprehensive offline system rewrite (v6)~~ (18 Dezembro 2024)
   - Service Worker v6 com install error handling (>50% threshold)
   - Response.redirect() para RSC offline (não 503)
@@ -163,6 +169,7 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 - `src/components/pwa/offline-indicator.tsx`
 - `src/components/pwa/cache-status-panel.tsx`
 - `src/components/pwa/offline-navigation-handler.tsx` (18 Dez)
+- `src/components/pwa/cache-warmup.tsx` (18 Dez) - Cache Warmup UI
 - `src/app/[locale]/error.tsx` (18 Dez)
 
 ### Ficheiros Modificados (17-18 Dez)
@@ -171,7 +178,7 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 - `src/components/shell/app-shell.tsx` (OfflineIndicator)
 - `src/components/layout/header.tsx` (OfflineIndicator)
 - `src/app/[locale]/layout.tsx` (OfflineNavigationHandler)
-- `public/sw.js` (v4 → v5 → v6: complete offline system)
+- `public/sw.js` (v4 → v5 → v6 → v7: runtime cache strategy)
 - `src/lib/pwa/cache-config.ts` (added /offline, version v6)
 - `src/components/pwa/cache-status-panel.tsx` (low coverage warning)
 - `messages/*.json` (traduções PWA + error boundary + offline page)

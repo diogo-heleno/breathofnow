@@ -1,7 +1,7 @@
 // Service Worker para Breath of Now
-// Versão: 6.0.0 - Complete offline cache system with proper error handling
+// Versão: 7.0.0 - Runtime Cache Strategy for Client-Side Pages
 
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v7';
 const CACHE_NAME = `breathofnow-pages-${CACHE_VERSION}`;
 const STATIC_CACHE_NAME = `breathofnow-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE_NAME = `breathofnow-runtime-${CACHE_VERSION}`;
@@ -16,13 +16,35 @@ const STATIC_ASSETS = [
   '/icons/icon-512x512.png',
 ];
 
-// Critical pages to precache (without locale - will be expanded)
-const CRITICAL_PATHS = [
-  '',  // Home
+// Pages that CAN be statically generated (server components only)
+// These are safe to pre-cache during install
+const STATIC_PAGES = [
+  '',           // Home (if server-side)
+  '/offline',   // Offline page
+  '/pricing',   // Static pages
+  '/faq',
+  '/privacy',
+  '/terms'
+];
+
+// Client-side pages ('use client') that MUST be cached at runtime
+// These cannot be pre-cached because they don't exist as static HTML
+const CLIENT_PAGES = [
   '/expenses',
   '/expenses/add',
+  '/expenses/transactions',
+  '/expenses/categories',
+  '/expenses/reports',
+  '/expenses/settings',
+  '/expenses/budgets',
+  '/expenses/import',
   '/fitlog',
-  '/offline'
+  '/fitlog/workout',
+  '/fitlog/history',
+  '/fitlog/plans',
+  '/fitlog/create',
+  '/account',
+  '/account/settings'
 ];
 
 // Generate localized paths
@@ -36,8 +58,14 @@ function getLocalizedPaths(paths) {
   return result;
 }
 
-// All critical pages with locales
-const CRITICAL_PAGES = getLocalizedPaths(CRITICAL_PATHS);
+// Only static pages for precache (during install)
+const PRECACHE_PAGES = getLocalizedPaths(STATIC_PAGES);
+
+// Client pages for runtime caching and warmup
+const RUNTIME_PAGES = getLocalizedPaths(CLIENT_PAGES);
+
+// All pages combined (for status reporting)
+const ALL_PAGES = [...PRECACHE_PAGES, ...RUNTIME_PAGES];
 
 // Check if request is for a Next.js static asset (JS/CSS chunks)
 function isNextStaticAsset(url) {
@@ -57,75 +85,69 @@ function isPageRequest(request) {
   return accept.includes('text/html');
 }
 
-// Installation: cache critical assets
+// Installation: cache ONLY static assets and truly static pages
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing service worker v6...');
+  console.log('[SW] Installing service worker v7 (Runtime Cache Strategy)...');
 
   event.waitUntil(
     Promise.all([
-      // Cache static assets (these MUST succeed)
+      // Cache static assets (manifest, icons)
       caches.open(STATIC_CACHE_NAME).then(async (cache) => {
         console.log('[SW] Caching static assets');
         try {
           await cache.addAll(STATIC_ASSETS);
           console.log('[SW] ✅ Static assets cached successfully');
         } catch (error) {
-          console.error('[SW] ❌ CRITICAL: Failed to cache static assets:', error);
-          throw error; // Fail installation if static assets fail
+          console.error('[SW] ⚠️ Static assets failed:', error);
+          // Don't fail install for this
         }
       }),
 
-      // Cache critical pages (these MUST succeed)
+      // Cache ONLY truly static pages (server-rendered)
       caches.open(CACHE_NAME).then(async (cache) => {
-        console.log('[SW] Caching critical pages');
+        console.log('[SW] Caching static pages (server-rendered only)');
 
-        // Try to cache all critical pages
         const results = await Promise.allSettled(
-          CRITICAL_PAGES.map(async (page) => {
+          PRECACHE_PAGES.map(async (page) => {
             try {
-              await cache.add(page);
-              console.log(`[SW] ✅ Cached: ${page}`);
-              return { success: true, page };
+              const response = await fetch(page, {
+                credentials: 'same-origin',
+                headers: { 'Accept': 'text/html' }
+              });
+
+              if (response.ok) {
+                await cache.put(page, response);
+                console.log(`[SW] ✅ Cached: ${page}`);
+                return { success: true, page };
+              } else {
+                console.warn(`[SW] ⚠️ Skipped ${page}: HTTP ${response.status}`);
+                return { success: false, page };
+              }
             } catch (error) {
-              console.error(`[SW] ❌ Failed to cache ${page}:`, error);
-              return { success: false, page, error };
+              console.warn(`[SW] ⚠️ Skipped ${page}:`, error.message);
+              return { success: false, page };
             }
           })
         );
 
-        // Count successes
-        const successful = results.filter(r => r.status === 'fulfilled' && r.value?.success).length;
-        const failed = results.filter(r => r.status === 'rejected' || !r.value?.success).length;
-
-        console.log(`[SW] Cache results: ${successful}/${CRITICAL_PAGES.length} pages cached`);
-
-        // If more than 50% failed, abort installation
-        if (failed > CRITICAL_PAGES.length / 2) {
-          console.error('[SW] ❌ CRITICAL: Too many pages failed to cache');
-          throw new Error(`Failed to cache ${failed}/${CRITICAL_PAGES.length} critical pages`);
-        }
-
-        // Log which pages are missing
-        if (failed > 0) {
-          const failedPages = results
-            .filter(r => r.status === 'rejected' || !r.value?.success)
-            .map(r => r.value?.page || 'unknown');
-          console.warn('[SW] ⚠️ Failed pages:', failedPages);
-        }
+        const successful = results.filter(r => r.value?.success).length;
+        console.log(`[SW] ✅ Cached ${successful}/${PRECACHE_PAGES.length} static pages`);
+        console.log('[SW] 📝 Client pages will be cached on first visit or via warmup');
       })
     ]).then(() => {
-      console.log('[SW] ✅ Installation complete, activating...');
+      console.log('[SW] ✅ Installation complete');
       return self.skipWaiting();
     }).catch(error => {
-      console.error('[SW] ❌ Installation FAILED:', error);
-      throw error;
+      console.error('[SW] ⚠️ Installation completed with warnings:', error);
+      // Still skip waiting - partial cache is better than no cache
+      return self.skipWaiting();
     })
   );
 });
 
 // Activation: clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating service worker v6...');
+  console.log('[SW] Activating service worker v7...');
 
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -170,7 +192,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Strategy 1: Cache First for Next.js static assets (JS/CSS chunks)
+  // Strategy 1: Cache First for Next.js static assets
   if (isNextStaticAsset(url)) {
     event.respondWith(
       caches.match(request).then((cachedResponse) => {
@@ -187,8 +209,6 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         }).catch(() => {
-          // Return empty response for missing chunks to prevent crashes
-          console.warn('[SW] ❌ Failed to fetch static asset:', url.pathname);
           return new Response('', { status: 503 });
         });
       })
@@ -196,7 +216,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Strategy 2: Network First for RSC requests with proper offline handling
+  // Strategy 2: Network First with AGGRESSIVE caching for RSC
   if (isRSCRequest(request)) {
     event.respondWith(
       fetch(request)
@@ -210,34 +230,30 @@ self.addEventListener('fetch', (event) => {
           return response;
         })
         .catch(async () => {
-          // Try to return cached RSC response first
+          // Try cached RSC response
           const cachedResponse = await caches.match(request);
           if (cachedResponse) {
-            console.log('[SW] ✅ Returning cached RSC response:', url.pathname);
+            console.log('[SW] ✅ Using cached RSC:', url.pathname);
             return cachedResponse;
           }
 
-          // For RSC requests that fail with no cache:
-          // Extract the page URL without RSC parameters
+          // Extract page URL without RSC params
           const pageUrl = new URL(url);
           pageUrl.searchParams.delete('_rsc');
-
-          // Get locale from URL
           const pathParts = url.pathname.split('/');
           const locale = LOCALES.includes(pathParts[1]) ? pathParts[1] : 'en';
 
-          console.warn('[SW] ⚠️ RSC request failed offline, checking for cached page:', pageUrl.pathname);
+          console.warn('[SW] ⚠️ RSC offline, checking cached page:', pageUrl.pathname);
 
-          // Try to find the cached HTML page
+          // Try to find cached HTML page
           const cachedPage = await caches.match(pageUrl.pathname);
           if (cachedPage) {
-            console.log('[SW] ✅ Found cached page, redirecting');
-            // Return a redirect response to force full page load
+            console.log('[SW] ✅ Redirecting to cached page');
             return Response.redirect(pageUrl.pathname, 302);
           }
 
-          // If no cached page exists, redirect to offline page
-          console.warn('[SW] ❌ No cached page, redirecting to offline');
+          // No cache - redirect to offline
+          console.warn('[SW] ❌ No cache, redirecting to offline page');
           const offlinePage = `/${locale}/offline`;
           return Response.redirect(offlinePage, 302);
         })
@@ -245,83 +261,55 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Strategy 3: Network First with Cache Fallback for HTML pages
+  // Strategy 3: Network First with AGGRESSIVE caching and fallback for pages
   if (isPageRequest(request)) {
     event.respondWith(
       fetch(request)
         .then((response) => {
+          // AGGRESSIVE: Cache ALL successful HTML responses
           if (response && response.status === 200) {
             const responseClone = response.clone();
             caches.open(CACHE_NAME).then((cache) => {
               cache.put(request, responseClone);
+              console.log('[SW] ✅ Runtime cached:', url.pathname);
             });
           }
           return response;
         })
         .catch(async () => {
-          console.log('[SW] ⚠️ Network failed for page, trying cache:', url.pathname);
+          console.log('[SW] ⚠️ Offline - trying cache for:', url.pathname);
 
-          // Try exact match first
-          let cachedResponse = await caches.match(request);
-          if (cachedResponse) {
-            console.log('[SW] ✅ Exact match found');
-            return cachedResponse;
+          // Try multiple URL variations
+          const urlVariations = [
+            request.url,
+            url.pathname,
+            url.pathname.endsWith('/') ? url.pathname.slice(0, -1) : url.pathname + '/',
+          ];
+
+          for (const urlToTry of urlVariations) {
+            const cached = await caches.match(urlToTry);
+            if (cached) {
+              console.log('[SW] ✅ Cache hit:', urlToTry);
+              return cached;
+            }
           }
 
-          // Try without query string
-          const urlWithoutQuery = new URL(url);
-          urlWithoutQuery.search = '';
-          cachedResponse = await caches.match(urlWithoutQuery.toString());
-          if (cachedResponse) {
-            console.log('[SW] ✅ Match found (without query)');
-            return cachedResponse;
-          }
-
-          // Try with trailing slash
-          const urlWithSlash = new URL(url);
-          urlWithSlash.pathname = urlWithSlash.pathname.endsWith('/')
-            ? urlWithSlash.pathname
-            : urlWithSlash.pathname + '/';
-          urlWithSlash.search = '';
-          cachedResponse = await caches.match(urlWithSlash.toString());
-          if (cachedResponse) {
-            console.log('[SW] ✅ Match found (with trailing slash)');
-            return cachedResponse;
-          }
-
-          // Try without trailing slash
-          const urlWithoutSlash = new URL(url);
-          urlWithoutSlash.pathname = urlWithoutSlash.pathname.replace(/\/$/, '');
-          urlWithoutSlash.search = '';
-          cachedResponse = await caches.match(urlWithoutSlash.toString());
-          if (cachedResponse) {
-            console.log('[SW] ✅ Match found (without trailing slash)');
-            return cachedResponse;
-          }
+          console.log('[SW] ❌ No cache found for:', url.pathname);
 
           // Get locale from URL
           const pathParts = url.pathname.split('/');
           const locale = LOCALES.includes(pathParts[1]) ? pathParts[1] : 'en';
 
-          // Try locale-specific offline page
+          // Try offline page
           const offlinePage = `/${locale}/offline`;
-          cachedResponse = await caches.match(offlinePage);
-          if (cachedResponse) {
-            console.log('[SW] ✅ Offline page found');
-            return cachedResponse;
+          const offlineResponse = await caches.match(offlinePage);
+          if (offlineResponse) {
+            console.log('[SW] ✅ Serving offline page');
+            return offlineResponse;
           }
 
-          // Try any cached offline page
-          for (const loc of LOCALES) {
-            const page = await caches.match(`/${loc}/offline`);
-            if (page) {
-              console.log(`[SW] ✅ Offline page found for locale: ${loc}`);
-              return page;
-            }
-          }
-
-          // Last resort: return basic offline HTML
-          console.log('[SW] ⚠️ No cached content, returning fallback HTML');
+          // Last resort: inline HTML
+          console.log('[SW] ⚠️ Using fallback offline HTML');
           return new Response(getOfflineHTML(locale), {
             status: 503,
             headers: {
@@ -334,7 +322,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Strategy 4: Network First for other requests (images, fonts, etc.)
+  // Strategy 4: Network First for other resources
   event.respondWith(
     fetch(request)
       .then((response) => {
@@ -347,12 +335,8 @@ self.addEventListener('fetch', (event) => {
         return response;
       })
       .catch(async () => {
-        const cachedResponse = await caches.match(request);
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-
-        return new Response('', { status: 503 });
+        const cached = await caches.match(request);
+        return cached || new Response('', { status: 503 });
       })
   );
 });
@@ -517,6 +501,10 @@ self.addEventListener('message', (event) => {
       self.skipWaiting();
       break;
 
+    case 'WARMUP_CACHE':
+      handleWarmupCache(event);
+      break;
+
     case 'CACHE_PAGE':
       handleCachePage(event, payload);
       break;
@@ -537,6 +525,68 @@ self.addEventListener('message', (event) => {
       break;
   }
 });
+
+// Warmup cache by visiting client pages in background
+async function handleWarmupCache(event) {
+  console.log('[SW] 🔥 Starting cache warmup...');
+
+  const cache = await caches.open(CACHE_NAME);
+  let cached = 0;
+  let skipped = 0;
+  let failed = 0;
+
+  for (const page of RUNTIME_PAGES) {
+    try {
+      // Check if already cached
+      const existing = await cache.match(page);
+      if (existing) {
+        console.log(`[SW] ⏭️ Already cached: ${page}`);
+        skipped++;
+        cached++;
+        continue;
+      }
+
+      // Fetch and cache
+      const response = await fetch(page, {
+        credentials: 'same-origin',
+        headers: { 'Accept': 'text/html' }
+      });
+
+      if (response.ok) {
+        await cache.put(page, response);
+        console.log(`[SW] ✅ Warmed up: ${page}`);
+        cached++;
+
+        // Send progress update
+        event.ports[0]?.postMessage({
+          type: 'WARMUP_PROGRESS',
+          cached,
+          total: RUNTIME_PAGES.length,
+          page
+        });
+      } else {
+        console.warn(`[SW] ⚠️ Skip ${page}: HTTP ${response.status}`);
+        failed++;
+      }
+
+      // Small delay to avoid overwhelming the server
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+    } catch (error) {
+      console.error(`[SW] ❌ Failed to warmup ${page}:`, error);
+      failed++;
+    }
+  }
+
+  console.log(`[SW] 🔥 Warmup complete: ${cached} cached (${skipped} already), ${failed} failed`);
+
+  event.ports[0]?.postMessage({
+    type: 'WARMUP_COMPLETE',
+    success: cached,
+    failed: failed,
+    skipped: skipped
+  });
+}
 
 // Cache a specific page and its assets
 async function handleCachePage(event, payload) {
@@ -641,26 +691,39 @@ async function handleGetCacheStatus(event) {
       ...runtimeKeys.map(k => k.url)
     ];
 
-    event.ports[0]?.postMessage({ success: true, cachedUrls });
+    event.ports[0]?.postMessage({
+      success: true,
+      cachedUrls,
+      allPages: ALL_PAGES,
+      staticPages: PRECACHE_PAGES,
+      clientPages: RUNTIME_PAGES
+    });
   } catch (error) {
     event.ports[0]?.postMessage({ success: false, error: error.message });
   }
 }
 
-// Clear page cache
+// Clear page cache and re-cache static pages only
 async function handleClearCache(event) {
   try {
     await caches.delete(CACHE_NAME);
     await caches.delete(RUNTIME_CACHE_NAME);
 
-    // Re-create cache with critical pages
+    // Re-create cache with static pages only
     const cache = await caches.open(CACHE_NAME);
     const results = await Promise.allSettled(
-      CRITICAL_PAGES.map(async (page) => {
+      PRECACHE_PAGES.map(async (page) => {
         try {
-          await cache.add(page);
-          console.log(`[SW] ✅ Re-cached: ${page}`);
-          return { success: true };
+          const response = await fetch(page, {
+            credentials: 'same-origin',
+            headers: { 'Accept': 'text/html' }
+          });
+          if (response.ok) {
+            await cache.put(page, response);
+            console.log(`[SW] ✅ Re-cached: ${page}`);
+            return { success: true };
+          }
+          return { success: false };
         } catch (err) {
           console.warn(`[SW] ⚠️ Failed to re-cache ${page}:`, err);
           return { success: false };
@@ -669,7 +732,8 @@ async function handleClearCache(event) {
     );
 
     const successful = results.filter(r => r.value?.success).length;
-    console.log(`[SW] Cache cleared and re-cached ${successful}/${CRITICAL_PAGES.length} pages`);
+    console.log(`[SW] Cache cleared and re-cached ${successful}/${PRECACHE_PAGES.length} static pages`);
+    console.log('[SW] 📝 Client pages will be cached on next visit or via warmup');
 
     event.ports[0]?.postMessage({ success: true });
   } catch (error) {
