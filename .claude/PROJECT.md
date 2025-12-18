@@ -587,7 +587,7 @@ Tabelas:
 - ✅ Download individual de páginas
 - ✅ Download de todas as páginas
 - ✅ Limpeza de cache
-- ✅ Service Worker v6 com precaching, RSC handling e retry logic
+- ✅ Service Worker v7 com runtime cache strategy para client-side pages
 - ✅ Traduções em 4 idiomas
 - ✅ Error Boundary para erros offline
 - ✅ OfflineNavigationHandler para navegação segura offline
@@ -609,10 +609,11 @@ src/
 ├── components/pwa/
 │   ├── offline-indicator.tsx    # Indicador no header
 │   ├── cache-status-panel.tsx   # Painel completo
+│   ├── cache-warmup.tsx         # Preparação de cache
 │   ├── offline-navigation-handler.tsx # Força full-page nav offline
 │   └── index.ts
 └── public/
-    └── sw.js                    # Service Worker v6
+    └── sw.js                    # Service Worker v7
 ```
 
 ### Prioridades de Cache
@@ -624,27 +625,48 @@ src/
 | **Medium** | Secondary pages | Reports, Categories |
 | **Low** | Static pages | Features, FAQ |
 
-### Solução Offline (v6)
+### Solução Offline (v7 - Runtime Cache Strategy)
 
 O Next.js App Router usa RSC (React Server Components) para navegação cliente.
-Quando offline, RSC requests falham causando página em branco.
+Páginas com `'use client'` não geram HTML estático no build - só são geradas dinamicamente.
 
-**Solução implementada (Service Worker v6):**
-1. Install com error handling - abort se >50% páginas falham
-2. RSC requests offline usam `Response.redirect()` para forçar full-page nav
-3. URL matching com/sem trailing slash para cache hits
-4. `/offline` page em CRITICAL_PATHS para todos os locales
-5. Retry logic (3 retries, exponential backoff) para cache
-6. Localized offline HTML fallback (en/pt/es/fr)
-7. Low cache coverage warning UI (<30%)
-8. OfflineNavigationHandler intercepta links quando offline
-9. Error boundary captura erros e mostra página amigável
+**Problema (v6):** Tentar pre-cache de client-side pages falhava silenciosamente.
+
+**Solução implementada (Service Worker v7):**
+
+1. **Separar páginas estáticas de client-side:**
+   - STATIC_PAGES: Home, Offline, Pricing, FAQ (server-rendered)
+   - CLIENT_PAGES: Expenses, FitLog, Account (client-side)
+
+2. **Install caches apenas páginas estáticas** (server-rendered)
+
+3. **Runtime caching agressivo** - cache ALL HTML responses no primeiro visit
+
+4. **Cache Warmup** - botão "Preparar para Offline" que visita todas as páginas
+
+5. **RSC handling** - Response.redirect() para forçar full-page nav offline
+
+6. **Localized offline HTML fallback** (en/pt/es/fr)
+
+7. **UI feedback:**
+   - Low coverage warning (<30%)
+   - Warmup progress bar
+   - Visual cache status
 
 ### Bugs Conhecidos
 
-- ✅ ~~Página fica em branco em modo offline~~ (CORRIGIDO - v6)
+- ✅ ~~Página fica em branco em modo offline~~ (CORRIGIDO - v7 Runtime Cache)
 - ⚠️ Indicador não aparece na homepage (layout diferente)
 - ✅ ~~Nomes de páginas mostram nameKey~~ (CORRIGIDO - prefixo pwa. removido)
+
+### Componentes PWA
+
+| Componente | Descrição |
+|------------|-----------|
+| `OfflineIndicator` | Indicador de cache no header |
+| `CacheStatusPanel` | Painel completo de gestão |
+| `CacheWarmup` | Preparação de páginas para offline |
+| `OfflineNavigationHandler` | Força full-page nav offline |
 
 ---
 
