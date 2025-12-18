@@ -11,9 +11,9 @@ const withPWA = withPWAInit({
 
   // Workbox runtime caching configuration
   runtimeCaching: [
-    // Cache pages - Network First with fallback
+    // Cache page navigations (HTML documents) - Network First
     {
-      urlPattern: /^https:\/\/.*\.breathofnow\.site\/.*$/,
+      urlPattern: ({ request }) => request.mode === 'navigate',
       handler: 'NetworkFirst',
       options: {
         cacheName: 'pages-cache',
@@ -24,9 +24,9 @@ const withPWA = withPWAInit({
         networkTimeoutSeconds: 10,
       },
     },
-    // Cache Next.js static assets - Cache First
+    // Cache Next.js static chunks - Cache First (immutable)
     {
-      urlPattern: /\/_next\/static\/.*/,
+      urlPattern: /^\/_next\/static\/.*/i,
       handler: 'CacheFirst',
       options: {
         cacheName: 'next-static-cache',
@@ -36,9 +36,22 @@ const withPWA = withPWAInit({
         },
       },
     },
+    // Cache Next.js data requests (_next/data) - Network First
+    {
+      urlPattern: /^\/_next\/data\/.*/i,
+      handler: 'NetworkFirst',
+      options: {
+        cacheName: 'next-data-cache',
+        expiration: {
+          maxEntries: 100,
+          maxAgeSeconds: 24 * 60 * 60, // 1 day
+        },
+        networkTimeoutSeconds: 10,
+      },
+    },
     // Cache images - Cache First
     {
-      urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|avif|ico)$/,
+      urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|avif|ico)$/i,
       handler: 'CacheFirst',
       options: {
         cacheName: 'images-cache',
@@ -48,9 +61,21 @@ const withPWA = withPWAInit({
         },
       },
     },
+    // Cache CSS and JS files - Stale While Revalidate
+    {
+      urlPattern: /\.(?:js|css)$/i,
+      handler: 'StaleWhileRevalidate',
+      options: {
+        cacheName: 'static-resources',
+        expiration: {
+          maxEntries: 100,
+          maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+        },
+      },
+    },
     // Cache Google Fonts stylesheets - Stale While Revalidate
     {
-      urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/,
+      urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
       handler: 'StaleWhileRevalidate',
       options: {
         cacheName: 'google-fonts-stylesheets',
@@ -58,7 +83,7 @@ const withPWA = withPWAInit({
     },
     // Cache Google Fonts webfonts - Cache First
     {
-      urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/,
+      urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
       handler: 'CacheFirst',
       options: {
         cacheName: 'google-fonts-webfonts',
@@ -70,7 +95,7 @@ const withPWA = withPWAInit({
     },
     // Cache API calls - Network First with short cache
     {
-      urlPattern: /^https:\/\/.*\/api\/.*/,
+      urlPattern: /\/api\/.*/i,
       handler: 'NetworkFirst',
       options: {
         cacheName: 'api-cache',
@@ -81,11 +106,24 @@ const withPWA = withPWAInit({
         networkTimeoutSeconds: 10,
       },
     },
+    // Fallback: cache all other same-origin requests - Network First
+    {
+      urlPattern: ({ url, sameOrigin }) => sameOrigin,
+      handler: 'NetworkFirst',
+      options: {
+        cacheName: 'others-cache',
+        expiration: {
+          maxEntries: 100,
+          maxAgeSeconds: 24 * 60 * 60, // 1 day
+        },
+        networkTimeoutSeconds: 10,
+      },
+    },
   ],
 
-  // Fallback for offline pages
+  // Fallback for offline pages (must be localized)
   fallbacks: {
-    document: '/offline',
+    document: '/en/offline',
   },
 
   // Exclude some paths from precache
