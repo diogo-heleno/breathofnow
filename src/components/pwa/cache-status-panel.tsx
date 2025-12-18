@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { useCacheStatus } from '@/hooks/use-cache-status';
+import { CacheWarmup } from './cache-warmup';
 import { cn } from '@/lib/utils';
 
 interface CacheStatusPanelProps {
@@ -151,6 +152,13 @@ export function CacheStatusPanel({ className, onClose }: CacheStatusPanelProps) 
               {t('cachePanel.lowCoverageHelp')}
             </p>
           </div>
+        </div>
+      )}
+
+      {/* Cache Warmup Section */}
+      {isOnline && status.percentage < 80 && (
+        <div className="mx-6 mt-4 p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+          <CacheWarmup />
         </div>
       )}
 

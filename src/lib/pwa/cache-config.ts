@@ -161,9 +161,9 @@ export const CACHEABLE_PAGES: CacheablePage[] = [
 ];
 
 // Cache names
-export const CACHE_NAME = 'breathofnow-pages-v6';
-export const STATIC_CACHE_NAME = 'breathofnow-static-v6';
-export const RUNTIME_CACHE_NAME = 'breathofnow-runtime-v6';
+export const CACHE_NAME = 'breathofnow-pages-v7';
+export const STATIC_CACHE_NAME = 'breathofnow-static-v7';
+export const RUNTIME_CACHE_NAME = 'breathofnow-runtime-v7';
 
 // Supported locales
 export const SUPPORTED_LOCALES = ['en', 'pt', 'es', 'fr'] as const;

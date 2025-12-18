@@ -3,3 +3,4 @@
 
 export { OfflineIndicator } from './offline-indicator';
 export { CacheStatusPanel } from './cache-status-panel';
+export { CacheWarmup } from './cache-warmup';
