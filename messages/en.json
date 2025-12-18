@@ -1253,6 +1253,8 @@
       "refresh": "Refresh",
       "offlineWarning": "You are offline. Connect to download pages.",
       "downloadPage": "Download {page}",
+      "lowCoverage": "Low offline coverage",
+      "lowCoverageHelp": "Download essential pages to use the app offline",
       "priority": {
         "critical": "Essential",
         "high": "Recommended",
@@ -1279,7 +1281,8 @@
       "featurePrivacy": "Privacy First",
       "featureOffline": "Works Offline",
       "featureSimple": "Beautifully Simple",
-      "featurePricing": "Fair Pricing"
+      "featurePricing": "Fair Pricing",
+      "offline": "Offline"
     },
     "uncachedPage": {
       "backOnline": "Back online!",

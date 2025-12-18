@@ -837,6 +837,8 @@
       "refresh": "Actualiser",
       "offlineWarning": "Vous êtes hors ligne. Connectez-vous pour télécharger des pages.",
       "downloadPage": "Télécharger {page}",
+      "lowCoverage": "Faible couverture hors ligne",
+      "lowCoverageHelp": "Téléchargez les pages essentielles pour utiliser l'app hors ligne",
       "priority": {
         "critical": "Essentiel",
         "high": "Recommandé",
@@ -863,7 +865,8 @@
       "featurePrivacy": "Confidentialité d'Abord",
       "featureOffline": "Fonctionne Hors Ligne",
       "featureSimple": "Magnifiquement Simple",
-      "featurePricing": "Prix Équitables"
+      "featurePricing": "Prix Équitables",
+      "offline": "Hors Ligne"
     },
     "status": {
       "online": "En ligne",

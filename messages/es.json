@@ -837,6 +837,8 @@
       "refresh": "Actualizar",
       "offlineWarning": "Estás sin conexión. Conéctate para descargar páginas.",
       "downloadPage": "Descargar {page}",
+      "lowCoverage": "Baja cobertura sin conexión",
+      "lowCoverageHelp": "Descarga las páginas esenciales para usar la app sin conexión",
       "priority": {
         "critical": "Esencial",
         "high": "Recomendado",
@@ -863,7 +865,8 @@
       "featurePrivacy": "Privacidad Primero",
       "featureOffline": "Funciona Sin Conexión",
       "featureSimple": "Bellamente Simple",
-      "featurePricing": "Precios Justos"
+      "featurePricing": "Precios Justos",
+      "offline": "Sin Conexión"
     },
     "status": {
       "online": "En línea",

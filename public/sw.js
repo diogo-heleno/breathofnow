@@ -1,7 +1,7 @@
 // Service Worker para Breath of Now
-// Versão: 5.0.0 - Improved offline support with proper RSC error handling
+// Versão: 6.0.0 - Complete offline cache system with proper error handling
 
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
 const CACHE_NAME = `breathofnow-pages-${CACHE_VERSION}`;
 const STATIC_CACHE_NAME = `breathofnow-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE_NAME = `breathofnow-runtime-${CACHE_VERSION}`;
@@ -21,6 +21,7 @@ const CRITICAL_PATHS = [
   '',  // Home
   '/expenses',
   '/expenses/add',
+  '/fitlog',
   '/offline'
 ];
 
@@ -58,36 +59,73 @@ function isPageRequest(request) {
 
 // Installation: cache critical assets
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing service worker v5...');
+  console.log('[SW] Installing service worker v6...');
 
   event.waitUntil(
     Promise.all([
-      // Cache static assets
-      caches.open(STATIC_CACHE_NAME).then((cache) => {
+      // Cache static assets (these MUST succeed)
+      caches.open(STATIC_CACHE_NAME).then(async (cache) => {
         console.log('[SW] Caching static assets');
-        return cache.addAll(STATIC_ASSETS).catch((error) => {
-          console.warn('[SW] Some static assets failed to cache:', error);
-        });
+        try {
+          await cache.addAll(STATIC_ASSETS);
+          console.log('[SW] ✅ Static assets cached successfully');
+        } catch (error) {
+          console.error('[SW] ❌ CRITICAL: Failed to cache static assets:', error);
+          throw error; // Fail installation if static assets fail
+        }
       }),
-      // Cache critical pages
-      caches.open(CACHE_NAME).then((cache) => {
+
+      // Cache critical pages (these MUST succeed)
+      caches.open(CACHE_NAME).then(async (cache) => {
         console.log('[SW] Caching critical pages');
-        // Cache pages one by one to avoid all failing if one fails
-        return Promise.allSettled(
-          CRITICAL_PAGES.map(page =>
-            cache.add(page).catch(err => {
-              console.warn(`[SW] Failed to cache ${page}:`, err);
-            })
-          )
+
+        // Try to cache all critical pages
+        const results = await Promise.allSettled(
+          CRITICAL_PAGES.map(async (page) => {
+            try {
+              await cache.add(page);
+              console.log(`[SW] ✅ Cached: ${page}`);
+              return { success: true, page };
+            } catch (error) {
+              console.error(`[SW] ❌ Failed to cache ${page}:`, error);
+              return { success: false, page, error };
+            }
+          })
         );
+
+        // Count successes
+        const successful = results.filter(r => r.status === 'fulfilled' && r.value?.success).length;
+        const failed = results.filter(r => r.status === 'rejected' || !r.value?.success).length;
+
+        console.log(`[SW] Cache results: ${successful}/${CRITICAL_PAGES.length} pages cached`);
+
+        // If more than 50% failed, abort installation
+        if (failed > CRITICAL_PAGES.length / 2) {
+          console.error('[SW] ❌ CRITICAL: Too many pages failed to cache');
+          throw new Error(`Failed to cache ${failed}/${CRITICAL_PAGES.length} critical pages`);
+        }
+
+        // Log which pages are missing
+        if (failed > 0) {
+          const failedPages = results
+            .filter(r => r.status === 'rejected' || !r.value?.success)
+            .map(r => r.value?.page || 'unknown');
+          console.warn('[SW] ⚠️ Failed pages:', failedPages);
+        }
       })
-    ]).then(() => self.skipWaiting())
+    ]).then(() => {
+      console.log('[SW] ✅ Installation complete, activating...');
+      return self.skipWaiting();
+    }).catch(error => {
+      console.error('[SW] ❌ Installation FAILED:', error);
+      throw error;
+    })
   );
 });
 
 // Activation: clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating service worker v5...');
+  console.log('[SW] Activating service worker v6...');
 
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -105,7 +143,10 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    }).then(() => self.clients.claim())
+    }).then(() => {
+      console.log('[SW] ✅ Activation complete');
+      return self.clients.claim();
+    })
   );
 });
 
@@ -147,7 +188,7 @@ self.addEventListener('fetch', (event) => {
           return response;
         }).catch(() => {
           // Return empty response for missing chunks to prevent crashes
-          console.warn('[SW] Failed to fetch static asset:', url.pathname);
+          console.warn('[SW] ❌ Failed to fetch static asset:', url.pathname);
           return new Response('', { status: 503 });
         });
       })
@@ -169,37 +210,36 @@ self.addEventListener('fetch', (event) => {
           return response;
         })
         .catch(async () => {
-          // Try to return cached RSC response
+          // Try to return cached RSC response first
           const cachedResponse = await caches.match(request);
           if (cachedResponse) {
-            console.log('[SW] Returning cached RSC response:', url.pathname);
+            console.log('[SW] ✅ Returning cached RSC response:', url.pathname);
             return cachedResponse;
           }
 
-          // For RSC requests that fail with no cache, return a redirect response
-          // This tells the browser to do a full page load instead
-          console.warn('[SW] RSC request failed, redirecting to full page:', url.pathname);
-
+          // For RSC requests that fail with no cache:
           // Extract the page URL without RSC parameters
           const pageUrl = new URL(url);
           pageUrl.searchParams.delete('_rsc');
 
-          // Return a response that will trigger Next.js error boundary
-          // which will cause a full page reload
-          return new Response(
-            JSON.stringify({
-              redirect: pageUrl.pathname,
-              reason: 'offline'
-            }),
-            {
-              status: 503,
-              statusText: 'Service Unavailable - Offline',
-              headers: {
-                'Content-Type': 'application/json',
-                'X-Offline-Redirect': pageUrl.pathname
-              }
-            }
-          );
+          // Get locale from URL
+          const pathParts = url.pathname.split('/');
+          const locale = LOCALES.includes(pathParts[1]) ? pathParts[1] : 'en';
+
+          console.warn('[SW] ⚠️ RSC request failed offline, checking for cached page:', pageUrl.pathname);
+
+          // Try to find the cached HTML page
+          const cachedPage = await caches.match(pageUrl.pathname);
+          if (cachedPage) {
+            console.log('[SW] ✅ Found cached page, redirecting');
+            // Return a redirect response to force full page load
+            return Response.redirect(pageUrl.pathname, 302);
+          }
+
+          // If no cached page exists, redirect to offline page
+          console.warn('[SW] ❌ No cached page, redirecting to offline');
+          const offlinePage = `/${locale}/offline`;
+          return Response.redirect(offlinePage, 302);
         })
     );
     return;
@@ -219,20 +259,44 @@ self.addEventListener('fetch', (event) => {
           return response;
         })
         .catch(async () => {
-          console.log('[SW] Network failed for page, trying cache:', url.pathname);
+          console.log('[SW] ⚠️ Network failed for page, trying cache:', url.pathname);
 
           // Try exact match first
-          const cachedResponse = await caches.match(request);
+          let cachedResponse = await caches.match(request);
           if (cachedResponse) {
+            console.log('[SW] ✅ Exact match found');
             return cachedResponse;
           }
 
           // Try without query string
           const urlWithoutQuery = new URL(url);
           urlWithoutQuery.search = '';
-          const cachedWithoutQuery = await caches.match(urlWithoutQuery.toString());
-          if (cachedWithoutQuery) {
-            return cachedWithoutQuery;
+          cachedResponse = await caches.match(urlWithoutQuery.toString());
+          if (cachedResponse) {
+            console.log('[SW] ✅ Match found (without query)');
+            return cachedResponse;
+          }
+
+          // Try with trailing slash
+          const urlWithSlash = new URL(url);
+          urlWithSlash.pathname = urlWithSlash.pathname.endsWith('/')
+            ? urlWithSlash.pathname
+            : urlWithSlash.pathname + '/';
+          urlWithSlash.search = '';
+          cachedResponse = await caches.match(urlWithSlash.toString());
+          if (cachedResponse) {
+            console.log('[SW] ✅ Match found (with trailing slash)');
+            return cachedResponse;
+          }
+
+          // Try without trailing slash
+          const urlWithoutSlash = new URL(url);
+          urlWithoutSlash.pathname = urlWithoutSlash.pathname.replace(/\/$/, '');
+          urlWithoutSlash.search = '';
+          cachedResponse = await caches.match(urlWithoutSlash.toString());
+          if (cachedResponse) {
+            console.log('[SW] ✅ Match found (without trailing slash)');
+            return cachedResponse;
           }
 
           // Get locale from URL
@@ -240,23 +304,30 @@ self.addEventListener('fetch', (event) => {
           const locale = LOCALES.includes(pathParts[1]) ? pathParts[1] : 'en';
 
           // Try locale-specific offline page
-          const offlinePage = await caches.match(`/${locale}/offline`);
-          if (offlinePage) {
-            return offlinePage;
+          const offlinePage = `/${locale}/offline`;
+          cachedResponse = await caches.match(offlinePage);
+          if (cachedResponse) {
+            console.log('[SW] ✅ Offline page found');
+            return cachedResponse;
           }
 
           // Try any cached offline page
           for (const loc of LOCALES) {
             const page = await caches.match(`/${loc}/offline`);
             if (page) {
+              console.log(`[SW] ✅ Offline page found for locale: ${loc}`);
               return page;
             }
           }
 
           // Last resort: return basic offline HTML
+          console.log('[SW] ⚠️ No cached content, returning fallback HTML');
           return new Response(getOfflineHTML(locale), {
             status: 503,
-            headers: { 'Content-Type': 'text/html' }
+            headers: {
+              'Content-Type': 'text/html',
+              'Cache-Control': 'no-cache'
+            }
           });
         })
     );
@@ -288,6 +359,39 @@ self.addEventListener('fetch', (event) => {
 
 // Generate basic offline HTML fallback
 function getOfflineHTML(locale = 'en') {
+  const messages = {
+    en: {
+      title: "You're Offline",
+      description: "Don't worry! Your data is safely stored on your device. The app will reconnect automatically when you're back online.",
+      button: "Try Again",
+      status1: "Your data is safe locally",
+      status2: "Changes will sync when online"
+    },
+    pt: {
+      title: "Está Offline",
+      description: "Não se preocupe! Os seus dados estão guardados em segurança no seu dispositivo. A app vai reconectar automaticamente quando voltar online.",
+      button: "Tentar Novamente",
+      status1: "Os seus dados estão seguros localmente",
+      status2: "As alterações serão sincronizadas quando online"
+    },
+    es: {
+      title: "Estás Sin Conexión",
+      description: "¡No te preocupes! Tus datos están guardados de forma segura en tu dispositivo. La app se reconectará automáticamente cuando vuelvas a estar online.",
+      button: "Intentar de Nuevo",
+      status1: "Tus datos están seguros localmente",
+      status2: "Los cambios se sincronizarán cuando estés online"
+    },
+    fr: {
+      title: "Vous êtes Hors Ligne",
+      description: "Ne vous inquiétez pas ! Vos données sont stockées en toute sécurité sur votre appareil. L'application se reconnectera automatiquement lorsque vous serez de nouveau en ligne.",
+      button: "Réessayer",
+      status1: "Vos données sont en sécurité localement",
+      status2: "Les modifications seront synchronisées en ligne"
+    }
+  };
+
+  const msg = messages[locale] || messages.en;
+
   return `<!DOCTYPE html>
 <html lang="${locale}">
 <head>
@@ -368,12 +472,12 @@ function getOfflineHTML(locale = 'en') {
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3m8.293 8.293l1.414 1.414" />
       </svg>
     </div>
-    <h1>You're Offline</h1>
-    <p>Don't worry! Your data is safely stored on your device. The app will reconnect automatically when you're back online.</p>
-    <button onclick="window.location.reload()">Try Again</button>
+    <h1>${msg.title}</h1>
+    <p>${msg.description}</p>
+    <button onclick="window.location.reload()">${msg.button}</button>
     <div class="status">
-      ✓ Your data is safe locally<br>
-      ✓ Changes will sync when online
+      ✓ ${msg.status1}<br>
+      ✓ ${msg.status2}
     </div>
   </div>
   <script>
@@ -445,9 +549,33 @@ async function handleCachePage(event, payload) {
 
   try {
     const cache = await caches.open(CACHE_NAME);
-    const response = await fetch(url);
 
-    if (response.ok) {
+    // Try to fetch with retry
+    let response;
+    let lastError;
+
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        response = await fetch(url, {
+          credentials: 'same-origin',
+          headers: {
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+          }
+        });
+
+        if (response.ok) {
+          break;
+        }
+      } catch (error) {
+        lastError = error;
+        console.warn(`[SW] Attempt ${attempt} failed for ${url}:`, error);
+        if (attempt < 3) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+      }
+    }
+
+    if (response && response.ok) {
       await cache.put(url, response.clone());
 
       // Also cache any JS/CSS from the response
@@ -468,11 +596,14 @@ async function handleCachePage(event, payload) {
         })
       );
 
+      console.log(`[SW] ✅ Cached page: ${url}`);
       event.ports[0]?.postMessage({ success: true });
     } else {
-      event.ports[0]?.postMessage({ success: false, error: `HTTP ${response.status}` });
+      console.error(`[SW] ❌ Failed to cache page: ${url}`);
+      event.ports[0]?.postMessage({ success: false, error: lastError?.message || `HTTP ${response?.status}` });
     }
   } catch (error) {
+    console.error(`[SW] ❌ Error caching page: ${url}`, error);
     event.ports[0]?.postMessage({ success: false, error: error.message });
   }
 }
@@ -524,13 +655,21 @@ async function handleClearCache(event) {
 
     // Re-create cache with critical pages
     const cache = await caches.open(CACHE_NAME);
-    await Promise.allSettled(
-      CRITICAL_PAGES.map(page =>
-        cache.add(page).catch(err => {
-          console.warn(`[SW] Failed to re-cache ${page}:`, err);
-        })
-      )
+    const results = await Promise.allSettled(
+      CRITICAL_PAGES.map(async (page) => {
+        try {
+          await cache.add(page);
+          console.log(`[SW] ✅ Re-cached: ${page}`);
+          return { success: true };
+        } catch (err) {
+          console.warn(`[SW] ⚠️ Failed to re-cache ${page}:`, err);
+          return { success: false };
+        }
+      })
     );
+
+    const successful = results.filter(r => r.value?.success).length;
+    console.log(`[SW] Cache cleared and re-cached ${successful}/${CRITICAL_PAGES.length} pages`);
 
     event.ports[0]?.postMessage({ success: true });
   } catch (error) {
@@ -541,7 +680,6 @@ async function handleClearCache(event) {
 // Cache current page assets
 async function handleCacheAssets(event) {
   try {
-    const clients = await self.clients.matchAll({ type: 'window' });
     const runtimeCache = await caches.open(RUNTIME_CACHE_NAME);
 
     // Get all cached requests and refresh them
