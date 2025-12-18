@@ -20,7 +20,12 @@ Antes de iniciar QUALQUER tarefa, Claude Code DEVE ler:
 
 ## Project Overview
 
-Breath of Now is a privacy-first ecosystem of micro-apps for mindful living, built by M21 Global, Lda.
+Breath of Now is a privacy-first, offline-first ecosystem of micro-apps for mindful living, built by M21 Global, Lda.
+
+**Architecture Principles:**
+- **Offline-First**: Browser is the source of truth - app works 100% without internet
+- **Privacy-First**: Data never leaves your device unless you explicitly sync
+- **Platform vs Apps**: Unified shell provides auth, storage, sync, i18n to all apps
 
 **Domains:**
 - Website/Landing: `www.breathofnow.site`
@@ -28,8 +33,13 @@ Breath of Now is a privacy-first ecosystem of micro-apps for mindful living, bui
 
 **Current Apps:**
 - ExpenseFlow (Available) - Expense tracking with full CRUD, charts, and reports
+- FitLog (Available) - Workout and fitness tracking
 - InvestTrack (Beta) - Investment tracking
-- FitLog, StravaSync, RecipeBox, LabelScan (Coming Soon)
+- StravaSync, RecipeBox, LabelScan (Coming Soon)
+
+**Subscription Tiers (Simplified):**
+- **Free**: 2 apps, unlimited local storage, no cloud sync, with ads
+- **Pro** (€4.99/month): All apps, cloud sync, no ads
 
 For detailed project documentation, see `.claude/PROJECT.md`
 
@@ -58,13 +68,68 @@ npm run lint
 
 ## Project Structure
 
-- `src/app/[locale]/` - Pages with i18n routing (Next.js App Router)
-- `src/components/ui/` - Design system components
-- `src/components/layout/` - Header, Footer, etc.
-- `src/lib/db/` - Dexie.js local database
-- `src/lib/supabase/` - Supabase client (auth & sync)
-- `src/stores/` - Zustand state management
-- `messages/` - Translation files (en, pt, es, fr)
+```
+src/
+├── app/[locale]/           # Pages with i18n routing (Next.js App Router)
+│   ├── layout.tsx          # Root layout with providers
+│   ├── page.tsx            # Homepage
+│   ├── (apps)/             # App routes group (expenses, fitlog, etc.)
+│   ├── auth/               # Authentication pages
+│   └── account/            # User account & app selection
+├── components/
+│   ├── ui/                 # Design system components
+│   ├── layout/             # Header, Footer
+│   ├── shell/              # App shell components
+│   └── [app]/              # App-specific components
+├── lib/
+│   ├── db/                 # Dexie.js local database
+│   ├── storage/            # Unified storage API (NEW)
+│   ├── subscription/       # Tier management (NEW)
+│   ├── supabase/           # Supabase client (auth & sync)
+│   ├── sync/               # Sync engine
+│   └── pwa/                # PWA utilities
+├── hooks/                  # Custom React hooks
+├── stores/                 # Zustand state management
+├── types/                  # TypeScript types
+└── services/               # External services
+messages/                   # Translation files (en, pt, es, fr)
+```
+
+---
+
+## Key Modules
+
+### Storage API (`src/lib/storage/`)
+Unified interface for all apps - use instead of direct Dexie calls:
+```typescript
+import { storage, NAMESPACES } from '@/lib/storage';
+
+// Get item
+const tx = await storage.get(NAMESPACES.EXPENSES, 'tx_123');
+
+// Set item
+await storage.set(NAMESPACES.EXPENSES, 'tx_123', transactionData);
+
+// Get all items
+const transactions = await storage.getAll(NAMESPACES.EXPENSES);
+```
+
+### Subscription Management (`src/lib/subscription/`)
+```typescript
+import { getUserSubscription, hasAppAccess } from '@/lib/subscription';
+
+const sub = await getUserSubscription();
+const canAccess = await hasAppAccess('expenses', selectedApps, sub);
+```
+
+### Hooks (`src/hooks/`)
+```typescript
+import { useSubscription, useCanSync, useShowAds } from '@/hooks';
+
+const { tier, isPro, checkAppAccess } = useSubscription();
+const canSync = useCanSync();
+const showAds = useShowAds();
+```
 
 ---
 
@@ -74,11 +139,13 @@ npm run lint
 - Follow existing component patterns in `src/components/ui/`
 - Use `clsx` and `tailwind-merge` (via `cn()` utility) for class merging
 - Keep components functional with hooks
-- Use path aliases: `@/components`, `@/lib`, `@/stores`
+- Use path aliases: `@/components`, `@/lib`, `@/stores`, `@/hooks`, `@/types`
 - Write commit messages following conventional commits: `feat:`, `fix:`, `docs:`, `chore:`
 - Place new UI components in `src/components/ui/`
 - Place new pages in `src/app/[locale]/`
 - Add translations to all 4 language files in `messages/`
+- Use Storage API instead of direct Dexie calls for new features
+- Use `useSubscription` hook for tier checks
 
 ---
 
@@ -90,6 +157,7 @@ npm run lint
 - Never use inline styles - always use Tailwind CSS
 - Never create files outside the established structure
 - Never skip the `[locale]` segment in page routes
+- Never bypass the Storage API for data operations
 
 ---
 
@@ -122,9 +190,9 @@ NEXT_PUBLIC_ADSENSE_CLIENT_ID=
 ## Design System
 
 ### Colors (Tailwind)
-- Primary: `primary-*` (Warm Sage Green)
-- Secondary: `secondary-*` (Warm Sand)
-- Accent: `accent-*` (Soft Terracotta)
+- Primary: `primary-*` (Warm Sage Green #5a7d5a)
+- Secondary: `secondary-*` (Warm Sand #b19373)
+- Accent: `accent-*` (Soft Terracotta #df7459)
 
 ### Typography
 - Display/Headings: `font-display` (Fraunces)
@@ -158,12 +226,35 @@ Supported locales: `en`, `pt`, `es`, `fr`
 ## Database
 
 ### Local (Dexie.js - IndexedDB)
-- All data stored locally first
+- All data stored locally first (OFFLINE-FIRST)
 - Schemas defined in `src/lib/db/index.ts`
 - Use `useLiveQuery` hook for reactive queries
+- Prefer Storage API (`src/lib/storage/`) for new features
 
-### Remote (Supabase - Optional)
-- Only syncs when user is authenticated
+### Remote (Supabase - Optional, Pro only)
+- Only syncs when user is authenticated AND has Pro tier
 - RLS (Row Level Security) required on all tables
 - Client: `src/lib/supabase/client.ts`
 - Server: `src/lib/supabase/server.ts`
+- Sync Engine: `src/lib/sync/`
+
+---
+
+## Sync Engine
+
+The sync engine follows last-write-wins strategy:
+
+```typescript
+import { syncAll, getSyncStatus } from '@/lib/sync';
+
+// Full sync (push + pull)
+const result = await syncAll({ direction: 'both' });
+
+// Check status
+const status = getSyncStatus(); // 'idle' | 'syncing' | 'error' | 'offline'
+```
+
+Visual indicators:
+- ✓ synced
+- ↻ syncing
+- ⚠ offline
