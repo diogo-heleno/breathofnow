@@ -1253,6 +1253,8 @@
       "refresh": "Atualizar",
       "offlineWarning": "Está offline. Ligue-se para transferir páginas.",
       "downloadPage": "Transferir {page}",
+      "lowCoverage": "Baixa cobertura offline",
+      "lowCoverageHelp": "Transfira as páginas essenciais para usar a app offline",
       "priority": {
         "critical": "Essencial",
         "high": "Recomendado",
@@ -1279,7 +1281,8 @@
       "featurePrivacy": "Privacidade Primeiro",
       "featureOffline": "Funciona Offline",
       "featureSimple": "Belamente Simples",
-      "featurePricing": "Preços Justos"
+      "featurePricing": "Preços Justos",
+      "offline": "Offline"
     },
     "uncachedPage": {
       "backOnline": "De volta online!",

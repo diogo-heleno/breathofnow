@@ -587,10 +587,12 @@ Tabelas:
 - ✅ Download individual de páginas
 - ✅ Download de todas as páginas
 - ✅ Limpeza de cache
-- ✅ Service Worker v5 com precaching e RSC handling
+- ✅ Service Worker v6 com precaching, RSC handling e retry logic
 - ✅ Traduções em 4 idiomas
 - ✅ Error Boundary para erros offline
 - ✅ OfflineNavigationHandler para navegação segura offline
+- ✅ Low cache coverage warning (<30%)
+- ✅ Localized offline HTML fallback (en/pt/es/fr)
 
 ### Estrutura de Ficheiros PWA
 
@@ -610,7 +612,7 @@ src/
 │   ├── offline-navigation-handler.tsx # Força full-page nav offline
 │   └── index.ts
 └── public/
-    └── sw.js                    # Service Worker v5
+    └── sw.js                    # Service Worker v6
 ```
 
 ### Prioridades de Cache
@@ -622,21 +624,25 @@ src/
 | **Medium** | Secondary pages | Reports, Categories |
 | **Low** | Static pages | Features, FAQ |
 
-### Solução Offline (v5)
+### Solução Offline (v6)
 
 O Next.js App Router usa RSC (React Server Components) para navegação cliente.
 Quando offline, RSC requests falham causando página em branco.
 
-**Solução implementada:**
-1. Service Worker v5 retorna 503 para RSC requests falhados (não 200 vazio)
-2. OfflineNavigationHandler intercepta cliques em links quando offline
-3. Força navegação full-page (`window.location.href`) em vez de RSC
-4. Full-page loads são servidos do cache do Service Worker
-5. Error boundary captura erros e mostra página amigável
+**Solução implementada (Service Worker v6):**
+1. Install com error handling - abort se >50% páginas falham
+2. RSC requests offline usam `Response.redirect()` para forçar full-page nav
+3. URL matching com/sem trailing slash para cache hits
+4. `/offline` page em CRITICAL_PATHS para todos os locales
+5. Retry logic (3 retries, exponential backoff) para cache
+6. Localized offline HTML fallback (en/pt/es/fr)
+7. Low cache coverage warning UI (<30%)
+8. OfflineNavigationHandler intercepta links quando offline
+9. Error boundary captura erros e mostra página amigável
 
 ### Bugs Conhecidos
 
-- ✅ ~~Página fica em branco em modo offline~~ (CORRIGIDO - v5)
+- ✅ ~~Página fica em branco em modo offline~~ (CORRIGIDO - v6)
 - ⚠️ Indicador não aparece na homepage (layout diferente)
 - ✅ ~~Nomes de páginas mostram nameKey~~ (CORRIGIDO - prefixo pwa. removido)
 

@@ -40,6 +40,13 @@ export const CACHEABLE_PAGES: CacheablePage[] = [
     nameKey: 'pages.fitlog',
     estimatedSize: 70
   },
+  {
+    path: '/offline',
+    priority: 'critical',
+    category: 'app',
+    nameKey: 'pages.offline',
+    estimatedSize: 30
+  },
 
   // HIGH - Cache soon after install
   {
@@ -154,9 +161,9 @@ export const CACHEABLE_PAGES: CacheablePage[] = [
 ];
 
 // Cache names
-export const CACHE_NAME = 'breathofnow-pages-v1';
-export const STATIC_CACHE_NAME = 'breathofnow-static-v1';
-export const RUNTIME_CACHE_NAME = 'breathofnow-runtime-v1';
+export const CACHE_NAME = 'breathofnow-pages-v6';
+export const STATIC_CACHE_NAME = 'breathofnow-static-v6';
+export const RUNTIME_CACHE_NAME = 'breathofnow-runtime-v6';
 
 // Supported locales
 export const SUPPORTED_LOCALES = ['en', 'pt', 'es', 'fr'] as const;

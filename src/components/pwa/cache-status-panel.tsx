@@ -10,7 +10,8 @@ import {
   HardDrive,
   Zap,
   WifiOff,
-  X
+  X,
+  AlertCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { useCacheStatus } from '@/hooks/use-cache-status';
@@ -137,6 +138,19 @@ export function CacheStatusPanel({ className, onClose }: CacheStatusPanelProps) 
           <span className="text-sm text-amber-700 dark:text-amber-300">
             {t('cachePanel.offlineWarning')}
           </span>
+        </div>
+      )}
+
+      {/* Low cache coverage warning */}
+      {isOnline && status.percentage < 30 && (
+        <div className="mx-6 mt-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg flex items-start gap-2">
+          <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+          <div className="text-sm text-red-700 dark:text-red-300">
+            <p className="font-medium mb-1">{t('cachePanel.lowCoverage')}</p>
+            <p className="text-xs opacity-90">
+              {t('cachePanel.lowCoverageHelp')}
+            </p>
+          </div>
         </div>
       )}
 
