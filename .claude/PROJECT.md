@@ -587,7 +587,7 @@ Tabelas:
 - ✅ Download individual de páginas
 - ✅ Download de todas as páginas
 - ✅ Limpeza de cache
-- ✅ Service Worker v7 com runtime cache strategy para client-side pages
+- ✅ Service Worker v8 com fix para navigation loops offline
 - ✅ Traduções em 4 idiomas
 - ✅ Error Boundary para erros offline
 - ✅ OfflineNavigationHandler para navegação segura offline
@@ -613,7 +613,7 @@ src/
 │   ├── offline-navigation-handler.tsx # Força full-page nav offline
 │   └── index.ts
 └── public/
-    └── sw.js                    # Service Worker v7
+    └── sw.js                    # Service Worker v8
 ```
 
 ### Prioridades de Cache
@@ -625,14 +625,16 @@ src/
 | **Medium** | Secondary pages | Reports, Categories |
 | **Low** | Static pages | Features, FAQ |
 
-### Solução Offline (v7 - Runtime Cache Strategy)
+### Solução Offline (v8 - Fix Navigation Loops)
 
 O Next.js App Router usa RSC (React Server Components) para navegação cliente.
 Páginas com `'use client'` não geram HTML estático no build - só são geradas dinamicamente.
 
 **Problema (v6):** Tentar pre-cache de client-side pages falhava silenciosamente.
 
-**Solução implementada (Service Worker v7):**
+**Problema (v7):** Navegar da página offline para apps criava loop infinito de redirecionamento.
+
+**Solução implementada (Service Worker v8):**
 
 1. **Separar páginas estáticas de client-side:**
    - STATIC_PAGES: Home, Offline, Pricing, FAQ (server-rendered)
@@ -648,7 +650,14 @@ Páginas com `'use client'` não geram HTML estático no build - só são gerada
 
 6. **Localized offline HTML fallback** (en/pt/es/fr)
 
-7. **UI feedback:**
+7. **Anti-loop protection (v8)** - Não redireciona para offline quando já está em /offline
+
+8. **Offline page improvements (v8):**
+   - Verifica quais apps estão em cache
+   - Mostra indicador visual de apps disponíveis offline
+   - Usa window.location em vez de Link para evitar loops
+
+9. **UI feedback:**
    - Low coverage warning (<30%)
    - Warmup progress bar
    - Visual cache status
@@ -656,6 +665,7 @@ Páginas com `'use client'` não geram HTML estático no build - só são gerada
 ### Bugs Conhecidos
 
 - ✅ ~~Página fica em branco em modo offline~~ (CORRIGIDO - v7 Runtime Cache)
+- ✅ ~~Loop infinito ao navegar da página offline~~ (CORRIGIDO - v8 Anti-loop)
 - ⚠️ Indicador não aparece na homepage (layout diferente)
 - ✅ ~~Nomes de páginas mostram nameKey~~ (CORRIGIDO - prefixo pwa. removido)
 
