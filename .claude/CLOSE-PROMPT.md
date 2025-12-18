@@ -104,6 +104,33 @@ IMPORTANTE:
 - Mantém consistência de formatação
 - Actualiza datas em todos os documentos modificados
 - Verifica que toda a documentação está sincronizada
+
+Antes de terminar a sessão, verifica:
+
+### Documentação
+- [ ] PROJECT.md está actualizado?
+- [ ] supabase-schema.md reflecte mudanças na DB?
+- [ ] RULES.md tem novas convenções?
+- [ ] Todas as datas foram actualizadas?
+
+### Código
+- [ ] Sem console.logs de debug?
+- [ ] Sem TODOs críticos não documentados?
+- [ ] Imports limpos (sem não utilizados)?
+- [ ] Tipos/PropTypes correctos?
+
+### Git
+- [ ] Mensagem de commit preparada?
+- [ ] Ficheiros importantes não esquecidos?
+- [ ] .gitignore actualizado se necessário?
+
+### Planeamento
+- [ ] Próximos passos identificados?
+- [ ] Bloqueadores documentados?
+- [ ] Issues críticas reportadas?
+
+
+
 ```
 
 ---
