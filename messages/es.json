@@ -904,5 +904,58 @@
   "meta": {
     "title": "Breath of Now - Herramientas simples para una vida consciente",
     "description": "Una colección de micro-apps con privacidad primero para gastos, inversiones, entrenamientos, recetas y más. Tus datos se quedan en tu dispositivo."
+  },
+  "offline": {
+    "indicator": {
+      "online": "En línea",
+      "offline": "Sin conexión",
+      "cached": "en caché",
+      "viewStatus": "Ver estado sin conexión"
+    },
+    "page": {
+      "title": "Disponibilidad Sin Conexión",
+      "subtitle": "Gestionar el acceso sin conexión a la aplicación",
+      "status": {
+        "online": "Estás en línea",
+        "offline": "Estás sin conexión"
+      },
+      "percentage": "{percentage}% de las páginas disponibles sin conexión",
+      "explanation": {
+        "title": "¿Cómo funciona?",
+        "paragraph1": "Las páginas de la aplicación quedan disponibles sin conexión automáticamente cuando las visitas. Esto significa que puedes seguir usando la aplicación incluso sin conexión a internet, siempre que hayas visitado esas páginas anteriormente.",
+        "paragraph2": "Actualmente, tienes {percentage}% de las páginas disponibles sin conexión.",
+        "paragraph3": "Para aumentar la disponibilidad sin conexión, visita cada una de las páginas listadas abajo."
+      },
+      "pages": {
+        "title": "Estado de las Páginas",
+        "available": "Disponible sin conexión",
+        "notVisited": "Aún no visitada",
+        "visitToCache": "Haz clic para visitar"
+      },
+      "dataNote": {
+        "title": "Nota sobre tus datos",
+        "text": "Tus datos (gastos, inversiones, etc.) siempre se guardan localmente en tu dispositivo y están siempre disponibles, incluso sin conexión."
+      }
+    },
+    "pages": {
+      "home": "Inicio",
+      "dashboard": "Dashboard",
+      "expenseflow": "ExpenseFlow",
+      "investtrack": "InvestTrack",
+      "fitlog": "FitLog",
+      "settings": "Configuración",
+      "account": "Cuenta",
+      "faq": "FAQ",
+      "pricing": "Precios",
+      "privacy": "Privacidad",
+      "terms": "Términos de Servicio"
+    },
+    "battery": {
+      "empty": "Caché vacío",
+      "low": "Caché bajo",
+      "medium": "Caché medio",
+      "high": "Caché alto",
+      "full": "Caché completo"
+    }
   }
 }

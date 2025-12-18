@@ -8,8 +8,7 @@ import { Menu, X, ChevronDown, Globe, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
-import { OfflineIndicator } from '@/components/pwa/offline-indicator';
-import { CacheStatusPanel } from '@/components/pwa/cache-status-panel';
+import { OfflineHeaderIndicator } from '@/components/pwa/offline-header-indicator';
 import { ClientOnly } from '@/components/utils/client-only';
 import { useAuth } from '@/contexts/auth-context';
 import { locales, localeLabels, localeFlags, type Locale } from '@/i18n';
@@ -24,7 +23,6 @@ export function Header({ locale }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isLangOpen, setIsLangOpen] = React.useState(false);
-  const [isCachePanelOpen, setIsCachePanelOpen] = React.useState(false);
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   // Get the path for language switch - preserves current path with new locale
@@ -89,10 +87,7 @@ export function Header({ locale }: HeaderProps) {
           <div className="hidden md:flex items-center gap-4">
             {/* Offline/Cache Indicator */}
             <ClientOnly>
-              <OfflineIndicator
-                showPercentage
-                onClick={() => setIsCachePanelOpen(true)}
-              />
+              <OfflineHeaderIndicator />
             </ClientOnly>
             
             {/* Language Selector */}
@@ -214,7 +209,16 @@ export function Header({ locale }: HeaderProps) {
               </div>
               
               <div className="h-px bg-neutral-200 dark:bg-neutral-800" />
-              
+
+              {/* Offline Indicator Mobile */}
+              <div className="px-4">
+                <ClientOnly>
+                  <OfflineHeaderIndicator className="w-full justify-center" />
+                </ClientOnly>
+              </div>
+
+              <div className="h-px bg-neutral-200 dark:bg-neutral-800" />
+
               <div className="px-4 space-y-3">
                 {/* Mobile Auth - Wrapped in ClientOnly to prevent hydration mismatch */}
                 <ClientOnly
@@ -245,20 +249,6 @@ export function Header({ locale }: HeaderProps) {
         )}
       </div>
 
-      {/* Cache Status Panel Modal */}
-      {isCachePanelOpen && (
-        <>
-          <div
-            className="fixed inset-0 bg-black/50 z-[60]"
-            onClick={() => setIsCachePanelOpen(false)}
-          />
-          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] w-full max-w-md max-h-[90vh] overflow-auto">
-            <CacheStatusPanel
-              onClose={() => setIsCachePanelOpen(false)}
-            />
-          </div>
-        </>
-      )}
     </header>
   );
 }
