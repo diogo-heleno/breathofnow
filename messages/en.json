@@ -1613,6 +1613,16 @@
       }
     }
   },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again or return to the home page.",
+    "offlineTitle": "You're offline",
+    "offlineDescription": "This page couldn't load because you're not connected to the internet.",
+    "offlineNote": "Don't worry!",
+    "offlineNoteDescription": "Your data is safely stored on your device. Try reloading the page - it may be available from cache.",
+    "retry": "Try Again",
+    "goHome": "Go Home"
+  },
   "errors": {
     "generic": "Something went wrong. Please try again.",
     "notFound": "Page not found",

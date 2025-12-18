@@ -872,6 +872,16 @@
       "updateAvailable": "Mise à jour disponible"
     }
   },
+  "error": {
+    "title": "Une erreur s'est produite",
+    "description": "Une erreur inattendue s'est produite. Veuillez réessayer ou retourner à la page d'accueil.",
+    "offlineTitle": "Vous êtes hors ligne",
+    "offlineDescription": "Cette page n'a pas pu se charger car vous n'êtes pas connecté à internet.",
+    "offlineNote": "Ne vous inquiétez pas !",
+    "offlineNoteDescription": "Vos données sont stockées en toute sécurité sur votre appareil. Essayez de recharger la page - elle peut être disponible en cache.",
+    "retry": "Réessayer",
+    "goHome": "Aller à l'Accueil"
+  },
   "errors": {
     "generic": "Quelque chose s'est mal passé. Veuillez réessayer.",
     "notFound": "Page non trouvée",

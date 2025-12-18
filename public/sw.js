@@ -1,7 +1,7 @@
 // Service Worker para Breath of Now
-// Versão: 4.0.0 - Fixed offline support for Next.js App Router
+// Versão: 5.0.0 - Improved offline support with proper RSC error handling
 
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = `breathofnow-pages-${CACHE_VERSION}`;
 const STATIC_CACHE_NAME = `breathofnow-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE_NAME = `breathofnow-runtime-${CACHE_VERSION}`;
@@ -155,7 +155,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Strategy 2: Network First with HTML fallback for RSC requests
+  // Strategy 2: Network First for RSC requests with proper offline handling
   if (isRSCRequest(request)) {
     event.respondWith(
       fetch(request)
@@ -172,16 +172,34 @@ self.addEventListener('fetch', (event) => {
           // Try to return cached RSC response
           const cachedResponse = await caches.match(request);
           if (cachedResponse) {
+            console.log('[SW] Returning cached RSC response:', url.pathname);
             return cachedResponse;
           }
 
-          // For RSC requests that fail, return an empty RSC payload
-          // This prevents the page from crashing
-          console.warn('[SW] RSC request failed, returning empty payload:', url.pathname);
-          return new Response('', {
-            status: 200,
-            headers: { 'Content-Type': 'text/x-component' }
-          });
+          // For RSC requests that fail with no cache, return a redirect response
+          // This tells the browser to do a full page load instead
+          console.warn('[SW] RSC request failed, redirecting to full page:', url.pathname);
+
+          // Extract the page URL without RSC parameters
+          const pageUrl = new URL(url);
+          pageUrl.searchParams.delete('_rsc');
+
+          // Return a response that will trigger Next.js error boundary
+          // which will cause a full page reload
+          return new Response(
+            JSON.stringify({
+              redirect: pageUrl.pathname,
+              reason: 'offline'
+            }),
+            {
+              status: 503,
+              statusText: 'Service Unavailable - Offline',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Offline-Redirect': pageUrl.pathname
+              }
+            }
+          );
         })
     );
     return;

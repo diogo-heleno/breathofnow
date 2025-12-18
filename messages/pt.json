@@ -1613,6 +1613,16 @@
       }
     }
   },
+  "error": {
+    "title": "Algo correu mal",
+    "description": "Ocorreu um erro inesperado. Por favor tente novamente ou volte à página inicial.",
+    "offlineTitle": "Está offline",
+    "offlineDescription": "Esta página não carregou porque não está ligado à internet.",
+    "offlineNote": "Não se preocupe!",
+    "offlineNoteDescription": "Os seus dados estão guardados em segurança no seu dispositivo. Tente recarregar a página - pode estar disponível em cache.",
+    "retry": "Tentar Novamente",
+    "goHome": "Ir para Início"
+  },
   "errors": {
     "generic": "Algo correu mal. Por favor tente novamente.",
     "notFound": "Página não encontrada",

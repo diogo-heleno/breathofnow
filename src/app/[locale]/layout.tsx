@@ -8,6 +8,7 @@ import { AuthProvider } from '@/contexts/auth-context';
 import { ConnectivityStatus } from '@/components/pwa/connectivity-status';
 import { InstallPrompt } from '@/components/pwa/install-prompt';
 import { UncachedPageBanner } from '@/components/pwa/uncached-page-banner';
+import { OfflineNavigationHandler } from '@/components/pwa/offline-navigation-handler';
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -150,6 +151,7 @@ export default async function RootLayout({
           </AuthProvider>
           
           {/* PWA Components */}
+          <OfflineNavigationHandler />
           <ConnectivityStatus />
           <InstallPrompt />
           <Suspense fallback={null}>
