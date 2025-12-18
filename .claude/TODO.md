@@ -43,16 +43,20 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 
 ### ✅ ~~BUG: Página fica em branco em modo offline~~ (CORRIGIDO)
 
-> ✅ Corrigido em 18 Dezembro 2024 (v5)
+> ✅ Corrigido em 18 Dezembro 2024 (v5 → v6)
 
 **Causa raiz:** Next.js App Router usa React Server Components (RSC) que fazem requests separados. Estes requests falhavam offline causando página em branco.
 
-**Solução implementada em `public/sw.js` v5:**
-- Retorna 503 para RSC requests falhados (não 200 vazio que crashava React)
+**Solução implementada em `public/sw.js` v6:**
+- Install com error handling - abort se >50% páginas falham
+- `Response.redirect()` para RSC requests offline (não 503)
+- URL matching com/sem trailing slash para cache hits
+- `/offline` em CRITICAL_PATHS para todos os locales
+- Retry logic (3 retries, exponential backoff)
+- Localized offline HTML fallback (en/pt/es/fr)
+- Low cache coverage warning UI (<30%)
 - `OfflineNavigationHandler` intercepta links quando offline
-- Força navegação full-page (`window.location.href`) em vez de RSC
-- Full-page loads são servidos do cache do Service Worker
-- `error.tsx` captura erros e mostra página amigável com opção de reload
+- `error.tsx` captura erros e mostra página amigável
 
 ---
 
@@ -111,6 +115,14 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 
 ## Concluído Recentemente
 
+- [x] ~~Comprehensive offline system rewrite (v6)~~ (18 Dezembro 2024)
+  - Service Worker v6 com install error handling (>50% threshold)
+  - Response.redirect() para RSC offline (não 503)
+  - Trailing slash URL matching
+  - /offline em CRITICAL_PATHS
+  - Retry logic (3 retries, exponential backoff)
+  - Localized offline HTML (en/pt/es/fr)
+  - Low cache coverage warning (<30%)
 - [x] ~~Fix offline blank page bug~~ (18 Dezembro 2024)
   - Service Worker v5 com RSC handling
   - OfflineNavigationHandler força full-page nav
@@ -159,9 +171,10 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 - `src/components/shell/app-shell.tsx` (OfflineIndicator)
 - `src/components/layout/header.tsx` (OfflineIndicator)
 - `src/app/[locale]/layout.tsx` (OfflineNavigationHandler)
-- `public/sw.js` (v4 → v5: RSC handling, 503 responses)
-- `src/lib/pwa/cache-config.ts` (removed pwa. prefix from nameKeys)
-- `messages/*.json` (traduções PWA + error boundary)
+- `public/sw.js` (v4 → v5 → v6: complete offline system)
+- `src/lib/pwa/cache-config.ts` (added /offline, version v6)
+- `src/components/pwa/cache-status-panel.tsx` (low coverage warning)
+- `messages/*.json` (traduções PWA + error boundary + offline page)
 
 ### Próxima Tarefa Sugerida
 1. Corrigir warnings de React hooks (lint)
