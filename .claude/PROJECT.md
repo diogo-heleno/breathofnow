@@ -1,6 +1,6 @@
 # Documento de Projeto - Breath of Now
 
-> Última atualização: 18 Dezembro 2024
+> Última atualização: 18 Dezembro 2024 (Sessão 2 - PWA next-pwa)
 
 ---
 
@@ -34,6 +34,7 @@
 | **Local Database** | Dexie.js (IndexedDB) | 4.0.8 |
 | **Backend/Auth** | Supabase | 2.45.0 |
 | **i18n** | next-intl | 3.17.2 |
+| **PWA** | next-pwa (Workbox) | 5.6.0 |
 | **Hosting** | Vercel | - |
 | **Repositório** | GitHub | - |
 
@@ -578,96 +579,83 @@ Tabelas:
 
 ---
 
-## 18. PWA Cache Management (Implementado)
+## 18. PWA com next-pwa (Implementado)
+
+### Migração para next-pwa (18 Dezembro 2024)
+
+Substituído Service Worker manual por **next-pwa** com Workbox para melhor integração com Next.js App Router.
 
 ### Funcionalidades
 
+- ✅ **next-pwa** com Workbox para pre-caching automático
+- ✅ Runtime caching com estratégias configuráveis
+- ✅ Fallback para página offline (/en/offline)
+- ✅ Página offline com traduções inline (4 idiomas)
+- ✅ Hook simplificado `use-service-worker.ts`
 - ✅ Indicador de cache no header (OfflineIndicator)
 - ✅ Painel de gestão de cache (CacheStatusPanel)
-- ✅ Download individual de páginas
-- ✅ Download de todas as páginas
-- ✅ Limpeza de cache
-- ✅ Service Worker v8 com fix para navigation loops offline
-- ✅ Traduções em 4 idiomas
 - ✅ Error Boundary para erros offline
-- ✅ OfflineNavigationHandler para navegação segura offline
-- ✅ Low cache coverage warning (<30%)
-- ✅ Localized offline HTML fallback (en/pt/es/fr)
+
+### Configuração next-pwa (next.config.mjs)
+
+```javascript
+runtimeCaching: [
+  // Navegação - NetworkFirst
+  { urlPattern: ({ request }) => request.mode === 'navigate', handler: 'NetworkFirst' },
+  // Static assets - CacheFirst
+  { urlPattern: /^\/_next\/static\/.*/, handler: 'CacheFirst' },
+  // Data requests - NetworkFirst
+  { urlPattern: /^\/_next\/data\/.*/, handler: 'NetworkFirst' },
+  // Images - CacheFirst
+  { urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|avif|ico)$/, handler: 'CacheFirst' },
+  // Google Fonts - StaleWhileRevalidate / CacheFirst
+  ...
+]
+```
 
 ### Estrutura de Ficheiros PWA
 
 ```
 src/
 ├── app/[locale]/
-│   └── error.tsx                # Error boundary para erros/offline
-├── lib/pwa/
-│   ├── cache-config.ts          # Configuração de páginas cacheáveis
-│   ├── cache-manager.ts         # Lógica de gestão de cache
-│   └── index.ts
+│   ├── offline/page.tsx         # Página offline com traduções inline
+│   └── error.tsx                # Error boundary
 ├── hooks/
-│   └── use-cache-status.ts      # Hook reactivo para estado do cache
+│   └── use-service-worker.ts    # Hook simplificado (next-pwa gere registo)
 ├── components/pwa/
 │   ├── offline-indicator.tsx    # Indicador no header
-│   ├── cache-status-panel.tsx   # Painel completo
-│   ├── cache-warmup.tsx         # Preparação de cache
-│   ├── offline-navigation-handler.tsx # Força full-page nav offline
+│   ├── cache-status-panel.tsx   # Painel de gestão
 │   └── index.ts
+├── next.config.mjs              # Configuração PWA com Workbox
 └── public/
-    └── sw.js                    # Service Worker v8
+    ├── sw.js                    # Gerado automaticamente por next-pwa
+    ├── workbox-*.js             # Bibliotecas Workbox (geradas)
+    └── manifest.json            # PWA manifest
 ```
 
-### Prioridades de Cache
+### Estratégias de Cache
 
-| Prioridade | Páginas | Exemplo |
-|------------|---------|---------|
-| **Critical** | Core app pages | Dashboard, Homepage |
-| **High** | Feature pages | Add, Transactions |
-| **Medium** | Secondary pages | Reports, Categories |
-| **Low** | Static pages | Features, FAQ |
+| Tipo de Recurso | Estratégia | Duração |
+|-----------------|------------|---------|
+| Páginas (navegação) | NetworkFirst | 7 dias |
+| Static assets (_next/static) | CacheFirst | 30 dias |
+| Data requests (_next/data) | NetworkFirst | 1 dia |
+| Imagens | CacheFirst | 30 dias |
+| CSS/JS | StaleWhileRevalidate | 7 dias |
+| Google Fonts CSS | StaleWhileRevalidate | - |
+| Google Fonts WOFF | CacheFirst | 1 ano |
+| API calls | NetworkFirst | 5 min |
 
-### Solução Offline (v8 - Fix Navigation Loops)
+### Ficheiros Gerados (em .gitignore)
 
-O Next.js App Router usa RSC (React Server Components) para navegação cliente.
-Páginas com `'use client'` não geram HTML estático no build - só são geradas dinamicamente.
-
-**Problema (v6):** Tentar pre-cache de client-side pages falhava silenciosamente.
-
-**Problema (v7):** Navegar da página offline para apps criava loop infinito de redirecionamento.
-
-**Solução implementada (Service Worker v8):**
-
-1. **Separar páginas estáticas de client-side:**
-   - STATIC_PAGES: Home, Offline, Pricing, FAQ (server-rendered)
-   - CLIENT_PAGES: Expenses, FitLog, Account (client-side)
-
-2. **Install caches apenas páginas estáticas** (server-rendered)
-
-3. **Runtime caching agressivo** - cache ALL HTML responses no primeiro visit
-
-4. **Cache Warmup** - botão "Preparar para Offline" que visita todas as páginas
-
-5. **RSC handling** - Response.redirect() para forçar full-page nav offline
-
-6. **Localized offline HTML fallback** (en/pt/es/fr)
-
-7. **Anti-loop protection (v8)** - Não redireciona para offline quando já está em /offline
-
-8. **Offline page improvements (v8):**
-   - Verifica quais apps estão em cache
-   - Mostra indicador visual de apps disponíveis offline
-   - Usa window.location em vez de Link para evitar loops
-
-9. **UI feedback:**
-   - Low coverage warning (<30%)
-   - Warmup progress bar
-   - Visual cache status
-
-### Bugs Conhecidos
-
-- ✅ ~~Página fica em branco em modo offline~~ (CORRIGIDO - v7 Runtime Cache)
-- ✅ ~~Loop infinito ao navegar da página offline~~ (CORRIGIDO - v8 Anti-loop)
-- ⚠️ Indicador não aparece na homepage (layout diferente)
-- ✅ ~~Nomes de páginas mostram nameKey~~ (CORRIGIDO - prefixo pwa. removido)
+```
+public/sw.js
+public/sw.js.map
+public/workbox-*.js
+public/workbox-*.js.map
+public/fallback-*.js
+public/fallback-*.js.map
+```
 
 ### Componentes PWA
 
@@ -675,8 +663,12 @@ Páginas com `'use client'` não geram HTML estático no build - só são gerada
 |------------|-----------|
 | `OfflineIndicator` | Indicador de cache no header |
 | `CacheStatusPanel` | Painel completo de gestão |
-| `CacheWarmup` | Preparação de páginas para offline |
-| `OfflineNavigationHandler` | Força full-page nav offline |
+| `use-service-worker` | Hook para status online/offline |
+
+### Bugs Conhecidos
+
+- ⚠️ Indicador não aparece na homepage (layout diferente)
+- 🔄 Testar offline após deploy com nova configuração
 
 ---
 

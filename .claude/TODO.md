@@ -1,6 +1,6 @@
 # TODO - Breath of Now
 
-> Última atualização: 18 Dezembro 2024
+> Última atualização: 18 Dezembro 2024 (Sessão 2)
 
 Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code deve ler este ficheiro no início de cada sessão.
 
@@ -115,6 +115,13 @@ O SW tentava pre-cache de páginas que não existiam, falhando silenciosamente.
 
 ## Concluído Recentemente
 
+- [x] ~~Migração para next-pwa com Workbox~~ (18 Dezembro 2024 - Sessão 2)
+  - Substituído Service Worker manual por next-pwa
+  - Configuração Workbox com runtime caching strategies
+  - Página offline simplificada com traduções inline
+  - Hook use-service-worker simplificado
+  - Ficheiros gerados adicionados ao .gitignore
+  - Fallback configurado para /en/offline
 - [x] ~~Runtime Cache Strategy (v7)~~ (18 Dezembro 2024)
   - Service Worker v7 com runtime cache para client-side pages
   - STATIC_PAGES vs CLIENT_PAGES separation
@@ -154,39 +161,28 @@ O SW tentava pre-cache de páginas que não existiam, falhando silenciosamente.
 
 - O projeto agora suporta **4 idiomas**: en, pt, es, fr
 - Logo e Home no app shell redirecionam para `www.breathofnow.site`
-- PWA Cache Management implementado - indicador no header + painel de gestão
-- Lint tem warnings de React hooks que precisam ser corrigidos
+- **PWA migrado para next-pwa** - Service Worker gerado automaticamente
+- Lint tem warnings de React hooks que precisam ser corrigidos (pré-existentes)
 
 ### Bugs a Corrigir (Prioridade)
-1. ~~🐛 **Página em branco offline**~~ ✅ Corrigido
+1. ✅ ~~Página em branco offline~~ - Corrigido com next-pwa
 2. 🔧 **OfflineIndicator na homepage** - Header diferente
-3. ~~🔧 **Nomes de páginas no cache panel**~~ ✅ Corrigido
+3. 🔄 **Testar offline após deploy** - Verificar que next-pwa funciona
 
-### Ficheiros Criados (17-18 Dez 2024)
-- `src/lib/pwa/cache-config.ts`
-- `src/lib/pwa/cache-manager.ts`
-- `src/hooks/use-cache-status.ts`
-- `src/components/pwa/offline-indicator.tsx`
-- `src/components/pwa/cache-status-panel.tsx`
-- `src/components/pwa/offline-navigation-handler.tsx` (18 Dez)
-- `src/components/pwa/cache-warmup.tsx` (18 Dez) - Cache Warmup UI
-- `src/app/[locale]/error.tsx` (18 Dez)
-
-### Ficheiros Modificados (17-18 Dez)
-- `src/middleware.ts` (handle missing Supabase env)
-- `src/components/shell/unified-app-header.tsx` (OfflineIndicator)
-- `src/components/shell/app-shell.tsx` (OfflineIndicator)
-- `src/components/layout/header.tsx` (OfflineIndicator)
-- `src/app/[locale]/layout.tsx` (OfflineNavigationHandler)
-- `public/sw.js` (v4 → v5 → v6 → v7: runtime cache strategy)
-- `src/lib/pwa/cache-config.ts` (added /offline, version v6)
-- `src/components/pwa/cache-status-panel.tsx` (low coverage warning)
-- `messages/*.json` (traduções PWA + error boundary + offline page)
+### Ficheiros Modificados (18 Dez 2024 - Sessão 2)
+- `package.json` - Adicionado next-pwa
+- `next.config.mjs` - Configuração PWA com Workbox
+- `public/sw.js` - **REMOVIDO** (agora gerado por next-pwa)
+- `.gitignore` - Padrões para ficheiros PWA gerados
+- `public/manifest.json` - Adicionado prefer_related_applications
+- `src/app/[locale]/offline/page.tsx` - Simplificado com traduções inline
+- `src/hooks/use-service-worker.ts` - Simplificado (registo automático)
 
 ### Próxima Tarefa Sugerida
-1. Corrigir warnings de React hooks (lint)
-2. Adicionar OfflineIndicator à homepage (layout diferente)
-3. Implementar dashboard principal
+1. Testar offline após deploy com nova configuração next-pwa
+2. Corrigir warnings de React hooks (lint)
+3. Adicionar OfflineIndicator à homepage (layout diferente)
+4. Implementar dashboard principal
 
 ---
 

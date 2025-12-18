@@ -17,6 +17,8 @@ const messages = {
     dataIsSafe: "Your data is safe locally",
     autoSync: "Changes will sync when online",
     allFeatures: "All features available offline",
+    connectionStatus: "Connection Status",
+    offline: "Offline",
   },
   pt: {
     title: "Estás Offline",
@@ -29,6 +31,8 @@ const messages = {
     dataIsSafe: "Os teus dados estão seguros localmente",
     autoSync: "Alterações serão sincronizadas quando online",
     allFeatures: "Todas as funcionalidades disponíveis offline",
+    connectionStatus: "Estado da Ligação",
+    offline: "Offline",
   },
   es: {
     title: "Estás Sin Conexión",
@@ -41,6 +45,8 @@ const messages = {
     dataIsSafe: "Tus datos están seguros localmente",
     autoSync: "Los cambios se sincronizarán cuando estés online",
     allFeatures: "Todas las funciones disponibles offline",
+    connectionStatus: "Estado de Conexión",
+    offline: "Sin Conexión",
   },
   fr: {
     title: "Vous êtes Hors Ligne",
@@ -53,6 +59,8 @@ const messages = {
     dataIsSafe: "Vos données sont en sécurité localement",
     autoSync: "Les modifications seront synchronisées en ligne",
     allFeatures: "Toutes les fonctionnalités disponibles hors ligne",
+    connectionStatus: "État de la Connexion",
+    offline: "Hors Ligne",
   },
 };
 
@@ -137,10 +145,10 @@ export default function OfflinePage() {
         {/* Status Card */}
         <div className="bg-white rounded-xl shadow-soft-md p-6 mb-6 text-left">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-medium text-warm-700">Connection Status</span>
+            <span className="text-sm font-medium text-warm-700">{t.connectionStatus}</span>
             <span className="flex items-center gap-2 text-sm text-amber-600">
               <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-              Offline
+              {t.offline}
             </span>
           </div>
 
