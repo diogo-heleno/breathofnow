@@ -16,28 +16,28 @@ export const CACHEABLE_PAGES: CacheablePage[] = [
     path: '/',
     priority: 'critical',
     category: 'app',
-    nameKey: 'pwa.pages.home',
+    nameKey: 'pages.home',
     estimatedSize: 50
   },
   {
     path: '/expenses',
     priority: 'critical',
     category: 'app',
-    nameKey: 'pwa.pages.expenses',
+    nameKey: 'pages.expenses',
     estimatedSize: 80
   },
   {
     path: '/expenses/add',
     priority: 'critical',
     category: 'app',
-    nameKey: 'pwa.pages.expensesAdd',
+    nameKey: 'pages.expensesAdd',
     estimatedSize: 60
   },
   {
     path: '/fitlog',
     priority: 'critical',
     category: 'app',
-    nameKey: 'pwa.pages.fitlog',
+    nameKey: 'pages.fitlog',
     estimatedSize: 70
   },
 
@@ -46,35 +46,35 @@ export const CACHEABLE_PAGES: CacheablePage[] = [
     path: '/expenses/transactions',
     priority: 'high',
     category: 'app',
-    nameKey: 'pwa.pages.transactions',
+    nameKey: 'pages.transactions',
     estimatedSize: 90
   },
   {
     path: '/expenses/categories',
     priority: 'high',
     category: 'app',
-    nameKey: 'pwa.pages.categories',
+    nameKey: 'pages.categories',
     estimatedSize: 50
   },
   {
     path: '/expenses/reports',
     priority: 'high',
     category: 'app',
-    nameKey: 'pwa.pages.reports',
+    nameKey: 'pages.reports',
     estimatedSize: 100
   },
   {
     path: '/fitlog/history',
     priority: 'high',
     category: 'app',
-    nameKey: 'pwa.pages.fitlogHistory',
+    nameKey: 'pages.fitlogHistory',
     estimatedSize: 80
   },
   {
     path: '/account',
     priority: 'high',
     category: 'app',
-    nameKey: 'pwa.pages.account',
+    nameKey: 'pages.account',
     estimatedSize: 60
   },
 
@@ -83,28 +83,28 @@ export const CACHEABLE_PAGES: CacheablePage[] = [
     path: '/expenses/settings',
     priority: 'medium',
     category: 'app',
-    nameKey: 'pwa.pages.expensesSettings',
+    nameKey: 'pages.expensesSettings',
     estimatedSize: 40
   },
   {
     path: '/expenses/import',
     priority: 'medium',
     category: 'app',
-    nameKey: 'pwa.pages.expensesImport',
+    nameKey: 'pages.expensesImport',
     estimatedSize: 70
   },
   {
     path: '/pricing',
     priority: 'medium',
     category: 'static',
-    nameKey: 'pwa.pages.pricing',
+    nameKey: 'pages.pricing',
     estimatedSize: 70
   },
   {
     path: '/faq',
     priority: 'medium',
     category: 'static',
-    nameKey: 'pwa.pages.faq',
+    nameKey: 'pages.faq',
     estimatedSize: 50
   },
 
@@ -113,42 +113,42 @@ export const CACHEABLE_PAGES: CacheablePage[] = [
     path: '/privacy',
     priority: 'low',
     category: 'static',
-    nameKey: 'pwa.pages.privacy',
+    nameKey: 'pages.privacy',
     estimatedSize: 30
   },
   {
     path: '/terms',
     priority: 'low',
     category: 'static',
-    nameKey: 'pwa.pages.terms',
+    nameKey: 'pages.terms',
     estimatedSize: 30
   },
   {
     path: '/features/privacy-first',
     priority: 'low',
     category: 'feature',
-    nameKey: 'pwa.pages.featurePrivacy',
+    nameKey: 'pages.featurePrivacy',
     estimatedSize: 40
   },
   {
     path: '/features/works-offline',
     priority: 'low',
     category: 'feature',
-    nameKey: 'pwa.pages.featureOffline',
+    nameKey: 'pages.featureOffline',
     estimatedSize: 40
   },
   {
     path: '/features/beautifully-simple',
     priority: 'low',
     category: 'feature',
-    nameKey: 'pwa.pages.featureSimple',
+    nameKey: 'pages.featureSimple',
     estimatedSize: 40
   },
   {
     path: '/features/fair-pricing',
     priority: 'low',
     category: 'feature',
-    nameKey: 'pwa.pages.featurePricing',
+    nameKey: 'pages.featurePricing',
     estimatedSize: 40
   }
 ];
