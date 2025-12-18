@@ -43,16 +43,16 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 
 ### ✅ ~~BUG: Página fica em branco em modo offline~~ (CORRIGIDO)
 
-> ✅ Corrigido em 17 Dezembro 2024
+> ✅ Corrigido em 18 Dezembro 2024 (v5)
 
 **Causa raiz:** Next.js App Router usa React Server Components (RSC) que fazem requests separados. Estes requests falhavam offline causando página em branco.
 
-**Solução implementada em `public/sw.js` v4:**
-- Handling específico para RSC requests (header RSC, Next-Router-State-Tree)
-- Cache First strategy para `/_next/static/` (JS/CSS chunks)
-- Retorna payload RSC vazio em vez de erro para prevenir crashes
-- Cache de JS/CSS assets quando faz cache de páginas
-- Fallback HTML inline para cenário offline sem React
+**Solução implementada em `public/sw.js` v5:**
+- Retorna 503 para RSC requests falhados (não 200 vazio que crashava React)
+- `OfflineNavigationHandler` intercepta links quando offline
+- Força navegação full-page (`window.location.href`) em vez de RSC
+- Full-page loads são servidos do cache do Service Worker
+- `error.tsx` captura erros e mostra página amigável com opção de reload
 
 ---
 
@@ -111,6 +111,10 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 
 ## Concluído Recentemente
 
+- [x] ~~Fix offline blank page bug~~ (18 Dezembro 2024)
+  - Service Worker v5 com RSC handling
+  - OfflineNavigationHandler força full-page nav
+  - Error boundary para erros offline
 - [x] ~~Nomes de páginas no Cache Panel~~ (18 Dezembro 2024)
   - Removido prefixo `pwa.` redundante dos nameKeys
 - [x] ~~PWA Cache Management System~~ (17 Dezembro 2024)
@@ -140,25 +144,29 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
 2. 🔧 **OfflineIndicator na homepage** - Header diferente
 3. ~~🔧 **Nomes de páginas no cache panel**~~ ✅ Corrigido
 
-### Ficheiros Criados Hoje (17 Dez 2024)
+### Ficheiros Criados (17-18 Dez 2024)
 - `src/lib/pwa/cache-config.ts`
 - `src/lib/pwa/cache-manager.ts`
 - `src/hooks/use-cache-status.ts`
 - `src/components/pwa/offline-indicator.tsx`
 - `src/components/pwa/cache-status-panel.tsx`
+- `src/components/pwa/offline-navigation-handler.tsx` (18 Dez)
+- `src/app/[locale]/error.tsx` (18 Dez)
 
-### Ficheiros Modificados Hoje
+### Ficheiros Modificados (17-18 Dez)
 - `src/middleware.ts` (handle missing Supabase env)
 - `src/components/shell/unified-app-header.tsx` (OfflineIndicator)
 - `src/components/shell/app-shell.tsx` (OfflineIndicator)
 - `src/components/layout/header.tsx` (OfflineIndicator)
-- `public/sw.js` (precaching e message handlers)
-- `messages/*.json` (traduções PWA)
+- `src/app/[locale]/layout.tsx` (OfflineNavigationHandler)
+- `public/sw.js` (v4 → v5: RSC handling, 503 responses)
+- `src/lib/pwa/cache-config.ts` (removed pwa. prefix from nameKeys)
+- `messages/*.json` (traduções PWA + error boundary)
 
 ### Próxima Tarefa Sugerida
 1. Corrigir warnings de React hooks (lint)
-2. Investigar bug de página em branco offline
-3. Adicionar OfflineIndicator à homepage
+2. Adicionar OfflineIndicator à homepage (layout diferente)
+3. Implementar dashboard principal
 
 ---
 
