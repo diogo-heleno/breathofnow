@@ -1,7 +1,7 @@
 // Service Worker para Breath of Now
-// Versão: 7.0.0 - Runtime Cache Strategy for Client-Side Pages
+// Versão: 8.0.0 - Fix offline navigation loops
 
-const CACHE_VERSION = 'v7';
+const CACHE_VERSION = 'v8';
 const CACHE_NAME = `breathofnow-pages-${CACHE_VERSION}`;
 const STATIC_CACHE_NAME = `breathofnow-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE_NAME = `breathofnow-runtime-${CACHE_VERSION}`;
@@ -87,7 +87,7 @@ function isPageRequest(request) {
 
 // Installation: cache ONLY static assets and truly static pages
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing service worker v7 (Runtime Cache Strategy)...');
+  console.log('[SW] Installing service worker v8 (Fix offline navigation loops)...');
 
   event.waitUntil(
     Promise.all([
@@ -147,7 +147,7 @@ self.addEventListener('install', (event) => {
 
 // Activation: clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating service worker v7...');
+  console.log('[SW] Activating service worker v8...');
 
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -191,6 +191,13 @@ self.addEventListener('fetch', (event) => {
   if (url.pathname.startsWith('/api/')) {
     return;
   }
+
+  // Get locale from URL for offline fallback
+  const pathParts = url.pathname.split('/');
+  const locale = LOCALES.includes(pathParts[1]) ? pathParts[1] : 'en';
+  
+  // Check if this is already the offline page - never redirect to avoid loops
+  const isOfflinePage = url.pathname.includes('/offline');
 
   // Strategy 1: Cache First for Next.js static assets
   if (isNextStaticAsset(url)) {
@@ -240,8 +247,6 @@ self.addEventListener('fetch', (event) => {
           // Extract page URL without RSC params
           const pageUrl = new URL(url);
           pageUrl.searchParams.delete('_rsc');
-          const pathParts = url.pathname.split('/');
-          const locale = LOCALES.includes(pathParts[1]) ? pathParts[1] : 'en';
 
           console.warn('[SW] ⚠️ RSC offline, checking cached page:', pageUrl.pathname);
 
@@ -250,6 +255,12 @@ self.addEventListener('fetch', (event) => {
           if (cachedPage) {
             console.log('[SW] ✅ Redirecting to cached page');
             return Response.redirect(pageUrl.pathname, 302);
+          }
+
+          // If already on offline page, don't redirect - return error to let client handle
+          if (isOfflinePage) {
+            console.log('[SW] ⚠️ Already offline page, returning error response');
+            return new Response('Page not cached', { status: 503 });
           }
 
           // No cache - redirect to offline
@@ -296,16 +307,26 @@ self.addEventListener('fetch', (event) => {
 
           console.log('[SW] ❌ No cache found for:', url.pathname);
 
-          // Get locale from URL
-          const pathParts = url.pathname.split('/');
-          const locale = LOCALES.includes(pathParts[1]) ? pathParts[1] : 'en';
+          // If already on offline page, don't redirect or serve offline page again
+          // Just return an error to let the client handle it
+          if (isOfflinePage) {
+            console.log('[SW] ⚠️ Already on offline page, returning error');
+            return new Response(getOfflineHTML(locale), {
+              status: 503,
+              headers: {
+                'Content-Type': 'text/html',
+                'Cache-Control': 'no-cache'
+              }
+            });
+          }
 
-          // Try offline page
+          // Try offline page from cache
           const offlinePage = `/${locale}/offline`;
           const offlineResponse = await caches.match(offlinePage);
           if (offlineResponse) {
-            console.log('[SW] ✅ Serving offline page');
-            return offlineResponse;
+            console.log('[SW] ✅ Redirecting to offline page');
+            // Use redirect instead of serving inline to update URL
+            return Response.redirect(offlinePage, 302);
           }
 
           // Last resort: inline HTML
