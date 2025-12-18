@@ -1,6 +1,6 @@
 # Documento de Projeto - Breath of Now
 
-> Última atualização: 17 Dezembro 2024
+> Última atualização: 18 Dezembro 2024
 
 ---
 
@@ -98,8 +98,9 @@ breathofnow/
 │   │   ├── brand/
 │   │   │   └── logo.tsx
 │   │   ├── pwa/
-│   │   │   ├── offline-indicator.tsx  # Indicador de cache no header
-│   │   │   ├── cache-status-panel.tsx # Painel de gestão de cache
+│   │   │   ├── offline-indicator.tsx       # Indicador de cache no header
+│   │   │   ├── cache-status-panel.tsx      # Painel de gestão de cache
+│   │   │   ├── offline-navigation-handler.tsx # Handler para navegação offline
 │   │   │   └── index.ts
 │   │   └── ads/
 │   │       └── ad-banner.tsx
@@ -357,6 +358,7 @@ breathofnow/
 | Features - Sustainable | `/[locale]/features/sustainable` | ✅ |
 | Account | `/[locale]/account` | ✅ |
 | Offline | `/[locale]/offline` | ✅ |
+| Error Boundary | `/[locale]/error` | ✅ |
 
 ---
 
@@ -585,25 +587,30 @@ Tabelas:
 - ✅ Download individual de páginas
 - ✅ Download de todas as páginas
 - ✅ Limpeza de cache
-- ✅ Service Worker com precaching
+- ✅ Service Worker v5 com precaching e RSC handling
 - ✅ Traduções em 4 idiomas
+- ✅ Error Boundary para erros offline
+- ✅ OfflineNavigationHandler para navegação segura offline
 
 ### Estrutura de Ficheiros PWA
 
 ```
 src/
+├── app/[locale]/
+│   └── error.tsx                # Error boundary para erros/offline
 ├── lib/pwa/
-│   ├── cache-config.ts      # Configuração de páginas cacheáveis
-│   ├── cache-manager.ts     # Lógica de gestão de cache
+│   ├── cache-config.ts          # Configuração de páginas cacheáveis
+│   ├── cache-manager.ts         # Lógica de gestão de cache
 │   └── index.ts
 ├── hooks/
-│   └── use-cache-status.ts  # Hook reactivo para estado do cache
+│   └── use-cache-status.ts      # Hook reactivo para estado do cache
 ├── components/pwa/
-│   ├── offline-indicator.tsx # Indicador no header
-│   ├── cache-status-panel.tsx # Painel completo
+│   ├── offline-indicator.tsx    # Indicador no header
+│   ├── cache-status-panel.tsx   # Painel completo
+│   ├── offline-navigation-handler.tsx # Força full-page nav offline
 │   └── index.ts
 └── public/
-    └── sw.js                # Service Worker
+    └── sw.js                    # Service Worker v5
 ```
 
 ### Prioridades de Cache
@@ -615,11 +622,23 @@ src/
 | **Medium** | Secondary pages | Reports, Categories |
 | **Low** | Static pages | Features, FAQ |
 
+### Solução Offline (v5)
+
+O Next.js App Router usa RSC (React Server Components) para navegação cliente.
+Quando offline, RSC requests falham causando página em branco.
+
+**Solução implementada:**
+1. Service Worker v5 retorna 503 para RSC requests falhados (não 200 vazio)
+2. OfflineNavigationHandler intercepta cliques em links quando offline
+3. Força navegação full-page (`window.location.href`) em vez de RSC
+4. Full-page loads são servidos do cache do Service Worker
+5. Error boundary captura erros e mostra página amigável
+
 ### Bugs Conhecidos
 
-- ⚠️ Página fica em branco em modo offline (a investigar)
+- ✅ ~~Página fica em branco em modo offline~~ (CORRIGIDO - v5)
 - ⚠️ Indicador não aparece na homepage (layout diferente)
-- ⚠️ Nomes de páginas mostram nameKey em vez de título traduzido
+- ✅ ~~Nomes de páginas mostram nameKey~~ (CORRIGIDO - prefixo pwa. removido)
 
 ---
 

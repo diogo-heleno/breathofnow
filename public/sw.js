@@ -58,7 +58,7 @@ function isPageRequest(request) {
 
 // Installation: cache critical assets
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing service worker v4...');
+  console.log('[SW] Installing service worker v5...');
 
   event.waitUntil(
     Promise.all([
@@ -87,7 +87,7 @@ self.addEventListener('install', (event) => {
 
 // Activation: clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating service worker v4...');
+  console.log('[SW] Activating service worker v5...');
 
   event.waitUntil(
     caches.keys().then((cacheNames) => {

@@ -90,7 +90,7 @@ export function OfflineNavigationHandler() {
       }
 
       // Force full page navigation
-      console.log('[Offline] Forcing full page navigation to:', href);
+      console.warn('[Offline] Forcing full page navigation to:', href);
       window.location.href = href;
     }
   }, []);
