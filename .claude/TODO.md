@@ -42,24 +42,18 @@ Este ficheiro contém os próximos passos pendentes para o projeto. Claude Code 
     - `src/components/pwa/cache-status-panel.tsx` - Usar traduções ou títulos
   - Cada página deve mostrar nome amigável (ex: "Dashboard", "Transações", etc.)
 
-### 🐛 BUG: Página fica em branco em modo offline
+### ✅ ~~BUG: Página fica em branco em modo offline~~ (CORRIGIDO)
 
-- [ ] **Investigar página em branco quando offline (modo avião)**
-  - Comportamento reportado:
-    - Página parece carregar inicialmente
-    - Algo aparece brevemente
-    - Depois fica completamente em branco
-    - Refresh mostra conteúdo mas volta a ficar em branco
-  - Possíveis causas a investigar:
-    - Service Worker não está a servir assets cached corretamente
-    - JavaScript error quando offline (verificar console)
-    - Hydration mismatch quando offline
-    - Componentes que dependem de network requests falhando
-    - Next.js RSC (React Server Components) a falhar offline
-  - Ficheiros a verificar:
-    - `public/sw.js` - Lógica do Service Worker
-    - `src/app/[locale]/offline/page.tsx` - Página de fallback offline
-    - Componentes com `useEffect` que fazem fetch
+> ✅ Corrigido em 17 Dezembro 2024
+
+**Causa raiz:** Next.js App Router usa React Server Components (RSC) que fazem requests separados. Estes requests falhavam offline causando página em branco.
+
+**Solução implementada em `public/sw.js` v4:**
+- Handling específico para RSC requests (header RSC, Next-Router-State-Tree)
+- Cache First strategy para `/_next/static/` (JS/CSS chunks)
+- Retorna payload RSC vazio em vez de erro para prevenir crashes
+- Cache de JS/CSS assets quando faz cache de páginas
+- Fallback HTML inline para cenário offline sem React
 
 ---
 
