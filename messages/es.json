@@ -872,6 +872,16 @@
       "updateAvailable": "Actualización disponible"
     }
   },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Por favor intenta de nuevo o vuelve a la página de inicio.",
+    "offlineTitle": "Estás sin conexión",
+    "offlineDescription": "Esta página no pudo cargar porque no estás conectado a internet.",
+    "offlineNote": "¡No te preocupes!",
+    "offlineNoteDescription": "Tus datos están guardados de forma segura en tu dispositivo. Intenta recargar la página - puede estar disponible en caché.",
+    "retry": "Intentar de nuevo",
+    "goHome": "Ir al Inicio"
+  },
   "errors": {
     "generic": "Algo salió mal. Por favor intenta de nuevo.",
     "notFound": "Página no encontrada",
