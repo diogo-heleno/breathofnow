@@ -904,5 +904,58 @@
   "meta": {
     "title": "Breath of Now - Outils simples pour une vie consciente",
     "description": "Une collection de micro-apps axées sur la confidentialité pour les dépenses, investissements, entraînements, recettes et plus. Vos données restent sur votre appareil."
+  },
+  "offline": {
+    "indicator": {
+      "online": "En ligne",
+      "offline": "Hors ligne",
+      "cached": "en cache",
+      "viewStatus": "Voir l'état hors ligne"
+    },
+    "page": {
+      "title": "Disponibilité Hors Ligne",
+      "subtitle": "Gérer l'accès hors ligne à l'application",
+      "status": {
+        "online": "Vous êtes en ligne",
+        "offline": "Vous êtes hors ligne"
+      },
+      "percentage": "{percentage}% des pages disponibles hors ligne",
+      "explanation": {
+        "title": "Comment ça marche ?",
+        "paragraph1": "Les pages de l'application deviennent automatiquement disponibles hors ligne lorsque vous les visitez. Cela signifie que vous pouvez continuer à utiliser l'application même sans connexion internet, tant que vous avez visité ces pages auparavant.",
+        "paragraph2": "Actuellement, vous avez {percentage}% des pages disponibles hors ligne.",
+        "paragraph3": "Pour augmenter la disponibilité hors ligne, visitez chacune des pages listées ci-dessous."
+      },
+      "pages": {
+        "title": "État des Pages",
+        "available": "Disponible hors ligne",
+        "notVisited": "Pas encore visitée",
+        "visitToCache": "Cliquez pour visiter"
+      },
+      "dataNote": {
+        "title": "Note sur vos données",
+        "text": "Vos données (dépenses, investissements, etc.) sont toujours stockées localement sur votre appareil et sont toujours disponibles, même hors ligne."
+      }
+    },
+    "pages": {
+      "home": "Accueil",
+      "dashboard": "Tableau de bord",
+      "expenseflow": "ExpenseFlow",
+      "investtrack": "InvestTrack",
+      "fitlog": "FitLog",
+      "settings": "Paramètres",
+      "account": "Compte",
+      "faq": "FAQ",
+      "pricing": "Tarifs",
+      "privacy": "Confidentialité",
+      "terms": "Conditions d'utilisation"
+    },
+    "battery": {
+      "empty": "Cache vide",
+      "low": "Cache faible",
+      "medium": "Cache moyen",
+      "high": "Cache élevé",
+      "full": "Cache complet"
+    }
   }
 }

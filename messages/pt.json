@@ -1648,5 +1648,58 @@
   "meta": {
     "title": "Breath of Now - Ferramentas simples para uma vida consciente",
     "description": "Uma colecção de micro-apps com privacidade em primeiro lugar para despesas, investimentos, treinos, receitas e muito mais. Os seus dados ficam no seu dispositivo."
+  },
+  "offline": {
+    "indicator": {
+      "online": "Online",
+      "offline": "Offline",
+      "cached": "em cache",
+      "viewStatus": "Ver estado offline"
+    },
+    "page": {
+      "title": "Disponibilidade Offline",
+      "subtitle": "Gerir o acesso offline à aplicação",
+      "status": {
+        "online": "Está online",
+        "offline": "Está offline"
+      },
+      "percentage": "{percentage}% das páginas disponíveis offline",
+      "explanation": {
+        "title": "Como funciona?",
+        "paragraph1": "As páginas da aplicação ficam disponíveis offline automaticamente quando as visita. Isto significa que pode continuar a usar a aplicação mesmo sem ligação à internet, desde que já tenha visitado essas páginas anteriormente.",
+        "paragraph2": "Neste momento, tem {percentage}% das páginas disponíveis offline.",
+        "paragraph3": "Para aumentar a disponibilidade offline, visite cada uma das páginas listadas abaixo."
+      },
+      "pages": {
+        "title": "Estado das Páginas",
+        "available": "Disponível offline",
+        "notVisited": "Ainda não visitada",
+        "visitToCache": "Clique para visitar"
+      },
+      "dataNote": {
+        "title": "Nota sobre os seus dados",
+        "text": "Os seus dados (despesas, investimentos, etc.) são sempre guardados localmente no seu dispositivo e estão sempre disponíveis, mesmo offline."
+      }
+    },
+    "pages": {
+      "home": "Página Inicial",
+      "dashboard": "Dashboard",
+      "expenseflow": "ExpenseFlow",
+      "investtrack": "InvestTrack",
+      "fitlog": "FitLog",
+      "settings": "Definições",
+      "account": "Conta",
+      "faq": "FAQ",
+      "pricing": "Preços",
+      "privacy": "Privacidade",
+      "terms": "Termos de Serviço"
+    },
+    "battery": {
+      "empty": "Cache vazio",
+      "low": "Cache baixo",
+      "medium": "Cache médio",
+      "high": "Cache alto",
+      "full": "Cache completo"
+    }
   }
 }

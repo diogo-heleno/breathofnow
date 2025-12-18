@@ -1648,5 +1648,58 @@
   "meta": {
     "title": "Breath of Now - Simple tools for mindful living",
     "description": "A collection of privacy-first micro-apps for expenses, investments, workouts, recipes, and more. Your data stays on your device."
+  },
+  "offline": {
+    "indicator": {
+      "online": "Online",
+      "offline": "Offline",
+      "cached": "cached",
+      "viewStatus": "View offline status"
+    },
+    "page": {
+      "title": "Offline Availability",
+      "subtitle": "Manage offline access to the application",
+      "status": {
+        "online": "You are online",
+        "offline": "You are offline"
+      },
+      "percentage": "{percentage}% of pages available offline",
+      "explanation": {
+        "title": "How does it work?",
+        "paragraph1": "App pages automatically become available offline when you visit them. This means you can continue using the app even without an internet connection, as long as you've visited those pages before.",
+        "paragraph2": "Currently, you have {percentage}% of pages available offline.",
+        "paragraph3": "To increase offline availability, visit each of the pages listed below."
+      },
+      "pages": {
+        "title": "Page Status",
+        "available": "Available offline",
+        "notVisited": "Not yet visited",
+        "visitToCache": "Click to visit"
+      },
+      "dataNote": {
+        "title": "Note about your data",
+        "text": "Your data (expenses, investments, etc.) is always stored locally on your device and is always available, even offline."
+      }
+    },
+    "pages": {
+      "home": "Home",
+      "dashboard": "Dashboard",
+      "expenseflow": "ExpenseFlow",
+      "investtrack": "InvestTrack",
+      "fitlog": "FitLog",
+      "settings": "Settings",
+      "account": "Account",
+      "faq": "FAQ",
+      "pricing": "Pricing",
+      "privacy": "Privacy",
+      "terms": "Terms of Service"
+    },
+    "battery": {
+      "empty": "Cache empty",
+      "low": "Cache low",
+      "medium": "Cache medium",
+      "high": "Cache high",
+      "full": "Cache full"
+    }
   }
 }
