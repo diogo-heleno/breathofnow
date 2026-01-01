@@ -1775,6 +1775,7 @@
       "whyTitle": "Porquê este treino?",
       "segments": "Estrutura do treino",
       "start": "Iniciar Treino",
+      "markAsDone": "Marcar como Feito ✓",
       "completed": "Treino concluído!"
     },
     "workoutTypes": {

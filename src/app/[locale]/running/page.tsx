@@ -85,7 +85,7 @@ async function importPlanFromJson(json: string): Promise<RunningPlan | null> {
         const startDateStr = weekDates.split('–')[0]?.trim() || '';
 
         // Calculate actual date based on day of week
-        let scheduledDate = startDateStr;
+        let scheduledDate = '';
         if (startDateStr) {
           const [day, month, year] = startDateStr.split('/');
           if (day && month) {
@@ -94,8 +94,14 @@ async function importPlanFromJson(json: string): Promise<RunningPlan | null> {
               parseInt(month) - 1,
               parseInt(day)
             );
-            // Add days based on dayOfWeek (0=Sunday)
-            const daysToAdd = workout.dayOfWeek;
+            // baseDate is the Monday of the week (or first day)
+            // workout.dayOfWeek: 0=Sunday, 1=Monday, ..., 6=Saturday
+            // Calculate days to add from Monday (day 1)
+            // If dayOfWeek is 0 (Sunday), we need to add 6 days from Monday
+            // If dayOfWeek is 3 (Wednesday), we need to add 2 days from Monday
+            const baseDayOfWeek = baseDate.getDay(); // 0=Sun, 1=Mon, etc.
+            let daysToAdd = workout.dayOfWeek - baseDayOfWeek;
+            if (daysToAdd < 0) daysToAdd += 7; // Handle wrap-around
             baseDate.setDate(baseDate.getDate() + daysToAdd);
             scheduledDate = baseDate.toISOString().split('T')[0];
           }

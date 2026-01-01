@@ -12,7 +12,6 @@ import {
   Calendar,
   Target,
   Clock,
-  Play,
   CheckCircle,
   Lightbulb,
   ChevronRight,
@@ -69,10 +68,10 @@ export default function WorkoutDetailPage() {
     segments = [];
   }
 
-  const handleStartWorkout = async () => {
+  const handleMarkAsDone = async () => {
     if (!workout.id) return;
 
-    // Create a new session
+    // Create a session and mark it as completed immediately
     const sessionId = await runningDb.startSession(
       workout.planId,
       workout.id,
@@ -81,9 +80,14 @@ export default function WorkoutDetailPage() {
       workout.scheduledDate
     );
 
-    // Navigate to active session (could be a timer page)
-    // For now, just show completion dialog
-    router.push(`/running/history`);
+    // Complete the session with the planned distance
+    await runningDb.completeSession(sessionId, {
+      actualDistanceKm: workout.totalDistanceKm,
+      feeling: 4, // Default to "good"
+    });
+
+    // Refresh page to show completion state
+    router.refresh();
   };
 
   const getSegmentDescription = (segment: WorkoutSegment) => {
@@ -274,14 +278,14 @@ export default function WorkoutDetailPage() {
           </div>
         )}
 
-        {/* Start Button */}
-        {!isCompleted && (isWorkoutToday || !isWorkoutPast) && (
+        {/* Mark as Done Button */}
+        {!isCompleted && (
           <button
-            onClick={handleStartWorkout}
+            onClick={handleMarkAsDone}
             className="w-full bg-primary-600 text-white py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 hover:bg-primary-700 transition-colors shadow-lg"
           >
-            <Play className="w-6 h-6" />
-            {t('workout.start')}
+            <CheckCircle className="w-6 h-6" />
+            {t('workout.markAsDone')}
           </button>
         )}
 
