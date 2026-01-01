@@ -13,6 +13,7 @@
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.45.0",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "dexie": "^4.0.8",
     "dexie-react-hooks": "^1.1.7",
     "lucide-react": "^0.424.0",
