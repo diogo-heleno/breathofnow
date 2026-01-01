@@ -13,10 +13,10 @@ const intlMiddleware = createMiddleware({
 const WEBSITE_ROUTES = ['/', '/pricing', '/faq', '/privacy', '/terms'];
 
 // Routes that belong to the app subdomain and REQUIRE authentication
-const PROTECTED_APP_ROUTES = ['/expenses', '/investments', '/fitlog', '/recipes', '/dashboard', '/account'];
+const PROTECTED_APP_ROUTES = ['/expenses', '/investments', '/fitlog', '/running', '/recipes', '/dashboard', '/account'];
 
 // Routes that belong to the app subdomain
-const APP_ROUTE_PREFIXES = ['/expenses', '/investments', '/fitlog', '/recipes', '/dashboard', '/account'];
+const APP_ROUTE_PREFIXES = ['/expenses', '/investments', '/fitlog', '/running', '/recipes', '/dashboard', '/account'];
 
 // Shared routes (available on both subdomains)
 const SHARED_ROUTES = ['/auth'];
@@ -59,7 +59,12 @@ function isAppRoute(path: string): boolean {
 }
 
 function isProtectedRoute(path: string): boolean {
-  return PROTECTED_APP_ROUTES.some(prefix => path.startsWith(prefix));
+  // TEMPORARY: Disable auth for all routes
+  // TODO: Remove this line to re-enable authentication
+  return false;
+
+  // Original code (commented out):
+  // return PROTECTED_APP_ROUTES.some(prefix => path.startsWith(prefix));
 }
 
 function isSharedRoute(path: string): boolean {

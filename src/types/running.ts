@@ -98,6 +98,7 @@ export type TrainingPhase =
 export interface RunningPlan {
   id?: number;
   name: string;
+  version?: string;
   description?: string;
   athleteName?: string;
   // Datas
@@ -114,7 +115,10 @@ export interface RunningPlan {
   // Timestamps
   createdAt: Date;
   updatedAt: Date;
+  // Sync fields
   syncId?: string;
+  syncStatus?: 'pending' | 'synced' | 'conflict';
+  syncedAt?: Date;
 }
 
 export interface GoalRace {
@@ -179,7 +183,10 @@ export interface RunningSession {
   notes?: string;
   // Garmin Activity ID (para futuro)
   garminActivityId?: string;
+  // Sync fields
   syncId?: string;
+  syncStatus?: 'pending' | 'synced' | 'conflict';
+  syncedAt?: Date;
 }
 
 export interface RunningPreferences {
