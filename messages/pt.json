@@ -1711,7 +1711,8 @@
       "history": "Histórico",
       "export": "Exportar",
       "import": "Importar",
-      "settings": "Definições"
+      "settings": "Definições",
+      "back": "Voltar"
     },
     "dashboard": {
       "welcome": "Bem-vindo ao RunLog! 🏃",
@@ -1726,6 +1727,7 @@
       "inDays": "em {days} dias",
       "viewWorkout": "Ver Treino",
       "week": "Semana",
+      "weeks": "semanas",
       "progress": "Progresso",
       "distance": "Distância",
       "thisWeek": "Esta Semana",
@@ -1735,7 +1737,9 @@
       "avgPace": "Pace Médio",
       "recentRuns": "Corridas Recentes",
       "viewAllHistory": "Ver todo o histórico",
-      "noSessionsYet": "Ainda sem corridas registadas"
+      "noSessionsYet": "Ainda sem corridas registadas",
+      "loadingPlan": "A carregar o teu plano de treino...",
+      "loadingPlanDescription": "Estamos a preparar o teu plano Maratona de Lisboa 2026"
     },
     "onboarding": {
       "importPlan": "Importar Plano de Treino",
@@ -1753,7 +1757,9 @@
       "step3Description": "Copia a resposta do LLM",
       "step4Title": "Importa na app",
       "step4Description": "Cola o JSON e começa a treinar",
-      "adjustPlan": "Ajustar Plano"
+      "adjustPlan": "Ajustar Plano",
+      "noPlan": "Sem plano de treino",
+      "importFirst": "Importa um plano para começar"
     },
     "countdown": {
       "today": "É hoje!",
@@ -1763,7 +1769,13 @@
       "target": "Objetivo"
     },
     "workout": {
-      "whyThisWorkout": "Porquê este treino?"
+      "whyThisWorkout": "Porquê este treino?",
+      "notFound": "Treino não encontrado",
+      "description": "Descrição",
+      "whyTitle": "Porquê este treino?",
+      "segments": "Estrutura do treino",
+      "start": "Iniciar Treino",
+      "completed": "Treino concluído!"
     },
     "workoutTypes": {
       "easy": "Corrida Fácil",
@@ -1793,7 +1805,9 @@
         "okay": "OK",
         "good": "Bom",
         "excellent": "Excelente"
-      }
+      },
+      "noHistory": "Ainda não há histórico",
+      "startFirst": "Completa o teu primeiro treino para ver o histórico aqui"
     },
     "import": {
       "title": "Importar Plano",
