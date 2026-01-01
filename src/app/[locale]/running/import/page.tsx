@@ -87,7 +87,7 @@ export default function ImportPage({ params }: ImportPageProps) {
           const startDateStr = weekDates.split('–')[0]?.trim() || '';
 
           // Calculate actual date based on day of week
-          let scheduledDate = startDateStr;
+          let scheduledDate = '';
           if (startDateStr) {
             const [day, month, year] = startDateStr.split('/');
             if (day && month) {
@@ -96,8 +96,11 @@ export default function ImportPage({ params }: ImportPageProps) {
                 parseInt(month) - 1,
                 parseInt(day)
               );
-              // Add days based on dayOfWeek (0=Sunday)
-              const daysToAdd = workout.dayOfWeek;
+              // baseDate is the first day of the week
+              // workout.dayOfWeek: 0=Sunday, 1=Monday, ..., 6=Saturday
+              const baseDayOfWeek = baseDate.getDay();
+              let daysToAdd = workout.dayOfWeek - baseDayOfWeek;
+              if (daysToAdd < 0) daysToAdd += 7;
               baseDate.setDate(baseDate.getDate() + daysToAdd);
               scheduledDate = baseDate.toISOString().split('T')[0];
             }
