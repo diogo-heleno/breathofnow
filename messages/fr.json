@@ -957,5 +957,141 @@
       "high": "Cache élevé",
       "full": "Cache complet"
     }
+  },
+  "runLog": {
+    "title": "RunLog",
+    "tagline": "Ton coach de course",
+    "nav": {
+      "home": "Accueil",
+      "plan": "Plan",
+      "history": "Historique",
+      "export": "Exporter",
+      "import": "Importer",
+      "settings": "Paramètres"
+    },
+    "dashboard": {
+      "welcome": "Bienvenue sur RunLog ! 🏃",
+      "welcomeDescription": "Commence par importer ton plan d'entraînement.",
+      "noPlan": "Pas de plan actif",
+      "noPlanDescription": "Importe un plan d'entraînement pour commencer",
+      "importPlan": "Importer un Plan",
+      "today": "Aujourd'hui",
+      "restDay": "Jour de Repos",
+      "restDayMessage": "Pas d'entraînement aujourd'hui. Repose-toi ! 🧘",
+      "nextWorkout": "Prochain entraînement",
+      "inDays": "dans {days} jours",
+      "viewWorkout": "Voir l'Entraînement",
+      "week": "Semaine",
+      "progress": "Progression",
+      "distance": "Distance",
+      "thisWeek": "Cette Semaine",
+      "runsThisWeek": "Courses",
+      "distanceThisWeek": "Distance",
+      "timeThisWeek": "Temps",
+      "avgPace": "Allure Moyenne",
+      "recentRuns": "Courses Récentes",
+      "viewAllHistory": "Voir tout l'historique",
+      "noSessionsYet": "Aucune course enregistrée"
+    },
+    "onboarding": {
+      "importPlan": "Importer un Plan d'Entraînement",
+      "importPlanDescription": "Charge un plan JSON",
+      "importPlanHint": "Tu peux générer un plan avec ChatGPT ou Claude et l'importer ici.",
+      "startImport": "Commencer l'Import",
+      "or": "ou",
+      "generateWithAI": "Générer un Plan avec l'IA",
+      "howItWorks": "Comment ça marche ?",
+      "step1Title": "Exporte l'historique",
+      "step1Description": "Génère un prompt avec tes entraînements récents",
+      "step2Title": "Colle dans ChatGPT/Claude",
+      "step2Description": "Demande des ajustements ou un nouveau plan",
+      "step3Title": "Copie le JSON",
+      "step3Description": "Copie la réponse du LLM",
+      "step4Title": "Importe dans l'app",
+      "step4Description": "Colle le JSON et commence à t'entraîner",
+      "adjustPlan": "Ajuster le Plan"
+    },
+    "countdown": {
+      "today": "C'est aujourd'hui !",
+      "tomorrow": "Demain !",
+      "daysLeft": "{days} jours",
+      "weeksLeft": "{weeks} semaines et {days} jours",
+      "target": "Objectif"
+    },
+    "workout": {
+      "whyThisWorkout": "Pourquoi cet entraînement ?"
+    },
+    "workoutTypes": {
+      "easy": "Course Facile",
+      "long": "Sortie Longue",
+      "tempo": "Tempo",
+      "intervals": "Intervalles",
+      "fartlek": "Fartlek",
+      "hills": "Côtes",
+      "recovery": "Récupération",
+      "race": "Course",
+      "rest": "Repos",
+      "strides": "Avec Strides",
+      "progression": "Progressif"
+    },
+    "phases": {
+      "base": "Base",
+      "build": "Construction",
+      "peak": "Pic",
+      "taper": "Taper",
+      "recovery": "Récupération",
+      "race": "Course"
+    },
+    "session": {
+      "feelings": {
+        "terrible": "Terrible",
+        "bad": "Mauvais",
+        "okay": "OK",
+        "good": "Bien",
+        "excellent": "Excellent"
+      }
+    },
+    "import": {
+      "title": "Importer un Plan",
+      "description": "Charge un fichier JSON ou colle le contenu",
+      "dragDrop": "Glisse un fichier ou clique pour sélectionner",
+      "supported": "Fichiers JSON uniquement",
+      "pasteJson": "Ou colle le JSON ici",
+      "pasteFromClipboard": "Coller",
+      "jsonPlaceholder": "Colle ici le JSON du plan d'entraînement...",
+      "error": "Erreur d'importation",
+      "errorParsing": "Impossible de traiter le JSON",
+      "errorMissingFields": "Champs requis manquants",
+      "importing": "Importation...",
+      "importButton": "Importer le Plan",
+      "success": "Plan importé !",
+      "successDescription": "Redirection vers le dashboard...",
+      "exampleFormat": "Voir le format exemple"
+    },
+    "export": {
+      "title": "Exporter vers l'IA",
+      "description": "Génère un prompt pour demander des mises à jour du plan à ChatGPT ou Claude",
+      "noPlan": "Pas de plan actif",
+      "noPlanDescription": "Importe d'abord un plan d'entraînement",
+      "howItWorks": "Comment ça marche",
+      "step1": "Copie le prompt généré ci-dessous",
+      "step2": "Colle dans ChatGPT ou Claude",
+      "step3": "Demande des ajustements ou du feedback",
+      "step4": "Importe le nouveau plan JSON",
+      "promptType": "Type de prompt",
+      "typeUpdate": "Mettre à Jour le Plan",
+      "typeUpdateDescription": "Demande un plan ajusté",
+      "typeFeedback": "Demander du Feedback",
+      "typeFeedbackDescription": "Obtiens une analyse et des suggestions",
+      "weeksToInclude": "Semaines à inclure",
+      "weeks": "semaines",
+      "preview": "Aperçu",
+      "characters": "caractères",
+      "copyPrompt": "Copier le Prompt",
+      "copied": "Copié !",
+      "dataIncluded": "Données incluses",
+      "sessionsIncluded": "Entraînements inclus",
+      "upcomingWorkouts": "Prochains entraînements"
+    }
   }
 }
