@@ -6,7 +6,6 @@ import '../globals.css';
 import { Suspense } from 'react';
 import { AuthProvider } from '@/contexts/auth-context';
 import { ConnectivityStatus } from '@/components/pwa/connectivity-status';
-import { InstallPrompt } from '@/components/pwa/install-prompt';
 import { UncachedPageBanner } from '@/components/pwa/uncached-page-banner';
 import { OfflineNavigationHandler } from '@/components/pwa/offline-navigation-handler';
 
@@ -153,7 +152,6 @@ export default async function RootLayout({
           {/* PWA Components */}
           <OfflineNavigationHandler />
           <ConnectivityStatus />
-          <InstallPrompt />
           <Suspense fallback={null}>
             <UncachedPageBanner />
           </Suspense>
