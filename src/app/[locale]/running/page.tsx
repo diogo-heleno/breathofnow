@@ -4,7 +4,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Download, Sparkles } from 'lucide-react';
+import { Download, Sparkles, Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { runningDb, isRunningDbAvailable } from '@/lib/db/running-db';
 import { useRunningStore } from '@/stores/running-store';
@@ -16,17 +16,160 @@ import {
   NextRaceCard,
 } from '@/components/running/dashboard';
 import { EmptyState } from '@/components/running/common';
+import type {
+  ImportedRunningPlan,
+  RunningPlan,
+  RunningWorkout,
+  WorkoutSegment,
+} from '@/types/running';
 
 interface DashboardPageProps {
   params: { locale: string };
+}
+
+// Default plan path
+const DEFAULT_PLAN_URL = '/plans/maratona-lisboa-2026.json';
+
+/**
+ * Import a plan from JSON data
+ */
+async function importPlanFromJson(json: string): Promise<RunningPlan | null> {
+  try {
+    const data: ImportedRunningPlan = JSON.parse(json);
+
+    if (!data.planName || !data.weeks || data.weeks.length === 0) {
+      console.error('Invalid plan format');
+      return null;
+    }
+
+    // Create plan
+    const plan: Omit<RunningPlan, 'id'> = {
+      name: data.planName,
+      athleteName: data.athleteName,
+      startDate: data.startDate || data.weeks[0]?.dates?.split('–')[0]?.trim() || new Date().toISOString().split('T')[0],
+      endDate: data.weeks[data.weeks.length - 1]?.dates?.split('–')[1]?.trim() || '',
+      totalWeeks: data.weeks.length,
+      goalRaces: (data.goals || []).map((g, i) => ({
+        id: `race_${i}`,
+        name: g.raceName,
+        date: g.raceDate,
+        distance: g.distance,
+        targetTime: g.targetTime,
+        targetPace: g.targetPace,
+        weekNumber: 0,
+      })),
+      isActive: true,
+      currentWeek: 0,
+      rawJson: json,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    // Deactivate all existing plans
+    const existingPlans = await runningDb.getAllPlans();
+    for (const existing of existingPlans) {
+      if (existing.id) {
+        await runningDb.runningPlans.update(existing.id, { isActive: false });
+      }
+    }
+
+    // Add plan
+    const planId = await runningDb.runningPlans.add(plan as RunningPlan);
+
+    // Add workouts
+    let workoutOrder = 0;
+    for (const week of data.weeks) {
+      for (const workout of week.workouts) {
+        // Parse date from week dates
+        const weekDates = week.dates || '';
+        const startDateStr = weekDates.split('–')[0]?.trim() || '';
+
+        // Calculate actual date based on day of week
+        let scheduledDate = startDateStr;
+        if (startDateStr) {
+          const [day, month, year] = startDateStr.split('/');
+          if (day && month) {
+            const baseDate = new Date(
+              parseInt(year?.length === 4 ? year : `20${year || '26'}`),
+              parseInt(month) - 1,
+              parseInt(day)
+            );
+            // Add days based on dayOfWeek (0=Sunday)
+            const daysToAdd = workout.dayOfWeek;
+            baseDate.setDate(baseDate.getDate() + daysToAdd);
+            scheduledDate = baseDate.toISOString().split('T')[0];
+          }
+        }
+
+        // Parse segments
+        const segments: WorkoutSegment[] = (workout.segments || []).map((seg, i) => ({
+          id: `seg_${i}`,
+          type: seg.type,
+          description: seg.description,
+          distanceKm: seg.distanceKm,
+          durationMinutes: seg.durationMin,
+          targetPace: seg.pace ? { min: seg.pace.min, max: seg.pace.max } : undefined,
+          repetitions: seg.repetitions,
+          recoveryDistanceM: seg.recoveryM,
+        }));
+
+        const runningWorkout: Omit<RunningWorkout, 'id'> = {
+          planId,
+          workoutId: `w_${week.weekNumber}_${workout.dayOfWeek}`,
+          weekNumber: week.weekNumber,
+          dayOfWeek: workout.dayOfWeek,
+          scheduledDate,
+          type: workout.type,
+          title: workout.title,
+          description: workout.description,
+          totalDistanceKm: workout.totalDistanceKm,
+          whyExplanation: workout.whyExplanation,
+          isRace: workout.isRace || false,
+          raceName: workout.raceDetails?.name,
+          raceTargetTime: workout.raceDetails?.targetTime,
+          raceTargetPace: workout.raceDetails?.targetPace,
+          weekNotes: week.notes,
+          segmentsJson: JSON.stringify(segments),
+          order: workoutOrder++,
+        };
+
+        await runningDb.runningWorkouts.add(runningWorkout as RunningWorkout);
+      }
+    }
+
+    // Return the created plan
+    return await runningDb.runningPlans.get(planId) ?? null;
+  } catch (err) {
+    console.error('Import error:', err);
+    return null;
+  }
+}
+
+/**
+ * Auto-load default training plan
+ */
+async function loadDefaultPlan(): Promise<RunningPlan | null> {
+  try {
+    const response = await fetch(DEFAULT_PLAN_URL);
+    if (!response.ok) {
+      console.error('Failed to fetch default plan');
+      return null;
+    }
+    const json = await response.text();
+    return importPlanFromJson(json);
+  } catch (err) {
+    console.error('Error loading default plan:', err);
+    return null;
+  }
 }
 
 export default function DashboardPage({ params }: DashboardPageProps) {
   const { locale } = params;
   const t = useTranslations('runLog');
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingDefault, setIsLoadingDefault] = useState(false);
   const [hasPlans, setHasPlans] = useState(false);
-  const { activePlanId, setActivePlan } = useRunningStore();
+  const { setActivePlan } = useRunningStore();
 
   useEffect(() => {
     async function initialize() {
@@ -44,12 +187,24 @@ export default function DashboardPage({ params }: DashboardPageProps) {
         } else {
           // Check if any plans exist
           const allPlans = await runningDb.getAllPlans();
-          setHasPlans(allPlans.length > 0);
 
-          // Activate first plan if exists
           if (allPlans.length > 0) {
+            // Activate first plan if exists
             await runningDb.setActivePlan(allPlans[0].id!);
             setActivePlan(allPlans[0]);
+            setHasPlans(true);
+          } else {
+            // No plans - auto-load default plan
+            setIsLoadingDefault(true);
+            const defaultPlan = await loadDefaultPlan();
+            setIsLoadingDefault(false);
+
+            if (defaultPlan) {
+              setActivePlan(defaultPlan);
+              setHasPlans(true);
+            } else {
+              setHasPlans(false);
+            }
           }
         }
       } catch (error) {
@@ -62,16 +217,30 @@ export default function DashboardPage({ params }: DashboardPageProps) {
     initialize();
   }, [setActivePlan]);
 
-  if (isLoading) {
+  if (isLoading || isLoadingDefault) {
     return (
       <div className="p-4 space-y-6">
-        <div className="h-48 bg-neutral-200 rounded-2xl animate-pulse" />
-        <div className="h-24 bg-neutral-200 rounded-xl animate-pulse" />
-        <div className="grid grid-cols-2 gap-3">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-24 bg-neutral-200 rounded-xl animate-pulse" />
-          ))}
-        </div>
+        {isLoadingDefault ? (
+          <div className="py-12 text-center">
+            <Loader2 className="w-12 h-12 text-primary-600 mx-auto mb-4 animate-spin" />
+            <h2 className="text-xl font-semibold text-neutral-900 mb-2">
+              {t('dashboard.loadingPlan')}
+            </h2>
+            <p className="text-neutral-600">
+              {t('dashboard.loadingPlanDescription')}
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="h-48 bg-neutral-200 rounded-2xl animate-pulse" />
+            <div className="h-24 bg-neutral-200 rounded-xl animate-pulse" />
+            <div className="grid grid-cols-2 gap-3">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="h-24 bg-neutral-200 rounded-xl animate-pulse" />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     );
   }
