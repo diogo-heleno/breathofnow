@@ -1,5 +1,6 @@
 -- RunLog - Running Training App Tables
 -- Migration for Supabase cloud sync
+-- Safe to re-run (uses IF NOT EXISTS and DROP IF EXISTS)
 
 -- ============================================
 -- 1. RUNNING PLANS TABLE
@@ -30,7 +31,12 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_running_plans_user_local ON public.running
 -- Enable RLS for running_plans
 ALTER TABLE public.running_plans ENABLE ROW LEVEL SECURITY;
 
--- Policies for running_plans
+-- Policies for running_plans (drop first to allow re-run)
+DROP POLICY IF EXISTS "Users can view their own running plans" ON public.running_plans;
+DROP POLICY IF EXISTS "Users can insert their own running plans" ON public.running_plans;
+DROP POLICY IF EXISTS "Users can update their own running plans" ON public.running_plans;
+DROP POLICY IF EXISTS "Users can delete their own running plans" ON public.running_plans;
+
 CREATE POLICY "Users can view their own running plans"
   ON public.running_plans FOR SELECT
   USING (auth.uid() = user_id);
@@ -90,7 +96,12 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_running_workouts_user_local ON public.runn
 -- Enable RLS for running_workouts
 ALTER TABLE public.running_workouts ENABLE ROW LEVEL SECURITY;
 
--- Policies for running_workouts
+-- Policies for running_workouts (drop first to allow re-run)
+DROP POLICY IF EXISTS "Users can view their own running workouts" ON public.running_workouts;
+DROP POLICY IF EXISTS "Users can insert their own running workouts" ON public.running_workouts;
+DROP POLICY IF EXISTS "Users can update their own running workouts" ON public.running_workouts;
+DROP POLICY IF EXISTS "Users can delete their own running workouts" ON public.running_workouts;
+
 CREATE POLICY "Users can view their own running workouts"
   ON public.running_workouts FOR SELECT
   USING (auth.uid() = user_id);
@@ -149,7 +160,12 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_running_sessions_user_local ON public.runn
 -- Enable RLS for running_sessions
 ALTER TABLE public.running_sessions ENABLE ROW LEVEL SECURITY;
 
--- Policies for running_sessions
+-- Policies for running_sessions (drop first to allow re-run)
+DROP POLICY IF EXISTS "Users can view their own running sessions" ON public.running_sessions;
+DROP POLICY IF EXISTS "Users can insert their own running sessions" ON public.running_sessions;
+DROP POLICY IF EXISTS "Users can update their own running sessions" ON public.running_sessions;
+DROP POLICY IF EXISTS "Users can delete their own running sessions" ON public.running_sessions;
+
 CREATE POLICY "Users can view their own running sessions"
   ON public.running_sessions FOR SELECT
   USING (auth.uid() = user_id);
@@ -192,7 +208,11 @@ CREATE TABLE IF NOT EXISTS public.running_preferences (
 -- Enable RLS for running_preferences
 ALTER TABLE public.running_preferences ENABLE ROW LEVEL SECURITY;
 
--- Policies for running_preferences
+-- Policies for running_preferences (drop first to allow re-run)
+DROP POLICY IF EXISTS "Users can view their own running preferences" ON public.running_preferences;
+DROP POLICY IF EXISTS "Users can insert their own running preferences" ON public.running_preferences;
+DROP POLICY IF EXISTS "Users can update their own running preferences" ON public.running_preferences;
+
 CREATE POLICY "Users can view their own running preferences"
   ON public.running_preferences FOR SELECT
   USING (auth.uid() = user_id);
@@ -227,7 +247,12 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Create triggers for all tables
+-- Create triggers for all tables (drop first to allow re-run)
+DROP TRIGGER IF EXISTS running_plans_updated_at ON public.running_plans;
+DROP TRIGGER IF EXISTS running_workouts_updated_at ON public.running_workouts;
+DROP TRIGGER IF EXISTS running_sessions_updated_at ON public.running_sessions;
+DROP TRIGGER IF EXISTS running_preferences_updated_at ON public.running_preferences;
+
 CREATE TRIGGER running_plans_updated_at
   BEFORE UPDATE ON public.running_plans
   FOR EACH ROW
