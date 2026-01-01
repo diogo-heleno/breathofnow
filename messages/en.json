@@ -1701,5 +1701,141 @@
       "high": "Cache high",
       "full": "Cache full"
     }
+  },
+  "runLog": {
+    "title": "RunLog",
+    "tagline": "Your running coach",
+    "nav": {
+      "home": "Home",
+      "plan": "Plan",
+      "history": "History",
+      "export": "Export",
+      "import": "Import",
+      "settings": "Settings"
+    },
+    "dashboard": {
+      "welcome": "Welcome to RunLog! 🏃",
+      "welcomeDescription": "Start by importing your training plan.",
+      "noPlan": "No active plan",
+      "noPlanDescription": "Import a training plan to get started",
+      "importPlan": "Import Plan",
+      "today": "Today",
+      "restDay": "Rest Day",
+      "restDayMessage": "No workout today. Rest and recover! 🧘",
+      "nextWorkout": "Next workout",
+      "inDays": "in {days} days",
+      "viewWorkout": "View Workout",
+      "week": "Week",
+      "progress": "Progress",
+      "distance": "Distance",
+      "thisWeek": "This Week",
+      "runsThisWeek": "Runs",
+      "distanceThisWeek": "Distance",
+      "timeThisWeek": "Time",
+      "avgPace": "Avg Pace",
+      "recentRuns": "Recent Runs",
+      "viewAllHistory": "View all history",
+      "noSessionsYet": "No runs logged yet"
+    },
+    "onboarding": {
+      "importPlan": "Import Training Plan",
+      "importPlanDescription": "Upload a JSON plan",
+      "importPlanHint": "You can generate a plan with ChatGPT or Claude and import it here.",
+      "startImport": "Start Import",
+      "or": "or",
+      "generateWithAI": "Generate Plan with AI",
+      "howItWorks": "How does it work?",
+      "step1Title": "Export history",
+      "step1Description": "Generate a prompt with your recent workouts",
+      "step2Title": "Paste in ChatGPT/Claude",
+      "step2Description": "Ask for adjustments or a new plan",
+      "step3Title": "Copy the JSON",
+      "step3Description": "Copy the LLM response",
+      "step4Title": "Import in the app",
+      "step4Description": "Paste the JSON and start training",
+      "adjustPlan": "Adjust Plan"
+    },
+    "countdown": {
+      "today": "It's today!",
+      "tomorrow": "Tomorrow!",
+      "daysLeft": "{days} days",
+      "weeksLeft": "{weeks} weeks and {days} days",
+      "target": "Target"
+    },
+    "workout": {
+      "whyThisWorkout": "Why this workout?"
+    },
+    "workoutTypes": {
+      "easy": "Easy Run",
+      "long": "Long Run",
+      "tempo": "Tempo",
+      "intervals": "Intervals",
+      "fartlek": "Fartlek",
+      "hills": "Hills",
+      "recovery": "Recovery",
+      "race": "Race",
+      "rest": "Rest",
+      "strides": "With Strides",
+      "progression": "Progression"
+    },
+    "phases": {
+      "base": "Base",
+      "build": "Build",
+      "peak": "Peak",
+      "taper": "Taper",
+      "recovery": "Recovery",
+      "race": "Race"
+    },
+    "session": {
+      "feelings": {
+        "terrible": "Terrible",
+        "bad": "Bad",
+        "okay": "Okay",
+        "good": "Good",
+        "excellent": "Excellent"
+      }
+    },
+    "import": {
+      "title": "Import Plan",
+      "description": "Upload a JSON file or paste the content",
+      "dragDrop": "Drag a file or click to select",
+      "supported": "JSON files only",
+      "pasteJson": "Or paste JSON here",
+      "pasteFromClipboard": "Paste",
+      "jsonPlaceholder": "Paste your training plan JSON here...",
+      "error": "Import error",
+      "errorParsing": "Could not parse JSON",
+      "errorMissingFields": "Missing required fields",
+      "importing": "Importing...",
+      "importButton": "Import Plan",
+      "success": "Plan imported!",
+      "successDescription": "Redirecting to dashboard...",
+      "exampleFormat": "View example format"
+    },
+    "export": {
+      "title": "Export to AI",
+      "description": "Generate a prompt to request plan updates from ChatGPT or Claude",
+      "noPlan": "No active plan",
+      "noPlanDescription": "Import a training plan first",
+      "howItWorks": "How it works",
+      "step1": "Copy the generated prompt below",
+      "step2": "Paste in ChatGPT or Claude",
+      "step3": "Request adjustments or feedback",
+      "step4": "Import the new JSON plan",
+      "promptType": "Prompt type",
+      "typeUpdate": "Update Plan",
+      "typeUpdateDescription": "Request an adjusted plan",
+      "typeFeedback": "Request Feedback",
+      "typeFeedbackDescription": "Get analysis and suggestions",
+      "weeksToInclude": "Weeks to include",
+      "weeks": "weeks",
+      "preview": "Preview",
+      "characters": "characters",
+      "copyPrompt": "Copy Prompt",
+      "copied": "Copied!",
+      "dataIncluded": "Data included",
+      "sessionsIncluded": "Sessions included",
+      "upcomingWorkouts": "Upcoming workouts"
+    }
   }
 }

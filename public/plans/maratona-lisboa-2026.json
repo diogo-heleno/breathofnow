@@ -1,0 +1,1240 @@
+{
+  "planName": "Preparação Maratona Lisboa 2026",
+  "athleteName": "Diogo",
+  "startDate": "2025-12-29",
+  "goals": [
+    {
+      "raceName": "Meia Maratona Cascais",
+      "raceDate": "2026-02-01",
+      "distance": "21.1km",
+      "targetTime": "1:59:00",
+      "targetPace": "5:41"
+    },
+    {
+      "raceName": "Maratona Lisboa",
+      "raceDate": "2026-10-10",
+      "distance": "42.195km",
+      "targetTime": "4:29:00",
+      "targetPace": "6:24"
+    }
+  ],
+  "weeks": [
+    {
+      "weekNumber": 0,
+      "dates": "29/12–04/01/2026",
+      "phase": "base",
+      "notes": "Semana inicial",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run 6km",
+          "description": "6km fácil",
+          "type": "easy",
+          "totalDistanceKm": 6,
+          "whyExplanation": "Corrida de base para começar a semana. Ritmo conversacional para construir resistência aeróbica."
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Easy Run 10km",
+          "description": "10km fácil",
+          "type": "easy",
+          "totalDistanceKm": 10,
+          "whyExplanation": "Aumento gradual de volume. Mantém ritmo confortável para adaptar o corpo à carga."
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run 16km",
+          "description": "16km fácil",
+          "type": "long",
+          "totalDistanceKm": 16,
+          "whyExplanation": "Corrida longa de base. Desenvolve resistência aeróbica e adaptação mental para distâncias maiores."
+        }
+      ]
+    },
+    {
+      "weekNumber": 1,
+      "dates": "05/01–11/01/2026",
+      "phase": "build",
+      "notes": "Bloco meia maratona",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy + Strides",
+          "description": "8 km fácil (6:35–7:15) + 6×20\" strides",
+          "type": "strides",
+          "totalDistanceKm": 8,
+          "segments": [
+            {"type": "easy", "description": "8 km fácil", "distanceKm": 8, "pace": {"min": "6:35", "max": "7:15"}},
+            {"type": "strides", "description": "6×20\" strides", "repetitions": 6, "durationMin": 0.33}
+          ],
+          "whyExplanation": "Strides mantêm eficiência neuromuscular sem fadiga significativa. Trabalha forma de corrida e economia."
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Tempo Intervals",
+          "description": "10 km total: 2 km aquecer + 3×2 km a 5:35–5:40 (2' trote) + 2 km soltar",
+          "type": "tempo",
+          "totalDistanceKm": 10,
+          "segments": [
+            {"type": "warmup", "description": "2 km aquecer", "distanceKm": 2},
+            {"type": "work", "description": "3×2 km a 5:35–5:40", "distanceKm": 2, "repetitions": 3, "pace": {"min": "5:35", "max": "5:40"}, "recoveryM": 400},
+            {"type": "cooldown", "description": "2 km soltar", "distanceKm": 2}
+          ],
+          "whyExplanation": "Treino de limiar anaeróbico. Melhora capacidade de manter ritmo de prova por mais tempo."
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run Progressive",
+          "description": "18 km fácil; últimos 3 km a 6:05–6:15",
+          "type": "progression",
+          "totalDistanceKm": 18,
+          "segments": [
+            {"type": "easy", "description": "15 km fácil", "distanceKm": 15},
+            {"type": "work", "description": "3 km progressivos", "distanceKm": 3, "pace": {"min": "6:05", "max": "6:15"}}
+          ],
+          "whyExplanation": "Corrida longa com acabamento rápido. Treina capacidade de acelerar quando fatigado."
+        }
+      ]
+    },
+    {
+      "weekNumber": 2,
+      "dates": "12/01–18/01/2026",
+      "phase": "build",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy + Strides",
+          "description": "9 km fácil + 6×20\" strides",
+          "type": "strides",
+          "totalDistanceKm": 9
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "1km Intervals",
+          "description": "10–11 km total: 2 km aquecer + 6×1 km a 5:15–5:25 (400 m trote) + soltar",
+          "type": "intervals",
+          "totalDistanceKm": 11,
+          "whyExplanation": "Intervalos de 1km desenvolvem VO2max e velocidade. Recuperação curta aumenta adaptação."
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run with Blocks",
+          "description": "20 km fácil com 2×4 km a 5:40–5:45 (1 km fácil entre blocos)",
+          "type": "long",
+          "totalDistanceKm": 20,
+          "whyExplanation": "Corrida longa com blocos a ritmo de meia maratona. Especificidade para a prova."
+        }
+      ]
+    },
+    {
+      "weekNumber": 3,
+      "dates": "19/01–25/01/2026",
+      "phase": "recovery",
+      "notes": "Semana de recuperação antes da meia",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "8 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 8
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Tempo Run",
+          "description": "9–10 km total: 2 km aquecer + 5 km a 5:30–5:40 + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run Progressive",
+          "description": "16 km fácil; últimos 4 km a 6:23–6:27",
+          "type": "progression",
+          "totalDistanceKm": 16
+        }
+      ]
+    },
+    {
+      "weekNumber": 4,
+      "dates": "26/01–01/02/2026",
+      "phase": "taper",
+      "notes": "Taper curto, sem ser conservador",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy + Strides",
+          "description": "7 km muito fácil + 4×15\" strides",
+          "type": "strides",
+          "totalDistanceKm": 7
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Shakeout",
+          "description": "6 km fácil com 3×1' a 5:40–5:45 (2' fácil)",
+          "type": "easy",
+          "totalDistanceKm": 6
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "PROVA: Meia Maratona Cascais",
+          "description": "21,1 km - Objetivo: 1:59:xx (5:41/km)",
+          "type": "race",
+          "totalDistanceKm": 21.1,
+          "isRace": true,
+          "raceDetails": {
+            "name": "Meia Maratona Cascais",
+            "targetTime": "1:59:00",
+            "targetPace": "5:41"
+          },
+          "whyExplanation": "Primeira prova objetivo! Foca-te na execução do plano. Saída conservadora, negativo split se possível."
+        }
+      ]
+    },
+    {
+      "weekNumber": 5,
+      "dates": "02/02–08/02/2026",
+      "phase": "recovery",
+      "notes": "Recuperação ativa",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Recovery Run",
+          "description": "6 km muito fácil",
+          "type": "recovery",
+          "totalDistanceKm": 6
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Easy Run",
+          "description": "8 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 8
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Easy Long",
+          "description": "12 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 12
+        }
+      ]
+    },
+    {
+      "weekNumber": 6,
+      "dates": "09/02–15/02/2026",
+      "phase": "build",
+      "notes": "Voltar a \"sentir\" as pernas",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy + Strides",
+          "description": "8 km fácil + 6×20\" strides",
+          "type": "strides",
+          "totalDistanceKm": 8
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Steady Run",
+          "description": "10 km steady 6:05–6:20",
+          "type": "tempo",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "14 km fácil",
+          "type": "long",
+          "totalDistanceKm": 14
+        }
+      ]
+    },
+    {
+      "weekNumber": 7,
+      "dates": "16/02–22/02/2026",
+      "phase": "build",
+      "notes": "Início base maratona",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "10 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "400m Intervals",
+          "description": "10 km total: 2 km aquecer + 8×400 m a 5:00–5:10/km (200 m trote) + soltar",
+          "type": "intervals",
+          "totalDistanceKm": 10,
+          "whyExplanation": "Intervalos curtos e rápidos para desenvolver velocidade e economia de corrida."
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "16 km fácil",
+          "type": "long",
+          "totalDistanceKm": 16
+        }
+      ]
+    },
+    {
+      "weekNumber": 8,
+      "dates": "23/02–01/03/2026",
+      "phase": "build",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy + Strides",
+          "description": "10 km fácil + 6×20\" strides",
+          "type": "strides",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Tempo Intervals",
+          "description": "11 km total: 2 km aquecer + 3×2 km a 5:30–5:35 (2' trote) + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 11
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run Progressive",
+          "description": "18 km fácil; últimos 4 km a 6:05–6:15",
+          "type": "progression",
+          "totalDistanceKm": 18
+        }
+      ]
+    },
+    {
+      "weekNumber": 9,
+      "dates": "02/03–08/03/2026",
+      "phase": "build",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "11 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 11
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Fartlek",
+          "description": "10 km fartlek: 10×2' a 5:25–5:35 com 1' fácil (inclui aquecer/soltar)",
+          "type": "fartlek",
+          "totalDistanceKm": 10,
+          "whyExplanation": "Fartlek desenvolve capacidade de mudar de ritmo e preparação mental para variações de terreno."
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "20 km fácil",
+          "type": "long",
+          "totalDistanceKm": 20
+        }
+      ]
+    },
+    {
+      "weekNumber": 10,
+      "dates": "09/03–15/03/2026",
+      "phase": "recovery",
+      "notes": "Semana de alívio",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Recovery Run",
+          "description": "9 km muito fácil",
+          "type": "recovery",
+          "totalDistanceKm": 9
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Easy Run",
+          "description": "9 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 9
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "16 km fácil",
+          "type": "long",
+          "totalDistanceKm": 16
+        }
+      ]
+    },
+    {
+      "weekNumber": 11,
+      "dates": "16/03–22/03/2026",
+      "phase": "build",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "12 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 12
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Tempo Run",
+          "description": "12 km total: 2 km aquecer + 6 km a 5:30–5:40 + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 12
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run Progressive",
+          "description": "22 km fácil; últimos 5 km a 6:05–6:15",
+          "type": "progression",
+          "totalDistanceKm": 22
+        }
+      ]
+    },
+    {
+      "weekNumber": 12,
+      "dates": "23/03–29/03/2026",
+      "phase": "build",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy + Strides",
+          "description": "10 km fácil + 6×20\" strides",
+          "type": "strides",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "1km Intervals",
+          "description": "11 km total: 2 km aquecer + 5×1 km a 5:15–5:25 (400 m trote) + soltar",
+          "type": "intervals",
+          "totalDistanceKm": 11
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "18 km fácil",
+          "type": "long",
+          "totalDistanceKm": 18
+        }
+      ]
+    },
+    {
+      "weekNumber": 13,
+      "dates": "30/03–05/04/2026",
+      "phase": "build",
+      "notes": "Força específica sem stress de ritmo",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "12–13 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 13
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Hill Repeats",
+          "description": "12 km com colinas: 10×60\" forte (subida) + recuperação a descer (inclui aquecer/soltar)",
+          "type": "hills",
+          "totalDistanceKm": 12,
+          "whyExplanation": "Treino de colinas desenvolve força específica de corrida e potência sem o stress articular de intervalos rápidos."
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "24 km fácil",
+          "type": "long",
+          "totalDistanceKm": 24
+        }
+      ]
+    },
+    {
+      "weekNumber": 14,
+      "dates": "06/04–12/04/2026",
+      "phase": "build",
+      "notes": "Primeiro contacto sério com MP",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "10 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Easy Run",
+          "description": "10 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run with MP",
+          "description": "20 km fácil com 2×5 km a 6:23–6:27 (1 km fácil)",
+          "type": "long",
+          "totalDistanceKm": 20,
+          "whyExplanation": "Primeiro contacto sério com ritmo de maratona (MP). Habitua o corpo a este pace específico."
+        }
+      ]
+    },
+    {
+      "weekNumber": 15,
+      "dates": "13/04–19/04/2026",
+      "phase": "build",
+      "notes": "Se 14 km for demasiado para o dia, faz 12 km",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Medium-Long",
+          "description": "14 km fácil (médio-longo)",
+          "type": "easy",
+          "totalDistanceKm": 14
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Tempo Intervals",
+          "description": "12 km total: 2 km aquecer + 3×3 km a 5:35–5:45 (1 km fácil) + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 12
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "22 km fácil",
+          "type": "long",
+          "totalDistanceKm": 22
+        }
+      ]
+    },
+    {
+      "weekNumber": 16,
+      "dates": "20/04–26/04/2026",
+      "phase": "build",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Medium-Long",
+          "description": "14 km fácil (médio-longo)",
+          "type": "easy",
+          "totalDistanceKm": 14
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "1km Intervals",
+          "description": "12 km com 6×1 km a 5:15–5:25 + soltar",
+          "type": "intervals",
+          "totalDistanceKm": 12
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run with MP",
+          "description": "26 km fácil; últimos 6 km a 6:23–6:27",
+          "type": "progression",
+          "totalDistanceKm": 26
+        }
+      ]
+    },
+    {
+      "weekNumber": 17,
+      "dates": "27/04–03/05/2026",
+      "phase": "recovery",
+      "notes": "Semana de alívio",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "12 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 12
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Easy + Strides",
+          "description": "10 km fácil + 8×20\" strides",
+          "type": "strides",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "20 km fácil",
+          "type": "long",
+          "totalDistanceKm": 20
+        }
+      ]
+    },
+    {
+      "weekNumber": 18,
+      "dates": "04/05–10/05/2026",
+      "phase": "build",
+      "notes": "Nutrição obrigatória",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Medium-Long Steady",
+          "description": "15 km médio-longo 6:20–6:45",
+          "type": "easy",
+          "totalDistanceKm": 15
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "MP Tempo",
+          "description": "14 km total: 3 km aquecer + 8 km a 6:23–6:27 + 3 km soltar",
+          "type": "tempo",
+          "totalDistanceKm": 14,
+          "whyExplanation": "Trabalho a ritmo de maratona. Pratica também a nutrição durante o treino."
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "28 km fácil",
+          "type": "long",
+          "totalDistanceKm": 28,
+          "whyExplanation": "Primeiro longo de 28km. Treina nutrição e hidratação. Ritmo muito confortável."
+        }
+      ]
+    },
+    {
+      "weekNumber": 19,
+      "dates": "11/05–17/05/2026",
+      "phase": "build",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "13 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 13
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Tempo Intervals",
+          "description": "12 km total: 2 km aquecer + 2×4 km a 5:30–5:40 (1 km fácil) + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 12
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run with MP",
+          "description": "22 km fácil com 3×4 km a 6:23–6:27 (1 km fácil)",
+          "type": "long",
+          "totalDistanceKm": 22
+        }
+      ]
+    },
+    {
+      "weekNumber": 20,
+      "dates": "18/05–24/05/2026",
+      "phase": "peak",
+      "notes": "Se fadiga subir, encurta o bloco MP",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Medium-Long",
+          "description": "16 km médio-longo fácil",
+          "type": "easy",
+          "totalDistanceKm": 16
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "1km Intervals",
+          "description": "14 km com 5×1 km a 5:15–5:25 + soltar",
+          "type": "intervals",
+          "totalDistanceKm": 14
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run with MP",
+          "description": "30 km fácil; últimos 8 km a 6:23–6:27",
+          "type": "progression",
+          "totalDistanceKm": 30,
+          "whyExplanation": "Primeiro longo de 30km. Foco em nutrição e acabar forte. Se fadiga acumulada, encurta o bloco MP."
+        }
+      ]
+    },
+    {
+      "weekNumber": 21,
+      "dates": "25/05–31/05/2026",
+      "phase": "recovery",
+      "notes": "Semana de alívio",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "12 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 12
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Easy Run",
+          "description": "10 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "24 km fácil",
+          "type": "long",
+          "totalDistanceKm": 24
+        }
+      ]
+    },
+    {
+      "weekNumber": 22,
+      "dates": "01/06–07/06/2026",
+      "phase": "peak",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Medium-Long Steady",
+          "description": "16 km médio-longo 6:20–6:45",
+          "type": "easy",
+          "totalDistanceKm": 16
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "MP Tempo",
+          "description": "16 km total: 3 km aquecer + 10 km a 6:23–6:27 + 3 km soltar",
+          "type": "tempo",
+          "totalDistanceKm": 16
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run Progressive",
+          "description": "30 km progressivo: 18 km fácil + 8 km a 6:23–6:27 + 4 km fácil",
+          "type": "progression",
+          "totalDistanceKm": 30
+        }
+      ]
+    },
+    {
+      "weekNumber": 23,
+      "dates": "08/06–14/06/2026",
+      "phase": "build",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "14 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 14
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Tempo Run",
+          "description": "14 km total: 2 km aquecer + 6 km a 5:30–5:40 + 2 km fácil + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 14
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "26 km fácil",
+          "type": "long",
+          "totalDistanceKm": 26
+        }
+      ]
+    },
+    {
+      "weekNumber": 24,
+      "dates": "15/06–21/06/2026",
+      "phase": "peak",
+      "notes": "Pico 32 km, ajusta ao calor",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Medium-Long",
+          "description": "18 km médio-longo fácil",
+          "type": "easy",
+          "totalDistanceKm": 18
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "2km Intervals",
+          "description": "14 km com 3×2 km a 5:25–5:35 (2' trote) + soltar",
+          "type": "intervals",
+          "totalDistanceKm": 14
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run with MP",
+          "description": "32 km fácil; últimos 10 km a 6:23–6:27 (se estiver fresco)",
+          "type": "progression",
+          "totalDistanceKm": 32,
+          "whyExplanation": "Pico de 32km. Ajusta ao calor do verão - começa cedo. Só faz MP se te sentires bem."
+        }
+      ]
+    },
+    {
+      "weekNumber": 25,
+      "dates": "22/06–28/06/2026",
+      "phase": "recovery",
+      "notes": "Semana de alívio",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "12 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 12
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Easy + Strides",
+          "description": "10 km fácil + 8×20\" strides",
+          "type": "strides",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "24 km fácil",
+          "type": "long",
+          "totalDistanceKm": 24
+        }
+      ]
+    },
+    {
+      "weekNumber": 26,
+      "dates": "29/06–05/07/2026",
+      "phase": "peak",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Medium-Long Steady",
+          "description": "18 km médio-longo 6:20–6:45",
+          "type": "easy",
+          "totalDistanceKm": 18
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "MP Tempo",
+          "description": "16 km total: 3 km aquecer + 2×5 km a 6:23–6:27 (1 km fácil) + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 16
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run with MP",
+          "description": "30 km fácil com 3×5 km a 6:23–6:27 (1 km fácil)",
+          "type": "long",
+          "totalDistanceKm": 30
+        }
+      ]
+    },
+    {
+      "weekNumber": 27,
+      "dates": "06/07–12/07/2026",
+      "phase": "build",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "15 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 15
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "1km Intervals",
+          "description": "14 km com 6×1 km a 5:15–5:25 + soltar",
+          "type": "intervals",
+          "totalDistanceKm": 14
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "26 km fácil",
+          "type": "long",
+          "totalDistanceKm": 26
+        }
+      ]
+    },
+    {
+      "weekNumber": 28,
+      "dates": "13/07–19/07/2026",
+      "phase": "peak",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Medium-Long",
+          "description": "18 km médio-longo fácil",
+          "type": "easy",
+          "totalDistanceKm": 18
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Tempo Run",
+          "description": "16 km total: 2 km aquecer + 8 km a 5:30–5:40 + 2 km fácil + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 16
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run with MP",
+          "description": "32 km fácil; últimos 6–8 km a 6:23–6:27",
+          "type": "progression",
+          "totalDistanceKm": 32
+        }
+      ]
+    },
+    {
+      "weekNumber": 29,
+      "dates": "20/07–26/07/2026",
+      "phase": "recovery",
+      "notes": "Semana de alívio",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "12 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 12
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Easy Run",
+          "description": "10 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "24 km fácil",
+          "type": "long",
+          "totalDistanceKm": 24
+        }
+      ]
+    },
+    {
+      "weekNumber": 30,
+      "dates": "27/07–02/08/2026",
+      "phase": "peak",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Medium-Long Steady",
+          "description": "18 km médio-longo 6:20–6:45",
+          "type": "easy",
+          "totalDistanceKm": 18
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "MP Tempo",
+          "description": "18 km total: 3 km aquecer + 12 km a 6:23–6:27 + 3 km soltar",
+          "type": "tempo",
+          "totalDistanceKm": 18
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run with MP",
+          "description": "30 km: 20 km fácil + 8 km a 6:23–6:27 + 2 km fácil",
+          "type": "progression",
+          "totalDistanceKm": 30
+        }
+      ]
+    },
+    {
+      "weekNumber": 31,
+      "dates": "03/08–09/08/2026",
+      "phase": "peak",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "16 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 16
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "1km Intervals",
+          "description": "14 km com 5×1 km a 5:15–5:25 + soltar",
+          "type": "intervals",
+          "totalDistanceKm": 14
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "30 km fácil",
+          "type": "long",
+          "totalDistanceKm": 30
+        }
+      ]
+    },
+    {
+      "weekNumber": 32,
+      "dates": "10/08–16/08/2026",
+      "phase": "peak",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Medium-Long",
+          "description": "18 km médio-longo fácil",
+          "type": "easy",
+          "totalDistanceKm": 18
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "MP Tempo",
+          "description": "16 km total: 2 km aquecer + 10 km a 6:23–6:27 + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 16
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run with MP",
+          "description": "28 km fácil com 2×6 km a 6:23–6:27 (1 km fácil)",
+          "type": "long",
+          "totalDistanceKm": 28
+        }
+      ]
+    },
+    {
+      "weekNumber": 33,
+      "dates": "17/08–23/08/2026",
+      "phase": "peak",
+      "notes": "Último pico, protege-te",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Medium-Long Steady",
+          "description": "18 km médio-longo 6:20–6:45",
+          "type": "easy",
+          "totalDistanceKm": 18
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Tempo Run",
+          "description": "16 km total: 2 km aquecer + 8 km a 5:30–5:40 + 2 km fácil + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 16
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "32 km fácil (sem MP se acumular fadiga)",
+          "type": "long",
+          "totalDistanceKm": 32,
+          "whyExplanation": "Último pico de volume. Se acumulares fadiga, faz todo fácil. Protege-te para o taper."
+        }
+      ]
+    },
+    {
+      "weekNumber": 34,
+      "dates": "24/08–30/08/2026",
+      "phase": "recovery",
+      "notes": "Semana de alívio",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "12 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 12
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Easy + Strides",
+          "description": "10 km fácil + 6×20\" strides",
+          "type": "strides",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "24 km fácil",
+          "type": "long",
+          "totalDistanceKm": 24
+        }
+      ]
+    },
+    {
+      "weekNumber": 35,
+      "dates": "31/08–06/09/2026",
+      "phase": "peak",
+      "notes": "Simulação completa de prova",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Medium-Long with MP",
+          "description": "18 km médio-longo com 8 km a 6:23–6:27",
+          "type": "tempo",
+          "totalDistanceKm": 18
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Tempo Run",
+          "description": "16 km total: 2 km aquecer + 6 km a 5:30–5:40 + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 16
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Race Simulation",
+          "description": "30 km: 12 km fácil + 16 km a 6:23–6:27 + 2 km fácil",
+          "type": "progression",
+          "totalDistanceKm": 30,
+          "whyExplanation": "Simulação de prova! Pratica nutrição, hidratação e pacing como se fosse a maratona."
+        }
+      ]
+    },
+    {
+      "weekNumber": 36,
+      "dates": "07/09–13/09/2026",
+      "phase": "taper",
+      "notes": "Taper começa, sem \"matar\" o ritmo",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "14 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 14
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "MP Tempo",
+          "description": "14 km total: 2 km aquecer + 3×3 km a 6:23–6:27 (1 km fácil) + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 14
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "24 km fácil",
+          "type": "long",
+          "totalDistanceKm": 24
+        }
+      ]
+    },
+    {
+      "weekNumber": 37,
+      "dates": "14/09–20/09/2026",
+      "phase": "taper",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy + Strides",
+          "description": "12 km fácil + 6×20\" strides",
+          "type": "strides",
+          "totalDistanceKm": 12
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "MP Tempo",
+          "description": "12 km total: 2 km aquecer + 6 km a 6:23–6:27 + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 12
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run with MP",
+          "description": "20 km fácil; últimos 6 km a 6:23–6:27",
+          "type": "progression",
+          "totalDistanceKm": 20
+        }
+      ]
+    },
+    {
+      "weekNumber": 38,
+      "dates": "21/09–27/09/2026",
+      "phase": "taper",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy Run",
+          "description": "10 km fácil",
+          "type": "easy",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "MP Tempo",
+          "description": "10 km total: 2 km aquecer + 3×2 km a 6:23–6:27 (1 km fácil) + soltar",
+          "type": "tempo",
+          "totalDistanceKm": 10
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Long Run",
+          "description": "16 km fácil",
+          "type": "long",
+          "totalDistanceKm": 16
+        }
+      ]
+    },
+    {
+      "weekNumber": 39,
+      "dates": "28/09–04/10/2026",
+      "phase": "taper",
+      "notes": "Volume baixo, pernas soltas",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy + Strides",
+          "description": "8 km muito fácil + 4×15\" strides",
+          "type": "strides",
+          "totalDistanceKm": 8
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Shakeout",
+          "description": "6–7 km fácil (shakeout)",
+          "type": "recovery",
+          "totalDistanceKm": 7
+        },
+        {
+          "dayOfWeek": 0,
+          "title": "Easy Run",
+          "description": "12 km muito fácil",
+          "type": "recovery",
+          "totalDistanceKm": 12
+        }
+      ]
+    },
+    {
+      "weekNumber": 40,
+      "dates": "05/10–11/10/2026",
+      "phase": "race",
+      "notes": "Semana da Maratona! Domingo descanso",
+      "workouts": [
+        {
+          "dayOfWeek": 3,
+          "title": "Easy + Strides",
+          "description": "6 km muito fácil + 4×15\" strides (07/10)",
+          "type": "strides",
+          "totalDistanceKm": 6
+        },
+        {
+          "dayOfWeek": 5,
+          "title": "Pre-Race Shakeout",
+          "description": "4–5 km fácil (09/10) + 3×20\" strides",
+          "type": "recovery",
+          "totalDistanceKm": 5
+        },
+        {
+          "dayOfWeek": 6,
+          "title": "PROVA: Maratona Lisboa",
+          "description": "42,195 km - Objetivo: 4:29:xx (6:24/km)",
+          "type": "race",
+          "totalDistanceKm": 42.195,
+          "isRace": true,
+          "raceDetails": {
+            "name": "Maratona Lisboa",
+            "targetTime": "4:29:00",
+            "targetPace": "6:24"
+          },
+          "whyExplanation": "O grande dia! Todo o treino culmina aqui. Executa o teu plano de prova, respeita o pace nos primeiros km, e aproveita cada momento. Boa sorte! 🏁"
+        }
+      ]
+    }
+  ]
+}
