@@ -12,6 +12,7 @@ import {
   History,
   Upload,
   Download,
+  Settings,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { UnifiedAppHeader } from '@/components/shell/unified-app-header';
@@ -81,7 +82,7 @@ export default function RunLogLayout({ children, params }: RunLogLayoutProps) {
     { href: `/${locale}/running/plan`, icon: Calendar, label: t('nav.plan') },
     { href: `/${locale}/running/history`, icon: History, label: t('nav.history') },
     { href: `/${locale}/running/export`, icon: Upload, label: t('nav.export') },
-    { href: `/${locale}/running/import`, icon: Download, label: t('nav.import') },
+    { href: `/${locale}/running/settings`, icon: Settings, label: t('nav.settings') },
   ];
 
   const isActive = (href: string, exactMatch?: boolean) => {

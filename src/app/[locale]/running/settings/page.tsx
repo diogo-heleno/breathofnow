@@ -33,6 +33,9 @@ export default function SettingsPage() {
     }
   };
 
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [isClearing, setIsClearing] = useState(false);
+
   const handleExportData = async () => {
     const plans = await runningDb.getAllPlans();
     const sessions = await runningDb.getSessionHistory(1000);
@@ -50,6 +53,25 @@ export default function SettingsPage() {
     a.download = `runlog-backup-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handleClearAllData = async () => {
+    setIsClearing(true);
+    try {
+      // Delete all plans (which also deletes workouts and sessions)
+      const plans = await runningDb.getAllPlans();
+      for (const plan of plans) {
+        if (plan.id) {
+          await runningDb.deletePlan(plan.id);
+        }
+      }
+      setShowClearConfirm(false);
+      router.push('/running');
+    } catch (error) {
+      console.error('Failed to clear data:', error);
+    } finally {
+      setIsClearing(false);
+    }
   };
 
   return (
@@ -177,6 +199,15 @@ export default function SettingsPage() {
                 <span className="text-gray-700">Importar plano</span>
               </div>
             </Link>
+            <button
+              onClick={() => setShowClearConfirm(true)}
+              className="w-full flex items-center justify-between p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <Trash2 className="w-5 h-5 text-red-600" />
+                <span className="text-red-700 font-medium">Limpar todos os dados</span>
+              </div>
+            </button>
           </div>
         </div>
 
@@ -201,6 +232,33 @@ export default function SettingsPage() {
                   className="flex-1 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
                 >
                   {isDeleting ? 'A apagar...' : 'Apagar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Clear All Data Confirmation Modal */}
+        {showClearConfirm && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl p-6 max-w-sm w-full">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Limpar todos os dados?</h3>
+              <p className="text-gray-600 mb-6">
+                Esta ação vai apagar TODOS os planos, treinos e histórico. Os dados não podem ser recuperados.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowClearConfirm(false)}
+                  className="flex-1 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleClearAllData}
+                  disabled={isClearing}
+                  className="flex-1 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
+                >
+                  {isClearing ? 'A limpar...' : 'Limpar Tudo'}
                 </button>
               </div>
             </div>
