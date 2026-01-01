@@ -45,7 +45,8 @@ export class RunningDatabase extends Dexie {
   }
 
   async getAllPlans(): Promise<RunningPlan[]> {
-    return this.runningPlans.orderBy('createdAt').reverse().toArray();
+    // Order by id (auto-increment) as proxy for creation order
+    return this.runningPlans.orderBy('id').reverse().toArray();
   }
 
   async deletePlan(planId: number): Promise<void> {
