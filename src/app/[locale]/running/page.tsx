@@ -76,36 +76,26 @@ async function importPlanFromJson(json: string): Promise<RunningPlan | null> {
     // Add plan
     const planId = await runningDb.runningPlans.add(plan as RunningPlan);
 
+    // Get plan start date for calculating workout dates
+    const planStartDate = new Date(data.startDate);
+
     // Add workouts
     let workoutOrder = 0;
     for (const week of data.weeks) {
       for (const workout of week.workouts) {
-        // Parse date from week dates
-        const weekDates = week.dates || '';
-        const startDateStr = weekDates.split('–')[0]?.trim() || '';
-
-        // Calculate actual date based on day of week
-        let scheduledDate = '';
-        if (startDateStr) {
-          const [day, month, year] = startDateStr.split('/');
-          if (day && month) {
-            const baseDate = new Date(
-              parseInt(year?.length === 4 ? year : `20${year || '26'}`),
-              parseInt(month) - 1,
-              parseInt(day)
-            );
-            // baseDate is the Monday of the week (or first day)
-            // workout.dayOfWeek: 0=Sunday, 1=Monday, ..., 6=Saturday
-            // Calculate days to add from Monday (day 1)
-            // If dayOfWeek is 0 (Sunday), we need to add 6 days from Monday
-            // If dayOfWeek is 3 (Wednesday), we need to add 2 days from Monday
-            const baseDayOfWeek = baseDate.getDay(); // 0=Sun, 1=Mon, etc.
-            let daysToAdd = workout.dayOfWeek - baseDayOfWeek;
-            if (daysToAdd < 0) daysToAdd += 7; // Handle wrap-around
-            baseDate.setDate(baseDate.getDate() + daysToAdd);
-            scheduledDate = baseDate.toISOString().split('T')[0];
-          }
-        }
+        // Calculate workout date based on week number and day of week
+        // planStartDate is the Monday of week 0
+        // workout.dayOfWeek: 0=Sunday, 1=Monday, ..., 6=Saturday
+        const workoutDate = new Date(planStartDate);
+        // Add weeks
+        workoutDate.setDate(workoutDate.getDate() + (week.weekNumber * 7));
+        // Add days to get to the right day of week
+        // planStartDate is Monday (day 1), so we need to adjust
+        const planStartDay = planStartDate.getDay(); // Should be 1 (Monday)
+        let daysToAdd = workout.dayOfWeek - planStartDay;
+        if (daysToAdd < 0) daysToAdd += 7; // Handle Sunday (0)
+        workoutDate.setDate(workoutDate.getDate() + daysToAdd);
+        const scheduledDate = workoutDate.toISOString().split('T')[0];
 
         // Parse segments
         const segments: WorkoutSegment[] = (workout.segments || []).map((seg, i) => ({

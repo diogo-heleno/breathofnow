@@ -78,33 +78,21 @@ export default function ImportPage({ params }: ImportPageProps) {
       // Add plan
       const planId = await runningDb.runningPlans.add(plan as RunningPlan);
 
+      // Get plan start date for calculating workout dates
+      const planStartDate = new Date(data.startDate || plan.startDate);
+
       // Add workouts
       let workoutOrder = 0;
       for (const week of data.weeks) {
         for (const workout of week.workouts) {
-          // Parse date from week dates
-          const weekDates = week.dates || '';
-          const startDateStr = weekDates.split('–')[0]?.trim() || '';
-
-          // Calculate actual date based on day of week
-          let scheduledDate = '';
-          if (startDateStr) {
-            const [day, month, year] = startDateStr.split('/');
-            if (day && month) {
-              const baseDate = new Date(
-                parseInt(year?.length === 4 ? year : `20${year || '26'}`),
-                parseInt(month) - 1,
-                parseInt(day)
-              );
-              // baseDate is the first day of the week
-              // workout.dayOfWeek: 0=Sunday, 1=Monday, ..., 6=Saturday
-              const baseDayOfWeek = baseDate.getDay();
-              let daysToAdd = workout.dayOfWeek - baseDayOfWeek;
-              if (daysToAdd < 0) daysToAdd += 7;
-              baseDate.setDate(baseDate.getDate() + daysToAdd);
-              scheduledDate = baseDate.toISOString().split('T')[0];
-            }
-          }
+          // Calculate workout date based on week number and day of week
+          const workoutDate = new Date(planStartDate);
+          workoutDate.setDate(workoutDate.getDate() + (week.weekNumber * 7));
+          const planStartDay = planStartDate.getDay();
+          let daysToAdd = workout.dayOfWeek - planStartDay;
+          if (daysToAdd < 0) daysToAdd += 7;
+          workoutDate.setDate(workoutDate.getDate() + daysToAdd);
+          const scheduledDate = workoutDate.toISOString().split('T')[0];
 
           // Parse segments
           const segments: WorkoutSegment[] = (workout.segments || []).map((seg, i) => ({
